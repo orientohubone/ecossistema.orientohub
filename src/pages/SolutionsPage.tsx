@@ -1,44 +1,104 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
 import { Plus, Link as LinkIcon, Image, X } from 'lucide-react';
+import { supabase } from '../config/supabase';
+import { useAuthStore } from '../stores/authStore';
 
 interface Solution {
   id: string;
   name: string;
-  logo: string;
-  url: string;
+  logo_url: string;
+  solution_url: string;
 }
 
 const SolutionsPage = () => {
   const { t } = useTranslation();
+  const { user } = useAuthStore();
   const [solutions, setSolutions] = useState<Solution[]>([]);
   const [showAddModal, setShowAddModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [newSolution, setNewSolution] = useState({
     name: '',
-    logo: '',
-    url: '',
+    logo_url: '',
+    solution_url: '',
   });
 
-  const handleAddSolution = () => {
-    if (!newSolution.name || !newSolution.url) return;
+  useEffect(() => {
+    fetchSolutions();
+  }, [user]);
 
-    const solution: Solution = {
-      id: Date.now().toString(),
-      name: newSolution.name,
-      logo: newSolution.logo || `https://ui-avatars.com/api/?name=${encodeURIComponent(newSolution.name)}&background=FFD700&color=000000`,
-      url: newSolution.url,
-    };
+  const fetchSolutions = async () => {
+    try {
+      setIsLoading(true);
+      setError(null);
 
-    setSolutions([...solutions, solution]);
-    setNewSolution({ name: '', logo: '', url: '' });
-    setShowAddModal(false);
+      const { data, error } = await supabase
+        .from('solutions')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+
+      setSolutions(data || []);
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const handleRemoveSolution = (id: string) => {
-    setSolutions(solutions.filter(s => s.id !== id));
+  const handleAddSolution = async () => {
+    if (!newSolution.name || !newSolution.solution_url) return;
+
+    try {
+      setError(null);
+      const solution = {
+        user_id: user?.id,
+        name: newSolution.name,
+        logo_url: newSolution.logo_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(newSolution.name)}&background=FFD700&color=000000`,
+        solution_url: newSolution.solution_url,
+      };
+
+      const { error } = await supabase
+        .from('solutions')
+        .insert([solution]);
+
+      if (error) throw error;
+
+      setNewSolution({ name: '', logo_url: '', solution_url: '' });
+      setShowAddModal(false);
+      fetchSolutions();
+    } catch (err: any) {
+      setError(err.message);
+    }
   };
+
+  const handleRemoveSolution = async (id: string) => {
+    try {
+      setError(null);
+      const { error } = await supabase
+        .from('solutions')
+        .delete()
+        .eq('id', id);
+
+      if (error) throw error;
+
+      fetchSolutions();
+    } catch (err: any) {
+      setError(err.message);
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-500"></div>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -58,6 +118,12 @@ const SolutionsPage = () => {
           </button>
         </div>
 
+        {error && (
+          <div className="bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400 p-4 rounded-lg">
+            {error}
+          </div>
+        )}
+
         {/* Solutions Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {solutions.map((solution) => (
@@ -71,9 +137,13 @@ const SolutionsPage = () => {
               <div className="p-6">
                 <div className="flex items-center justify-between mb-4">
                   <img
-                    src={solution.logo}
+                    src={solution.logo_url}
                     alt={solution.name}
                     className="h-12 w-12 rounded-lg object-cover"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(solution.name)}&background=FFD700&color=000000`;
+                    }}
                   />
                   <button
                     onClick={() => handleRemoveSolution(solution.id)}
@@ -84,7 +154,7 @@ const SolutionsPage = () => {
                 </div>
                 <h3 className="text-lg font-semibold mb-2">{solution.name}</h3>
                 <a
-                  href={solution.url}
+                  href={solution.solution_url}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-primary-500 hover:text-primary-600 flex items-center"
@@ -129,8 +199,8 @@ const SolutionsPage = () => {
                   </label>
                   <input
                     type="text"
-                    value={newSolution.logo}
-                    onChange={(e) => setNewSolution({ ...newSolution, logo: e.target.value })}
+                    value={newSolution.logo_url}
+                    onChange={(e) => setNewSolution({ ...newSolution, logo_url: e.target.value })}
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md"
                     placeholder="https://exemplo.com/logo.png"
                   />
@@ -141,8 +211,8 @@ const SolutionsPage = () => {
                   </label>
                   <input
                     type="text"
-                    value={newSolution.url}
-                    onChange={(e) => setNewSolution({ ...newSolution, url: e.target.value })}
+                    value={newSolution.solution_url}
+                    onChange={(e) => setNewSolution({ ...newSolution, solution_url: e.target.value })}
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md"
                     placeholder="https://minhasolucao.com"
                   />
