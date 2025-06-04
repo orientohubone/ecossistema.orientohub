@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link, useLocation, useNavigate, Outlet } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import { Menu, X, ChevronDown, LayoutDashboard, BarChart2, FileText, Settings, LogOut } from 'lucide-react';
+import { Menu, X, ChevronDown, LayoutDashboard, BarChart2, FileText, Settings, LogOut, Link2 } from 'lucide-react';
 import { useAuthStore } from '../stores/authStore';
 
 const DashboardLayout = () => {
@@ -115,6 +115,7 @@ const SidebarContent = ({ location, onLogout }: SidebarContentProps) => {
     { name: t('common.dashboard'), icon: <LayoutDashboard size={20} />, href: '/dashboard' },
     { name: t('dashboard.insights'), icon: <BarChart2 size={20} />, href: '/dashboard/insights' },
     { name: t('dashboard.frameworks'), icon: <FileText size={20} />, href: '/dashboard/frameworks' },
+    { name: 'Soluções', icon: <Link2 size={20} />, href: '/dashboard/solutions' },
     { name: t('common.settings'), icon: <Settings size={20} />, href: '/dashboard/settings' },
   ];
 

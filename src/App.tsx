@@ -18,6 +18,7 @@ import SignupPage from './pages/SignupPage';
 import DashboardPage from './pages/DashboardPage';
 import InsightsPage from './pages/InsightsPage';
 import FrameworksPage from './pages/FrameworksPage';
+import SolutionsPage from './pages/SolutionsPage';
 import SettingsPage from './pages/SettingsPage';
 import BlogPage from './pages/BlogPage';
 import BlogPostPage from './pages/BlogPostPage';
@@ -81,6 +82,7 @@ function App() {
           <Route index element={<DashboardPage />} />
           <Route path="insights" element={<InsightsPage />} />
           <Route path="frameworks" element={<FrameworksPage />} />
+          <Route path="solutions" element={<SolutionsPage />} />
           <Route path="settings" element={<SettingsPage />} />
         </Route>
         
