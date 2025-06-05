@@ -1,6 +1,8 @@
 import { Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { X, FileText, GamepadIcon } from 'lucide-react';
+import html2canvas from 'html2canvas';
+import { jsPDF } from 'jspdf';
 
 interface FrameworkModalProps {
   isOpen: boolean;
@@ -10,14 +12,39 @@ interface FrameworkModalProps {
 }
 
 const FrameworkModal = ({ isOpen, onClose, title, children }: FrameworkModalProps) => {
-  const handleGenerateTemplate = () => {
-    // Template generation logic will be implemented here
-    console.log('Generating template for:', title);
+  const handleGenerateTemplate = async () => {
+    try {
+      // Get the content element
+      const content = document.getElementById('framework-content');
+      if (!content) return;
+
+      // Create canvas from content
+      const canvas = await html2canvas(content);
+      
+      // Create PDF
+      const pdf = new jsPDF({
+        orientation: 'portrait',
+        unit: 'px',
+        format: [canvas.width, canvas.height]
+      });
+
+      // Add image to PDF
+      const imgData = canvas.toDataURL('image/png');
+      pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
+
+      // Save PDF
+      pdf.save(`${title.toLowerCase().replace(/\s+/g, '-')}-template.pdf`);
+    } catch (error) {
+      console.error('Error generating template:', error);
+    }
   };
 
   const handleStartGamification = () => {
-    // Gamification flow will be implemented here
-    console.log('Starting gamification for:', title);
+    // Store the current framework in session storage
+    sessionStorage.setItem('currentFramework', title);
+    
+    // Redirect to gamification page
+    window.location.href = `/frameworks/${title.toLowerCase().replace(/\s+/g, '-')}/game`;
   };
 
   return (
@@ -78,7 +105,7 @@ const FrameworkModal = ({ isOpen, onClose, title, children }: FrameworkModalProp
                   </div>
                 </div>
 
-                <div className="prose dark:prose-invert max-w-none">
+                <div id="framework-content" className="prose dark:prose-invert max-w-none">
                   {children}
                 </div>
               </Dialog.Panel>
