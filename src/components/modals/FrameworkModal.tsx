@@ -3,6 +3,7 @@ import { Dialog, Transition } from '@headlessui/react';
 import { X, FileText, GamepadIcon } from 'lucide-react';
 import html2canvas from 'html2canvas';
 import { jsPDF } from 'jspdf';
+import { useNavigate } from 'react-router-dom';
 
 interface FrameworkModalProps {
   isOpen: boolean;
@@ -12,6 +13,8 @@ interface FrameworkModalProps {
 }
 
 const FrameworkModal = ({ isOpen, onClose, title, children }: FrameworkModalProps) => {
+  const navigate = useNavigate();
+
   const handleGenerateTemplate = async () => {
     try {
       // Get the content element
@@ -43,8 +46,10 @@ const FrameworkModal = ({ isOpen, onClose, title, children }: FrameworkModalProp
     // Store the current framework in session storage
     sessionStorage.setItem('currentFramework', title);
     
-    // Redirect to gamification page
-    window.location.href = `/frameworks/${title.toLowerCase().replace(/\s+/g, '-')}/game`;
+    // Navigate to gamification page
+    const frameworkId = title.toLowerCase().replace(/\s+/g, '-');
+    navigate(`/dashboard/frameworks/${frameworkId}/game`);
+    onClose();
   };
 
   return (
