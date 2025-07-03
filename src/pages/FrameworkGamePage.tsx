@@ -419,7 +419,7 @@ const FrameworkGamePage = () => {
                 </div>
               ))}
             </div>
-          </div>
+          </motion.div>
         </div>
 
         {/* Steps Overview */}
