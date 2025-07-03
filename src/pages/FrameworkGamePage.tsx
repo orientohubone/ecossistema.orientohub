@@ -162,6 +162,342 @@ const FrameworkGamePage = () => {
           challenge: 'Liste 3 principais dores e 3 ganhos esperados.',
           instructions: 'Compile todas as informações coletadas para identificar as principais frustrações e os benefícios que seu cliente mais valoriza. Priorize por importância.'
         }
+      ],
+      'Design Thinking': [
+        {
+          id: 1,
+          title: 'Empatia - Imersão no Usuário',
+          description: 'Compreenda profundamente as necessidades dos usuários.',
+          points: 50,
+          challenge: 'Realize observações e entrevistas com 3-5 usuários.',
+          instructions: 'Saia e observe usuários em seu ambiente natural. Faça entrevistas abertas sobre suas experiências, frustrações e necessidades. Documente tudo sem julgamentos.'
+        },
+        {
+          id: 2,
+          title: 'Definição - Síntese do Problema',
+          description: 'Defina claramente o problema a ser resolvido.',
+          points: 40,
+          challenge: 'Crie uma declaração de problema clara e específica.',
+          instructions: 'Analise os dados coletados na fase de empatia. Identifique padrões e defina o problema real. Escreva uma frase que capture a essência do desafio.'
+        },
+        {
+          id: 3,
+          title: 'Ideação - Geração de Soluções',
+          description: 'Gere o máximo de ideias possíveis para resolver o problema.',
+          points: 60,
+          challenge: 'Conduza uma sessão de brainstorming e gere 20+ ideias.',
+          instructions: 'Use técnicas como brainstorming, mapas mentais ou SCAMPER. Foque na quantidade, não na qualidade. Anote todas as ideias, mesmo as mais malucas.'
+        },
+        {
+          id: 4,
+          title: 'Prototipagem - Materialização das Ideias',
+          description: 'Crie protótipos rápidos das melhores ideias.',
+          points: 70,
+          challenge: 'Desenvolva 2-3 protótipos simples das melhores ideias.',
+          instructions: 'Use materiais simples como papel, cartolina, ou ferramentas digitais como Figma. O objetivo é tornar as ideias tangíveis rapidamente.'
+        },
+        {
+          id: 5,
+          title: 'Teste - Validação com Usuários',
+          description: 'Teste os protótipos com usuários reais.',
+          points: 80,
+          challenge: 'Teste os protótipos com 3-5 usuários e colete feedback.',
+          instructions: 'Apresente os protótipos aos usuários. Observe como interagem, que dificuldades encontram e que sugestões fazem. Documente tudo para iterações futuras.'
+        }
+      ],
+      'OKRs (Objectives and Key Results)': [
+        {
+          id: 1,
+          title: 'Definição de Objetivos',
+          description: 'Estabeleça objetivos ambiciosos e inspiradores.',
+          points: 50,
+          challenge: 'Defina 3-5 objetivos qualitativos para o próximo trimestre.',
+          instructions: 'Escreva objetivos que sejam ambiciosos, inspiradores e alinhados com a visão da empresa. Cada objetivo deve ser qualitativo e motivador.'
+        },
+        {
+          id: 2,
+          title: 'Criação de Key Results',
+          description: 'Estabeleça resultados-chave mensuráveis para cada objetivo.',
+          points: 60,
+          challenge: 'Crie 3-5 Key Results mensuráveis para cada objetivo.',
+          instructions: 'Para cada objetivo, defina 3-5 resultados-chave que sejam específicos, mensuráveis, atingíveis, relevantes e temporais (SMART).'
+        },
+        {
+          id: 3,
+          title: 'Alinhamento de Times',
+          description: 'Alinhe os OKRs com toda a equipe.',
+          points: 40,
+          challenge: 'Apresente e alinhe os OKRs com sua equipe.',
+          instructions: 'Organize uma reunião para apresentar os OKRs. Explique como cada pessoa contribui para os objetivos e colete feedback da equipe.'
+        },
+        {
+          id: 4,
+          title: 'Sistema de Acompanhamento',
+          description: 'Estabeleça um processo de monitoramento regular.',
+          points: 50,
+          challenge: 'Crie um sistema de acompanhamento semanal dos OKRs.',
+          instructions: 'Defina como e quando você vai acompanhar o progresso. Crie um dashboard simples ou planilha para monitorar os Key Results semanalmente.'
+        },
+        {
+          id: 5,
+          title: 'Retrospectiva e Ajustes',
+          description: 'Avalie os resultados e faça ajustes necessários.',
+          points: 60,
+          challenge: 'Conduza uma retrospectiva dos OKRs do período anterior.',
+          instructions: 'Analise o que funcionou, o que não funcionou e por quê. Documente lições aprendidas e ajuste os próximos OKRs baseado nos insights obtidos.'
+        }
+      ],
+      'Jobs to be Done': [
+        {
+          id: 1,
+          title: 'Identificação do Job Statement',
+          description: 'Defina claramente o "trabalho" que o cliente quer realizar.',
+          points: 50,
+          challenge: 'Escreva o Job Statement principal do seu cliente.',
+          instructions: 'Use a fórmula: "Quando [situação], eu quero [motivação], para que eu possa [resultado esperado]". Seja específico sobre o contexto e resultado.'
+        },
+        {
+          id: 2,
+          title: 'Mapeamento das Dimensões',
+          description: 'Explore as dimensões funcional, emocional e social do job.',
+          points: 60,
+          challenge: 'Mapeie as 3 dimensões do job do seu cliente.',
+          instructions: 'Documente: 1) Funcional (o que precisa ser feito), 2) Emocional (como quer se sentir), 3) Social (como quer ser percebido). Entreviste clientes para validar.'
+        },
+        {
+          id: 3,
+          title: 'Análise das Forças do Progresso',
+          description: 'Identifique as forças que motivam ou impedem a mudança.',
+          points: 70,
+          challenge: 'Mapeie as 4 forças: Push, Pull, Anxiety e Habit.',
+          instructions: 'Identifique: Push (problemas atuais), Pull (atração da nova solução), Anxiety (medos sobre mudança), Habit (resistência ao status quo).'
+        },
+        {
+          id: 4,
+          title: 'Entrevistas Timeline',
+          description: 'Conduza entrevistas para entender a jornada de decisão.',
+          points: 80,
+          challenge: 'Realize 3-5 entrevistas timeline com clientes.',
+          instructions: 'Entreviste clientes sobre a primeira vez que pensaram em resolver o problema até a decisão final. Foque nos momentos de progresso e estagnação.'
+        },
+        {
+          id: 5,
+          title: 'Job Map Detalhado',
+          description: 'Crie um mapa detalhado de todos os passos do job.',
+          points: 60,
+          challenge: 'Desenvolva um job map com todos os micro-jobs.',
+          instructions: 'Quebre o job principal em etapas menores. Para cada etapa, identifique necessidades não atendidas e oportunidades de inovação.'
+        }
+      ],
+      'SAFe / Scrum / Agile': [
+        {
+          id: 1,
+          title: 'Definição de Papéis',
+          description: 'Estabeleça claramente os papéis da equipe ágil.',
+          points: 40,
+          challenge: 'Defina Product Owner, Scrum Master e Development Team.',
+          instructions: 'Identifique quem assumirá cada papel na sua equipe. Documente responsabilidades específicas e como cada papel contribui para o sucesso do projeto.'
+        },
+        {
+          id: 2,
+          title: 'Criação do Product Backlog',
+          description: 'Desenvolva e priorize o backlog do produto.',
+          points: 60,
+          challenge: 'Crie um backlog com pelo menos 20 user stories priorizadas.',
+          instructions: 'Escreva user stories no formato "Como [usuário], eu quero [funcionalidade] para [benefício]". Priorize usando técnicas como MoSCoW ou Value vs Effort.'
+        },
+        {
+          id: 3,
+          title: 'Planejamento da Sprint',
+          description: 'Conduza uma sessão de planejamento de sprint.',
+          points: 50,
+          challenge: 'Planeje sua primeira sprint com objetivos claros.',
+          instructions: 'Selecione user stories do backlog para a sprint. Defina o objetivo da sprint, estime esforços e crie tarefas específicas para cada story.'
+        },
+        {
+          id: 4,
+          title: 'Implementação de Cerimônias',
+          description: 'Execute as cerimônias ágeis durante uma semana.',
+          points: 70,
+          challenge: 'Conduza Daily Scrum, Sprint Review e Retrospective.',
+          instructions: 'Durante uma semana, faça dailies de 15min, uma review para demonstrar o trabalho feito e uma retrospectiva para melhorias contínuas.'
+        },
+        {
+          id: 5,
+          title: 'Métricas e Melhoria Contínua',
+          description: 'Implemente métricas para acompanhar o progresso.',
+          points: 60,
+          challenge: 'Defina e acompanhe 3-5 métricas ágeis importantes.',
+          instructions: 'Escolha métricas como velocity, burndown, lead time, cycle time. Crie um dashboard simples e use os dados para melhorar o processo.'
+        }
+      ],
+      'Product-Market Fit': [
+        {
+          id: 1,
+          title: 'Definição de Métricas PMF',
+          description: 'Estabeleça métricas para medir o Product-Market Fit.',
+          points: 50,
+          challenge: 'Defina 5 métricas-chave para avaliar seu PMF.',
+          instructions: 'Escolha métricas como NPS, retenção, crescimento orgânico, "very disappointed" score. Defina como e quando vai medir cada uma.'
+        },
+        {
+          id: 2,
+          title: 'Pesquisa de Satisfação',
+          description: 'Conduza pesquisas para entender a satisfação dos clientes.',
+          points: 60,
+          challenge: 'Realize pesquisa com 20+ clientes sobre satisfação.',
+          instructions: 'Crie um questionário focado na pergunta "O quão decepcionado você ficaria se não pudesse mais usar nosso produto?". Inclua perguntas sobre valor percebido.'
+        },
+        {
+          id: 3,
+          title: 'Análise de Retenção',
+          description: 'Analise padrões de retenção e churn dos usuários.',
+          points: 70,
+          challenge: 'Analise a retenção por cohorts dos últimos 3 meses.',
+          instructions: 'Crie uma análise de cohort para entender como diferentes grupos de usuários se comportam ao longo do tempo. Identifique padrões de retenção e churn.'
+        },
+        {
+          id: 4,
+          title: 'Identificação de Early Adopters',
+          description: 'Identifique e analise seus early adopters mais engajados.',
+          points: 60,
+          challenge: 'Identifique e entreviste 5 early adopters.',
+          instructions: 'Encontre usuários que mais usam e amam seu produto. Entreviste-os para entender por que são tão engajados e que valor específico encontram.'
+        },
+        {
+          id: 5,
+          title: 'Plano de Otimização PMF',
+          description: 'Crie um plano para melhorar o Product-Market Fit.',
+          points: 80,
+          challenge: 'Desenvolva um plano de ação baseado nos dados coletados.',
+          instructions: 'Analise todos os dados coletados. Identifique gaps no PMF e crie um plano específico com ações, responsáveis e prazos para melhorar o fit.'
+        }
+      ],
+      'Jornada do Cliente': [
+        {
+          id: 1,
+          title: 'Mapeamento de Touchpoints',
+          description: 'Identifique todos os pontos de contato com o cliente.',
+          points: 50,
+          challenge: 'Liste todos os touchpoints da jornada do cliente.',
+          instructions: 'Mapeie desde o primeiro contato até o pós-venda. Inclua canais digitais, físicos, atendimento, produto. Seja exaustivo na identificação.'
+        },
+        {
+          id: 2,
+          title: 'Definição de Personas',
+          description: 'Crie personas detalhadas para mapear jornadas específicas.',
+          points: 40,
+          challenge: 'Desenvolva 2-3 personas principais com jornadas distintas.',
+          instructions: 'Para cada persona, documente dados demográficos, comportamentos, motivações e como cada uma interage diferentemente com sua solução.'
+        },
+        {
+          id: 3,
+          title: 'Mapeamento de Emoções',
+          description: 'Identifique as emoções do cliente em cada etapa.',
+          points: 60,
+          challenge: 'Mapeie emoções positivas e negativas em cada touchpoint.',
+          instructions: 'Para cada ponto da jornada, identifique como o cliente se sente. Use entrevistas ou pesquisas para validar as emoções mapeadas.'
+        },
+        {
+          id: 4,
+          title: 'Identificação de Pain Points',
+          description: 'Encontre os principais pontos de dor na jornada.',
+          points: 70,
+          challenge: 'Identifique e priorize os 5 maiores pain points.',
+          instructions: 'Analise onde os clientes mais sofrem ou abandonam a jornada. Use dados quantitativos (analytics) e qualitativos (feedback) para identificar problemas.'
+        },
+        {
+          id: 5,
+          title: 'Plano de Otimização',
+          description: 'Crie um plano para melhorar a experiência do cliente.',
+          points: 80,
+          challenge: 'Desenvolva soluções específicas para cada pain point.',
+          instructions: 'Para cada problema identificado, proponha soluções concretas. Priorize por impacto e esforço. Crie um roadmap de melhorias da experiência.'
+        }
+      ],
+      'Proposta de Valor': [
+        {
+          id: 1,
+          title: 'Análise do Perfil do Cliente',
+          description: 'Entenda profundamente as necessidades do cliente.',
+          points: 50,
+          challenge: 'Mapeie jobs, pains e gains do seu cliente.',
+          instructions: 'Liste os trabalhos que seu cliente precisa fazer, as dores que enfrenta e os ganhos que deseja. Use entrevistas e observação para validar.'
+        },
+        {
+          id: 2,
+          title: 'Definição da Proposta de Valor',
+          description: 'Articule claramente como você cria valor.',
+          points: 60,
+          challenge: 'Defina produtos/serviços, pain relievers e gain creators.',
+          instructions: 'Liste seus produtos/serviços, como eles aliviam dores específicas e como criam ganhos para o cliente. Seja específico e mensurável.'
+        },
+        {
+          id: 3,
+          title: 'Teste de Fit',
+          description: 'Valide se há encaixe entre proposta e necessidades.',
+          points: 70,
+          challenge: 'Teste o fit da proposta com 5-10 clientes potenciais.',
+          instructions: 'Apresente sua proposta de valor para clientes potenciais. Observe reações, faça perguntas sobre relevância e colete feedback específico.'
+        },
+        {
+          id: 4,
+          title: 'Refinamento da Mensagem',
+          description: 'Refine a comunicação da proposta de valor.',
+          points: 50,
+          challenge: 'Crie 3 versões diferentes da mensagem de valor.',
+          instructions: 'Desenvolva diferentes formas de comunicar sua proposta. Teste com diferentes audiências e veja qual ressoa melhor com cada segmento.'
+        },
+        {
+          id: 5,
+          title: 'Validação Quantitativa',
+          description: 'Valide a proposta com dados quantitativos.',
+          points: 80,
+          challenge: 'Conduza teste A/B ou pesquisa quantitativa.',
+          instructions: 'Use landing pages, anúncios ou pesquisas para testar diferentes versões da proposta. Meça conversões, interesse e intenção de compra.'
+        }
+      ],
+      'Lean Canvas': [
+        {
+          id: 1,
+          title: 'Identificação do Problema',
+          description: 'Defina claramente os problemas que você resolve.',
+          points: 50,
+          challenge: 'Liste os 3 principais problemas do seu cliente.',
+          instructions: 'Identifique problemas reais e urgentes. Valide com entrevistas que esses problemas realmente existem e são importantes para seu público-alvo.'
+        },
+        {
+          id: 2,
+          title: 'Definição da Solução',
+          description: 'Articule sua solução de forma simples e clara.',
+          points: 40,
+          challenge: 'Descreva sua solução em 3 funcionalidades principais.',
+          instructions: 'Foque nas funcionalidades essenciais que resolvem os problemas identificados. Evite complexidade desnecessária neste momento inicial.'
+        },
+        {
+          id: 3,
+          title: 'Métricas-Chave',
+          description: 'Defina como você vai medir o sucesso.',
+          points: 60,
+          challenge: 'Identifique 3-5 métricas que indicam sucesso.',
+          instructions: 'Escolha métricas que realmente importam para seu negócio: aquisição, ativação, retenção, receita, referência. Defina como vai medir cada uma.'
+        },
+        {
+          id: 4,
+          title: 'Vantagem Competitiva',
+          description: 'Identifique o que te diferencia da concorrência.',
+          points: 70,
+          challenge: 'Defina sua vantagem competitiva única.',
+          instructions: 'Analise concorrentes diretos e indiretos. Identifique o que você faz diferente ou melhor. Foque em vantagens difíceis de copiar.'
+        },
+        {
+          id: 5,
+          title: 'Modelo de Receita',
+          description: 'Defina como sua startup vai gerar receita.',
+          points: 60,
+          challenge: 'Estruture seu modelo de receita com preços.',
+          instructions: 'Defina como vai cobrar (assinatura, venda única, freemium, etc.), quanto vai cobrar e justifique os preços baseado no valor entregue.'
+        }
       ]
     };
 
