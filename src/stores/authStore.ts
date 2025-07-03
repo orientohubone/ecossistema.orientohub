@@ -26,9 +26,17 @@ export const useAuthStore = create<AuthState>((set) => ({
       set({ isLoading: true });
       
       // Check if user is already logged in
-      const { data: { session } } = await supabase.auth.getSession();
+      const { data: { session }, error: getSessionError } = await supabase.auth.getSession();
       
-      if (session?.user) {
+      // If there's an error getting the session (like invalid refresh token), clear the session
+      if (getSessionError) {
+        await supabase.auth.signOut();
+        set({ 
+          user: null,
+          isAuthenticated: false,
+          isLoading: false,
+        });
+      } else if (session?.user) {
         set({ 
           user: session.user,
           isAuthenticated: true,
