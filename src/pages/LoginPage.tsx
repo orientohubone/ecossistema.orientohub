@@ -3,13 +3,14 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
+import { AlertTriangle, RefreshCw } from 'lucide-react';
 import { useAuthStore } from '../stores/authStore';
 
 const LoginPage = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
-  const { login, isLoading, error, resendConfirmationEmail } = useAuthStore();
+  const { login, isLoading, error, connectionStatus, resendConfirmationEmail, initAuth } = useAuthStore();
   
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -38,7 +39,11 @@ const LoginPage = () => {
     }
   };
 
+  const handleRetryConnection = async () => {
+    await initAuth();
+  };
   const isEmailNotConfirmed = error?.includes('Email not confirmed');
+  const isConnectionError = connectionStatus === 'disconnected' || error?.includes('servidor') || error?.includes('Servidor');
   
   return (
     <>
@@ -64,9 +69,37 @@ const LoginPage = () => {
             </h2>
           </div>
           
+          {/* Connection Status */}
+          {connectionStatus === 'disconnected' && (
+            <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-md p-4">
+              <div className="flex items-start">
+                <AlertTriangle className="h-5 w-5 text-red-500 mt-0.5 mr-3" />
+                <div className="flex-1">
+                  <h3 className="text-sm font-medium text-red-800 dark:text-red-200">
+                    Problema de Conexão
+                  </h3>
+                  <p className="text-sm text-red-700 dark:text-red-300 mt-1">
+                    Não foi possível conectar ao servidor. Isso pode acontecer se o projeto Supabase estiver pausado (comum no plano gratuito).
+                  </p>
+                  <button
+                    onClick={handleRetryConnection}
+                    className="mt-2 inline-flex items-center text-sm font-medium text-red-600 hover:text-red-500 dark:text-red-400 dark:hover:text-red-300"
+                  >
+                    <RefreshCw size={14} className="mr-1" />
+                    Tentar novamente
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+          
           {error && (
             <div className="space-y-4">
-              <div className="bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400 p-3 rounded-md text-sm">
+              <div className={`p-3 rounded-md text-sm ${
+                isConnectionError 
+                  ? 'bg-orange-50 dark:bg-orange-900/20 text-orange-700 dark:text-orange-400 border border-orange-200 dark:border-orange-800'
+                  : 'bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400'
+              }`}>
                 {error}
               </div>
               
@@ -104,6 +137,7 @@ const LoginPage = () => {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                  disabled={connectionStatus === 'disconnected'}
                   className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-700 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white dark:bg-gray-700 rounded-t-md focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm"
                   placeholder={t('auth.login.email')}
                 />
@@ -120,6 +154,7 @@ const LoginPage = () => {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  disabled={connectionStatus === 'disconnected'}
                   className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-700 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white dark:bg-gray-700 rounded-b-md focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm"
                   placeholder={t('auth.login.password')}
                 />
@@ -132,6 +167,7 @@ const LoginPage = () => {
                   id="remember-me"
                   name="remember-me"
                   type="checkbox"
+                  disabled={connectionStatus === 'disconnected'}
                   className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 dark:border-gray-700 rounded"
                 />
                 <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900 dark:text-gray-300">
@@ -149,7 +185,7 @@ const LoginPage = () => {
             <div>
               <button
                 type="submit"
-                disabled={isLoading}
+                disabled={isLoading || connectionStatus === 'disconnected'}
                 className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-black bg-primary-500 hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-70 disabled:cursor-not-allowed"
               >
                 {isLoading ? (

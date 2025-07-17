@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { supabase } from '../config/supabase';
+import { supabase, testSupabaseConnection } from '../config/supabase';
 import type { User } from '@supabase/supabase-js';
 
 interface AuthState {
@@ -7,6 +7,7 @@ interface AuthState {
   isAuthenticated: boolean;
   isLoading: boolean;
   error: string | null;
+  connectionStatus: 'checking' | 'connected' | 'disconnected';
   initAuth: () => Promise<void>;
   login: (email: string, password: string) => Promise<void>;
   signup: (email: string, password: string, metadata?: any) => Promise<void>;
@@ -20,33 +21,51 @@ export const useAuthStore = create<AuthState>((set) => ({
   isAuthenticated: false,
   isLoading: true,
   error: null,
+  connectionStatus: 'checking',
   
   initAuth: async () => {
     try {
       set({ isLoading: true });
+      
+      // Test Supabase connection first
+      const connectionTest = await testSupabaseConnection();
+      if (!connectionTest.connected) {
+        set({ 
+          connectionStatus: 'disconnected',
+          error: 'Não foi possível conectar ao servidor. Verifique se o projeto Supabase está ativo.',
+          isLoading: false 
+        });
+        return;
+      }
+      
+      set({ connectionStatus: 'connected' });
       
       // Check if user is already logged in
       const { data: { session }, error: getSessionError } = await supabase.auth.getSession();
       
       // If there's an error getting the session (like invalid refresh token), clear the session
       if (getSessionError) {
+        console.error('Session error:', getSessionError);
         await supabase.auth.signOut();
         set({ 
           user: null,
           isAuthenticated: false,
           isLoading: false,
+          error: 'Sessão expirada. Faça login novamente.',
         });
       } else if (session?.user) {
         set({ 
           user: session.user,
           isAuthenticated: true,
           isLoading: false,
+          error: null,
         });
       } else {
         set({ 
           user: null,
           isAuthenticated: false,
           isLoading: false,
+          error: null,
         });
       }
       
@@ -56,17 +75,21 @@ export const useAuthStore = create<AuthState>((set) => ({
           set({ 
             user: session.user,
             isAuthenticated: true,
+            error: null,
           });
         } else if (event === 'SIGNED_OUT') {
           set({ 
             user: null,
             isAuthenticated: false,
+            error: null,
           });
         }
       });
     } catch (error) {
+      console.error('Auth initialization error:', error);
       set({ 
-        error: 'Failed to initialize authentication',
+        error: 'Falha ao inicializar autenticação. Verifique sua conexão.',
+        connectionStatus: 'disconnected',
         isLoading: false,
       });
     }
@@ -75,6 +98,12 @@ export const useAuthStore = create<AuthState>((set) => ({
   login: async (email, password) => {
     try {
       set({ isLoading: true, error: null });
+      
+      // Test connection before attempting login
+      const connectionTest = await testSupabaseConnection();
+      if (!connectionTest.connected) {
+        throw new Error('Não foi possível conectar ao servidor. Verifique se o projeto Supabase está ativo.');
+      }
       
       const { error } = await supabase.auth.signInWithPassword({
         email,
@@ -85,8 +114,21 @@ export const useAuthStore = create<AuthState>((set) => ({
       
       set({ isLoading: false });
     } catch (error: any) {
+      console.error('Login error:', error);
+      let errorMessage = 'Falha no login';
+      
+      if (error.message?.includes('upstream connect error') || error.message?.includes('503')) {
+        errorMessage = 'Servidor temporariamente indisponível. Tente novamente em alguns minutos.';
+      } else if (error.message?.includes('Invalid login credentials')) {
+        errorMessage = 'Credenciais inválidas. Verifique seu e-mail e senha.';
+      } else if (error.message?.includes('Email not confirmed')) {
+        errorMessage = 'E-mail não confirmado. Verifique sua caixa de entrada.';
+      } else if (error.message) {
+        errorMessage = error.message;
+      }
+      
       set({ 
-        error: error.message || 'Failed to login',
+        error: errorMessage,
         isLoading: false,
       });
     }
@@ -95,6 +137,12 @@ export const useAuthStore = create<AuthState>((set) => ({
   signup: async (email, password, metadata) => {
     try {
       set({ isLoading: true, error: null });
+      
+      // Test connection before attempting signup
+      const connectionTest = await testSupabaseConnection();
+      if (!connectionTest.connected) {
+        throw new Error('Não foi possível conectar ao servidor. Verifique se o projeto Supabase está ativo.');
+      }
       
       const { error } = await supabase.auth.signUp({
         email,
@@ -108,8 +156,19 @@ export const useAuthStore = create<AuthState>((set) => ({
       
       set({ isLoading: false });
     } catch (error: any) {
+      console.error('Signup error:', error);
+      let errorMessage = 'Falha no cadastro';
+      
+      if (error.message?.includes('upstream connect error') || error.message?.includes('503')) {
+        errorMessage = 'Servidor temporariamente indisponível. Tente novamente em alguns minutos.';
+      } else if (error.message?.includes('User already registered')) {
+        errorMessage = 'Este e-mail já está cadastrado. Tente fazer login.';
+      } else if (error.message) {
+        errorMessage = error.message;
+      }
+      
       set({ 
-        error: error.message || 'Failed to sign up',
+        error: errorMessage,
         isLoading: false,
       });
     }
@@ -125,8 +184,9 @@ export const useAuthStore = create<AuthState>((set) => ({
       
       set({ isLoading: false });
     } catch (error: any) {
+      console.error('Logout error:', error);
       set({ 
-        error: error.message || 'Failed to logout',
+        error: error.message || 'Falha ao sair',
         isLoading: false,
       });
     }
@@ -144,8 +204,9 @@ export const useAuthStore = create<AuthState>((set) => ({
       
       set({ isLoading: false });
     } catch (error: any) {
+      console.error('Reset password error:', error);
       set({ 
-        error: error.message || 'Failed to send password reset email',
+        error: error.message || 'Falha ao enviar e-mail de recuperação',
         isLoading: false,
       });
     }
@@ -164,8 +225,9 @@ export const useAuthStore = create<AuthState>((set) => ({
       
       set({ isLoading: false });
     } catch (error: any) {
+      console.error('Resend confirmation error:', error);
       set({ 
-        error: error.message || 'Failed to resend confirmation email',
+        error: error.message || 'Falha ao reenviar e-mail de confirmação',
         isLoading: false,
       });
     }
