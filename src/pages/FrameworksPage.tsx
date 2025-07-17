@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
@@ -21,6 +22,12 @@ const FrameworksPage = () => {
   const [showNewFrameworkModal, setShowNewFrameworkModal] = useState(false);
   const [showFrameworkModal, setShowFrameworkModal] = useState(false);
   const [showComments, setShowComments] = useState<string | null>(null);
+  
+  // Estados para o formulário de novo framework
+  const [newFrameworkName, setNewFrameworkName] = useState('');
+  const [newFrameworkDescription, setNewFrameworkDescription] = useState('');
+  const [newFrameworkType, setNewFrameworkType] = useState('canvas');
+  const [initialNewFrameworkData, setInitialNewFrameworkData] = useState<any>(null);
 
   const frameworks: Framework[] = [
     {
@@ -417,7 +424,140 @@ const FrameworksPage = () => {
     },
   ];
 
-  const handleNewFramework = () => {
+  // Templates recomendados com dados completos
+  const recommendedTemplates = [
+    {
+      id: 'startup-enxuta',
+      name: 'Startup Enxuta',
+      description: 'Template otimizado para startups que seguem a metodologia Lean Startup, focando em validação rápida e iteração contínua.',
+      type: 'canvas',
+      content: `
+        <h2>Template: Startup Enxuta</h2>
+        <p>Este template é baseado na metodologia Lean Startup de Eric Ries, focando em construir-medir-aprender.</p>
+        
+        <h3>Componentes Principais:</h3>
+        <ul>
+          <li><strong>Problema:</strong> Qual problema você está resolvendo?</li>
+          <li><strong>Solução:</strong> Como você resolve este problema?</li>
+          <li><strong>Proposta de Valor Única:</strong> Por que você é diferente?</li>
+          <li><strong>Vantagem Competitiva:</strong> O que te protege da concorrência?</li>
+          <li><strong>Segmentos de Clientes:</strong> Quem são seus early adopters?</li>
+          <li><strong>Métricas-Chave:</strong> Como você mede o sucesso?</li>
+          <li><strong>Canais:</strong> Como você alcança seus clientes?</li>
+          <li><strong>Estrutura de Custos:</strong> Quais são seus principais custos?</li>
+          <li><strong>Fontes de Receita:</strong> Como você ganha dinheiro?</li>
+        </ul>
+        
+        <h3>Metodologia:</h3>
+        <ol>
+          <li>Identifique o problema</li>
+          <li>Crie hipóteses</li>
+          <li>Construa um MVP</li>
+          <li>Meça os resultados</li>
+          <li>Aprenda e itere</li>
+        </ol>
+      `
+    },
+    {
+      id: 'saas-b2b',
+      name: 'SaaS B2B',
+      description: 'Template especializado para Software as a Service voltado para empresas, com foco em métricas SaaS e vendas B2B.',
+      type: 'matrix',
+      content: `
+        <h2>Template: SaaS B2B</h2>
+        <p>Template especializado para negócios SaaS B2B, focando em métricas específicas e modelo de assinatura.</p>
+        
+        <h3>Métricas SaaS Essenciais:</h3>
+        <ul>
+          <li><strong>MRR (Monthly Recurring Revenue):</strong> Receita recorrente mensal</li>
+          <li><strong>ARR (Annual Recurring Revenue):</strong> Receita recorrente anual</li>
+          <li><strong>CAC (Customer Acquisition Cost):</strong> Custo de aquisição de cliente</li>
+          <li><strong>LTV (Lifetime Value):</strong> Valor do tempo de vida do cliente</li>
+          <li><strong>Churn Rate:</strong> Taxa de cancelamento</li>
+          <li><strong>NPS (Net Promoter Score):</strong> Satisfação do cliente</li>
+        </ul>
+        
+        <h3>Funil de Vendas B2B:</h3>
+        <ol>
+          <li>Lead Generation</li>
+          <li>Lead Qualification</li>
+          <li>Demo/Trial</li>
+          <li>Proposta</li>
+          <li>Negociação</li>
+          <li>Fechamento</li>
+          <li>Onboarding</li>
+          <li>Success & Expansion</li>
+        </ol>
+        
+        <h3>Modelo de Precificação:</h3>
+        <ul>
+          <li>Freemium</li>
+          <li>Tiered Pricing</li>
+          <li>Usage-based</li>
+          <li>Per-seat</li>
+        </ul>
+      `
+    },
+    {
+      id: 'marketplace',
+      name: 'Marketplace',
+      description: 'Template para plataformas que conectam dois ou mais grupos de usuários, focando no problema do ovo e da galinha.',
+      type: 'map',
+      content: `
+        <h2>Template: Marketplace</h2>
+        <p>Template para negócios de marketplace, focando na criação de valor para múltiplos lados da plataforma.</p>
+        
+        <h3>Lados do Marketplace:</h3>
+        <ul>
+          <li><strong>Lado da Oferta:</strong> Quem oferece produtos/serviços?</li>
+          <li><strong>Lado da Demanda:</strong> Quem consome produtos/serviços?</li>
+          <li><strong>Facilitador:</strong> Como a plataforma conecta os lados?</li>
+        </ul>
+        
+        <h3>Problema do Ovo e da Galinha:</h3>
+        <ol>
+          <li>Identifique qual lado priorizar primeiro</li>
+          <li>Crie incentivos para o lado inicial</li>
+          <li>Use estratégias de "fake it till you make it"</li>
+          <li>Construa densidade em nichos específicos</li>
+          <li>Expanda gradualmente</li>
+        </ol>
+        
+        <h3>Métricas de Marketplace:</h3>
+        <ul>
+          <li>GMV (Gross Merchandise Value)</li>
+          <li>Take Rate (% de comissão)</li>
+          <li>Liquidity (oferta vs demanda)</li>
+          <li>Repeat Usage Rate</li>
+          <li>Time to First Transaction</li>
+        </ul>
+        
+        <h3>Estratégias de Monetização:</h3>
+        <ul>
+          <li>Comissão por transação</li>
+          <li>Taxa de listagem</li>
+          <li>Assinatura premium</li>
+          <li>Publicidade</li>
+          <li>Serviços adicionais</li>
+        </ul>
+      `
+    }
+  ];
+
+  const handleNewFramework = (template?: any) => {
+    if (template) {
+      // Preencher formulário com dados do template
+      setNewFrameworkName(template.name);
+      setNewFrameworkDescription(template.description);
+      setNewFrameworkType(template.type);
+      setInitialNewFrameworkData(template);
+    } else {
+      // Limpar formulário para novo framework
+      setNewFrameworkName('');
+      setNewFrameworkDescription('');
+      setNewFrameworkType('canvas');
+      setInitialNewFrameworkData(null);
+    }
     setShowNewFrameworkModal(true);
   };
 
@@ -429,6 +569,39 @@ const FrameworksPage = () => {
   const handleComments = (frameworkId: string) => {
     setShowComments(frameworkId);
   };
+
+  const handleCreateFramework = () => {
+    // Aqui você pode implementar a lógica para salvar o framework
+    const newFramework = {
+      name: newFrameworkName,
+      description: newFrameworkDescription,
+      type: newFrameworkType,
+      content: initialNewFrameworkData?.content || '',
+      createdAt: new Date().toISOString(),
+    };
+    
+    console.log('Novo framework criado:', newFramework);
+    
+    // Fechar modal e limpar formulário
+    setShowNewFrameworkModal(false);
+    setNewFrameworkName('');
+    setNewFrameworkDescription('');
+    setNewFrameworkType('canvas');
+    setInitialNewFrameworkData(null);
+    
+    // Aqui você pode adicionar uma notificação de sucesso
+    alert('Framework criado com sucesso!');
+  };
+
+  // Limpar formulário quando modal for fechado
+  useEffect(() => {
+    if (!showNewFrameworkModal) {
+      setNewFrameworkName('');
+      setNewFrameworkDescription('');
+      setNewFrameworkType('canvas');
+      setInitialNewFrameworkData(null);
+    }
+  }, [showNewFrameworkModal]);
 
   return (
     <>
@@ -504,26 +677,79 @@ const FrameworksPage = () => {
         <div className="mt-12">
           <h2 className="text-xl font-semibold mb-6">Templates Recomendados</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {['Startup Enxuta', 'SaaS B2B', 'Marketplace'].map((template, index) => (
+            {recommendedTemplates.map((template, index) => (
               <motion.div
-                key={template}
+                key={template.id}
                 className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-6"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3, delay: 0.3 + index * 0.1 }}
               >
-                <h3 className="font-medium mb-2">{template}</h3>
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="font-medium">{template.name}</h3>
+                  <span className={`text-xs px-2 py-1 rounded-full ${
+                    template.type === 'canvas' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300' :
+                    template.type === 'matrix' ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300' :
+                    'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300'
+                  }`}>
+                    {template.type}
+                  </span>
+                </div>
                 <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
-                  Template otimizado para {template.toLowerCase()}.
+                  {template.description}
                 </p>
-                <button 
-                  onClick={() => alert(`Usar template: ${template}`)}
-                  className="text-sm font-medium text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300"
-                >
-                  Usar template
-                </button>
+                <div className="flex gap-2">
+                  <button 
+                    onClick={() => handleNewFramework(template)}
+                    className="flex-1 text-sm font-medium text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 bg-primary-50 dark:bg-primary-900/20 px-3 py-2 rounded-md transition-colors"
+                  >
+                    Usar template
+                  </button>
+                  <button 
+                    onClick={() => {
+                      setSelectedFramework({
+                        id: template.id,
+                        name: template.name,
+                        description: template.description,
+                        progress: 0,
+                        icon: FileText,
+                        comments: 0,
+                        content: template.content
+                      });
+                      setShowFrameworkModal(true);
+                    }}
+                    className="text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 px-3 py-2 rounded-md transition-colors"
+                  >
+                    Preview
+                  </button>
+                </div>
               </motion.div>
             ))}
+          </div>
+        </div>
+
+        {/* Seção de Frameworks Personalizados */}
+        <div className="mt-12">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-xl font-semibold">Meus Frameworks Personalizados</h2>
+            <span className="text-sm text-gray-500 dark:text-gray-400">
+              Em breve - funcionalidade de salvar frameworks personalizados
+            </span>
+          </div>
+          <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-8 text-center">
+            <FileText className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+            <h3 className="text-lg font-medium text-gray-600 dark:text-gray-300 mb-2">
+              Nenhum framework personalizado ainda
+            </h3>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
+              Crie seus próprios frameworks personalizados usando os templates como base
+            </p>
+            <button 
+              onClick={() => handleNewFramework()}
+              className="btn-primary"
+                >
+              Criar Primeiro Framework
+            </button>
           </div>
         </div>
       </div>
@@ -532,34 +758,68 @@ const FrameworksPage = () => {
       <FrameworkModal
         isOpen={showNewFrameworkModal}
         onClose={() => setShowNewFrameworkModal(false)}
-        title="Novo Framework"
+        title={initialNewFrameworkData ? `Criar Framework: ${initialNewFrameworkData.name}` : "Novo Framework"}
       >
         <div className="space-y-4">
+          {initialNewFrameworkData && (
+            <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-200 dark:border-blue-800">
+              <h4 className="font-medium text-blue-800 dark:text-blue-200 mb-2">
+                📋 Template Selecionado: {initialNewFrameworkData.name}
+              </h4>
+              <p className="text-sm text-blue-700 dark:text-blue-300">
+                Este framework será criado baseado no template selecionado. Você pode personalizar os campos abaixo.
+              </p>
+            </div>
+          )}
+          
           <div>
             <label className="block text-sm font-medium mb-1">Nome do Framework</label>
             <input
               type="text"
+              value={newFrameworkName}
+              onChange={(e) => setNewFrameworkName(e.target.value)}
               className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700"
               placeholder="Ex: Canvas de Validação"
             />
           </div>
+          
           <div>
             <label className="block text-sm font-medium mb-1">Descrição</label>
             <textarea
               rows={3}
+              value={newFrameworkDescription}
+              onChange={(e) => setNewFrameworkDescription(e.target.value)}
               className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700"
               placeholder="Descreva o objetivo e uso do framework..."
             />
           </div>
+          
           <div>
             <label className="block text-sm font-medium mb-1">Tipo</label>
-            <select className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700">
+            <select 
+              value={newFrameworkType}
+              onChange={(e) => setNewFrameworkType(e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700"
+            >
               <option value="canvas">Canvas</option>
               <option value="map">Mapa</option>
               <option value="matrix">Matriz</option>
               <option value="checklist">Checklist</option>
             </select>
           </div>
+          
+          {initialNewFrameworkData && (
+            <div>
+              <label className="block text-sm font-medium mb-2">Preview do Conteúdo</label>
+              <div className="max-h-40 overflow-y-auto bg-gray-50 dark:bg-gray-700/50 p-3 rounded-md border">
+                <div 
+                  className="prose prose-sm dark:prose-invert max-w-none"
+                  dangerouslySetInnerHTML={{ __html: initialNewFrameworkData.content }}
+                />
+              </motion.div>
+            </div>
+          )}
+          
           <div className="flex justify-end space-x-3 pt-4">
             <button
               onClick={() => setShowNewFrameworkModal(false)}
@@ -567,8 +827,16 @@ const FrameworksPage = () => {
             >
               Cancelar
             </button>
-            <button className="btn-primary">
-              Criar Framework
+            <button 
+              onClick={handleCreateFramework}
+              disabled={!newFrameworkName.trim() || !newFrameworkDescription.trim()}
+              className={`btn-primary ${
+                !newFrameworkName.trim() || !newFrameworkDescription.trim() 
+                  ? 'opacity-50 cursor-not-allowed' 
+                  : ''
+              }`}
+            >
+              {initialNewFrameworkData ? 'Criar com Template' : 'Criar Framework'}
             </button>
           </div>
         </div>
