@@ -816,7 +816,7 @@ const FrameworksPage = () => {
                   className="prose prose-sm dark:prose-invert max-w-none"
                   dangerouslySetInnerHTML={{ __html: initialNewFrameworkData.content }}
                 />
-              </motion.div>
+              </div>
             </div>
           )}
           
