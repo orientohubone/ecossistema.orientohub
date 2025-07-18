@@ -198,7 +198,7 @@ const SolutionsPage = () => {
         {/* Add Solution Modal */}
         {showAddModal && (
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-            <div className="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-md w-full mx-4">
+            <div className="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-md w-full mx-4 max-h-[90vh] overflow-y-auto">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-xl font-semibold">Adicionar Solução</h2>
                 <button
@@ -217,7 +217,7 @@ const SolutionsPage = () => {
                     type="text"
                     value={newSolution.founder_name}
                     onChange={(e) => setNewSolution({ ...newSolution, founder_name: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-900 dark:text-white dark:bg-gray-700"
                     placeholder="Ex: João Silva"
                   />
                 </div>
@@ -229,7 +229,7 @@ const SolutionsPage = () => {
                     type="text"
                     value={newSolution.name}
                     onChange={(e) => setNewSolution({ ...newSolution, name: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-900 dark:text-white dark:bg-gray-700"
                     placeholder="Ex: Minha Solução"
                   />
                 </div>
@@ -240,7 +240,7 @@ const SolutionsPage = () => {
                   <select
                     value={newSolution.stage}
                     onChange={(e) => setNewSolution({ ...newSolution, stage: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-900 dark:text-white dark:bg-gray-700"
                   >
                     <option value="">Selecione o estágio</option>
                     <option value="Ideação">Ideação</option>
@@ -259,7 +259,7 @@ const SolutionsPage = () => {
                     type="text"
                     value={newSolution.logo_url}
                     onChange={(e) => setNewSolution({ ...newSolution, logo_url: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-900 dark:text-white dark:bg-gray-700"
                     placeholder="https://exemplo.com/logo.png"
                   />
                 </div>
@@ -271,7 +271,7 @@ const SolutionsPage = () => {
                     type="text"
                     value={newSolution.solution_url}
                     onChange={(e) => setNewSolution({ ...newSolution, solution_url: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-900 dark:text-white dark:bg-gray-700"
                     placeholder="https://minhasolucao.com"
                   />
                 </div>
@@ -283,7 +283,7 @@ const SolutionsPage = () => {
                     type="url"
                     value={newSolution.git_url}
                     onChange={(e) => setNewSolution({ ...newSolution, git_url: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-900 dark:text-white dark:bg-gray-700"
                     placeholder="https://github.com/usuario/repositorio"
                   />
                 </div>
@@ -295,7 +295,7 @@ const SolutionsPage = () => {
                     type="url"
                     value={newSolution.ide_url}
                     onChange={(e) => setNewSolution({ ...newSolution, ide_url: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-900 dark:text-white dark:bg-gray-700"
                     placeholder="https://replit.com/@usuario/projeto"
                   />
                 </div>
@@ -307,7 +307,7 @@ const SolutionsPage = () => {
                     type="url"
                     value={newSolution.database_url}
                     onChange={(e) => setNewSolution({ ...newSolution, database_url: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-900 dark:text-white dark:bg-gray-700"
                     placeholder="https://supabase.com/dashboard/project/xyz"
                   />
                 </div>
@@ -319,7 +319,7 @@ const SolutionsPage = () => {
                     type="url"
                     value={newSolution.instagram_url}
                     onChange={(e) => setNewSolution({ ...newSolution, instagram_url: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-900 dark:text-white dark:bg-gray-700"
                     placeholder="https://instagram.com/usuario"
                   />
                 </div>
