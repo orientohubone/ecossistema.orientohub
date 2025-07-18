@@ -11,6 +11,12 @@ interface Solution {
   name: string;
   logo_url: string;
   solution_url: string;
+  founder_name: string | null;
+  stage: string | null;
+  git_url: string | null;
+  ide_url: string | null;
+  database_url: string | null;
+  instagram_url: string | null;
 }
 
 const SolutionsPage = () => {
@@ -24,6 +30,12 @@ const SolutionsPage = () => {
     name: '',
     logo_url: '',
     solution_url: '',
+    founder_name: '',
+    stage: '',
+    git_url: '',
+    ide_url: '',
+    database_url: '',
+    instagram_url: '',
   });
 
   useEffect(() => {
@@ -60,6 +72,12 @@ const SolutionsPage = () => {
         name: newSolution.name,
         logo_url: newSolution.logo_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(newSolution.name)}&background=FFD700&color=000000`,
         solution_url: newSolution.solution_url,
+        founder_name: newSolution.founder_name || null,
+        stage: newSolution.stage || null,
+        git_url: newSolution.git_url || null,
+        ide_url: newSolution.ide_url || null,
+        database_url: newSolution.database_url || null,
+        instagram_url: newSolution.instagram_url || null,
       };
 
       const { error } = await supabase
@@ -68,7 +86,17 @@ const SolutionsPage = () => {
 
       if (error) throw error;
 
-      setNewSolution({ name: '', logo_url: '', solution_url: '' });
+      setNewSolution({ 
+        name: '', 
+        logo_url: '', 
+        solution_url: '',
+        founder_name: '',
+        stage: '',
+        git_url: '',
+        ide_url: '',
+        database_url: '',
+        instagram_url: '',
+      });
       setShowAddModal(false);
       fetchSolutions();
     } catch (err: any) {
@@ -183,6 +211,18 @@ const SolutionsPage = () => {
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium mb-1">
+                    Nome do Fundador
+                  </label>
+                  <input
+                    type="text"
+                    value={newSolution.founder_name}
+                    onChange={(e) => setNewSolution({ ...newSolution, founder_name: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md"
+                    placeholder="Ex: João Silva"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1">
                     Nome da Solução
                   </label>
                   <input
@@ -192,6 +232,24 @@ const SolutionsPage = () => {
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md"
                     placeholder="Ex: Minha Solução"
                   />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1">
+                    Estágio da Startup
+                  </label>
+                  <select
+                    value={newSolution.stage}
+                    onChange={(e) => setNewSolution({ ...newSolution, stage: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md"
+                  >
+                    <option value="">Selecione o estágio</option>
+                    <option value="Ideação">Ideação</option>
+                    <option value="Validação">Validação</option>
+                    <option value="MVP">MVP</option>
+                    <option value="Tração">Tração</option>
+                    <option value="Crescimento">Crescimento</option>
+                    <option value="Escala">Escala</option>
+                  </select>
                 </div>
                 <div>
                   <label className="block text-sm font-medium mb-1">
@@ -215,6 +273,54 @@ const SolutionsPage = () => {
                     onChange={(e) => setNewSolution({ ...newSolution, solution_url: e.target.value })}
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md"
                     placeholder="https://minhasolucao.com"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1">
+                    URL do Git
+                  </label>
+                  <input
+                    type="url"
+                    value={newSolution.git_url}
+                    onChange={(e) => setNewSolution({ ...newSolution, git_url: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md"
+                    placeholder="https://github.com/usuario/repositorio"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1">
+                    URL da IDE
+                  </label>
+                  <input
+                    type="url"
+                    value={newSolution.ide_url}
+                    onChange={(e) => setNewSolution({ ...newSolution, ide_url: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md"
+                    placeholder="https://replit.com/@usuario/projeto"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1">
+                    URL do Banco de Dados
+                  </label>
+                  <input
+                    type="url"
+                    value={newSolution.database_url}
+                    onChange={(e) => setNewSolution({ ...newSolution, database_url: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md"
+                    placeholder="https://supabase.com/dashboard/project/xyz"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1">
+                    URL do Instagram
+                  </label>
+                  <input
+                    type="url"
+                    value={newSolution.instagram_url}
+                    onChange={(e) => setNewSolution({ ...newSolution, instagram_url: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md"
+                    placeholder="https://instagram.com/usuario"
                   />
                 </div>
                 <div className="flex justify-end space-x-3 pt-4">
