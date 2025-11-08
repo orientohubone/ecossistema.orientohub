@@ -1,7 +1,7 @@
 export default {
   translation: {
     common: {
-      loading: 'Carregando...',
+      loading: 'Carregando...'
       error: 'Ocorreu um erro',
       notFound: 'Página não encontrada',
       backToHome: 'Voltar para a página inicial',
@@ -171,6 +171,27 @@ export default {
         progress: 'Progresso',
         started: 'Iniciado',
         complete: 'Completo',
+      },
+    },
+    validation: {
+      title: 'Validação de Hipóteses',
+      newHypothesis: 'Nova Hipótese',
+      hypothesisPlaceholder: 'Descreva sua hipótese aqui...',
+    },
+    experiments: {
+      title: 'Experimentos',
+      new: 'Novo Experimento',
+      titlePlaceholder: 'Título do experimento',
+      selectHypothesis: 'Selecione uma hipótese',
+      methodPlaceholder: 'Descreva o método do experimento',
+      linkedTo: 'Vinculado a',
+      method: 'Método',
+      results: 'Resultados',
+      learnings: 'Aprendizados',
+      status: {
+        planned: 'Planejado',
+        inProgress: 'Em Andamento',
+        completed: 'Concluído',
       },
     },
     interviews: {
