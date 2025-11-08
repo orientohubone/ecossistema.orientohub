@@ -267,6 +267,7 @@ const EcosystemPage = () => {
               flipped={flippedCard === 'humansys'}
               onFlip={() => setFlippedCard(flippedCard === 'humansys' ? null : 'humansys')}
               delay={0.1}
+              link="https://humansys.com.br"
             />
             <MVPCard
               name="Simples Metrics"
@@ -278,6 +279,7 @@ const EcosystemPage = () => {
               flipped={flippedCard === 'metrics'}
               onFlip={() => setFlippedCard(flippedCard === 'metrics' ? null : 'metrics')}
               delay={0.2}
+              link="https://simplesmetrics.com.br"
             />
             <MVPCard
               name="Vo.ai"
@@ -289,6 +291,7 @@ const EcosystemPage = () => {
               flipped={flippedCard === 'voai'}
               onFlip={() => setFlippedCard(flippedCard === 'voai' ? null : 'voai')}
               delay={0.3}
+              link="https://vo.ai"
             />
             <MVPCard
               name="Vibe Coding"
@@ -300,6 +303,7 @@ const EcosystemPage = () => {
               flipped={flippedCard === 'vibe'}
               onFlip={() => setFlippedCard(flippedCard === 'vibe' ? null : 'vibe')}
               delay={0.4}
+              link="https://vibecodingstack.netlify.app/"
             />
           </div>
 
@@ -662,9 +666,10 @@ interface MVPCardProps {
   flipped: boolean;
   onFlip: () => void;
   delay: number;
+  link?: string; // ← ADICIONADO ESTA LINHA
 }
 
-const MVPCard = ({ name, description, focus, icon, color, flipped, onFlip, delay }: MVPCardProps) => {
+const MVPCard = ({ name, description, focus, icon, color, flipped, onFlip, delay, link }: MVPCardProps) => {
   return (
     <motion.div
       className="relative h-80 cursor-pointer perspective-1000"
@@ -706,10 +711,25 @@ const MVPCard = ({ name, description, focus, icon, color, flipped, onFlip, delay
               <span className="font-semibold text-primary-500">{focus}</span>
             </div>
           </div>
-          <div className="flex items-center justify-center gap-2 text-xs text-gray-500 dark:text-gray-400 mt-4">
-            <CircleDot className="w-3 h-3" />
-            <span>20% participação</span>
-          </div>
+          <div className="space-y-3">
+  <div className="flex items-center justify-center gap-2 text-xs text-gray-500 dark:text-gray-400">
+    <CircleDot className="w-3 h-3" />
+    <span>20% participação</span>
+  </div>
+  
+  {link && (
+    <a
+      href={link}
+      target="_blank"
+      rel="noopener noreferrer"
+      onClick={(e) => e.stopPropagation()}
+      className="flex items-center justify-center gap-2 w-full px-4 py-2 bg-primary-500 hover:bg-primary-600 text-black font-semibold rounded-lg transition-colors duration-300"
+    >
+      Visitar Site
+      <ArrowRight className="w-4 h-4" />
+    </a>
+  )}
+</div>
         </div>
         </motion.div>
     </motion.div>
