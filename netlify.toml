@@ -1,7 +1,7 @@
 [build]
   command = "npm run build"
-  publish = "build"
-  environment = { NODE_ENV = "production" }
+  publish = "dist"
+  environment = { NODE_VERSION = "20" }
 
 [[redirects]]
   from = "/*"
@@ -15,4 +15,4 @@
       X-Frame-Options = "DENY"
       X-Content-Type-Options = "nosniff"
       X-XSS-Protection = "1; mode=block"
-      Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self';"
+      Referrer-Policy = "strict-origin-when-cross-origin"
