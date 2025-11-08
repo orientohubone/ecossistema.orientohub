@@ -19,6 +19,7 @@ import DashboardPage from './pages/DashboardPage';
 import InsightsPage from './pages/InsightsPage';
 import FrameworksPage from './pages/FrameworksPage';
 import FrameworkGamePage from './pages/FrameworkGamePage';
+import ProjectsPage from './pages/ProjectsPage';
 import SolutionsPage from './pages/SolutionsPage';
 import SettingsPage from './pages/SettingsPage';
 import BlogPage from './pages/BlogPage';
@@ -59,7 +60,7 @@ function App() {
     <AnimatePresence mode="wait">
       <Routes>
         {/* Public routes */}
-        <Route path="/" element={<MainLayout />}>
+        <Route path="/" element={<MainLayout />}> 
           <Route index element={<HomePage />} />
           <Route path="sobre" element={<AboutPage />} />
           <Route path="ecossistema" element={<EcosystemPage />} />
@@ -84,6 +85,7 @@ function App() {
           <Route path="insights" element={<InsightsPage />} />
           <Route path="frameworks" element={<FrameworksPage />} />
           <Route path="frameworks/:id/game" element={<FrameworkGamePage />} />
+          <Route path="projects" element={<ProjectsPage />} />
           <Route path="solutions" element={<SolutionsPage />} />
           <Route path="settings" element={<SettingsPage />} />
         </Route>
