@@ -140,5 +140,43 @@ export default {
       valueProposition: 'Proposta de Valor',
       leanCanvas: 'Lean Canvas',
     },
+    projects: {
+      title: 'Projetos',
+      new: 'Novo Projeto',
+      manage: 'Gerenciar',
+      empty: {
+        title: 'Nenhum projeto ainda',
+        description: 'Crie seu primeiro projeto para começar a validar suas ideias',
+        cta: 'Criar Primeiro Projeto',
+      },
+      stages: {
+        ideation: 'Ideação',
+        validation: 'Validação',
+        mvp: 'MVP',
+        traction: 'Tração',
+        growth: 'Crescimento',
+      },
+      tabs: {
+        overview: 'Visão Geral',
+        validation: 'Validação',
+        kanban: 'Kanban',
+        experiments: 'Experimentos',
+        interviews: 'Entrevistas',
+      },
+      overview: {
+        hypotheses: 'Hipóteses',
+        experiments: 'Experimentos',
+        interviews: 'Entrevistas',
+        tasks: 'Tarefas',
+        progress: 'Progresso',
+        started: 'Iniciado',
+        complete: 'Completo',
+      },
+    },
+    interviews: {
+      title: 'Entrevistas',
+      new: 'Nova Entrevista',
+      customerName: 'Nome do Cliente',
+    },
   },
 };
