@@ -14,73 +14,195 @@ const HomePage = () => {
         <meta name="description" content={t('home.hero.subtitle')} />
       </Helmet>
 
-      {/* Hero Section */}
-      <section className="relative bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 overflow-hidden">
-        <div className="absolute inset-0 z-0 opacity-30 dark:opacity-20">
-          <div className="absolute top-0 left-0 w-full h-full bg-grid-pattern"></div>
-        </div>
-        <div className="container-custom relative z-10 pt-20 pb-24 md:pt-32 md:pb-40">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              <span className="inline-block px-4 py-2 rounded-full bg-primary-100 dark:bg-primary-900 text-primary-800 dark:text-primary-200 font-medium text-sm mb-6">
-                ✨ Construa sua startup com metodologia e diversão
-              </span>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6">
-                {t('home.hero.title')}
-              </h1>
-              <p className="text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-lg">
-                {t('home.hero.subtitle')}
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Link to="/cadastro" className="btn-primary text-base px-8 py-3">
-                  {t('home.hero.cta')}
-                </Link>
-                <Link to="/sobre" className="btn-outline text-base px-8 py-3">
-                  {t('common.learnMore')}
-                </Link>
-              </div>
-              <div className="mt-8 flex items-center text-gray-500 dark:text-gray-400">
-                <CheckCircle size={16} className="text-primary-500" />
-                <span className="ml-2 text-sm">Comece gratuitamente, sem cartão de crédito</span>
-              </div>
-            </motion.div>
-            <motion.div
-              className="relative"
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-            >
-              <div className="relative rounded-xl overflow-hidden shadow-2xl">
-                <img 
-                  src="https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" 
-                  alt="Orientohub Dashboard" 
-                  className="w-full h-auto"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent flex items-end">
-                  <div className="p-6">
-                    <p className="text-white text-lg font-medium">Dashboard interativo e gamificado</p>
-                  </div>
-                </div>
-              </div>
-              <div className="absolute -bottom-6 -right-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 max-w-xs">
-                <div className="flex items-center">
-                  <div className="flex-shrink-0 h-10 w-10 rounded-full bg-primary-500 flex items-center justify-center">
-                    <Target size={20} className="text-black" />
-                  </div>
-                  <div className="ml-4">
-                    <p className="text-sm font-medium text-gray-900 dark:text-white">Acompanhe seu progresso</p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">Metodologia passo a passo</p>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
+      {/* Hero Section - Premium Edition */}
+<section className="relative min-h-screen flex items-center bg-gradient-to-br from-slate-50 via-white to-blue-50/30 dark:from-gray-950 dark:via-gray-900 dark:to-blue-950/20 overflow-hidden">
+  {/* Animated Background Elements */}
+  <div className="absolute inset-0 overflow-hidden">
+    <div className="absolute top-20 left-10 w-72 h-72 bg-blue-200/20 dark:bg-blue-500/10 rounded-full blur-3xl animate-pulse"></div>
+    <div className="absolute bottom-20 right-10 w-96 h-96 bg-purple-200/20 dark:bg-purple-500/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
+    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-blue-100/10 to-purple-100/10 dark:from-blue-900/5 dark:to-purple-900/5 rounded-full blur-3xl"></div>
+  </div>
+
+  <div className="container-custom relative z-10 py-20 md:py-32">
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+      {/* Left Content */}
+      <motion.div
+        className="lg:col-span-6 xl:col-span-5"
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+      >
+        {/* Badge */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.2, duration: 0.6 }}
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-950/50 dark:to-purple-950/50 border border-blue-100 dark:border-blue-900/50 backdrop-blur-sm mb-8"
+        >
+          <span className="relative flex h-2 w-2">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+          </span>
+          <span className="text-sm font-medium bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent">
+            ✨ Construa sua startup com metodologia e diversão
+          </span>
+        </motion.div>
+
+        {/* Main Heading */}
+        <motion.h1
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3, duration: 0.8 }}
+          className="text-5xl md:text-6xl xl:text-7xl font-bold leading-[1.1] mb-6 tracking-tight"
+        >
+          <span className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 dark:from-white dark:via-gray-100 dark:to-gray-300 bg-clip-text text-transparent">
+            {t('home.hero.title')}
+          </span>
+        </motion.h1>
+
+        {/* Subtitle */}
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4, duration: 0.8 }}
+          className="text-lg md:text-xl text-gray-600 dark:text-gray-400 mb-10 leading-relaxed max-w-xl"
+        >
+          {t('home.hero.subtitle')}
+        </motion.p>
+
+        {/* CTA Buttons */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5, duration: 0.8 }}
+          className="flex flex-col sm:flex-row gap-4 mb-12"
+        >
+          <Link
+            to="/cadastro"
+            className="group relative inline-flex items-center justify-center px-8 py-4 text-base font-semibold text-white bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/25"
+          >
+            <span className="relative z-10 flex items-center gap-2">
+              {t('home.hero.cta')}
+              <svg className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+              </svg>
+            </span>
+            <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-blue-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          </Link>
+          
+          <Link
+            to="/sobre"
+            className="group inline-flex items-center justify-center px-8 py-4 text-base font-semibold text-gray-900 dark:text-white bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-2xl transition-all duration-300 hover:border-gray-300 dark:hover:border-gray-600 hover:shadow-lg hover:scale-105"
+          >
+            <span className="flex items-center gap-2">
+              {t('common.learnMore')}
+              <svg className="w-5 h-5 transition-transform duration-300 group-hover:rotate-90" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+              </svg>
+            </span>
+          </Link>
+        </motion.div>
+
+        {/* Trust Badge */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.6, duration: 0.8 }}
+          className="flex items-center gap-3 text-gray-500 dark:text-gray-400"
+        >
+          <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-green-50 dark:bg-green-950/30">
+            <CheckCircle className="w-5 h-5 text-green-600 dark:text-green-500" />
           </div>
+          <div>
+            <p className="text-sm font-medium text-gray-900 dark:text-white">Comece gratuitamente</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400">Sem cartão de crédito necessário</p>
+          </div>
+        </motion.div>
+      </motion.div>
+
+      {/* Right Visual */}
+      <motion.div
+        className="lg:col-span-6 xl:col-span-7 relative"
+        initial={{ opacity: 0, x: 30 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: 0.4, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+      >
+        {/* Main Image Container */}
+        <div className="relative group">
+          {/* Glow Effect */}
+          <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-purple-600 rounded-3xl blur-2xl opacity-20 group-hover:opacity-30 transition-opacity duration-500"></div>
+          
+          {/* Image Card */}
+          <div className="relative rounded-3xl overflow-hidden bg-white dark:bg-gray-800 shadow-2xl border border-gray-100 dark:border-gray-700">
+            <img
+              src="https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+              alt="Orientohub Dashboard"
+              className="w-full h-auto transform transition-transform duration-700 group-hover:scale-105"
+            />
+            
+            {/* Overlay Gradient */}
+            <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 via-gray-900/20 to-transparent flex items-end p-8">
+              <div className="space-y-2">
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+                  <span className="text-xs font-medium text-green-400 uppercase tracking-wider">Ao Vivo</span>
+                </div>
+                <p className="text-white text-xl font-bold">Dashboard interativo e gamificado</p>
+                <p className="text-gray-300 text-sm">Transforme ideias em resultados mensuráveis</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Floating Stats Card */}
+          <motion.div
+            initial={{ opacity: 0, y: 20, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ delay: 0.8, duration: 0.6 }}
+            className="absolute -bottom-8 -left-8 bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-6 border border-gray-100 dark:border-gray-700 backdrop-blur-xl bg-white/90 dark:bg-gray-800/90"
+          >
+            <div className="flex items-center gap-4">
+              <div className="flex-shrink-0 w-14 h-14 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center shadow-lg">
+                <Target size={24} className="text-white" />
+              </div>
+              <div>
+                <p className="text-base font-bold text-gray-900 dark:text-white">Acompanhe seu progresso</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400">Metodologia passo a passo</p>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Floating Mini Card */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 1, duration: 0.6 }}
+            className="absolute -top-6 -right-6 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl shadow-2xl p-4"
+          >
+            <div className="text-center">
+              <p className="text-3xl font-bold text-white mb-1">250+</p>
+              <p className="text-xs text-purple-100">Startups criadas</p>
+            </div>
+          </motion.div>
         </div>
-      </section>
+      </motion.div>
+    </div>
+  </div>
+
+  {/* Scroll Indicator */}
+  <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ delay: 1.2, duration: 0.8 }}
+    className="absolute bottom-8 left-1/2 -translate-x-1/2 hidden md:block"
+  >
+    <div className="flex flex-col items-center gap-2 text-gray-400 dark:text-gray-600">
+      <span className="text-xs uppercase tracking-wider font-medium">Role para explorar</span>
+      <div className="w-6 h-10 border-2 border-gray-300 dark:border-gray-700 rounded-full p-1">
+        <div className="w-1.5 h-3 bg-gray-400 dark:bg-gray-600 rounded-full animate-bounce"></div>
+      </div>
+    </div>
+  </motion.div>
+</section>
 
       {/* Features Section */}
 <section className="py-20 bg-white dark:bg-gray-900">
