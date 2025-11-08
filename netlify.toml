@@ -1,0 +1,18 @@
+[build]
+  command = "npm run build"
+  publish = "build"
+  environment = { NODE_ENV = "production" }
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+  force = true
+
+[[headers]]
+  for = "/*"
+    [headers.values]
+      X-Frame-Options = "DENY"
+      X-Content-Type-Options = "nosniff"
+      X-XSS-Protection = "1; mode=block"
+      Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self';"
