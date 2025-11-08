@@ -83,47 +83,59 @@ const HomePage = () => {
       </section>
 
       {/* Features Section */}
-      <section className="py-20 bg-white dark:bg-gray-900">
-        <div className="container-custom">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">{t('home.features.title')}</h2>
-            <p className="text-xl text-gray-600 dark:text-gray-300">{t('home.features.subtitle')}</p>
-          </div>
+<section className="py-20 bg-white dark:bg-gray-900">
+  <div className="container-custom">
+    <div className="text-center max-w-3xl mx-auto mb-16">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+      >
+        <h2 className="text-3xl md:text-4xl font-bold mb-6">{t('home.features.title')}</h2>
+        <p className="text-xl text-gray-600 dark:text-gray-300">{t('home.features.subtitle')}</p>
+      </motion.div>
+    </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <FeatureCard 
-              icon={<Users size={24} />}
-              title="Ecossistema Colaborativo"
-              description="Conecte-se com mentores, investidores e outros fundadores para acelerar sua jornada."
-            />
-            <FeatureCard 
-              icon={<BarChart2 size={24} />}
-              title="Frameworks Validados"
-              description="Utilize ferramentas como Business Model Canvas, Mapa de Empatia e Jornada do Cliente."
-            />
-            <FeatureCard 
-              icon={<Zap size={24} />}
-              title="Gamificação Engajadora"
-              description="Ganhe pontos, desbloqueie conquistas e acompanhe seu progresso de forma divertida."
-            />
-            <FeatureCard 
-              icon={<Award size={24} />}
-              title="Metodologia Comprovada"
-              description="Siga um processo estruturado baseado nas melhores práticas de empreendedorismo."
-            />
-            <FeatureCard 
-              icon={<Target size={24} />}
-              title="Objetivos Claros"
-              description="Defina metas específicas e acompanhe seu progresso em cada fase do desenvolvimento."
-            />
-            <FeatureCard 
-              icon={<CheckCircle size={24} />}
-              title="Templates Prontos"
-              description="Economize tempo com modelos pré-formatados para pitch decks, planos de negócios e mais."
-            />
-          </div>
-        </div>
-      </section>
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <FeatureCard 
+        icon={<Users className="w-8 h-8" />}
+        title="Ecossistema Colaborativo"
+        description="Conecte-se com mentores, investidores e outros fundadores para acelerar sua jornada."
+        delay={0.1}
+      />
+      <FeatureCard 
+        icon={<BarChart2 className="w-8 h-8" />}
+        title="Frameworks Validados"
+        description="Utilize ferramentas como Business Model Canvas, Mapa de Empatia e Jornada do Cliente."
+        delay={0.2}
+      />
+      <FeatureCard 
+        icon={<Zap className="w-8 h-8" />}
+        title="Gamificação Engajadora"
+        description="Ganhe pontos, desbloqueie conquistas e acompanhe seu progresso de forma divertida."
+        delay={0.3}
+      />
+      <FeatureCard 
+        icon={<Award className="w-8 h-8" />}
+        title="Metodologia Comprovada"
+        description="Siga um processo estruturado baseado nas melhores práticas de empreendedorismo."
+        delay={0.4}
+      />
+      <FeatureCard 
+        icon={<Target className="w-8 h-8" />}
+        title="Objetivos Claros"
+        description="Defina metas específicas e acompanhe seu progresso em cada fase do desenvolvimento."
+        delay={0.5}
+      />
+      <FeatureCard 
+        icon={<CheckCircle className="w-8 h-8" />}
+        title="Templates Prontos"
+        description="Economize tempo com modelos pré-formatados para pitch decks, planos de negócios e mais."
+        delay={0.6}
+      />
+    </div>
+  </div>
+</section>
 
       {/* Testimonials Section */}
       <section className="py-20 bg-gray-50 dark:bg-gray-800">
@@ -176,19 +188,24 @@ interface FeatureCardProps {
   icon: React.ReactNode;
   title: string;
   description: string;
+  delay: number;
 }
 
-const FeatureCard = ({ icon, title, description }: FeatureCardProps) => {
+const FeatureCard = ({ icon, title, description, delay }: FeatureCardProps) => {
   return (
-    <motion.div 
-      className="card animated-card p-6"
-      whileHover={{ y: -5, transition: { duration: 0.2 } }}
+    <motion.div
+      className="group bg-gradient-to-br from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 p-6 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-primary-500 dark:hover:border-primary-500 transition-all duration-300 hover:shadow-xl"
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay }}
+      whileHover={{ y: -5 }}
     >
-      <div className="h-12 w-12 rounded-lg bg-primary-100 dark:bg-primary-900/50 flex items-center justify-center text-primary-600 dark:text-primary-400 mb-4">
+      <div className="text-primary-500 mb-4 group-hover:scale-110 transition-transform duration-300">
         {icon}
       </div>
-      <h3 className="text-xl font-semibold mb-3">{title}</h3>
-      <p className="text-gray-600 dark:text-gray-300">{description}</p>
+      <h3 className="text-lg font-bold mb-2">{title}</h3>
+      <p className="text-gray-600 dark:text-gray-400 text-sm">{description}</p>
     </motion.div>
   );
 };
