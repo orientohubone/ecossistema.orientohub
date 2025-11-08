@@ -2,7 +2,18 @@ import { useState } from 'react';
 import { Link, useLocation, useNavigate, Outlet } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import { Menu, X, ChevronDown, LayoutDashboard, BarChart2, FileText, Settings, LogOut, Link2 } from 'lucide-react';
+import { 
+  Menu, 
+  X, 
+  ChevronDown, 
+  LayoutDashboard, 
+  BarChart2, 
+  FileText, 
+  Settings, 
+  LogOut, 
+  Link2,
+  Lightbulb 
+} from 'lucide-react';
 import { useAuthStore } from '../stores/authStore';
 
 const DashboardLayout = () => {
@@ -22,7 +33,7 @@ const DashboardLayout = () => {
   return (
     <div className="flex h-screen bg-gray-100 dark:bg-gray-900">
       {/* Sidebar for mobile */}
-      <div className={`fixed inset-0 z-40 lg:hidden ${sidebarOpen ? 'block' : 'hidden'}`}>
+      <div className={`fixed inset-0 z-40 lg:hidden ${sidebarOpen ? 'block' : 'hidden'}`}>  
         <div className="fixed inset-0 bg-gray-600 bg-opacity-75" onClick={toggleSidebar}></div>
         <div className="fixed inset-y-0 left-0 flex flex-col w-64 max-w-xs bg-white dark:bg-gray-800 shadow-xl">
           <div className="flex items-center justify-between h-16 px-4 border-b dark:border-gray-700">
@@ -115,6 +126,7 @@ const SidebarContent = ({ location, onLogout }: SidebarContentProps) => {
     { name: t('common.dashboard'), icon: <LayoutDashboard size={20} />, href: '/dashboard' },
     { name: t('dashboard.insights'), icon: <BarChart2 size={20} />, href: '/dashboard/insights' },
     { name: t('dashboard.frameworks'), icon: <FileText size={20} />, href: '/dashboard/frameworks' },
+    { name: t('projects.title'), icon: <Lightbulb size={20} />, href: '/dashboard/projects' },
     { name: 'Soluções', icon: <Link2 size={20} />, href: '/dashboard/solutions' },
     { name: t('common.settings'), icon: <Settings size={20} />, href: '/dashboard/settings' },
   ];
