@@ -19,8 +19,8 @@ const HomePage = () => {
   {/* Animated background elements */}
   <div className="absolute inset-0 overflow-hidden">
     <div className="absolute -top-1/2 -left-1/4 w-96 h-96 bg-primary-500/20 rounded-full blur-3xl animate-pulse" />
-    <div className="absolute top-1/3 -right-1/4 w-[500px] h-[500px] bg-primary-400/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '700ms' }} />
-    <div className="absolute bottom-0 left-1/3 w-96 h-96 bg-primary-300/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1000ms' }} />
+    <div className="absolute top-1/3 -right-1/4 w-[500px] h-[500px] bg-primary-400/10 rounded-full blur-3xl animate-pulse [animation-delay:700ms]" />
+    <div className="absolute bottom-0 left-1/3 w-96 h-96 bg-primary-300/20 rounded-full blur-3xl animate-pulse [animation-delay:1000ms]" />
   </div>
 
   {/* Grid pattern overlay */}
@@ -57,7 +57,7 @@ const HomePage = () => {
         <span className="block text-white mb-2">
           Construa sua startup
         </span>
-        <span className="block bg-gradient-to-r from-primary-400 via-primary-500 to-primary-600 bg-clip-text text-transparent bg-[length:200%_auto] animate-gradient">
+        <span className="block bg-gradient-to-r from-primary-400 via-primary-500 to-primary-600 bg-clip-text text-transparent">
           com metodologia
         </span>
         <span className="block text-white mt-2">
@@ -111,6 +111,53 @@ const HomePage = () => {
         <Zap className="w-4 h-4 text-primary-500" />
         Comece gratuitamente, sem cartão de crédito
       </motion.p>
+
+      {/* Feature cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-20 max-w-4xl mx-auto">
+        {[
+          {
+            icon: Sparkles,
+            title: 'Gamificada',
+            description: 'Aprenda construindo de forma divertida e engajante',
+            delay: 0.1
+          },
+          {
+            icon: Rocket,
+            title: 'Metodologia',
+            description: 'Frameworks validados por aceleradoras de sucesso',
+            delay: 0.2
+          },
+          {
+            icon: Zap,
+            title: 'Imersiva',
+            description: 'Experiência prática desde o primeiro dia',
+            delay: 0.3
+          }
+        ].map((feature, index) => (
+          <motion.div
+            key={index}
+            className="group relative p-6 rounded-2xl border border-primary-500/20 bg-gray-900/50 backdrop-blur-sm hover:bg-primary-500/10 hover:border-primary-500/40 transition-all duration-300 hover:shadow-lg hover:shadow-primary-500/10"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: feature.delay }}
+            whileHover={{ y: -5 }}
+          >
+            <div className="w-12 h-12 rounded-xl bg-primary-500/20 flex items-center justify-center mb-4 group-hover:bg-primary-500/30 transition-colors">
+              <feature.icon className="w-6 h-6 text-primary-500" />
+            </div>
+            <h3 className="text-lg font-semibold mb-2 text-white">
+              {feature.title}
+            </h3>
+            <p className="text-sm text-gray-400">
+              {feature.description}
+            </p>
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
 
       {/* Feature cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-20 max-w-4xl mx-auto">
