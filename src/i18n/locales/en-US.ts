@@ -140,5 +140,43 @@ export default {
       valueProposition: 'Value Proposition',
       leanCanvas: 'Lean Canvas',
     },
+    projects: {
+      title: 'Projects',
+      new: 'New Project',
+      manage: 'Manage',
+      empty: {
+        title: 'No projects yet',
+        description: 'Create your first project to start validating your ideas',
+        cta: 'Create First Project',
+      },
+      stages: {
+        ideation: 'Ideation',
+        validation: 'Validation',
+        mvp: 'MVP',
+        traction: 'Traction',
+        growth: 'Growth',
+      },
+      tabs: {
+        overview: 'Overview',
+        validation: 'Validation',
+        kanban: 'Kanban',
+        experiments: 'Experiments',
+        interviews: 'Interviews',
+      },
+      overview: {
+        hypotheses: 'Hypotheses',
+        experiments: 'Experiments',
+        interviews: 'Interviews',
+        tasks: 'Tasks',
+        progress: 'Progress',
+        started: 'Started',
+        complete: 'Complete',
+      },
+    },
+    interviews: {
+      title: 'Interviews',
+      new: 'New Interview',
+      customerName: 'Customer Name',
+    },
   },
 };
