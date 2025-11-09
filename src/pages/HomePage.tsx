@@ -371,35 +371,6 @@ const HomePage = () => {
         </Link>
       </motion.div>
 
-      {/* Trust indicators */}
-      <motion.div
-        className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8 max-w-3xl mx-auto"
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ delay: 0.6 }}
-      >
-        {[
-          { value: '500+', label: 'Startups Criadas' },
-          { value: '95%', label: 'Taxa de Sucesso' },
-          { value: '1000+', label: 'Founders Ativos' },
-          { value: 'R$ 50M+', label: 'Investimentos' }
-        ].map((stat, index) => (
-          <motion.div
-            key={index}
-            className="text-center p-4 rounded-xl bg-white/5 backdrop-blur-sm border border-primary-500/10 hover:border-primary-500/30 transition-colors duration-300"
-            whileHover={{ scale: 1.05 }}
-          >
-            <div className="text-3xl md:text-4xl font-bold text-primary-500 mb-1">
-              {stat.value}
-            </div>
-            <div className="text-sm text-gray-400 font-medium">
-              {stat.label}
-            </div>
-          </motion.div>
-        ))}
-      </motion.div>
-
       {/* Additional info */}
       <motion.p
         className="mt-12 text-sm text-gray-400 flex items-center justify-center gap-2"
