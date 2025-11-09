@@ -3,7 +3,6 @@ import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
 import {
   Settings,
-  CheckCircle2,
   Rocket,
   Target,
   Users,
