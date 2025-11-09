@@ -272,54 +272,106 @@ const AboutPage = () => {
   </div>
 </section>
       
-      {/* Team Section */}
-      <section className="py-24 bg-white dark:bg-gray-900">
-        <div className="container-custom">
-          <motion.div
-            className="text-center max-w-3xl mx-auto mb-16"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
-          >
-            <div className="inline-flex items-center gap-2 bg-primary-500/10 border border-primary-500/30 px-4 py-2 rounded-full mb-6">
-              <Users className="w-4 h-4 text-primary-500" />
-              <span className="text-primary-500 font-semibold text-sm">NOSSO TIME</span>
+      {/* Founder Section */}
+<section className="py-24 bg-white dark:bg-gray-900">
+  <div className="container-custom">
+    <motion.div
+      className="text-center max-w-3xl mx-auto mb-16"
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      viewport={{ once: true }}
+    >
+      <div className="inline-flex items-center gap-2 bg-primary-500/10 border border-primary-500/30 px-4 py-2 rounded-full mb-6">
+        <User className="w-4 h-4 text-primary-500" />
+        <span className="text-primary-500 font-semibold text-sm">FUNDADOR</span>
+      </div>
+
+      <h2 className="text-4xl md:text-5xl font-bold mb-6">
+        Quem está por trás do Orientohub
+      </h2>
+      <p className="text-xl text-gray-600 dark:text-gray-300">
+        Conheça a visão e a paixão que deu origem à plataforma.
+      </p>
+    </motion.div>
+
+    {/* Founder Card - Destacado */}
+    <motion.div
+      className="max-w-4xl mx-auto"
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay: 0.2 }}
+    >
+      <div className="relative bg-gradient-to-br from-black via-gray-900 to-black p-12 rounded-3xl border-2 border-primary-500/30 shadow-2xl overflow-hidden">
+        {/* Background decoration */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-primary-500 rounded-full blur-3xl" />
+        </div>
+
+        {/* Content */}
+        <div className="relative z-10 grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+          {/* Image */}
+          <div className="md:col-span-1 flex justify-center">
+            <div className="relative group">
+              <div className="absolute inset-0 bg-primary-500 rounded-full blur-2xl opacity-40 group-hover:opacity-60 transition-opacity duration-300" />
+              <img
+                src="/fernando-ramalho.jpg"
+                alt="Fernando Ramalho"
+                className="relative w-48 h-48 md:w-56 md:h-56 rounded-full object-cover border-4 border-primary-500 shadow-2xl"
+              />
+              {/* Badge */}
+              <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 bg-primary-500 text-black px-4 py-2 rounded-full font-bold text-sm shadow-lg whitespace-nowrap">
+                CEO & Fundador
+              </div>
+            </div>
+          </div>
+
+          {/* Info */}
+          <div className="md:col-span-2 text-center md:text-left">
+            <h3 className="text-4xl font-bold text-white mb-4">
+              Fernando Ramalho
+            </h3>
+            
+            <p className="text-lg text-gray-300 mb-6 leading-relaxed">
+              Formado em Administração, Marketing, Inovação, Criatividade, Neurociência e Aprendizagem. 
+              Apaixonado por transformar o ecossistema de startups através de metodologia e gamificação.
+            </p>
+
+            {/* Credentials/Tags */}
+            <div className="flex flex-wrap gap-2 justify-center md:justify-start mb-6">
+              {[
+                'Administração',
+                'Marketing',
+                'Inovação',
+                'Criatividade',
+                'Neurociência',
+                'Aprendizagem'
+              ].map((tag, index) => (
+                <span
+                  key={index}
+                  className="px-3 py-1 bg-primary-500/20 border border-primary-500/40 text-primary-500 rounded-full text-sm font-medium"
+                >
+                  {tag}
+                </span>
+              ))}
             </div>
 
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              Conheça quem faz acontecer
-            </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-300">
-              Pessoas apaixonadas por empreendedorismo e inovação trabalhando para transformar o ecossistema de startups.
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <TeamMember
-              name="Fernando Ramalho"
-              role="CEO & Fundador"
-              image="https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-              bio="Formado em administração, Marketing, Inovação, Criatividade, Neurociência e Aprendizagem"
-              delay={0.1}
-            />
-            <TeamMember
-              name="Nome"
-              role="CTO"
-              image="https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-              bio="Especialista em arquitetura de software e desenvolvimento ágil."
-              delay={0.2}
-            />
-            <TeamMember
-              name="Nome"
-              role="Head de Produto"
-              image="https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-              bio="Product Manager com foco em UX e metodologias de inovação."
-              delay={0.3}
-            />
+            {/* Quote */}
+            <div className="relative bg-white/5 border-l-4 border-primary-500 p-4 rounded-r-lg">
+              <svg className="absolute top-2 left-2 w-6 h-6 text-primary-500/30" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+              </svg>
+              <p className="text-gray-300 italic pl-6">
+                "Acredito que todo empreendedor merece acesso a ferramentas e metodologias que aumentem suas chances de sucesso. O Orientohub nasceu dessa missão."
+              </p>
+            </div>
           </div>
         </div>
-      </section>
+      </div>
+    </motion.div>
+  </div>
+</section>
 
       {/* CTA Section */}
       <section className="relative py-24 bg-gradient-to-br from-black via-gray-900 to-black overflow-hidden">
