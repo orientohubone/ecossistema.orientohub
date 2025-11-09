@@ -1,4 +1,3 @@
-import fernandoRamalhoImg from '../assets/fernando-ramalho.jpg';
 import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
@@ -13,11 +12,12 @@ import {
   TrendingUp,
   Globe,
   Shield,
-  User,
   Lightbulb,
-  CheckCircle2
+  CheckCircle2,
+  User
 } from 'lucide-react';
-import { useState } from 'react';
+import fernandoRamalhoImg from '../assets/fernando-ramalho.jpg';
+
 
 const AboutPage = () => {
   const { t } = useTranslation();
