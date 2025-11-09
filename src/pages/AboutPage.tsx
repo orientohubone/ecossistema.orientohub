@@ -12,6 +12,7 @@ import {
   TrendingUp,
   Globe,
   Shield,
+  User,
   Lightbulb,
   CheckCircle2
 } from 'lucide-react';
@@ -439,44 +440,6 @@ const ValueCard = ({ icon: Icon, title, description, delay }: ValueCardProps) =>
       <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
         {description}
       </p>
-    </motion.div>
-  );
-};
-
-// Team Member Component
-interface TeamMemberProps {
-  name: string;
-  role: string;
-  image: string;
-  bio: string;
-  delay: number;
-}
-
-const TeamMember = ({ name, role, image, bio, delay }: TeamMemberProps) => {
-  return (
-    <motion.div
-      className="group relative bg-gradient-to-br from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 p-8 rounded-2xl border-2 border-gray-200 dark:border-gray-700 hover:border-primary-500 dark:hover:border-primary-500 transition-all duration-300 hover:shadow-2xl"
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay }}
-      whileHover={{ y: -8 }}
-    >
-      <div className="relative mb-6">
-        <div className="absolute inset-0 bg-primary-500 rounded-full blur-xl opacity-0 group-hover:opacity-30 transition-opacity duration-300" />
-        <img
-          src={image}
-          alt={name}
-          className="relative w-32 h-32 rounded-full mx-auto object-cover border-4 border-primary-500"
-        />
-      </div>
-      <div className="text-center">
-        <h3 className="text-2xl font-bold mb-1">{name}</h3>
-        <p className="text-primary-500 font-semibold mb-3">{role}</p>
-        <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
-          {bio}
-        </p>
-      </div>
     </motion.div>
   );
 };
