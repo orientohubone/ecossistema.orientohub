@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
 import {
   Settings,
+  CheckCircle2,
   Rocket,
   Target,
   Users,
@@ -495,60 +496,79 @@ const EcosystemPage = () => {
       </section>
 
       {/* Final CTA Section */}
-      <section className="py-24 bg-gradient-to-br from-primary-500 via-primary-600 to-primary-700 relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute inset-0" style={{
-            backgroundImage: 'radial-gradient(circle at 2px 2px, black 1px, transparent 0)',
-            backgroundSize: '50px 50px'
-          }} />
-        </div>
+<section className="relative py-32 bg-gradient-to-br from-black via-gray-900 to-black overflow-hidden">
+  {/* Animated background elements */}
+  <div className="absolute inset-0 overflow-hidden">
+    <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary-500/20 rounded-full blur-3xl animate-pulse" />
+    <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-primary-400/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1000ms' }} />
+  </div>
 
-        <div className="container-custom relative z-10">
-          <motion.div
-            className="text-center mb-16"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-black">
-              Pronto para Fazer Parte?
-            </h2>
-            <p className="text-xl text-black/80 max-w-3xl mx-auto">
-              Escolha como você quer se conectar ao ecossistema Orientohub
-            </p>
-          </motion.div>
+  {/* Grid pattern overlay */}
+  <div className="absolute inset-0 opacity-10">
+    <div className="absolute inset-0" style={{
+      backgroundImage: 'radial-gradient(circle at 2px 2px, #FFD700 1px, transparent 0)',
+      backgroundSize: '40px 40px'
+    }} />
+  </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            <CTACard
-              title="Sou Founder"
-              description="Quero acelerar minha startup e fazer parte da comunidade"
-              features={["Acesso ao ecossistema", "Mentorias especializadas", "Networking qualificado"]}
-              ctaText="Aplicar Agora"
-              ctaLink="/cadastro"
-              delay={0.1}
-            />
-            <CTACard
-              title="Sou Parceiro"
-              description="Quero contribuir com conhecimento e recursos"
-              features={["Visibilidade no mercado", "Acesso a startups", "Eventos exclusivos"]}
-              ctaText="Tornar-se Parceiro"
-              ctaLink="/cadastro"
-              delay={0.2}
-            />
-            <CTACard
-              title="Sou Investidor"
-              description="Quero investir em startups promissoras"
-              features={["Deal flow qualificado", "Due diligence", "Co-investimento"]}
-              ctaText="Conhecer Oportunidades"
-              ctaLink="/cadastro"
-              delay={0.3}
-            />
-          </div>
-        </div>
-      </section>
-    </>
-  );
-};
+  <div className="container-custom relative z-10">
+    <motion.div
+      className="text-center mb-16"
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+    >
+      <div className="inline-flex items-center gap-2 bg-primary-500/20 border-2 border-primary-500/40 px-5 py-2 rounded-full mb-8 backdrop-blur-sm">
+        <Sparkles className="w-4 h-4 text-primary-500" />
+        <span className="text-primary-500 font-bold text-sm uppercase tracking-wide">
+          Junte-se a Nós
+        </span>
+      </div>
+
+      <h2 className="text-4xl md:text-6xl font-bold mb-6 text-white leading-tight">
+        Pronto para{' '}
+        <span className="bg-gradient-to-r from-primary-400 via-primary-500 to-primary-600 bg-clip-text text-transparent">
+          Fazer Parte
+        </span>?
+      </h2>
+      <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto">
+        Escolha como você quer se conectar ao ecossistema Orientohub
+      </p>
+    </motion.div>
+
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+      <CTACard
+        title="Sou Founder"
+        description="Quero acelerar minha startup e fazer parte da comunidade"
+        features={["Acesso ao ecossistema", "Mentorias especializadas", "Networking qualificado"]}
+        ctaText="Aplicar Agora"
+        ctaLink="/cadastro"
+        icon={Rocket}
+        delay={0.1}
+      />
+      <CTACard
+        title="Sou Parceiro"
+        description="Quero contribuir com conhecimento e recursos"
+        features={["Visibilidade no mercado", "Acesso a startups", "Eventos exclusivos"]}
+        ctaText="Tornar-se Parceiro"
+        ctaLink="/cadastro"
+        icon={Users}
+        delay={0.2}
+        featured={true}
+      />
+      <CTACard
+        title="Sou Investidor"
+        description="Quero investir em startups promissoras"
+        features={["Deal flow qualificado", "Due diligence", "Co-investimento"]}
+        ctaText="Conhecer Oportunidades"
+        ctaLink="/cadastro"
+        icon={TrendingUp}
+        delay={0.3}
+      />
+    </div>
+  </div>
+</section>
+</>
 
 interface LayerButtonProps {
   number: number;
@@ -855,40 +875,73 @@ interface CTACardProps {
   features: string[];
   ctaText: string;
   ctaLink: string;
+  icon: React.ElementType;
   delay: number;
+  featured?: boolean;
 }
 
-const CTACard = ({ title, description, features, ctaText, ctaLink, delay }: CTACardProps) => {
+const CTACard = ({ title, description, features, ctaText, ctaLink, icon: Icon, delay, featured = false }: CTACardProps) => {
   return (
     <motion.div
-      className="bg-black/40 backdrop-blur-sm p-8 rounded-2xl border-2 border-black/50 hover:border-black transition-all duration-300 hover:bg-black/60"
+      className={`group relative bg-gradient-to-br from-gray-900 to-black p-8 rounded-2xl border-2 transition-all duration-300 hover:shadow-2xl ${
+        featured 
+          ? 'border-primary-500 shadow-xl shadow-primary-500/20 scale-105' 
+          : 'border-gray-700 hover:border-primary-500 hover:shadow-primary-500/10'
+      }`}
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ delay }}
-      whileHover={{ y: -8 }}
+      whileHover={{ y: -8, scale: featured ? 1.05 : 1.02 }}
     >
-      <h3 className="text-2xl font-bold mb-3 text-white">{title}</h3>
-      <p className="text-black/80 mb-6">{description}</p>
+      {/* Featured Badge */}
+      {featured && (
+        <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-primary-500 text-black px-4 py-1 rounded-full text-sm font-bold shadow-lg">
+          Mais Popular
+        </div>
+      )}
 
+      {/* Icon */}
+      <div className="relative mb-6">
+        <div className="w-16 h-16 bg-black border-2 border-primary-500/30 rounded-xl flex items-center justify-center group-hover:border-primary-500 transition-colors">
+          <Icon className="w-8 h-8 text-primary-500" />
+        </div>
+      </div>
+
+      {/* Content */}
+      <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-primary-500 transition-colors">
+        {title}
+      </h3>
+      <p className="text-gray-400 mb-6 leading-relaxed">
+        {description}
+      </p>
+
+      {/* Features */}
       <ul className="space-y-3 mb-8">
         {features.map((feature, index) => (
-          <li key={index} className="flex items-center gap-2 text-black/70">
-            <CheckCircle2 className="w-5 h-5 text-black flex-shrink-0" />
-            {feature}
+          <li key={index} className="flex items-start gap-3">
+            <CheckCircle2 className="w-5 h-5 text-primary-500 flex-shrink-0 mt-0.5" />
+            <span className="text-gray-300 text-sm">{feature}</span>
           </li>
         ))}
       </ul>
 
+      {/* CTA Button */}
       <a
         href={ctaLink}
-        className="inline-flex items-center justify-center gap-2 w-full px-6 py-3 bg-black text-primary-500 font-bold rounded-lg hover:bg-black/80 transition-colors duration-300 group"
+        className={`block w-full text-center px-6 py-4 rounded-xl font-bold transition-all duration-300 ${
+          featured
+            ? 'bg-primary-500 hover:bg-primary-600 text-black shadow-lg shadow-primary-500/30'
+            : 'bg-white/5 hover:bg-primary-500 text-white hover:text-black border-2 border-primary-500/30 hover:border-primary-500'
+        }`}
       >
         {ctaText}
-        <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
       </a>
+
+      {/* Glow effect on hover */}
+      <div className="absolute inset-0 bg-gradient-to-br from-primary-500/0 via-primary-500/0 to-primary-500/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
     </motion.div>
   );
 };
-
+  
 export default EcosystemPage;
