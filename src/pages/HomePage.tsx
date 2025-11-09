@@ -153,7 +153,8 @@ const HomePage = () => {
               {feature.description}
             </p>
           </motion.div>
-        ))}
+         ))}
+        </div>
       </div>
     </div>
   </div>
