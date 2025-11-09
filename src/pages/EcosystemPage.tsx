@@ -567,7 +567,7 @@ const EcosystemPage = () => {
     </div>
   </div>
 </section>
-</>
+    </>
   );
 };    
 
