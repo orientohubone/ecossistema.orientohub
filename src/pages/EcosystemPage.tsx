@@ -568,6 +568,8 @@ const EcosystemPage = () => {
   </div>
 </section>
 </>
+  );
+};    
 
 interface LayerButtonProps {
   number: number;
