@@ -379,18 +379,14 @@ const PricingCard = ({ plan, isAnnual, delay }: PricingCardProps) => {
       <div className="flex items-center justify-between mb-6">
         <motion.div
           className="relative group"
-          whileHover={{ scale: 1.1, rotate: 5 }}
-          transition={{ type: "spring", stiffness: 300 }}
+          whileHover={{ scale: 1.2, rotate: 10 }}
+          transition={{ type: "spring", stiffness: 300, damping: 15 }}
         >
           {/* Glow effect */}
-          <div className={`absolute inset-0 bg-gradient-to-br ${plan.color} rounded-full blur-xl opacity-0 group-hover:opacity-50 transition-opacity duration-300`} />
+          <div className="absolute inset-0 bg-primary-500 rounded-full blur-2xl opacity-0 group-hover:opacity-60 transition-opacity duration-300 scale-150" />
           
           {/* Icon */}
-          <Icon className={`relative w-12 h-12 bg-gradient-to-br ${plan.color} bg-clip-text text-transparent group-hover:scale-110 transition-transform duration-300`} 
-            style={{ 
-              filter: 'drop-shadow(0 0 8px rgba(255, 215, 0, 0.3))'
-            }}
-          />
+          <Icon className="relative w-14 h-14 text-primary-500 drop-shadow-[0_0_15px_rgba(255,215,0,0.5)] group-hover:drop-shadow-[0_0_25px_rgba(255,215,0,0.8)] transition-all duration-300" />
         </motion.div>
         
         {!plan.featured && (
