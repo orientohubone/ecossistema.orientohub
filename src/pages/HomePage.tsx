@@ -151,10 +151,9 @@ const HomePage = () => {
             </h3>
             <p className="text-sm text-gray-400">
               {feature.description}
-            </p>
+           </p>
           </motion.div>
-         ))}
-        </div>
+        ))}
       </div>
     </div>
   </div>
