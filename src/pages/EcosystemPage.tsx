@@ -895,13 +895,6 @@ const CTACard = ({ title, description, features, ctaText, ctaLink, icon: Icon, d
       transition={{ delay }}
       whileHover={{ y: -8, scale: featured ? 1.05 : 1.02 }}
     >
-      {/* Featured Badge */}
-      {featured && (
-        <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-primary-500 text-black px-4 py-1 rounded-full text-sm font-bold shadow-lg">
-          Mais Popular
-        </div>
-      )}
-
       {/* Icon */}
       <div className="relative mb-6">
         <div className="w-16 h-16 bg-black border-2 border-primary-500/30 rounded-xl flex items-center justify-center group-hover:border-primary-500 transition-colors">
@@ -944,5 +937,5 @@ const CTACard = ({ title, description, features, ctaText, ctaLink, icon: Icon, d
     </motion.div>
   );
 };
-  
+
 export default EcosystemPage;
