@@ -244,36 +244,54 @@ const HomePage = () => {
   </div>
 </section>
 
-      {/* Testimonials Section */}
-      <section className="py-20 bg-gray-50 dark:bg-gray-800">
-        <div className="container-custom">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">{t('home.testimonials.title')}</h2>
-            <p className="text-xl text-gray-600 dark:text-gray-300">{t('home.testimonials.subtitle')}</p>
-          </div>
+     {/* Testimonials Section */}
+<section className="py-24 bg-gradient-to-b from-white via-gray-50 to-white dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 relative overflow-hidden">
+  {/* Background decorative elements */}
+  <div className="absolute inset-0 opacity-5">
+    <div className="absolute top-20 left-10 w-72 h-72 bg-primary-500 rounded-full blur-3xl" />
+    <div className="absolute bottom-20 right-10 w-96 h-96 bg-primary-400 rounded-full blur-3xl" />
+  </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <TestimonialCard 
-              quote="O Orientohub transformou completamente a forma como desenvolvemos nossa startup. A metodologia gamificada manteve toda a equipe engajada."
-              author="Ana Silva"
-              role="CEO, TechStart"
-              image="https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-            />
-            <TestimonialCard 
-              quote="Como mentor de startups, o Orientohub se tornou minha ferramenta essencial. Consigo acompanhar o progresso de todos os meus mentorados de forma eficiente."
-              author="Carlos Mendes"
-              role="Mentor, Startup Brasil"
-              image="https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-            />
-            <TestimonialCard 
-              quote="Nossa aceleradora adotou o Orientohub e vimos um aumento de 40% na taxa de sucesso das startups do nosso portfólio. Simplesmente incrível!"
-              author="Juliana Costa"
-              role="Diretora, Acelera Ventures"
-              image="https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-            />
-          </div>
-        </div>
-      </section>
+  <div className="container-custom relative z-10">
+    <motion.div
+      className="text-center max-w-3xl mx-auto mb-16"
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+    >
+      <div className="inline-flex items-center gap-2 bg-primary-500/10 border border-primary-500/30 px-4 py-2 rounded-full mb-6">
+        <Sparkles className="w-4 h-4 text-primary-500" />
+        <span className="text-primary-500 font-semibold text-sm">DEPOIMENTOS</span>
+      </div>
+      <h2 className="text-4xl md:text-5xl font-bold mb-6">{t('home.testimonials.title')}</h2>
+      <p className="text-xl text-gray-600 dark:text-gray-300">{t('home.testimonials.subtitle')}</p>
+    </motion.div>
+
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <TestimonialCard 
+        quote="O Orientohub transformou completamente a forma como desenvolvemos nossa startup. A metodologia gamificada manteve toda a equipe engajada."
+        author="Ana Silva"
+        role="CEO, TechStart"
+        image="https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+        delay={0.1}
+      />
+      <TestimonialCard 
+        quote="Como mentor de startups, o Orientohub se tornou minha ferramenta essencial. Consigo acompanhar o progresso de todos os meus mentorados de forma eficiente."
+        author="Carlos Mendes"
+        role="Mentor, Startup Brasil"
+        image="https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+        delay={0.2}
+      />
+      <TestimonialCard 
+        quote="Nossa aceleradora adotou o Orientohub e vimos um aumento de 40% na taxa de sucesso das startups do nosso portfólio. Simplesmente incrível!"
+        author="Juliana Costa"
+        role="Diretora, Acelera Ventures"
+        image="https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+        delay={0.3}
+      />
+    </div>
+  </div>
+</section>
 
       {/* CTA Section */}
       <section className="py-20 bg-primary-500">
@@ -322,27 +340,44 @@ interface TestimonialCardProps {
   author: string;
   role: string;
   image: string;
+  delay: number;
 }
 
-const TestimonialCard = ({ quote, author, role, image }: TestimonialCardProps) => {
+const TestimonialCard = ({ quote, author, role, image, delay }: TestimonialCardProps) => {
   return (
-    <motion.div 
-      className="card animated-card p-6"
-      whileHover={{ y: -5, transition: { duration: 0.2 } }}
+    <motion.div
+      className="group relative bg-white dark:bg-gray-800 p-8 rounded-2xl border-2 border-gray-200 dark:border-gray-700 hover:border-primary-500 dark:hover:border-primary-500 transition-all duration-300 hover:shadow-2xl hover:shadow-primary-500/10"
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay }}
+      whileHover={{ y: -8 }}
     >
-      <div className="mb-6">
-        <div className="text-primary-500">
-          {[...Array(5)].map((_, i) => (
-            <span key={i} className="text-xl">★</span>
-          ))}
-        </div>
+      {/* Quote icon */}
+      <div className="absolute -top-4 -left-4 w-12 h-12 bg-primary-500 rounded-full flex items-center justify-center shadow-lg">
+        <svg className="w-6 h-6 text-black" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+        </svg>
       </div>
-      <p className="text-gray-600 dark:text-gray-300 mb-6">{quote}</p>
-      <div className="flex items-center">
-        <img src={image} alt={author} className="h-12 w-12 rounded-full object-cover" />
-        <div className="ml-4">
-          <p className="font-semibold">{author}</p>
-          <p className="text-sm text-gray-500 dark:text-gray-400">{role}</p>
+
+      {/* Quote text */}
+      <p className="text-gray-700 dark:text-gray-300 mb-6 leading-relaxed italic text-lg">
+        "{quote}"
+      </p>
+
+      {/* Author info */}
+      <div className="flex items-center gap-4 mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
+        <div className="relative">
+          <div className="absolute inset-0 bg-primary-500 rounded-full blur-md opacity-30 group-hover:opacity-50 transition-opacity" />
+          <img 
+            src={image} 
+            alt={author}
+            className="relative w-14 h-14 rounded-full object-cover border-2 border-primary-500"
+          />
+        </div>
+        <div>
+          <h4 className="font-bold text-gray-900 dark:text-white">{author}</h4>
+          <p className="text-sm text-primary-500 font-medium">{role}</p>
         </div>
       </div>
     </motion.div>
