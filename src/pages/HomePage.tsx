@@ -293,20 +293,129 @@ const HomePage = () => {
   </div>
 </section>
 
-      {/* CTA Section */}
-      <section className="py-20 bg-primary-500">
-        <div className="container-custom">
-          <div className="text-center max-w-3xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6 text-black">{t('home.cta.title')}</h2>
-            <p className="text-xl text-black/80 mb-8">{t('home.cta.subtitle')}</p>
-            <Link to="/cadastro" className="btn bg-black text-white hover:bg-gray-900 focus:ring-black text-lg px-8 py-3">
-              {t('home.cta.button')} <ArrowRight size={20} className="ml-2" />
-            </Link>
-          </div>
-        </div>
-      </section>
-    </>
-  );
+     {/* CTA Section */}
+<section className="relative py-32 bg-gradient-to-br from-black via-gray-900 to-black overflow-hidden">
+  {/* Animated background elements */}
+  <div className="absolute inset-0 overflow-hidden">
+    <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary-500/20 rounded-full blur-3xl animate-pulse" />
+    <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-primary-400/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1000ms' }} />
+  </div>
+
+  {/* Grid pattern overlay */}
+  <div className="absolute inset-0 opacity-10">
+    <div className="absolute inset-0" style={{
+      backgroundImage: 'radial-gradient(circle at 2px 2px, #FFD700 1px, transparent 0)',
+      backgroundSize: '40px 40px'
+    }} />
+  </div>
+
+  <div className="container-custom relative z-10">
+    <motion.div
+      className="text-center max-w-4xl mx-auto"
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.8 }}
+    >
+      {/* Badge */}
+      <motion.div
+        className="inline-flex items-center gap-2 bg-primary-500/20 border-2 border-primary-500/40 px-5 py-2 rounded-full mb-8 backdrop-blur-sm"
+        initial={{ opacity: 0, scale: 0.8 }}
+        whileInView={{ opacity: 1, scale: 1 }}
+        viewport={{ once: true }}
+        transition={{ delay: 0.2 }}
+      >
+        <Rocket className="w-4 h-4 text-primary-500" />
+        <span className="text-primary-500 font-bold text-sm uppercase tracking-wide">
+          Comece agora
+        </span>
+      </motion.div>
+
+      {/* Title */}
+      <motion.h2
+        className="text-4xl md:text-6xl font-bold mb-6 text-white leading-tight"
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ delay: 0.3 }}
+      >
+        {t('home.cta.title')}
+      </motion.h2>
+
+      {/* Subtitle */}
+      <motion.p
+        className="text-xl md:text-2xl text-gray-300 mb-12 leading-relaxed max-w-2xl mx-auto"
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ delay: 0.4 }}
+      >
+        {t('home.cta.subtitle')}
+      </motion.p>
+
+      {/* CTA Button */}
+      <motion.div
+        className="flex flex-col sm:flex-row items-center justify-center gap-4"
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ delay: 0.5 }}
+      >
+        <Link
+          to="/cadastro"
+          className="group inline-flex items-center gap-3 px-10 py-5 bg-primary-500 hover:bg-primary-600 text-black font-bold text-xl rounded-xl shadow-2xl shadow-primary-500/30 hover:shadow-primary-500/50 hover:scale-105 transition-all duration-300"
+        >
+          <Sparkles className="w-6 h-6 group-hover:rotate-12 transition-transform" />
+          {t('home.cta.button')}
+          <ArrowRight className="w-6 h-6 group-hover:translate-x-2 transition-transform" />
+        </Link>
+      </motion.div>
+
+      {/* Trust indicators */}
+      <motion.div
+        className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8 max-w-3xl mx-auto"
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ delay: 0.6 }}
+      >
+        {[
+          { value: '500+', label: 'Startups Criadas' },
+          { value: '95%', label: 'Taxa de Sucesso' },
+          { value: '1000+', label: 'Founders Ativos' },
+          { value: 'R$ 50M+', label: 'Investimentos' }
+        ].map((stat, index) => (
+          <motion.div
+            key={index}
+            className="text-center p-4 rounded-xl bg-white/5 backdrop-blur-sm border border-primary-500/10 hover:border-primary-500/30 transition-colors duration-300"
+            whileHover={{ scale: 1.05 }}
+          >
+            <div className="text-3xl md:text-4xl font-bold text-primary-500 mb-1">
+              {stat.value}
+            </div>
+            <div className="text-sm text-gray-400 font-medium">
+              {stat.label}
+            </div>
+          </motion.div>
+        ))}
+      </motion.div>
+
+      {/* Additional info */}
+      <motion.p
+        className="mt-12 text-sm text-gray-400 flex items-center justify-center gap-2"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ delay: 0.8 }}
+      >
+        <Zap className="w-4 h-4 text-primary-500" />
+        Grátis para começar • Sem cartão de crédito • Cancele quando quiser
+      </motion.p>
+    </motion.div>
+  </div>
+</section>
+</>
+);
 };
 
 interface FeatureCardProps {
