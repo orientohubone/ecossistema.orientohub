@@ -2,8 +2,7 @@ import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Sparkles, Rocket, Zap, ArrowRight, Play } from 'lucide-react';
-
+import { Sparkles, Rocket, Zap, ArrowRight, Play, Users, BarChart2, Award, Target, CheckCircle, TrendingUp, Brain } from 'lucide-react';
 const HomePage = () => {
   const { t } = useTranslation();
 
