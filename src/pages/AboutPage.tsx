@@ -199,85 +199,79 @@ const AboutPage = () => {
       </section>
 
       {/* Values Section */}
-      <section className="py-24 bg-gradient-to-b from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 relative overflow-hidden">
-        {/* Background decoration */}
-        <div className="absolute inset-0 opacity-5">
-          <div className="absolute top-20 left-10 w-72 h-72 bg-primary-500 rounded-full blur-3xl" />
-          <div className="absolute bottom-20 right-10 w-96 h-96 bg-primary-400 rounded-full blur-3xl" />
-        </div>
+<section className="py-24 bg-gradient-to-b from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 relative overflow-hidden">
+  {/* Background decoration */}
+  <div className="absolute inset-0 opacity-5">
+    <div className="absolute top-20 left-10 w-72 h-72 bg-primary-500 rounded-full blur-3xl" />
+    <div className="absolute bottom-20 right-10 w-96 h-96 bg-primary-400 rounded-full blur-3xl" />
+  </div>
 
-        <div className="container-custom relative z-10">
-          <motion.div
-            className="text-center max-w-3xl mx-auto mb-16"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
-          >
-            <div className="inline-flex items-center gap-2 bg-primary-500/10 border border-primary-500/30 px-4 py-2 rounded-full mb-6">
-              <Heart className="w-4 h-4 text-primary-500" />
-              <span className="text-primary-500 font-semibold text-sm">NOSSOS VALORES</span>
-            </div>
+  <div className="container-custom relative z-10">
+    <motion.div
+      className="text-center max-w-3xl mx-auto mb-16"
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      viewport={{ once: true }}
+    >
+      <div className="inline-flex items-center gap-2 bg-primary-500/10 border border-primary-500/30 px-4 py-2 rounded-full mb-6">
+        <Heart className="w-4 h-4 text-primary-500" />
+        <span className="text-primary-500 font-semibold text-sm">NOSSOS VALORES</span>
+      </div>
 
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              Princípios que nos guiam
-            </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-300">
-              Os valores que norteiam nossas decisões e moldam nossa cultura todos os dias.
-            </p>
-          </motion.div>
+      <h2 className="text-4xl md:text-5xl font-bold mb-6">
+        Princípios que nos guiam
+      </h2>
+      <p className="text-xl text-gray-600 dark:text-gray-300">
+        Os valores que norteiam nossas decisões e moldam nossa cultura todos os dias.
+      </p>
+    </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[
-              {
-                icon: Rocket,
-                title: 'Inovação Constante',
-                description: 'Buscamos sempre as melhores práticas e tecnologias para ajudar nossos usuários a alcançarem seus objetivos.',
-                color: 'from-blue-500 to-cyan-500',
-                delay: 0.1
-              },
-              {
-                icon: Users,
-                title: 'Comunidade em Primeiro Lugar',
-                description: 'Construímos um ambiente colaborativo onde todos podem aprender, crescer e se conectar.',
-                color: 'from-purple-500 to-pink-500',
-                delay: 0.2
-              },
-              {
-                icon: Target,
-                title: 'Foco em Resultados',
-                description: 'Comprometidos com o sucesso dos empreendedores que confiam em nossa plataforma.',
-                color: 'from-green-500 to-emerald-500',
-                delay: 0.3
-              },
-              {
-                icon: Shield,
-                title: 'Transparência Total',
-                description: 'Mantemos comunicação clara e honesta com nossa comunidade em todas as situações.',
-                color: 'from-orange-500 to-red-500',
-                delay: 0.4
-              },
-              {
-                icon: Lightbulb,
-                title: 'Aprendizado Contínuo',
-                description: 'Incentivamos a evolução constante através de experimentação e compartilhamento de conhecimento.',
-                color: 'from-yellow-500 to-amber-500',
-                delay: 0.5
-              },
-              {
-                icon: TrendingUp,
-                title: 'Crescimento Sustentável',
-                description: 'Priorizamos o crescimento saudável e de longo prazo para nossa comunidade e parceiros.',
-                color: 'from-indigo-500 to-blue-500',
-                delay: 0.6
-              }
-            ].map((value, index) => (
-              <ValueCard key={index} {...value} />
-            ))}
-          </div>
-        </div>
-      </section>
-
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {[
+        {
+          icon: Rocket,
+          title: 'Inovação Constante',
+          description: 'Buscamos sempre as melhores práticas e tecnologias para ajudar nossos usuários a alcançarem seus objetivos.',
+          delay: 0.1
+        },
+        {
+          icon: Users,
+          title: 'Comunidade em Primeiro Lugar',
+          description: 'Construímos um ambiente colaborativo onde todos podem aprender, crescer e se conectar.',
+          delay: 0.2
+        },
+        {
+          icon: Target,
+          title: 'Foco em Resultados',
+          description: 'Comprometidos com o sucesso dos empreendedores que confiam em nossa plataforma.',
+          delay: 0.3
+        },
+        {
+          icon: Shield,
+          title: 'Transparência Total',
+          description: 'Mantemos comunicação clara e honesta com nossa comunidade em todas as situações.',
+          delay: 0.4
+        },
+        {
+          icon: Lightbulb,
+          title: 'Aprendizado Contínuo',
+          description: 'Incentivamos a evolução constante através de experimentação e compartilhamento de conhecimento.',
+          delay: 0.5
+        },
+        {
+          icon: TrendingUp,
+          title: 'Crescimento Sustentável',
+          description: 'Priorizamos o crescimento saudável e de longo prazo para nossa comunidade e parceiros.',
+          delay: 0.6
+        }
+      ].map((value, index) => (
+        <ValueCard key={index} {...value} />
+      ))}
+    </div>
+  </div>
+</section>
+      
       {/* Team Section */}
       <section className="py-24 bg-white dark:bg-gray-900">
         <div className="container-custom">
@@ -303,21 +297,21 @@ const AboutPage = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <TeamMember
-              name="Ana Silva"
-              role="CEO & Fundadora"
+              name="Fernando Ramalho"
+              role="CEO & Fundador"
               image="https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-              bio="Empreendedora serial com 15 anos de experiência em startups e inovação."
+              bio="Formado em administração, Marketing, Inovação, Criatividade, Neurociência e Aprendizagem"
               delay={0.1}
             />
             <TeamMember
-              name="Carlos Santos"
+              name="Nome"
               role="CTO"
               image="https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
               bio="Especialista em arquitetura de software e desenvolvimento ágil."
               delay={0.2}
             />
             <TeamMember
-              name="Juliana Costa"
+              name="Nome"
               role="Head de Produto"
               image="https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
               bio="Product Manager com foco em UX e metodologias de inovação."
@@ -368,11 +362,10 @@ interface ValueCardProps {
   icon: React.ElementType;
   title: string;
   description: string;
-  color: string;
   delay: number;
 }
 
-const ValueCard = ({ icon: Icon, title, description, color, delay }: ValueCardProps) => {
+const ValueCard = ({ icon: Icon, title, description, delay }: ValueCardProps) => {
   return (
     <motion.div
       className="group relative bg-white dark:bg-gray-800 p-8 rounded-2xl border-2 border-gray-200 dark:border-gray-700 hover:border-primary-500 dark:hover:border-primary-500 transition-all duration-300 hover:shadow-2xl hover:shadow-primary-500/10"
@@ -382,10 +375,15 @@ const ValueCard = ({ icon: Icon, title, description, color, delay }: ValueCardPr
       transition={{ delay }}
       whileHover={{ y: -8 }}
     >
-      <div className={`w-16 h-16 bg-gradient-to-br ${color} rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
-        <Icon className="w-8 h-8 text-white" />
+      {/* Icon with black background */}
+      <div className="relative w-16 h-16 bg-black rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg">
+        <div className="absolute inset-0 bg-primary-500/20 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        <Icon className="relative w-8 h-8 text-primary-500" />
       </div>
-      <h3 className="text-xl font-bold mb-3">{title}</h3>
+
+      <h3 className="text-xl font-bold mb-3 group-hover:text-primary-500 transition-colors">
+        {title}
+      </h3>
       <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
         {description}
       </p>
