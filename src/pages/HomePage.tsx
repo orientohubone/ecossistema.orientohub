@@ -152,12 +152,7 @@ const HomePage = () => {
             <p className="text-sm text-gray-400">
               {feature.description}
            </p>
-          </motion.div>
-        ))}
-      </div>
-    </div>
-  </div>
-</section>
+          </motion.p>
 
       {/* Feature cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-20 max-w-4xl mx-auto">
@@ -204,20 +199,6 @@ const HomePage = () => {
       </div>
     </div>
   </div>
-
-  <style jsx>{`
-    @keyframes gradient {
-      0%, 100% {
-        background-position: 0% 50%;
-      }
-      50% {
-        background-position: 100% 50%;
-      }
-    }
-    .animate-gradient {
-      animation: gradient 3s ease infinite;
-    }
-  `}</style>
 </section>
 
       {/* Features Section */}
