@@ -1,8 +1,40 @@
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Sparkles, Rocket, Zap, ArrowRight, Play, Users, BarChart2, Award, Target, CheckCircle, TrendingUp, Brain } from 'lucide-react';
+
+// Componente de texto rotativo -->>
+      
+const RotatingText = () => {
+  const words = ['metodologia', 'inovação', 'tecnologia', 'agilidade'];
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isAnimating, setIsAnimating] = useState(false);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIsAnimating(true);
+      setTimeout(() => {
+        setCurrentIndex((prev) => (prev + 1) % words.length);
+        setIsAnimating(false);
+      }, 500);
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <span
+      className={`block bg-gradient-to-r from-primary-400 via-primary-500 to-primary-600 bg-clip-text text-transparent transition-all duration-500 ${
+        isAnimating ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'
+      }`}
+    >
+      com {words[currentIndex]}
+    </span>
+  );
+};
+
 const HomePage = () => {
   const { t } = useTranslation();
 
@@ -47,22 +79,20 @@ const HomePage = () => {
       </motion.div>
 
       {/* Main heading */}
-      <motion.h1
-        className="text-5xl sm:text-6xl lg:text-7xl font-bold text-center mb-6 tracking-tight"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 0.2 }}
-      >
-        <span className="block text-white mb-2">
-          Construa sua startup
-        </span>
-        <span className="block bg-gradient-to-r from-primary-400 via-primary-500 to-primary-600 bg-clip-text text-transparent animate-gradient">
-          com metodologia
-        </span>
-        <span className="block text-white mt-2">
-          e diversão
-        </span>
-      </motion.h1>
+<motion.h1
+  className="text-5xl sm:text-6xl lg:text-7xl font-bold text-center mb-6 tracking-tight leading-relaxed pb-2"
+  initial={{ opacity: 0, y: 20 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.8, delay: 0.2 }}
+>
+  <span className="block text-white mb-2">
+    Construa sua startup
+  </span>
+  <RotatingText />
+  <span className="block text-white mt-2">
+    e diversão
+  </span>
+</motion.h1>
 
       {/* Description */}
       <motion.p
