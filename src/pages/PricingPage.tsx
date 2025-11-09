@@ -375,11 +375,24 @@ const PricingCard = ({ plan, isAnnual, delay }: PricingCardProps) => {
         </div>
       )}
 
-      {/* Icon */}
+      {/* Icon - Floating and Interactive */}
       <div className="flex items-center justify-between mb-6">
-        <div className={`w-16 h-16 bg-gradient-to-br ${plan.color} rounded-2xl flex items-center justify-center shadow-lg`}>
-          <Icon className="w-8 h-8 text-white" />
-        </div>
+        <motion.div
+          className="relative group"
+          whileHover={{ scale: 1.1, rotate: 5 }}
+          transition={{ type: "spring", stiffness: 300 }}
+        >
+          {/* Glow effect */}
+          <div className={`absolute inset-0 bg-gradient-to-br ${plan.color} rounded-full blur-xl opacity-0 group-hover:opacity-50 transition-opacity duration-300`} />
+          
+          {/* Icon */}
+          <Icon className={`relative w-12 h-12 bg-gradient-to-br ${plan.color} bg-clip-text text-transparent group-hover:scale-110 transition-transform duration-300`} 
+            style={{ 
+              filter: 'drop-shadow(0 0 8px rgba(255, 215, 0, 0.3))'
+            }}
+          />
+        </motion.div>
+        
         {!plan.featured && (
           <span className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase">
             {plan.tagline}
