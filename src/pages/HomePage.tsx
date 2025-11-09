@@ -26,7 +26,7 @@ const RotatingText = () => {
 
   return (
     <span
-      className={`block bg-gradient-to-r from-primary-400 via-primary-500 to-primary-600 bg-clip-text text-transparent transition-all duration-500 ${
+      className={`inline-block bg-gradient-to-r from-primary-400 via-primary-500 to-primary-600 bg-clip-text text-transparent transition-all duration-500 py-1 ${
         isAnimating ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'
       }`}
     >
@@ -80,7 +80,7 @@ const HomePage = () => {
 
       {/* Main heading */}
 <motion.h1
-  className="text-5xl sm:text-6xl lg:text-7xl font-bold text-center mb-6 tracking-tight leading-relaxed pb-2"
+  className="text-5xl sm:text-6xl lg:text-7xl font-bold text-center mb-6 tracking-tight"
   initial={{ opacity: 0, y: 20 }}
   animate={{ opacity: 1, y: 0 }}
   transition={{ duration: 0.8, delay: 0.2 }}
