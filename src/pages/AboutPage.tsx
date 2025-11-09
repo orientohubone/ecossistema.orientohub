@@ -1,3 +1,4 @@
+import fernandoRamalhoImg from '../assets/fernando-ramalho.jpg';
 import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
@@ -317,7 +318,7 @@ const AboutPage = () => {
             <div className="relative group">
               <div className="absolute inset-0 bg-primary-500 rounded-full blur-2xl opacity-40 group-hover:opacity-60 transition-opacity duration-300" />
               <img
-                src="/fernando-ramalho.jpg"
+                src={fernandoRamalhoImg}
                 alt="Fernando Ramalho"
                 className="relative w-48 h-48 md:w-56 md:h-56 rounded-full object-cover border-4 border-primary-500 shadow-2xl"
               />
