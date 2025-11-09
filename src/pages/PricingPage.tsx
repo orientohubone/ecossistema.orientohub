@@ -2,21 +2,35 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
-import { Check, X } from 'lucide-react';
+import { 
+  Check, 
+  Sparkles, 
+  Rocket, 
+  TrendingUp, 
+  Zap,
+  Award,
+  Shield,
+  Users,
+  ChevronDown,
+  Star
+} from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const PricingPage = () => {
   const { t } = useTranslation();
   const [isAnnual, setIsAnnual] = useState(false);
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   const plans = [
     {
-      name: t('pricing.free.name'),
-      description: t('pricing.free.description'),
+      name: 'Free',
+      tagline: 'Para começar',
+      description: 'Perfeito para founders explorando ideias',
       price: {
-        monthly: 'R$ 0',
-        annual: 'R$ 0',
+        monthly: 0,
+        annual: 0,
       },
+      icon: Rocket,
       features: [
         'Acesso a frameworks básicos',
         'Comunidade gratuita',
@@ -24,24 +38,22 @@ const PricingPage = () => {
         '1 projeto ativo',
         'Suporte via comunidade',
       ],
-      limitations: [
-        'Sem acesso a templates premium',
-        'Sem mentorias exclusivas',
-        'Sem integrações avançadas',
-      ],
-      cta: t('pricing.free.cta'),
+      cta: 'Começar Grátis',
       href: '/cadastro',
       featured: false,
+      color: 'from-blue-500 to-cyan-500',
     },
     {
-      name: t('pricing.pro.name'),
-      description: t('pricing.pro.description'),
+      name: 'Pro',
+      tagline: 'Mais popular',
+      description: 'Para founders sérios sobre crescimento',
       price: {
-        monthly: 'R$ 97',
-        annual: 'R$ 970',
+        monthly: 97,
+        annual: 970,
       },
+      icon: TrendingUp,
       features: [
-        'Todos os recursos do plano Free',
+        'Tudo do plano Free',
         'Frameworks avançados',
         'Templates premium',
         'Projetos ilimitados',
@@ -50,19 +62,22 @@ const PricingPage = () => {
         'Suporte prioritário',
         'Networking exclusivo',
       ],
-      cta: t('pricing.pro.cta'),
+      cta: 'Começar Teste Grátis',
       href: '/checkout?plan=pro',
       featured: true,
+      color: 'from-primary-400 to-primary-600',
     },
     {
-      name: t('pricing.enterprise.name'),
-      description: t('pricing.enterprise.description'),
+      name: 'Enterprise',
+      tagline: 'Solução completa',
+      description: 'Para aceleradoras e corporates',
       price: {
-        monthly: t('pricing.enterprise.price'),
-        annual: t('pricing.enterprise.price'),
+        monthly: 'Custom',
+        annual: 'Custom',
       },
+      icon: Award,
       features: [
-        'Todos os recursos do plano Pro',
+        'Tudo do plano Pro',
         'Onboarding dedicado',
         'Customer Success exclusivo',
         'API personalizada',
@@ -71,169 +86,397 @@ const PricingPage = () => {
         'SLA garantido',
         'Customizações específicas',
       ],
-      cta: t('pricing.enterprise.cta'),
+      cta: 'Falar com Vendas',
       href: '/contato',
       featured: false,
+      color: 'from-purple-500 to-pink-500',
     },
+  ];
+
+  const faqs = [
+    {
+      question: 'Posso mudar de plano depois?',
+      answer: 'Sim! Você pode fazer upgrade ou downgrade do seu plano a qualquer momento. As mudanças serão refletidas imediatamente e ajustaremos o valor proporcional na sua próxima fatura.'
+    },
+    {
+      question: 'Como funciona o período de teste?',
+      answer: 'Oferecemos 14 dias de teste gratuito no plano Pro, sem necessidade de cartão de crédito. Você terá acesso completo a todas as funcionalidades premium durante este período.'
+    },
+    {
+      question: 'Quais formas de pagamento são aceitas?',
+      answer: 'Aceitamos cartões de crédito (Visa, Mastercard, American Express, Elo), PIX e boleto bancário para pagamentos no Brasil. Para planos Enterprise, também oferecemos faturamento.'
+    },
+    {
+      question: 'Há taxa de cancelamento?',
+      answer: 'Não! Você pode cancelar sua assinatura a qualquer momento, sem multas ou taxas. Seu acesso continuará ativo até o final do período pago.'
+    },
+    {
+      question: 'Vocês oferecem desconto para startups early-stage?',
+      answer: 'Sim! Temos um programa especial para startups pré-seed e seed. Entre em contato conosco para saber mais sobre condições especiais.'
+    }
   ];
 
   return (
     <>
       <Helmet>
-        <title>{t('pricing.title')} | Orientohub</title>
-        <meta name="description" content={t('pricing.subtitle')} />
+        <title>Planos e Preços - Orientohub</title>
+        <meta name="description" content="Escolha o plano perfeito para acelerar sua startup. Comece grátis ou desbloqueie recursos premium." />
       </Helmet>
 
-      <div className="py-20 bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 page-background-lines">
-        <div className="container-custom">
-          {/* Header */}
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              <h1 className="text-4xl md:text-5xl font-bold mb-6">{t('pricing.title')}</h1>
-              <p className="text-xl text-gray-600 dark:text-gray-300 mb-8">{t('pricing.subtitle')}</p>
+      {/* Hero Section */}
+      <section className="relative min-h-[70vh] w-full overflow-hidden bg-gradient-to-br from-black via-gray-900 to-black flex items-center">
+        {/* Animated background */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary-500/20 rounded-full blur-3xl animate-pulse" />
+          <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-primary-400/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1000ms' }} />
+        </div>
 
-              {/* Billing Toggle */}
-              <div className="flex items-center justify-center space-x-4">
-                <span className={`text-sm ${!isAnnual ? 'text-gray-900 dark:text-white font-medium' : 'text-gray-500 dark:text-gray-400'}`}>
-                  {t('pricing.monthly')}
-                </span>
-                <button
-                  type="button"
-                  className="relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 bg-gray-200 dark:bg-gray-700"
-                  role="switch"
-                  aria-checked={isAnnual}
-                  onClick={() => setIsAnnual(!isAnnual)}
-                >
-                  <span
-                    aria-hidden="true"
-                    className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
-                      isAnnual ? 'translate-x-5' : 'translate-x-0'
-                    }`}
-                  />
-                </button>
-                <span className={`text-sm ${isAnnual ? 'text-gray-900 dark:text-white font-medium' : 'text-gray-500 dark:text-gray-400'}`}>
-                  {t('pricing.yearly')}
-                  <span className="ml-2 inline-flex items-center rounded-full bg-green-100 dark:bg-green-900 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:text-green-200">
-                    {t('pricing.savePercent', { percent: 20 })}
-                  </span>
-                </span>
-              </div>
-            </motion.div>
-          </div>
+        {/* Grid pattern */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute inset-0" style={{
+            backgroundImage: 'radial-gradient(circle at 2px 2px, #FFD700 1px, transparent 0)',
+            backgroundSize: '40px 40px'
+          }} />
+        </div>
 
-          {/* Pricing Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {plans.map((plan, index) => (
-              <motion.div
-                key={plan.name}
-                className={`relative rounded-2xl pricing-card ${
-                  plan.featured
-                    ? 'bg-primary-500 text-black'
-                    : 'bg-white dark:bg-gray-800 text-gray-900 dark:text-white'
-                } shadow-xl`}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-              >
-                {plan.featured && (
-                  <div className="absolute -top-5 left-0 right-0 flex justify-center">
-                    <span className="inline-flex items-center rounded-full bg-black px-4 py-1 text-sm font-medium text-white">
-                      Mais popular
-                    </span>
-                  </div>
-                )}
-                <div className="p-8">
-                  <h3 className="text-2xl font-bold">{plan.name}</h3>
-                  <p className={`mt-2 ${plan.featured ? 'text-black/80' : 'text-gray-500 dark:text-gray-400'}`}>
-                    {plan.description}
-                  </p>
-                  <p className="mt-6">
-                    <span className="text-4xl font-bold">{isAnnual ? plan.price.annual : plan.price.monthly}</span>
-                    {plan.name !== 'Enterprise' && (
-                      <span className={plan.featured ? 'text-black/80' : 'text-gray-500 dark:text-gray-400'}>
-                        {t('pricing.free.period')}
-                      </span>
-                    )}
-                  </p>
-
-                  <ul className="mt-8 space-y-4">
-                    {plan.features.map((feature) => (
-                      <li key={feature} className="flex items-start">
-                        <Check className={`h-5 w-5 flex-shrink-0 ${plan.featured ? 'text-black' : 'text-primary-500'}`} />
-                        <span className="ml-3">{feature}</span>
-                      </li>
-                    ))}
-                    {plan.limitations?.map((limitation) => (
-                      <li key={limitation} className="flex items-start">
-                        <X className="h-5 w-5 flex-shrink-0 text-gray-400 dark:text-gray-500" />
-                        <span className="ml-3 text-gray-500 dark:text-gray-400">{limitation}</span>
-                      </li>
-                    ))}
-                  </ul>
-
-                  <div className="mt-8">
-                    <Link
-                      to={plan.href}
-                      className={`block w-full rounded-lg px-4 py-2 text-center text-sm font-semibold transition-colors ${
-                        plan.featured
-                          ? 'bg-black text-white hover:bg-gray-900'
-                          : 'bg-primary-500 text-black hover:bg-primary-600'
-                      }`}
-                    >
-                      {plan.cta}
-                    </Link>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-
-          {/* FAQ Section */}
+        <div className="container-custom relative z-10 py-20">
           <motion.div
-            className="mt-20"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
+            className="max-w-4xl mx-auto text-center"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
           >
-            <div className="text-center max-w-3xl mx-auto">
-              <h2 className="text-3xl font-bold mb-6">Perguntas Frequentes</h2>
-              <div className="grid gap-8 mt-8">
-                <FaqItem
-                  question="Posso mudar de plano depois?"
-                  answer="Sim, você pode fazer upgrade ou downgrade do seu plano a qualquer momento. As mudanças serão refletidas na sua próxima fatura."
-                />
-                <FaqItem
-                  question="Como funciona o período gratuito?"
-                  answer="Oferecemos 14 dias de teste gratuito nos planos pagos, sem compromisso. Você pode cancelar a qualquer momento durante este período."
-                />
-                <FaqItem
-                  question="Quais formas de pagamento são aceitas?"
-                  answer="Aceitamos cartões de crédito (Visa, Mastercard, American Express) e PIX para pagamentos no Brasil."
-                />
-              </div>
+            <motion.div
+              className="inline-flex items-center gap-2 bg-primary-500/20 border-2 border-primary-500/40 px-5 py-2 rounded-full mb-8 backdrop-blur-sm"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.2 }}
+            >
+              <Sparkles className="w-4 h-4 text-primary-500" />
+              <span className="text-primary-500 font-bold text-sm uppercase tracking-wide">
+                Planos e Preços
+              </span>
+            </motion.div>
+
+            <h1 className="text-5xl md:text-7xl font-bold mb-8 text-white leading-tight">
+              Escolha o plano{' '}
+              <span className="bg-gradient-to-r from-primary-400 via-primary-500 to-primary-600 bg-clip-text text-transparent">
+                perfeito
+              </span>
+              {' '}para você
+            </h1>
+
+            <p className="text-xl md:text-2xl text-gray-300 mb-12 leading-relaxed">
+              Comece grátis e escale conforme sua startup cresce
+            </p>
+
+            {/* Billing Toggle */}
+            <div className="flex items-center justify-center gap-4 bg-white/5 backdrop-blur-sm border border-primary-500/20 rounded-full p-2 max-w-md mx-auto">
+              <button
+                onClick={() => setIsAnnual(false)}
+                className={`px-6 py-3 rounded-full font-semibold transition-all duration-300 ${
+                  !isAnnual
+                    ? 'bg-primary-500 text-black shadow-lg'
+                    : 'text-gray-400 hover:text-white'
+                }`}
+              >
+                Mensal
+              </button>
+              <button
+                onClick={() => setIsAnnual(true)}
+                className={`px-6 py-3 rounded-full font-semibold transition-all duration-300 flex items-center gap-2 ${
+                  isAnnual
+                    ? 'bg-primary-500 text-black shadow-lg'
+                    : 'text-gray-400 hover:text-white'
+                }`}
+              >
+                Anual
+                <span className="bg-green-500 text-white text-xs px-2 py-1 rounded-full">
+                  -20%
+                </span>
+              </button>
             </div>
           </motion.div>
         </div>
-      </div>
+      </section>
+
+      {/* Pricing Cards */}
+      <section className="py-24 bg-gradient-to-b from-white via-gray-50 to-white dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 relative overflow-hidden">
+        {/* Background decoration */}
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute top-20 left-10 w-72 h-72 bg-primary-500 rounded-full blur-3xl" />
+          <div className="absolute bottom-20 right-10 w-96 h-96 bg-primary-400 rounded-full blur-3xl" />
+        </div>
+
+        <div className="container-custom relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+            {plans.map((plan, index) => (
+              <PricingCard
+                key={plan.name}
+                plan={plan}
+                isAnnual={isAnnual}
+                delay={index * 0.1}
+              />
+            ))}
+          </div>
+
+          {/* Trust badges */}
+          <motion.div
+            className="mt-20 max-w-4xl mx-auto"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.4 }}
+          >
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+              {[
+                { icon: Shield, text: 'Pagamento Seguro' },
+                { icon: Zap, text: 'Ativação Instantânea' },
+                { icon: Users, text: '500+ Founders' },
+                { icon: Star, text: '4.9/5 Avaliação' }
+              ].map((badge, index) => (
+                <div key={index} className="flex flex-col items-center gap-2 p-4 bg-white dark:bg-gray-800 rounded-xl border-2 border-gray-200 dark:border-gray-700">
+                  <badge.icon className="w-8 h-8 text-primary-500" />
+                  <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                    {badge.text}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="py-24 bg-white dark:bg-gray-900">
+        <div className="container-custom">
+          <motion.div
+            className="text-center max-w-3xl mx-auto mb-16"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <div className="inline-flex items-center gap-2 bg-primary-500/10 border border-primary-500/30 px-4 py-2 rounded-full mb-6">
+              <Sparkles className="w-4 h-4 text-primary-500" />
+              <span className="text-primary-500 font-semibold text-sm">PERGUNTAS FREQUENTES</span>
+            </div>
+
+            <h2 className="text-4xl md:text-5xl font-bold mb-6">
+              Dúvidas sobre os planos?
+            </h2>
+            <p className="text-xl text-gray-600 dark:text-gray-300">
+              Encontre respostas para as perguntas mais comuns
+            </p>
+          </motion.div>
+
+          <div className="max-w-3xl mx-auto space-y-4">
+            {faqs.map((faq, index) => (
+              <FaqItem
+                key={index}
+                question={faq.question}
+                answer={faq.answer}
+                isOpen={openFaq === index}
+                onClick={() => setOpenFaq(openFaq === index ? null : index)}
+                delay={index * 0.1}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Final CTA */}
+      <section className="relative py-24 bg-gradient-to-br from-black via-gray-900 to-black overflow-hidden">
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute inset-0" style={{
+            backgroundImage: 'radial-gradient(circle at 2px 2px, #FFD700 1px, transparent 0)',
+            backgroundSize: '40px 40px'
+          }} />
+        </div>
+
+        <div className="container-custom relative z-10">
+          <motion.div
+            className="text-center max-w-3xl mx-auto"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white">
+              Ainda tem dúvidas?
+            </h2>
+            <p className="text-xl text-gray-300 mb-8">
+              Fale com nosso time e descubra qual plano é ideal para sua startup
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link
+                to="/cadastro"
+                className="inline-flex items-center gap-3 px-10 py-5 bg-primary-500 hover:bg-primary-600 text-black font-bold text-xl rounded-xl shadow-2xl shadow-primary-500/30 hover:shadow-primary-500/50 hover:scale-105 transition-all duration-300"
+              >
+                <Rocket className="w-6 h-6" />
+                Começar Grátis
+              </Link>
+              <Link
+                to="/contato"
+                className="inline-flex items-center gap-2 px-8 py-5 border-2 border-primary-500/50 hover:border-primary-500 text-primary-500 font-bold text-lg rounded-xl backdrop-blur-sm hover:bg-primary-500/10 transition-all duration-300"
+              >
+                Falar com Vendas
+              </Link>
+            </div>
+          </motion.div>
+        </div>
+      </section>
     </>
   );
 };
 
+// Pricing Card Component
+interface PricingCardProps {
+  plan: {
+    name: string;
+    tagline: string;
+    description: string;
+    price: {
+      monthly: number | string;
+      annual: number | string;
+    };
+    icon: React.ElementType;
+    features: string[];
+    cta: string;
+    href: string;
+    featured: boolean;
+    color: string;
+  };
+  isAnnual: boolean;
+  delay: number;
+}
+
+const PricingCard = ({ plan, isAnnual, delay }: PricingCardProps) => {
+  const Icon = plan.icon;
+  const price = isAnnual ? plan.price.annual : plan.price.monthly;
+  const displayPrice = typeof price === 'number' ? `R$ ${price}` : price;
+
+  return (
+    <motion.div
+      className={`relative bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 p-8 rounded-3xl border-2 transition-all duration-300 hover:shadow-2xl ${
+        plan.featured
+          ? 'border-primary-500 shadow-xl shadow-primary-500/20 scale-105 lg:scale-110'
+          : 'border-gray-200 dark:border-gray-700 hover:border-primary-500'
+      }`}
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay }}
+      whileHover={{ y: -8 }}
+    >
+      {/* Featured badge */}
+      {plan.featured && (
+        <div className="absolute -top-5 left-1/2 -translate-x-1/2 bg-primary-500 text-black px-6 py-2 rounded-full font-bold text-sm shadow-lg flex items-center gap-2">
+          <Star className="w-4 h-4 fill-current" />
+          {plan.tagline}
+        </div>
+      )}
+
+      {/* Icon */}
+      <div className="flex items-center justify-between mb-6">
+        <div className={`w-16 h-16 bg-gradient-to-br ${plan.color} rounded-2xl flex items-center justify-center shadow-lg`}>
+          <Icon className="w-8 h-8 text-white" />
+        </div>
+        {!plan.featured && (
+          <span className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase">
+            {plan.tagline}
+          </span>
+        )}
+      </div>
+
+      {/* Plan info */}
+      <h3 className="text-3xl font-bold mb-2">{plan.name}</h3>
+      <p className="text-gray-600 dark:text-gray-400 mb-6">
+        {plan.description}
+      </p>
+
+      {/* Price */}
+      <div className="mb-8">
+        <div className="flex items-baseline gap-2">
+          <span className="text-5xl font-bold text-gray-900 dark:text-white">
+            {displayPrice}
+          </span>
+          {typeof price === 'number' && (
+            <span className="text-gray-500 dark:text-gray-400">
+              /{isAnnual ? 'ano' : 'mês'}
+            </span>
+          )}
+        </div>
+        {isAnnual && typeof price === 'number' && (
+          <p className="text-sm text-primary-500 font-medium mt-2">
+            Economize R$ {(plan.price.monthly as number) * 12 - (plan.price.annual as number)} por ano
+          </p>
+        )}
+      </div>
+
+      {/* Features */}
+      <ul className="space-y-4 mb-8">
+        {plan.features.map((feature, index) => (
+          <li key={index} className="flex items-start gap-3">
+            <Check className="w-5 h-5 text-primary-500 flex-shrink-0 mt-0.5" />
+            <span className="text-gray-700 dark:text-gray-300">{feature}</span>
+          </li>
+        ))}
+      </ul>
+
+      {/* CTA */}
+      <Link
+        to={plan.href}
+        className={`block w-full text-center px-6 py-4 rounded-xl font-bold transition-all duration-300 ${
+          plan.featured
+            ? 'bg-primary-500 hover:bg-primary-600 text-black shadow-lg shadow-primary-500/30'
+            : 'bg-gray-900 dark:bg-white hover:bg-gray-800 dark:hover:bg-gray-100 text-white dark:text-black'
+        }`}
+      >
+        {plan.cta}
+      </Link>
+    </motion.div>
+  );
+};
+
+// FAQ Item Component
 interface FaqItemProps {
   question: string;
   answer: string;
+  isOpen: boolean;
+  onClick: () => void;
+  delay: number;
 }
 
-const FaqItem = ({ question, answer }: FaqItemProps) => {
+const FaqItem = ({ question, answer, isOpen, onClick, delay }: FaqItemProps) => {
   return (
-    <div className="text-left">
-      <h3 className="text-lg font-semibold mb-2">{question}</h3>
-      <p className="text-gray-600 dark:text-gray-300">{answer}</p>
-    </div>
+    <motion.div
+      className="bg-white dark:bg-gray-800 rounded-xl border-2 border-gray-200 dark:border-gray-700 hover:border-primary-500 dark:hover:border-primary-500 transition-all duration-300 overflow-hidden"
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay }}
+    >
+      <button
+        onClick={onClick}
+        className="w-full flex items-center justify-between p-6 text-left"
+      >
+        <h3 className="text-lg font-bold pr-8">{question}</h3>
+        <ChevronDown
+          className={`w-5 h-5 text-primary-500 flex-shrink-0 transition-transform duration-300 ${
+            isOpen ? 'rotate-180' : ''
+          }`}
+        />
+      </button>
+      <motion.div
+        initial={false}
+        animate={{ height: isOpen ? 'auto' : 0 }}
+        transition={{ duration: 0.3 }}
+        className="overflow-hidden"
+      >
+        <p className="px-6 pb-6 text-gray-600 dark:text-gray-300 leading-relaxed">
+          {answer}
+        </p>
+      </motion.div>
+    </motion.div>
   );
 };
 
