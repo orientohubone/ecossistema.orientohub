@@ -16,31 +16,22 @@ import {
   TrendingUp,
   MessageSquare,
   FlaskConical,
-  ClipboardCheck,
   Calendar,
   Clock,
   Eye,
-  Edit,
   Trash2,
-  ArrowRight,
   CheckCircle,
   AlertTriangle,
-  FileText,
   BarChart2,
-  Flame,
-  Award,
-  RefreshCw,
-  Play,
-  Zap,
-  ChevronRight,
-  Shield,
-  Layers,
-  Database,
-  Code,
-  ExternalLink,
-  Send
+  Bug,
+  Flag
 } from 'lucide-react';
-import KanbanBoard from '../components/projects/KanbanBoard';  // ← Adicionado esta linha
+
+// Imports dos componentes do projeto
+import KanbanBoard from '../components/projects/KanbanBoard';
+import ExperimentsList from '../components/projects/ExperimentsList';
+import InterviewsList from '../components/projects/InterviewsList';
+import ValidationChecklist from '../components/projects/ValidationChecklist';
 
 interface Project {
   id: string;
@@ -53,7 +44,6 @@ interface Project {
   experiments: Experiment[];
   interviews: Interview[];
   tasks: Task[];
-  // Métricas de validação
   validation_score: number;
   customer_interviews: number;
   validated_assumptions: number;
@@ -122,7 +112,7 @@ const ProjectsPage = () => {
   }, []);
 
   const loadProjects = () => {
-    // Mock data - Em produção viria do Supabase
+    // Mock data
     const mockProjects: Project[] = [
       {
         id: '1',
@@ -199,6 +189,14 @@ const ProjectsPage = () => {
             status: 'done',
             dueDate: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
             priority: 'medium'
+          },
+          {
+            id: 'task3',
+            title: 'Analisar concorrentes',
+            description: 'Mapear 5 principais concorrentes',
+            status: 'todo',
+            dueDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+            priority: 'medium'
           }
         ]
       }
@@ -242,11 +240,22 @@ const ProjectsPage = () => {
   const handleDeleteProject = (id: string) => {
     if (!confirm('Tem certeza que deseja excluir este projeto?')) return;
     setProjects(projects.filter(p => p.id !== id));
+    if (selectedProject?.id === id) {
+      setShowDetailsModal(false);
+      setSelectedProject(null);
+    }
   };
 
   const handleViewDetails = (project: Project) => {
     setSelectedProject(project);
     setShowDetailsModal(true);
+  };
+
+  const handleUpdateProject = (updatedProject: Project) => {
+    setProjects(projects.map(p => 
+      p.id === updatedProject.id ? updatedProject : p
+    ));
+    setSelectedProject(updatedProject);
   };
 
   const getStageInfo = (stage: Project['stage']) => {
@@ -516,6 +525,7 @@ const ProjectsPage = () => {
           getStageInfo={getStageInfo}
           getValidationHealthColor={getValidationHealthColor}
           getValidationHealthLabel={getValidationHealthLabel}
+          onUpdate={handleUpdateProject}
         />
       )}
     </>
@@ -666,7 +676,7 @@ const ProjectCard = ({
   );
 };
 
-// Add Project Modal (simplificado - você pode expandir)
+// Add Project Modal
 interface AddProjectModalProps {
   show: boolean;
   onClose: () => void;
@@ -772,7 +782,7 @@ const AddProjectModal = ({ show, onClose, newProject, setNewProject, onSave }: A
   );
 };
 
-// Project Details Modal (simplificado)
+// Project Details Modal
 interface ProjectDetailsModalProps {
   project: Project;
   show: boolean;
@@ -780,12 +790,31 @@ interface ProjectDetailsModalProps {
   getStageInfo: (stage: Project['stage']) => any;
   getValidationHealthColor: (score: number) => string;
   getValidationHealthLabel: (score: number) => string;
+  onUpdate: (updatedProject: Project) => void;
 }
 
-const ProjectDetailsModal = ({ project, show, onClose, getStageInfo }: ProjectDetailsModalProps) => {
+const ProjectDetailsModal = ({ 
+  project, 
+  show, 
+  onClose,
+  getStageInfo,
+  getValidationHealthColor,
+  getValidationHealthLabel,
+  onUpdate
+}: ProjectDetailsModalProps) => {
+  const [activeTab, setActiveTab] = useState<'overview' | 'kanban' | 'validation' | 'experiments' | 'interviews'>('overview');
+  const [localProject, setLocalProject] = useState(project);
+  
   if (!show) return null;
 
-  const stageInfo = getStageInfo(project.stage);
+  const stageInfo = getStageInfo(localProject.stage);
+  const StageIcon = stageInfo.icon;
+
+  const handleUpdateProject = (updates: Partial<Project>) => {
+    const updatedProject = { ...localProject, ...updates };
+    setLocalProject(updatedProject);
+    onUpdate(updatedProject);
+  };
 
   return (
     <AnimatePresence>
@@ -801,22 +830,193 @@ const ProjectDetailsModal = ({ project, show, onClose, getStageInfo }: ProjectDe
           animate={{ scale: 1 }}
           exit={{ scale: 0.9 }}
           onClick={(e) => e.stopPropagation()}
-          className="bg-white dark:bg-gray-800 rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden border-2 border-gray-200 dark:border-gray-700"
+          className="bg-white dark:bg-gray-800 rounded-2xl max-w-6xl w-full max-h-[90vh] overflow-hidden border-2 border-gray-200 dark:border-gray-700"
         >
-          {/* Header similar ao da Solution Details */}
-          <div className="p-6 border-b border-gray-200 dark:border-gray-700">
-            <div className="flex items-center justify-between">
-              <h2 className="text-2xl font-bold">{project.name}</h2>
-              <button onClick={onClose} className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
-                <X className="w-6 h-6" />
+          {/* Header */}
+          <div className="relative h-32 bg-gradient-to-br from-gray-100 via-gray-50 to-white dark:from-gray-700 dark:via-gray-800 dark:to-gray-900 overflow-hidden border-b-2 border-gray-200 dark:border-gray-700">
+            <div className="absolute inset-0 opacity-40">
+              <div className={`absolute top-0 right-0 w-64 h-64 bg-gradient-to-br ${stageInfo.color} rounded-full blur-3xl`} />
+            </div>
+            
+            <div className="relative z-10 p-6 flex items-start justify-between">
+              <div className="flex items-center gap-4">
+                <div className={`w-14 h-14 ${stageInfo.bgColor} rounded-xl flex items-center justify-center shadow-lg`}>
+                  <StageIcon className={`w-7 h-7 bg-gradient-to-br ${stageInfo.color} bg-clip-text`} style={{ WebkitTextFillColor: 'transparent', backgroundClip: 'text' }} />
+                </div>
+                <div>
+                  <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-1">{localProject.name}</h2>
+                  <p className="text-gray-600 dark:text-gray-400">{localProject.description}</p>
+                </div>
+              </div>
+
+              <button
+                onClick={onClose}
+                className="p-2 hover:bg-white/50 dark:hover:bg-gray-700/50 rounded-lg transition-colors"
+              >
+                <X className="w-6 h-6 text-gray-900 dark:text-white" />
               </button>
             </div>
           </div>
 
-          <div className="p-6 overflow-y-auto max-h-[calc(90vh-100px)]">
-            <p className="text-center text-gray-600 dark:text-gray-400 py-12">
-              Detalhes do projeto em desenvolvimento...
-            </p>
+          {/* Tabs */}
+          <div className="border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50">
+            <div className="flex gap-1 p-2 overflow-x-auto">
+              {[
+                { id: 'overview', label: 'Visão Geral', icon: BarChart2 },
+                { id: 'kanban', label: 'Kanban', icon: CheckSquare },
+                { id: 'validation', label: 'Validação', icon: Target },
+                { id: 'experiments', label: 'Experimentos', icon: FlaskConical },
+                { id: 'interviews', label: 'Entrevistas', icon: MessageSquare }
+              ].map((tab) => {
+                const Icon = tab.icon;
+                return (
+                  <button
+                    key={tab.id}
+                    onClick={() => setActiveTab(tab.id as any)}
+                    className={`flex items-center gap-2 px-4 py-3 rounded-xl font-medium transition-all whitespace-nowrap ${
+                      activeTab === tab.id
+                        ? 'bg-blue-500 text-white shadow-lg'
+                        : 'hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300'
+                    }`}
+                  >
+                    <Icon className="w-5 h-5" />
+                    {tab.label}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Content */}
+          <div className="p-6 overflow-y-auto max-h-[calc(90vh-250px)]">
+            {activeTab === 'overview' && (
+              <div className="space-y-6">
+                {/* Stats Grid */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  {[
+                    { 
+                      label: 'Hipóteses Validadas', 
+                      value: `${localProject.hypotheses.filter(h => h.validated).length}/${localProject.hypotheses.length}`, 
+                      icon: CheckSquare,
+                      color: 'text-green-500',
+                      bgColor: 'bg-green-500/10'
+                    },
+                    { 
+                      label: 'Experimentos', 
+                      value: localProject.experiments.length, 
+                      icon: FlaskConical,
+                      color: 'text-blue-500',
+                      bgColor: 'bg-blue-500/10'
+                    },
+                    { 
+                      label: 'Entrevistas', 
+                      value: localProject.customer_interviews, 
+                      icon: MessageSquare,
+                      color: 'text-purple-500',
+                      bgColor: 'bg-purple-500/10'
+                    },
+                    { 
+                      label: 'Tarefas Concluídas', 
+                      value: `${localProject.tasks.filter(t => t.status === 'done').length}/${localProject.tasks.length}`, 
+                      icon: CheckSquare,
+                      color: 'text-primary-500',
+                      bgColor: 'bg-primary-500/10'
+                    }
+                  ].map((stat, i) => {
+                    const Icon = stat.icon;
+                    return (
+                      <div key={i} className={`p-4 ${stat.bgColor} rounded-xl text-center border-2 border-gray-200 dark:border-gray-700`}>
+                        <Icon className={`w-6 h-6 ${stat.color} mx-auto mb-2`} />
+                        <p className="text-2xl font-bold mb-1">{stat.value}</p>
+                        <p className="text-xs text-gray-600 dark:text-gray-400">{stat.label}</p>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                {/* Validation Health */}
+                <div className="p-6 bg-gradient-to-br from-gray-50 to-white dark:from-gray-700/50 dark:to-gray-800/50 rounded-xl border-2 border-gray-200 dark:border-gray-700">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h3 className="font-bold text-lg mb-2">Saúde da Validação</h3>
+                      <p className={`text-3xl font-bold ${getValidationHealthColor(localProject.validation_score)}`}>
+                        {getValidationHealthLabel(localProject.validation_score)} ({localProject.validation_score}%)
+                      </p>
+                    </div>
+                    <div className="w-32 h-32">
+                      <svg className="transform -rotate-90" viewBox="0 0 36 36">
+                        <path
+                          d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="3"
+                          className="text-gray-200 dark:text-gray-700"
+                        />
+                        <path
+                          d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="3"
+                          strokeDasharray={`${localProject.validation_score}, 100`}
+                          className={getValidationHealthColor(localProject.validation_score)}
+                        />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Progress */}
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <h3 className="font-bold">Progresso Geral</h3>
+                    <span className="text-2xl font-bold text-blue-600 dark:text-blue-400">{localProject.progress}%</span>
+                  </div>
+                  <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-gradient-to-r from-blue-400 to-blue-600 rounded-full transition-all"
+                      style={{ width: `${localProject.progress}%` }}
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {activeTab === 'kanban' && (
+              <KanbanBoard
+                tasks={localProject.tasks}
+                onUpdate={(updatedTasks) => {
+                  handleUpdateProject({ tasks: updatedTasks });
+                }}
+              />
+            )}
+
+            {activeTab === 'validation' && (
+              <ValidationChecklist
+                project={localProject}
+                onUpdate={(updatedProject) => {
+                  handleUpdateProject(updatedProject);
+                }}
+              />
+            )}
+
+            {activeTab === 'experiments' && (
+              <ExperimentsList
+                experiments={localProject.experiments}
+                hypotheses={localProject.hypotheses}
+                onUpdate={(updatedExperiments) => {
+                  handleUpdateProject({ experiments: updatedExperiments });
+                }}
+              />
+            )}
+
+            {activeTab === 'interviews' && (
+              <InterviewsList
+                interviews={localProject.interviews}
+                onUpdate={(updatedInterviews) => {
+                  handleUpdateProject({ interviews: updatedInterviews });
+                }}
+              />
+            )}
           </div>
         </motion.div>
       </motion.div>
