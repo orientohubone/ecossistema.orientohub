@@ -8,7 +8,7 @@ import {
   Eye,
   BarChart,
   Clock,
-  Toggle,
+  ToggleLeft,
   ExternalLink,
   Mail,
   Sparkles,
@@ -321,7 +321,7 @@ const CookiesPage = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="p-6 bg-gradient-to-br from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 rounded-xl border-2 border-gray-200 dark:border-gray-700">
                   <div className="w-12 h-12 bg-primary-500/10 rounded-xl flex items-center justify-center mb-4">
-                    <Toggle className="w-6 h-6 text-primary-500" />
+                    <ToggleLeft className="w-6 h-6 text-primary-500" />
                   </div>
                   <h3 className="text-lg font-bold mb-2">Aqui na Plataforma</h3>
                   <p className="text-gray-600 dark:text-gray-400 text-sm">
