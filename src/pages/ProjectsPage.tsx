@@ -40,6 +40,7 @@ import {
   ExternalLink,
   Send
 } from 'lucide-react';
+import KanbanBoard from '../components/projects/KanbanBoard';  // ← Adicionado esta linha
 
 interface Project {
   id: string;
