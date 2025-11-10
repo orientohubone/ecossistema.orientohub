@@ -6,7 +6,7 @@ import {
   Shield, 
   Settings,
   Eye,
-  ChartBar,
+  BarChart,
   Clock,
   Toggle,
   ExternalLink,
@@ -71,7 +71,7 @@ const CookiesPage = () => {
     },
     {
       id: 'analytics',
-      icon: ChartBar,
+      icon: BarChart,
       name: 'Cookies Analíticos',
       emoji: '📊',
       description: 'Os "cookies nerds" que adoram estatísticas! Eles nos ajudam a entender como melhorar a plataforma (prometemos que não julgamos seus cliques!).',
