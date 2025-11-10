@@ -1,0 +1,84 @@
+# Usage: Add this file to your repo, commit & push. Then run the workflow manually from Actions.
+on:
+  workflow_dispatch:
+
+jobs:
+  check-supabase:
+    name: Check Supabase Connection and Tables
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate env
+        env:
+          SUPA_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          SUPA_ANON: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+        run: |
+          echo "Checking required env..."
+          if [ -z "$SUPA_URL" ] || [ -z "$SUPA_ANON" ]; then
+            echo "ERROR: VITE_SUPABASE_URL or VITE_SUPABASE_ANON_KEY is missing in repository secrets/variables."
+            echo "Make sure they are created in Settings → Secrets and variables → Actions."
+            exit 1
+          fi
+          echo "Env present. SUPA_URL=$(echo "$SUPA_URL" | sed -E 's#(https?://)([^/]+).*#\1****@\2#')"
+
+      - name: Test /solutions endpoint (count)
+        env:
+          SUPA_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          SUPA_ANON: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+        run: |
+          echo "== Testing /rest/v1/solutions?select=count =="
+          resp_file="/tmp/supabase_solutions_resp.json"
+          http_status=$(curl -s -o "$resp_file" -w "%{http_code}" \
+            -H "apikey: $SUPA_ANON" \
+            -H "Authorization: Bearer $SUPA_ANON" \
+            "$SUPA_URL/rest/v1/solutions?select=count")
+          echo "HTTP status: $http_status"
+          if [ -s "$resp_file" ]; then
+            echo "Response body (trimmed):"
+            sed -n '1,200p' "$resp_file"
+          else
+            echo "No response body."
+          fi
+          if [ "$http_status" -ge 200 ] && [ "$http_status" -lt 300 ]; then
+            echo "✅ /solutions endpoint reachable; table likely exists and anon has access (or returns empty set)."
+          else
+            echo "❌ /solutions endpoint returned status $http_status."
+            echo "If response contains 'relation \"solutions\" does not exist' create the table via SQL (see docs)."
+            echo "Failing early for you to inspect logs."
+            exit 1
+          fi
+
+      - name: Test /projects endpoint (count)
+        env:
+          SUPA_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          SUPA_ANON: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+        run: |
+          echo "== Testing /rest/v1/projects?select=count =="
+          resp_file="/tmp/supabase_projects_resp.json"
+          http_status=$(curl -s -o "$resp_file" -w "%{http_code}" \
+            -H "apikey: $SUPA_ANON" \
+            -H "Authorization: Bearer $SUPA_ANON" \
+            "$SUPA_URL/rest/v1/projects?select=count")
+          echo "HTTP status: $http_status"
+          if [ -s "$resp_file" ]; then
+            echo "Response body (trimmed):"
+            sed -n '1,200p' "$resp_file"
+          else
+            echo "No response body."
+          fi
+          if [ "$http_status" -ge 200 ] && [ "$http_status" -lt 300 ]; then
+            echo "✅ /projects endpoint reachable; table likely exists and anon has access (or returns empty set)."
+          else
+            echo "⚠️ /projects returned status $http_status. If you expect projects to be present, create the table or check RLS/policies."
+            # Do not fail here, projects are optional in current frontend mock workflow
+          fi
+
+      - name: Final note
+        run: |
+          echo "Check completed. If any endpoint failed, inspect the response above in the job logs."
+          echo "Common reasons for failures:"
+          echo " - 404 / relation does not exist -> create the table using SQL."
+          echo " - 401/403 -> check anon key value and RLS policies."
+          echo " - CORS errors -> ensure Supabase REST is reachable and keys are correct."
