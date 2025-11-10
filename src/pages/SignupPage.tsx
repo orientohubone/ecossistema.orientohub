@@ -404,7 +404,7 @@ const SignupPage = () => {
                 {/* Login Link */}
                 <div className="text-center">
                   <Link
-                    to="/login"
+                    to="/entrar"
                     className="inline-flex items-center gap-2 text-gray-300 hover:text-white transition-colors group"
                   >
                     <span>Faça login na sua conta</span>
