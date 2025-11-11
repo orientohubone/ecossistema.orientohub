@@ -92,7 +92,7 @@
 }
 
 .framework-content-enhanced li {
-  @apply text-gray-700 dark:text-gray-300 pl-7 relative;
+  @apply text-gray-700 dark:text-gray-300 pl-5 relative;
 }
 
 .framework-content-enhanced ul > li::before {
