@@ -1,9 +1,36 @@
-import { useState } from 'react';
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet-async';
-import { motion } from 'framer-motion';
-import { BarChart2, CheckSquare, FileText, Target, Award, Zap, Layout, Users, MessageSquare, Lightbulb, Building2, Brain, Target as TargetIcon, Briefcase, GitBranch, LineChart } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { 
+  BarChart2, 
+  CheckSquare, 
+  FileText, 
+  Target, 
+  Award, 
+  Zap, 
+  Layout, 
+  Users, 
+  MessageSquare, 
+  Lightbulb, 
+  Building2, 
+  Brain, 
+  Target as TargetIcon, 
+  Briefcase, 
+  GitBranch, 
+  LineChart,
+  Plus,
+  Search,
+  Filter,
+  Eye,
+  Play,
+  Bookmark,
+  Share2,
+  X,
+  Sparkles,
+  TrendingUp,
+  Layers
+} from 'lucide-react';
 import FrameworkModal from '../components/modals/FrameworkModal';
 
 interface Framework {
@@ -22,6 +49,8 @@ const FrameworksPage = () => {
   const [showNewFrameworkModal, setShowNewFrameworkModal] = useState(false);
   const [showFrameworkModal, setShowFrameworkModal] = useState(false);
   const [showComments, setShowComments] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
   
   // Estados para o formulário de novo framework
   const [newFrameworkName, setNewFrameworkName] = useState('');
@@ -603,153 +632,198 @@ const FrameworksPage = () => {
     }
   }, [showNewFrameworkModal]);
 
+  const getProgressColor = (progress: number) => {
+    if (progress >= 80) return 'text-green-500';
+    if (progress >= 50) return 'text-yellow-500';
+    if (progress >= 20) return 'text-blue-500';
+    return 'text-gray-500';
+  };
+
+  const filteredFrameworks = frameworks.filter(framework => {
+    const matchesSearch = framework.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         framework.description.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesSearch;
+  });
+
   return (
     <>
       <Helmet>
-        <title>Frameworks | Orientohub</title>
+        <title>Frameworks - Orientohub</title>
       </Helmet>
 
-      <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold">Frameworks</h1>
-          <button 
-            onClick={handleNewFramework}
-            className="btn-primary"
+      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
+        <div className="container-custom py-8 space-y-8">
+          {/* Header */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4"
           >
-            Novo Framework
-          </button>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {frameworks.map((framework) => {
-            const Icon = framework.icon;
-            return (
-              <motion.div
-                key={framework.id}
-                className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3 }}
-              >
-                <div className="p-6">
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="h-10 w-10 rounded-lg bg-primary-100 dark:bg-primary-900/50 flex items-center justify-center">
-                      <Icon className="h-6 w-6 text-primary-600 dark:text-primary-400" />
-                    </div>
-                    <span className="text-sm font-medium bg-primary-100 dark:bg-primary-900/50 text-primary-800 dark:text-primary-200 py-1 px-2 rounded-full">
-                      {framework.progress}% completo
-                    </span>
-                  </div>
-                  <h3 className="text-lg font-semibold mb-2">{framework.name}</h3>
-                  <p className="text-gray-600 dark:text-gray-300 text-sm mb-4">
-                    {framework.description}
+            <div>
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center">
+                  <Layers className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <h1 className="text-3xl font-bold flex items-center gap-2">
+                    Frameworks Estratégicos
+                    <Sparkles className="w-6 h-6 text-blue-500" />
+                  </h1>
+                  <p className="text-gray-600 dark:text-gray-400">
+                    Metodologias validadas para estruturar seu negócio
                   </p>
-                  <div className="mb-4">
-                    <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                      <div
-                        className="bg-primary-500 h-2 rounded-full"
-                        style={{ width: `${framework.progress}%` }}
-                      ></div>
+                </div>
+              </div>
+            </div>
+
+            <button
+              onClick={() => handleNewFramework()}
+              className="px-6 py-2.5 bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-xl transition-all flex items-center gap-2 shadow-lg shadow-blue-500/30"
+            >
+              <Plus className="w-5 h-5" />
+              Novo Framework
+            </button>
+          </motion.div>
+
+          {/* Stats */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            {[
+              { 
+                label: 'Total de Frameworks', 
+                value: frameworks.length, 
+                icon: Layers, 
+                color: 'from-blue-500 to-blue-600', 
+                bgColor: 'bg-blue-500/10' 
+              },
+              { 
+                label: 'Em Progresso', 
+                value: frameworks.filter(f => f.progress > 0 && f.progress < 100).length, 
+                icon: TrendingUp, 
+                color: 'from-yellow-500 to-yellow-600', 
+                bgColor: 'bg-yellow-500/10' 
+              },
+              { 
+                label: 'Concluídos', 
+                value: frameworks.filter(f => f.progress === 100).length, 
+                icon: CheckSquare, 
+                color: 'from-green-500 to-green-600', 
+                bgColor: 'bg-green-500/10' 
+              },
+              { 
+                label: 'Templates Disponíveis', 
+                value: recommendedTemplates.length, 
+                icon: FileText, 
+                color: 'from-purple-500 to-purple-600', 
+                bgColor: 'bg-purple-500/10' 
+              }
+            ].map((stat, index) => {
+              const Icon = stat.icon;
+              return (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.05 }}
+                  className="bg-white dark:bg-gray-800 rounded-xl p-6 border-2 border-gray-200 dark:border-gray-700 hover:border-blue-500 transition-all group"
+                >
+                  <div className="flex items-start justify-between mb-4">
+                    <div className={`w-12 h-12 ${stat.bgColor} rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform`}>
+                      <Icon className={`w-6 h-6 bg-gradient-to-br ${stat.color} bg-clip-text`} style={{ WebkitTextFillColor: 'transparent', backgroundClip: 'text' }} />
                     </div>
                   </div>
-                  <div className="flex items-center justify-between">
-                    <button 
-                      onClick={() => handleContinue(framework)}
-                      className="text-sm font-medium text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300"
-                    >
-                      Continuar
-                    </button>
-                    <button
-                      onClick={() => handleComments(framework.id)}
-                      className="flex items-center text-gray-500 dark:text-gray-400 text-sm hover:text-primary-500 dark:hover:text-primary-400"
-                    >
-                      <MessageSquare size={16} className="mr-1" />
-                      <span>{framework.comments} comentários</span>
-                    </button>
-                  </div>
-                </div>
-              </motion.div>
-            );
-          })}
-        </div>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">{stat.label}</p>
+                  <p className="text-3xl font-bold">{stat.value}</p>
+                </motion.div>
+              );
+            })}
+          </div>
 
-        {/* Templates Section */}
-        <div className="mt-12">
-          <h2 className="text-xl font-semibold mb-6">Templates Recomendados</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {recommendedTemplates.map((template, index) => (
-              <motion.div
-                key={template.id}
-                className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-6"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, delay: 0.3 + index * 0.1 }}
+          {/* Search */}
+          <div className="bg-white dark:bg-gray-800 rounded-xl p-4 border-2 border-gray-200 dark:border-gray-700">
+            <div className="flex flex-col md:flex-row gap-4">
+              <div className="flex-1 relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <input
+                  type="search"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Buscar frameworks..."
+                  className="w-full pl-10 pr-4 py-2.5 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:border-blue-500 focus:ring-0 bg-white dark:bg-gray-900"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Frameworks Grid */}
+          <div>
+            <h2 className="text-xl font-bold mb-6">Frameworks Disponíveis</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredFrameworks.map((framework, index) => (
+                <FrameworkCard
+                  key={framework.id}
+                  framework={framework}
+                  index={index}
+                  onContinue={handleContinue}
+                  onComments={handleComments}
+                  getProgressColor={getProgressColor}
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* Templates Section */}
+          <div className="mt-12">
+            <h2 className="text-xl font-bold mb-6">Templates Recomendados</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {recommendedTemplates.map((template, index) => (
+                <TemplateCard
+                  key={template.id}
+                  template={template}
+                  index={index}
+                  onUseTemplate={handleNewFramework}
+                  onPreview={(template) => {
+                    setSelectedFramework({
+                      id: template.id,
+                      name: template.name,
+                      description: template.description,
+                      progress: 0,
+                      icon: FileText,
+                      comments: 0,
+                      content: template.content
+                    });
+                    setShowFrameworkModal(true);
+                  }}
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* Seção de Frameworks Personalizados */}
+          <div className="mt-12">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-xl font-bold">Meus Frameworks Personalizados</h2>
+              <span className="text-sm text-gray-500 dark:text-gray-400 bg-yellow-50 dark:bg-yellow-900/20 px-3 py-1 rounded-lg">
+                Em breve
+              </span>
+            </div>
+            <div className="bg-gradient-to-br from-gray-50 to-white dark:from-gray-800 dark:to-gray-700/50 rounded-xl p-12 text-center border-2 border-dashed border-gray-300 dark:border-gray-600">
+              <div className="w-20 h-20 bg-blue-500/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <FileText className="w-10 h-10 text-blue-500" />
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+                Nenhum framework personalizado ainda
+              </h3>
+              <p className="text-gray-600 dark:text-gray-400 mb-6 max-w-md mx-auto">
+                Crie seus próprios frameworks personalizados usando os templates como base e adapte-os para suas necessidades específicas
+              </p>
+              <button 
+                onClick={() => handleNewFramework()}
+                className="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-xl transition-all inline-flex items-center gap-2 shadow-lg shadow-blue-500/30"
               >
-                <div className="flex items-center justify-between mb-3">
-                  <h3 className="font-medium">{template.name}</h3>
-                  <span className={`text-xs px-2 py-1 rounded-full ${
-                    template.type === 'canvas' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300' :
-                    template.type === 'matrix' ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300' :
-                    'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300'
-                  }`}>
-                    {template.type}
-                  </span>
-                </div>
-                <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
-                  {template.description}
-                </p>
-                <div className="flex gap-2">
-                  <button 
-                    onClick={() => handleNewFramework(template)}
-                    className="flex-1 text-sm font-medium text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 bg-primary-50 dark:bg-primary-900/20 px-3 py-2 rounded-md transition-colors"
-                  >
-                    Usar template
-                  </button>
-                  <button 
-                    onClick={() => {
-                      setSelectedFramework({
-                        id: template.id,
-                        name: template.name,
-                        description: template.description,
-                        progress: 0,
-                        icon: FileText,
-                        comments: 0,
-                        content: template.content
-                      });
-                      setShowFrameworkModal(true);
-                    }}
-                    className="text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 px-3 py-2 rounded-md transition-colors"
-                  >
-                    Preview
-                  </button>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-
-        {/* Seção de Frameworks Personalizados */}
-        <div className="mt-12">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-semibold">Meus Frameworks Personalizados</h2>
-            <span className="text-sm text-gray-500 dark:text-gray-400">
-              Em breve - funcionalidade de salvar frameworks personalizados
-            </span>
-          </div>
-          <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-8 text-center">
-            <FileText className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-600 dark:text-gray-300 mb-2">
-              Nenhum framework personalizado ainda
-            </h3>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
-              Crie seus próprios frameworks personalizados usando os templates como base
-            </p>
-            <button 
-              onClick={() => handleNewFramework()}
-              className="btn-primary"
-                >
-              Criar Primeiro Framework
-            </button>
+                <Plus className="w-5 h-5" />
+                Criar Primeiro Framework
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -823,19 +897,20 @@ const FrameworksPage = () => {
           <div className="flex justify-end space-x-3 pt-4">
             <button
               onClick={() => setShowNewFrameworkModal(false)}
-              className="btn-outline"
+              className="px-6 py-2.5 border-2 border-gray-300 dark:border-gray-600 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 font-medium transition-all"
             >
               Cancelar
             </button>
             <button 
               onClick={handleCreateFramework}
               disabled={!newFrameworkName.trim() || !newFrameworkDescription.trim()}
-              className={`btn-primary ${
+              className={`px-6 py-2.5 bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-xl transition-all flex items-center gap-2 ${
                 !newFrameworkName.trim() || !newFrameworkDescription.trim() 
                   ? 'opacity-50 cursor-not-allowed' 
                   : ''
               }`}
             >
+              <Plus className="w-5 h-5" />
               {initialNewFrameworkData ? 'Criar com Template' : 'Criar Framework'}
             </button>
           </div>
@@ -855,6 +930,7 @@ const FrameworksPage = () => {
           />
         ) : (
           <div className="text-center py-12">
+            <FileText className="w-16 h-16 text-gray-400 mx-auto mb-4" />
             <p className="text-gray-500 dark:text-gray-400">
               Conteúdo em desenvolvimento...
             </p>
@@ -862,6 +938,147 @@ const FrameworksPage = () => {
         )}
       </FrameworkModal>
     </>
+  );
+};
+
+// Framework Card Component
+interface FrameworkCardProps {
+  framework: Framework;
+  index: number;
+  onContinue: (framework: Framework) => void;
+  onComments: (id: string) => void;
+  getProgressColor: (progress: number) => string;
+}
+
+const FrameworkCard = ({ framework, index, onContinue, onComments, getProgressColor }: FrameworkCardProps) => {
+  const Icon = framework.icon;
+  
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: index * 0.05 }}
+      className="group bg-white dark:bg-gray-800 rounded-2xl border-2 border-gray-200 dark:border-gray-700 hover:border-blue-500 overflow-hidden transition-all duration-300 hover:shadow-2xl"
+    >
+      {/* Header */}
+      <div className="relative h-32 bg-gradient-to-br from-gray-100 via-gray-50 to-white dark:from-gray-700 dark:via-gray-800 dark:to-gray-900 overflow-hidden border-b-2 border-gray-200 dark:border-gray-700">
+        <div className="absolute inset-0 opacity-40">
+          <div className={`absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full blur-3xl`} />
+        </div>
+        
+        <div className="relative z-10 p-6 flex items-start justify-between">
+          <div className="flex items-center gap-4">
+            <div className={`w-14 h-14 bg-blue-500/10 rounded-xl flex items-center justify-center shadow-lg`}>
+              <Icon className="w-7 h-7 text-blue-600 dark:text-blue-400" />
+            </div>
+            <div>
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-1">{framework.name}</h3>
+              <span className={`inline-block bg-gradient-to-r from-blue-500 to-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg ${getProgressColor(framework.progress)}`}>
+                {framework.progress}% completo
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Content */}
+      <div className="p-6 space-y-4">
+        <p className="text-gray-600 dark:text-gray-400 line-clamp-2">
+          {framework.description}
+        </p>
+
+        {/* Progress */}
+        <div>
+          <div className="flex items-center justify-between text-sm mb-2">
+            <span className="text-gray-600 dark:text-gray-400">Progresso</span>
+            <span className={`font-bold ${getProgressColor(framework.progress)}`}>{framework.progress}%</span>
+          </div>
+          <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+            <motion.div
+              className="h-full bg-gradient-to-r from-blue-400 to-blue-600 rounded-full"
+              initial={{ width: 0 }}
+              animate={{ width: `${framework.progress}%` }}
+              transition={{ duration: 1, delay: 0.2 + index * 0.05 }}
+            />
+          </div>
+        </div>
+
+        {/* Actions */}
+        <div className="flex gap-2 pt-4 border-t border-gray-200 dark:border-gray-700">
+          <button
+            onClick={() => onContinue(framework)}
+            className="flex-1 px-4 py-2.5 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-xl transition-all flex items-center justify-center gap-2"
+          >
+            <Play className="w-4 h-4" />
+            {framework.progress > 0 ? 'Continuar' : 'Começar'}
+          </button>
+          
+          <button
+            onClick={() => onComments(framework.id)}
+            className="px-4 py-2.5 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-xl transition-all flex items-center gap-2"
+          >
+            <MessageSquare className="w-4 h-4" />
+            <span className="text-sm font-medium">{framework.comments}</span>
+          </button>
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
+// Template Card Component
+interface TemplateCardProps {
+  template: any;
+  index: number;
+  onUseTemplate: (template: any) => void;
+  onPreview: (template: any) => void;
+}
+
+const TemplateCard = ({ template, index, onUseTemplate, onPreview }: TemplateCardProps) => {
+  const getTypeColor = (type: string) => {
+    const types: Record<string, any> = {
+      canvas: { bg: 'bg-blue-100 dark:bg-blue-900/30', text: 'text-blue-800 dark:text-blue-300', icon: '🎨' },
+      matrix: { bg: 'bg-green-100 dark:bg-green-900/30', text: 'text-green-800 dark:text-green-300', icon: '📊' },
+      map: { bg: 'bg-purple-100 dark:bg-purple-900/30', text: 'text-purple-800 dark:text-purple-300', icon: '🗺️' }
+    };
+    return types[type] || types.canvas;
+  };
+
+  const typeInfo = getTypeColor(template.type);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3, delay: 0.3 + index * 0.1 }}
+      className="bg-gradient-to-br from-gray-50 to-white dark:from-gray-700/50 dark:to-gray-800/50 rounded-xl p-6 border-2 border-gray-200 dark:border-gray-700 hover:border-blue-500 transition-all group"
+    >
+      <div className="flex items-center justify-between mb-3">
+        <h3 className="font-bold text-lg">{template.name}</h3>
+        <span className={`text-xs px-3 py-1.5 rounded-full font-medium ${typeInfo.bg} ${typeInfo.text}`}>
+          {typeInfo.icon} {template.type}
+        </span>
+      </div>
+      <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
+        {template.description}
+      </p>
+      <div className="flex gap-2">
+        <button 
+          onClick={() => onUseTemplate(template)}
+          className="flex-1 text-sm font-medium text-white bg-blue-500 hover:bg-blue-600 px-4 py-2.5 rounded-xl transition-all flex items-center justify-center gap-2"
+        >
+          <Plus className="w-4 h-4" />
+          Usar template
+        </button>
+        <button 
+          onClick={() => onPreview(template)}
+          className="text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 px-4 py-2.5 rounded-xl transition-all flex items-center gap-2"
+        >
+          <Eye className="w-4 h-4" />
+          Preview
+        </button>
+      </div>
+    </motion.div>
   );
 };
 
