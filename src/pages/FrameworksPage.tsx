@@ -575,13 +575,11 @@ const FrameworksPage = () => {
 
   const handleNewFramework = (template?: any) => {
     if (template) {
-      // Preencher formulário com dados do template
       setNewFrameworkName(template.name);
       setNewFrameworkDescription(template.description);
       setNewFrameworkType(template.type);
       setInitialNewFrameworkData(template);
     } else {
-      // Limpar formulário para novo framework
       setNewFrameworkName('');
       setNewFrameworkDescription('');
       setNewFrameworkType('canvas');
@@ -600,7 +598,6 @@ const FrameworksPage = () => {
   };
 
   const handleCreateFramework = () => {
-    // Aqui você pode implementar a lógica para salvar o framework
     const newFramework = {
       name: newFrameworkName,
       description: newFrameworkDescription,
@@ -611,18 +608,15 @@ const FrameworksPage = () => {
     
     console.log('Novo framework criado:', newFramework);
     
-    // Fechar modal e limpar formulário
     setShowNewFrameworkModal(false);
     setNewFrameworkName('');
     setNewFrameworkDescription('');
     setNewFrameworkType('canvas');
     setInitialNewFrameworkData(null);
     
-    // Aqui você pode adicionar uma notificação de sucesso
     alert('Framework criado com sucesso!');
   };
 
-  // Limpar formulário quando modal for fechado
   useEffect(() => {
     if (!showNewFrameworkModal) {
       setNewFrameworkName('');
@@ -634,7 +628,7 @@ const FrameworksPage = () => {
 
   const getProgressColor = (progress: number) => {
     if (progress >= 80) return 'text-green-500';
-    if (progress >= 50) return 'text-yellow-500';
+    if (progress >= 50) return 'text-primary-500';
     if (progress >= 20) return 'text-blue-500';
     return 'text-gray-500';
   };
@@ -661,13 +655,13 @@ const FrameworksPage = () => {
           >
             <div>
               <div className="flex items-center gap-3 mb-2">
-                <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center">
-                  <Layers className="w-6 h-6 text-white" />
+                <div className="w-12 h-12 bg-gradient-to-br from-primary-400 to-primary-600 rounded-xl flex items-center justify-center">
+                  <Layers className="w-6 h-6 text-black" />
                 </div>
                 <div>
                   <h1 className="text-3xl font-bold flex items-center gap-2">
                     Frameworks Estratégicos
-                    <Sparkles className="w-6 h-6 text-blue-500" />
+                    <Sparkles className="w-6 h-6 text-primary-500" />
                   </h1>
                   <p className="text-gray-600 dark:text-gray-400">
                     Metodologias validadas para estruturar seu negócio
@@ -678,7 +672,7 @@ const FrameworksPage = () => {
 
             <button
               onClick={() => handleNewFramework()}
-              className="px-6 py-2.5 bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-xl transition-all flex items-center gap-2 shadow-lg shadow-blue-500/30"
+              className="px-6 py-2.5 bg-primary-500 hover:bg-primary-600 text-black font-bold rounded-xl transition-all flex items-center gap-2 shadow-lg shadow-primary-500/30"
             >
               <Plus className="w-5 h-5" />
               Novo Framework
@@ -692,15 +686,15 @@ const FrameworksPage = () => {
                 label: 'Total de Frameworks', 
                 value: frameworks.length, 
                 icon: Layers, 
-                color: 'from-blue-500 to-blue-600', 
-                bgColor: 'bg-blue-500/10' 
+                color: 'from-gray-600 to-gray-700', 
+                bgColor: 'bg-gray-500/10' 
               },
               { 
                 label: 'Em Progresso', 
                 value: frameworks.filter(f => f.progress > 0 && f.progress < 100).length, 
                 icon: TrendingUp, 
-                color: 'from-yellow-500 to-yellow-600', 
-                bgColor: 'bg-yellow-500/10' 
+                color: 'from-primary-400 to-primary-600', 
+                bgColor: 'bg-primary-500/10' 
               },
               { 
                 label: 'Concluídos', 
@@ -713,8 +707,8 @@ const FrameworksPage = () => {
                 label: 'Templates Disponíveis', 
                 value: recommendedTemplates.length, 
                 icon: FileText, 
-                color: 'from-purple-500 to-purple-600', 
-                bgColor: 'bg-purple-500/10' 
+                color: 'from-blue-500 to-blue-600', 
+                bgColor: 'bg-blue-500/10' 
               }
             ].map((stat, index) => {
               const Icon = stat.icon;
@@ -724,7 +718,7 @@ const FrameworksPage = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.05 }}
-                  className="bg-white dark:bg-gray-800 rounded-xl p-6 border-2 border-gray-200 dark:border-gray-700 hover:border-blue-500 transition-all group"
+                  className="bg-white dark:bg-gray-800 rounded-xl p-6 border-2 border-gray-200 dark:border-gray-700 hover:border-primary-500 transition-all group"
                 >
                   <div className="flex items-start justify-between mb-4">
                     <div className={`w-12 h-12 ${stat.bgColor} rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform`}>
@@ -748,7 +742,7 @@ const FrameworksPage = () => {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Buscar frameworks..."
-                  className="w-full pl-10 pr-4 py-2.5 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:border-blue-500 focus:ring-0 bg-white dark:bg-gray-900"
+                  className="w-full pl-10 pr-4 py-2.5 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:border-primary-500 focus:ring-0 bg-white dark:bg-gray-900"
                 />
               </div>
             </div>
@@ -807,8 +801,8 @@ const FrameworksPage = () => {
               </span>
             </div>
             <div className="bg-gradient-to-br from-gray-50 to-white dark:from-gray-800 dark:to-gray-700/50 rounded-xl p-12 text-center border-2 border-dashed border-gray-300 dark:border-gray-600">
-              <div className="w-20 h-20 bg-blue-500/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <FileText className="w-10 h-10 text-blue-500" />
+              <div className="w-20 h-20 bg-primary-500/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <FileText className="w-10 h-10 text-primary-500" />
               </div>
               <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
                 Nenhum framework personalizado ainda
@@ -818,7 +812,7 @@ const FrameworksPage = () => {
               </p>
               <button 
                 onClick={() => handleNewFramework()}
-                className="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-xl transition-all inline-flex items-center gap-2 shadow-lg shadow-blue-500/30"
+                className="px-6 py-3 bg-primary-500 hover:bg-primary-600 text-black font-bold rounded-xl transition-all inline-flex items-center gap-2 shadow-lg shadow-primary-500/30"
               >
                 <Plus className="w-5 h-5" />
                 Criar Primeiro Framework
@@ -836,11 +830,11 @@ const FrameworksPage = () => {
       >
         <div className="space-y-4">
           {initialNewFrameworkData && (
-            <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-200 dark:border-blue-800">
-              <h4 className="font-medium text-blue-800 dark:text-blue-200 mb-2">
+            <div className="bg-primary-50 dark:bg-primary-900/20 p-4 rounded-lg border border-primary-200 dark:border-primary-800">
+              <h4 className="font-medium text-primary-800 dark:text-primary-200 mb-2">
                 📋 Template Selecionado: {initialNewFrameworkData.name}
               </h4>
-              <p className="text-sm text-blue-700 dark:text-blue-300">
+              <p className="text-sm text-primary-700 dark:text-primary-300">
                 Este framework será criado baseado no template selecionado. Você pode personalizar os campos abaixo.
               </p>
             </div>
@@ -904,7 +898,7 @@ const FrameworksPage = () => {
             <button 
               onClick={handleCreateFramework}
               disabled={!newFrameworkName.trim() || !newFrameworkDescription.trim()}
-              className={`px-6 py-2.5 bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-xl transition-all flex items-center gap-2 ${
+              className={`px-6 py-2.5 bg-primary-500 hover:bg-primary-600 text-black font-bold rounded-xl transition-all flex items-center gap-2 ${
                 !newFrameworkName.trim() || !newFrameworkDescription.trim() 
                   ? 'opacity-50 cursor-not-allowed' 
                   : ''
@@ -958,22 +952,22 @@ const FrameworkCard = ({ framework, index, onContinue, onComments, getProgressCo
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.05 }}
-      className="group bg-white dark:bg-gray-800 rounded-2xl border-2 border-gray-200 dark:border-gray-700 hover:border-blue-500 overflow-hidden transition-all duration-300 hover:shadow-2xl"
+      className="group bg-white dark:bg-gray-800 rounded-2xl border-2 border-gray-200 dark:border-gray-700 hover:border-primary-500 overflow-hidden transition-all duration-300 hover:shadow-2xl"
     >
       {/* Header */}
       <div className="relative h-32 bg-gradient-to-br from-gray-100 via-gray-50 to-white dark:from-gray-700 dark:via-gray-800 dark:to-gray-900 overflow-hidden border-b-2 border-gray-200 dark:border-gray-700">
-        <div className="absolute inset-0 opacity-40">
-          <div className={`absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full blur-3xl`} />
+        <div className="absolute inset-0 opacity-20">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full blur-3xl" />
         </div>
         
         <div className="relative z-10 p-6 flex items-start justify-between">
           <div className="flex items-center gap-4">
-            <div className={`w-14 h-14 bg-blue-500/10 rounded-xl flex items-center justify-center shadow-lg`}>
-              <Icon className="w-7 h-7 text-blue-600 dark:text-blue-400" />
+            <div className="w-14 h-14 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl flex items-center justify-center shadow-lg border border-gray-200 dark:border-gray-700">
+              <Icon className="w-7 h-7 text-gray-700 dark:text-gray-300" />
             </div>
             <div>
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-1">{framework.name}</h3>
-              <span className={`inline-block bg-gradient-to-r from-blue-500 to-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg ${getProgressColor(framework.progress)}`}>
+              <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-1">{framework.name}</h3>
+              <span className={`inline-block text-xs font-bold px-3 py-1 rounded-full ${getProgressColor(framework.progress)} bg-gray-100 dark:bg-gray-700`}>
                 {framework.progress}% completo
               </span>
             </div>
@@ -983,7 +977,7 @@ const FrameworkCard = ({ framework, index, onContinue, onComments, getProgressCo
 
       {/* Content */}
       <div className="p-6 space-y-4">
-        <p className="text-gray-600 dark:text-gray-400 line-clamp-2">
+        <p className="text-gray-600 dark:text-gray-400 line-clamp-2 text-sm">
           {framework.description}
         </p>
 
@@ -993,9 +987,14 @@ const FrameworkCard = ({ framework, index, onContinue, onComments, getProgressCo
             <span className="text-gray-600 dark:text-gray-400">Progresso</span>
             <span className={`font-bold ${getProgressColor(framework.progress)}`}>{framework.progress}%</span>
           </div>
-          <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+          <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
             <motion.div
-              className="h-full bg-gradient-to-r from-blue-400 to-blue-600 rounded-full"
+              className={`h-full rounded-full ${
+                framework.progress >= 80 ? 'bg-gradient-to-r from-green-400 to-green-600' :
+                framework.progress >= 50 ? 'bg-gradient-to-r from-primary-400 to-primary-600' :
+                framework.progress >= 20 ? 'bg-gradient-to-r from-blue-400 to-blue-600' :
+                'bg-gradient-to-r from-gray-400 to-gray-500'
+              }`}
               initial={{ width: 0 }}
               animate={{ width: `${framework.progress}%` }}
               transition={{ duration: 1, delay: 0.2 + index * 0.05 }}
@@ -1007,7 +1006,7 @@ const FrameworkCard = ({ framework, index, onContinue, onComments, getProgressCo
         <div className="flex gap-2 pt-4 border-t border-gray-200 dark:border-gray-700">
           <button
             onClick={() => onContinue(framework)}
-            className="flex-1 px-4 py-2.5 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-xl transition-all flex items-center justify-center gap-2"
+            className="flex-1 px-4 py-2.5 bg-gray-900 dark:bg-white hover:bg-gray-800 dark:hover:bg-gray-100 text-white dark:text-black font-medium rounded-xl transition-all flex items-center justify-center gap-2"
           >
             <Play className="w-4 h-4" />
             {framework.progress > 0 ? 'Continuar' : 'Começar'}
@@ -1051,7 +1050,7 @@ const TemplateCard = ({ template, index, onUseTemplate, onPreview }: TemplateCar
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, delay: 0.3 + index * 0.1 }}
-      className="bg-gradient-to-br from-gray-50 to-white dark:from-gray-700/50 dark:to-gray-800/50 rounded-xl p-6 border-2 border-gray-200 dark:border-gray-700 hover:border-blue-500 transition-all group"
+      className="bg-gradient-to-br from-gray-50 to-white dark:from-gray-700/50 dark:to-gray-800/50 rounded-xl p-6 border-2 border-gray-200 dark:border-gray-700 hover:border-primary-500 transition-all group"
     >
       <div className="flex items-center justify-between mb-3">
         <h3 className="font-bold text-lg">{template.name}</h3>
@@ -1065,7 +1064,7 @@ const TemplateCard = ({ template, index, onUseTemplate, onPreview }: TemplateCar
       <div className="flex gap-2">
         <button 
           onClick={() => onUseTemplate(template)}
-          className="flex-1 text-sm font-medium text-white bg-blue-500 hover:bg-blue-600 px-4 py-2.5 rounded-xl transition-all flex items-center justify-center gap-2"
+          className="flex-1 text-sm font-medium text-black bg-primary-500 hover:bg-primary-600 px-4 py-2.5 rounded-xl transition-all flex items-center justify-center gap-2"
         >
           <Plus className="w-4 h-4" />
           Usar template
