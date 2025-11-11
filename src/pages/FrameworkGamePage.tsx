@@ -263,7 +263,7 @@ const FrameworkGamePage = () => {
               </button>
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <Gamepad2 className="w-6 h-6 text-primary-500" />
+                  <Gamepad className="w-6 h-6 text-primary-500" />
                   <h1 className="text-3xl font-bold">Modo Gamificado</h1>
                 </div>
                 <p className="text-gray-600 dark:text-gray-400">{framework}</p>
