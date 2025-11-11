@@ -16,7 +16,8 @@ import {
   Award,
   TrendingUp,
   Circle,
-  CheckCircle2
+  CheckCircle2,
+  Gamepad
 } from 'lucide-react';
 
 interface GameStep {
