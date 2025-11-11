@@ -21,6 +21,7 @@ import FrameworksPage from './pages/FrameworksPage';
 import FrameworkGamePage from './pages/FrameworkGamePage';
 import ProjectsPage from './pages/ProjectsPage';
 import SolutionsPage from './pages/SolutionsPage';
+import CommunityPage from './pages/CommunityPage';
 import SettingsPage from './pages/SettingsPage';
 import BlogPage from './pages/BlogPage';
 import BlogPostPage from './pages/BlogPostPage';
@@ -87,6 +88,7 @@ function App() {
           <Route path="frameworks/:id/game" element={<FrameworkGamePage />} />
           <Route path="projects" element={<ProjectsPage />} />
           <Route path="solutions" element={<SolutionsPage />} />
+          <Route path="community" element={<CommunityPage />} />
           <Route path="settings" element={<SettingsPage />} />
         </Route>
         
