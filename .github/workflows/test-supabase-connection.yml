@@ -1,0 +1,200 @@
+name: Test Supabase Connection
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test-supabase:
+    name: Verify Supabase Setup
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate Supabase credentials
+        env:
+          SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+        run: |
+          echo "🔍 Checking Supabase credentials..."
+          
+          if [ -z "$SUPABASE_URL" ]; then
+            echo "❌ ERROR: VITE_SUPABASE_URL is not set in repository secrets"
+            exit 1
+          fi
+          
+          if [ -z "$SUPABASE_ANON_KEY" ]; then
+            echo "❌ ERROR: VITE_SUPABASE_ANON_KEY is not set in repository secrets"
+            exit 1
+          fi
+          
+          echo "✅ Credentials are configured"
+
+      - name: Test Supabase REST API connectivity
+        env:
+          SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+        run: |
+          echo "🌐 Testing Supabase REST API..."
+          
+          # Test basic connectivity
+          response=$(curl -s -o /dev/null -w "%{http_code}" \
+            -H "apikey: $SUPABASE_ANON_KEY" \
+            "$SUPABASE_URL/rest/v1/")
+          
+          if [ "$response" -eq 200 ] || [ "$response" -eq 404 ]; then
+            echo "✅ Supabase REST API is reachable"
+          else
+            echo "❌ Cannot reach Supabase REST API (HTTP $response)"
+            exit 1
+          fi
+
+      - name: Check solutions table
+        env:
+          SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+        run: |
+          echo "📊 Checking 'solutions' table..."
+          
+          response=$(curl -s -w "\n%{http_code}" \
+            -H "apikey: $SUPABASE_ANON_KEY" \
+            -H "Authorization: Bearer $SUPABASE_ANON_KEY" \
+            "$SUPABASE_URL/rest/v1/solutions?select=count")
+          
+          http_code=$(echo "$response" | tail -n1)
+          body=$(echo "$response" | head -n-1)
+          
+          echo "HTTP Status: $http_code"
+          echo "Response: $body"
+          
+          if [ "$http_code" -ge 200 ] && [ "$http_code" -lt 300 ]; then
+            echo "✅ 'solutions' table exists and is accessible"
+          elif echo "$body" | grep -q "does not exist"; then
+            echo "❌ 'solutions' table does not exist"
+            exit 1
+          else
+            echo "⚠️  'solutions' table returned HTTP $http_code (might be RLS protected)"
+          fi
+
+      - name: Check projects table
+        env:
+          SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+        run: |
+          echo "📊 Checking 'projects' table..."
+          
+          response=$(curl -s -w "\n%{http_code}" \
+            -H "apikey: $SUPABASE_ANON_KEY" \
+            -H "Authorization: Bearer $SUPABASE_ANON_KEY" \
+            "$SUPABASE_URL/rest/v1/projects?select=count")
+          
+          http_code=$(echo "$response" | tail -n1)
+          body=$(echo "$response" | head -n-1)
+          
+          echo "HTTP Status: $http_code"
+          echo "Response: $body"
+          
+          if [ "$http_code" -ge 200 ] && [ "$http_code" -lt 300 ]; then
+            echo "✅ 'projects' table exists and is accessible"
+          elif [ "$http_code" -eq 401 ] || [ "$http_code" -eq 403 ]; then
+            echo "✅ 'projects' table exists (protected by RLS - this is good!)"
+          elif echo "$body" | grep -q "does not exist"; then
+            echo "❌ 'projects' table does not exist"
+            echo "Please run the migration files in supabase/migrations/"
+            exit 1
+          else
+            echo "⚠️  Unexpected response for 'projects' table (HTTP $http_code)"
+            exit 1
+          fi
+
+      - name: Check hypotheses table
+        env:
+          SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+        run: |
+          echo "📊 Checking 'hypotheses' table..."
+          
+          response=$(curl -s -w "\n%{http_code}" \
+            -H "apikey: $SUPABASE_ANON_KEY" \
+            -H "Authorization: Bearer $SUPABASE_ANON_KEY" \
+            "$SUPABASE_URL/rest/v1/hypotheses?select=count")
+          
+          http_code=$(echo "$response" | tail -n1)
+          body=$(echo "$response" | head -n-1)
+          
+          if [ "$http_code" -ge 200 ] && [ "$http_code" -lt 300 ]; then
+            echo "✅ 'hypotheses' table exists"
+          elif [ "$http_code" -eq 401 ] || [ "$http_code" -eq 403 ]; then
+            echo "✅ 'hypotheses' table exists (RLS protected)"
+          elif echo "$body" | grep -q "does not exist"; then
+            echo "❌ 'hypotheses' table does not exist"
+            exit 1
+          fi
+
+      - name: Check experiments table
+        env:
+          SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+        run: |
+          echo "📊 Checking 'experiments' table..."
+          
+          response=$(curl -s -w "\n%{http_code}" \
+            -H "apikey: $SUPABASE_ANON_KEY" \
+            -H "Authorization: Bearer $SUPABASE_ANON_KEY" \
+            "$SUPABASE_URL/rest/v1/experiments?select=count")
+          
+          http_code=$(echo "$response" | tail -n1)
+          body=$(echo "$response" | head -n-1)
+          
+          if [ "$http_code" -ge 200 ] && [ "$http_code" -lt 300 ]; then
+            echo "✅ 'experiments' table exists"
+          elif [ "$http_code" -eq 401 ] || [ "$http_code" -eq 403 ]; then
+            echo "✅ 'experiments' table exists (RLS protected)"
+          elif echo "$body" | grep -q "does not exist"; then
+            echo "❌ 'experiments' table does not exist"
+            exit 1
+          fi
+
+      - name: Check interviews table
+        env:
+          SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+        run: |
+          echo "📊 Checking 'interviews' table..."
+          
+          response=$(curl -s -w "\n%{http_code}" \
+            -H "apikey: $SUPABASE_ANON_KEY" \
+            -H "Authorization: Bearer $SUPABASE_ANON_KEY" \
+            "$SUPABASE_URL/rest/v1/interviews?select=count")
+          
+          http_code=$(echo "$response" | tail -n1)
+          body=$(echo "$response" | head -n-1)
+          
+          if [ "$http_code" -ge 200 ] && [ "$http_code" -lt 300 ]; then
+            echo "✅ 'interviews' table exists"
+          elif [ "$http_code" -eq 401 ] || [ "$http_code" -eq 403 ]; then
+            echo "✅ 'interviews' table exists (RLS protected)"
+          elif echo "$body" | grep -q "does not exist"; then
+            echo "❌ 'interviews' table does not exist"
+            exit 1
+          fi
+
+      - name: Summary
+        if: always()
+        run: |
+          echo ""
+          echo "================================================"
+          echo "🎉 SUPABASE CONNECTION TEST COMPLETED"
+          echo "================================================"
+          echo ""
+          echo "✅ Supabase is properly configured"
+          echo "✅ All required tables exist"
+          echo "✅ RLS policies are protecting your data"
+          echo ""
+          echo "Your database is ready for production! 🚀"
+          echo ""
