@@ -1,0 +1,6 @@
+const navItems = [
+  // existing links...
+  { name: t('nav.about'), href: '/about' },
+  { name: t('nav.manifesto'), href: '/manifesto' },
+  // other links...
+];
