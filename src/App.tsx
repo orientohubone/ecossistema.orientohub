@@ -9,6 +9,7 @@ import DashboardLayout from './layouts/DashboardLayout';
 
 // Pages
 import HomePage from './pages/HomePage';
+import ManifestoPage from './pages/ManifestoPage';
 import AboutPage from './pages/AboutPage';
 import EcosystemPage from './pages/EcosystemPage';
 import PricingPage from './pages/PricingPage';
@@ -64,6 +65,7 @@ function App() {
         <Route path="/" element={<MainLayout />}> 
           <Route index element={<HomePage />} />
           <Route path="sobre" element={<AboutPage />} />
+          <Route path="manifesto" element={<ManifestoPage />} />
           <Route path="ecossistema" element={<EcosystemPage />} />
           <Route path="planos" element={<PricingPage />} />
           <Route path="checkout" element={<CheckoutPage />} />
