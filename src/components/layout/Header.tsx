@@ -59,6 +59,7 @@ const Header = () => {
   const navItems = [
     { name: t('nav.home'), href: '/' },
     { name: t('nav.about'), href: '/sobre' },
+    { name: 'Manifesto', href: '/manifesto' },
     { name: t('nav.ecosystem'), href: '/ecossistema' },
     { name: t('nav.pricing'), href: '/planos' },
     { name: t('nav.blog'), href: '/blog' },
@@ -101,7 +102,7 @@ const Header = () => {
               <button className="flex items-center text-gray-700 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400">
                 <Globe size={20} />
               </button>
-              <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg py-1 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+              <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg py-1 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
                 <button
                   onClick={() => changeLanguage('pt-BR')}
                   className={`block px-4 py-2 text-sm w-full text-left ${
