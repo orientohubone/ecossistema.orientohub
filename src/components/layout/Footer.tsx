@@ -58,6 +58,11 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
+                <Link to="/manifesto" className="text-gray-400 hover:text-primary-500 transition-colors">
+                  Manifesto
+                </Link>
+              </li>
+              <li>
                 <Link to="/ecossistema" className="text-gray-400 hover:text-primary-500 transition-colors">
                   {t('nav.ecosystem')}
                 </Link>
