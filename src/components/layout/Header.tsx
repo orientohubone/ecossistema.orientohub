@@ -75,7 +75,7 @@ const Header = () => {
     <img 
       src="/orientohub.png" 
       alt="Orientohub" 
-      className="h-8 w-auto"
+      className="h-5 w-auto"
     />
   </Link>
 </div>
