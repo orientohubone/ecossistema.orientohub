@@ -133,15 +133,17 @@ const Footer = () => {
         <div className="container-custom py-16">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12">
             {/* Logo and description */}
-            <div className="lg:col-span-2">
-              <Link to="/" onClick={handleLinkClick} className="inline-flex items-center group mb-6">
-                <div className="relative">
-                  <div className="absolute inset-0 bg-primary-500/20 rounded-lg blur-xl group-hover:blur-2xl transition-all" />
-                  <span className="relative text-3xl font-bold">
-                    Oriento<span className="text-primary-500">hub</span>
-                  </span>
-                </div>
-              </Link>
+<div className="lg:col-span-2">
+  <Link to="/" onClick={handleLinkClick} className="inline-flex items-center group mb-6">
+    <div className="relative">
+      <div className="absolute inset-0 bg-primary-500/20 rounded-lg blur-xl group-hover:blur-2xl transition-all" />
+      <img 
+        src="/orientohub.png" 
+        alt="Orientohub" 
+        className="relative h-10 w-auto"
+      />
+    </div>
+  </Link>
               
               <p className="text-gray-400 leading-relaxed mb-6 max-w-sm">
                 A plataforma gamificada que transforma a construção de startups em uma jornada imersiva e divertida.
