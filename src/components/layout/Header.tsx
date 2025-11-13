@@ -73,7 +73,7 @@ const Header = () => {
 <div className="flex-shrink-0">
   <Link to="/" className="flex items-center">
     <img 
-      src="/logo.png" 
+      src="/orientohub.png" 
       alt="Orientohub" 
       className="h-8 w-auto"
     />
