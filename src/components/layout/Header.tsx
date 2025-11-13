@@ -70,13 +70,15 @@ const Header = () => {
       <div className="container-custom">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <div className="flex-shrink-0">
-            <Link to="/" className="flex items-center">
-              <span className="text-2xl font-bold text-black dark:text-white">
-                Oriento<span className="text-primary-500">hub</span>
-              </span>
-            </Link>
-          </div>
+<div className="flex-shrink-0">
+  <Link to="/" className="flex items-center">
+    <img 
+      src="/logo.png" 
+      alt="Orientohub" 
+      className="h-8 w-auto"
+    />
+  </Link>
+</div>
           
           {/* Desktop navigation */}
           <nav className="hidden md:flex space-x-8">
