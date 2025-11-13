@@ -76,7 +76,7 @@ const Header = () => {
     <img 
       src="/orientohub-dark.png" 
       alt="Orientohub" 
-      className="h-6 w-auto dark:hidden"
+      className="h-7 w-auto dark:hidden"
     />
     {/* Logo para modo dark (fundo escuro) */}
     <img 
