@@ -1,12 +1,23 @@
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Github, Twitter, Linkedin, Instagram, Mail, MapPin, Phone, Rocket, Sparkles, ArrowRight, Heart } from 'lucide-react';
+import { Github, Twitter, Linkedin, Instagram, Mail, MapPin, Phone, Rocket, Sparkles, ArrowRight, Heart, ArrowUp } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const Footer = () => {
   const { t } = useTranslation();
   
   const currentYear = new Date().getFullYear();
+  
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  };
+
+  const handleLinkClick = () => {
+    window.scrollTo(0, 0);
+  };
   
   const socialLinks = [
     { icon: Twitter, href: '#', label: 'Twitter', color: 'hover:text-blue-400' },
@@ -51,6 +62,27 @@ const Footer = () => {
           backgroundSize: '40px 40px'
         }} />
       </div>
+
+      {/* Back to Top Button */}
+      <motion.button
+        onClick={scrollToTop}
+        className="absolute top-8 right-8 z-20 group"
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        whileHover={{ y: -5 }}
+        whileTap={{ scale: 0.9 }}
+      >
+        <div className="relative">
+          <div className="absolute inset-0 bg-primary-500/30 rounded-full blur-xl group-hover:blur-2xl transition-all" />
+          <div className="relative w-14 h-14 bg-gradient-to-br from-primary-500 to-primary-600 rounded-full flex items-center justify-center shadow-lg shadow-primary-500/30 group-hover:shadow-xl group-hover:shadow-primary-500/50 transition-all border-2 border-primary-400">
+            <ArrowUp className="w-6 h-6 text-black group-hover:scale-110 transition-transform" />
+          </div>
+        </div>
+        <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 text-xs text-gray-400 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">
+          Voltar ao topo
+        </span>
+      </motion.button>
 
       <div className="relative z-10">
         {/* Newsletter Section */}
@@ -102,7 +134,7 @@ const Footer = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12">
             {/* Logo and description */}
             <div className="lg:col-span-2">
-              <Link to="/" className="inline-flex items-center group mb-6">
+              <Link to="/" onClick={handleLinkClick} className="inline-flex items-center group mb-6">
                 <div className="relative">
                   <div className="absolute inset-0 bg-primary-500/20 rounded-lg blur-xl group-hover:blur-2xl transition-all" />
                   <span className="relative text-3xl font-bold">
@@ -143,7 +175,8 @@ const Footer = () => {
                 {navigationLinks.map((link, index) => (
                   <li key={index}>
                     <Link 
-                      to={link.to} 
+                      to={link.to}
+                      onClick={handleLinkClick}
                       className="group text-gray-400 hover:text-primary-500 transition-colors flex items-center gap-2"
                     >
                       <ArrowRight className="w-4 h-4 opacity-0 group-hover:opacity-100 -ml-6 group-hover:ml-0 transition-all" />
@@ -164,7 +197,8 @@ const Footer = () => {
                 {legalLinks.map((link, index) => (
                   <li key={index}>
                     <Link 
-                      to={link.to} 
+                      to={link.to}
+                      onClick={handleLinkClick}
                       className="group text-gray-400 hover:text-primary-500 transition-colors flex items-center gap-2"
                     >
                       <ArrowRight className="w-4 h-4 opacity-0 group-hover:opacity-100 -ml-6 group-hover:ml-0 transition-all" />
