@@ -3,12 +3,14 @@ import { Routes, Route } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { AnimatePresence } from 'framer-motion';
 
+
 // Layouts
 import MainLayout from './layouts/MainLayout';
 import DashboardLayout from './layouts/DashboardLayout';
 
 // Pages
 import HomePage from './pages/HomePage';
+import ContactPage from './pages/ContactPage';
 import ManifestoPage from './pages/ManifestoPage';
 import AboutPage from './pages/AboutPage';
 import EcosystemPage from './pages/EcosystemPage';
@@ -64,6 +66,7 @@ function App() {
         {/* Public routes */}
         <Route path="/" element={<MainLayout />}> 
           <Route index element={<HomePage />} />
+          <Route path="/contato" element={<ContactPage />} />
           <Route path="sobre" element={<AboutPage />} />
           <Route path="manifesto" element={<ManifestoPage />} />
           <Route path="ecossistema" element={<EcosystemPage />} />
