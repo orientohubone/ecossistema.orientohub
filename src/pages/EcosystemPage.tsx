@@ -665,7 +665,7 @@ interface MVPCardProps {
 const MVPCard = ({ name, description, focus, icon, color, delay, link, status = 'active', metrics }: MVPCardProps) => {
   return (
     <motion.div
-      className="group relative h-[480px] rounded-2xl overflow-hidden"
+      className="group relative min-h-[520px] rounded-2xl overflow-hidden"
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
@@ -674,9 +674,9 @@ const MVPCard = ({ name, description, focus, icon, color, delay, link, status = 
     >
       {/* Main Card Container */}
       <div className={`relative h-full bg-gradient-to-br ${color} p-[2px] rounded-2xl`}>
-        <div className="relative h-full bg-white dark:bg-gray-900 rounded-2xl overflow-hidden">
+        <div className="relative h-full bg-white dark:bg-gray-900 rounded-2xl overflow-hidden flex flex-col">
           {/* Header Section with Gradient */}
-          <div className={`relative bg-gradient-to-br ${color} p-6 pb-20`}>
+          <div className={`relative bg-gradient-to-br ${color} p-6 pb-16 flex-shrink-0`}>
             {/* Status Badge */}
             <div className="absolute top-4 right-4">
               <div className={`px-3 py-1 rounded-full text-xs font-bold ${
@@ -706,19 +706,19 @@ const MVPCard = ({ name, description, focus, icon, color, delay, link, status = 
           </div>
 
           {/* Content Section */}
-          <div className="relative -mt-12 px-6 pb-6 space-y-4">
+          <div className="relative -mt-8 px-6 pb-6 space-y-3 flex-grow flex flex-col">
             {/* Description Card */}
             <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-lg border border-gray-200 dark:border-gray-700">
-              <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+              <p className="text-xs text-gray-700 dark:text-gray-300 leading-relaxed">
                 {description}
               </p>
             </div>
 
             {/* Metrics (if provided) */}
             {metrics && metrics.length > 0 && (
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-2 gap-2">
                 {metrics.map((metric, index) => (
-                  <div key={index} className="bg-gray-50 dark:bg-gray-800 rounded-lg p-3 border border-gray-200 dark:border-gray-700">
+                  <div key={index} className="bg-gray-50 dark:bg-gray-800 rounded-lg p-2.5 border border-gray-200 dark:border-gray-700">
                     <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">{metric.label}</div>
                     <div className="text-lg font-bold text-gray-900 dark:text-white">{metric.value}</div>
                   </div>
@@ -727,9 +727,9 @@ const MVPCard = ({ name, description, focus, icon, color, delay, link, status = 
             )}
 
             {/* Equity Badge */}
-            <div className="flex items-center justify-center gap-2 bg-primary-500/10 border-2 border-primary-500/30 rounded-lg p-3">
+            <div className="flex items-center justify-center gap-2 bg-primary-500/10 border-2 border-primary-500/30 rounded-lg p-2.5">
               <CircleDot className="w-4 h-4 text-primary-500" />
-              <span className="text-sm font-bold text-primary-600 dark:text-primary-400">
+              <span className="text-xs font-bold text-primary-600 dark:text-primary-400">
                 20% Participação Societária
               </span>
             </div>
@@ -740,7 +740,7 @@ const MVPCard = ({ name, description, focus, icon, color, delay, link, status = 
                 href={link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`group/btn flex items-center justify-center gap-2 w-full px-4 py-3 bg-gradient-to-r ${color} text-white font-bold rounded-xl transition-all duration-300 hover:shadow-lg hover:scale-105`}
+                className={`group/btn flex items-center justify-center gap-2 w-full px-4 py-3 bg-gradient-to-r ${color} text-white font-bold rounded-xl transition-all duration-300 hover:shadow-lg hover:scale-105 mt-auto`}
               >
                 Visitar Site
                 <ArrowRight className="w-5 h-5 group-hover/btn:translate-x-1 transition-transform" />
