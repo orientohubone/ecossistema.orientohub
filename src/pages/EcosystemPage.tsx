@@ -18,32 +18,39 @@ import {
   Network,
   Code,
   Database,
-  Radio,
   BookOpen,
   Briefcase,
   ArrowRight,
   CheckCircle2,
-  Layers,
   CircleDot,
   Building2,
-  Sparkles
+  Sparkles,
+  Layers,
+  Award,
+  Heart,
+  Play
 } from 'lucide-react';
-import { useState } from 'react';
 
 const EcosystemPage = () => {
   const { t } = useTranslation();
-  const [selectedLayer, setSelectedLayer] = useState<number | null>(null);
-  const [flippedCard, setFlippedCard] = useState<string | null>(null);
 
   return (
     <>
       <Helmet>
-        <title>Arquitetura Estratégica - Ecossistema Orientohub</title>
+        <title>Ecossistema - Orientohub</title>
         <meta name="description" content="Conheça a arquitetura estratégica do Orientohub: núcleo empresarial, plataforma de aceleração, MVPs conectados e verticais de expansão." />
       </Helmet>
 
-      {/* Hero Section - Strategic Architecture */}
-      <section className="relative py-24 bg-gradient-to-br from-black via-gray-900 to-black overflow-hidden">
+      {/* Hero Section */}
+      <section className="relative min-h-screen w-full overflow-hidden bg-gradient-to-br from-black via-gray-900 to-black flex items-center">
+        {/* Animated background elements */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute -top-1/2 -left-1/4 w-96 h-96 bg-primary-500/20 rounded-full blur-3xl animate-pulse" />
+          <div className="absolute top-1/3 -right-1/4 w-[500px] h-[500px] bg-primary-400/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '700ms' }} />
+          <div className="absolute bottom-0 left-1/3 w-96 h-96 bg-primary-300/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1000ms' }} />
+        </div>
+
+        {/* Grid pattern overlay */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0" style={{
             backgroundImage: 'radial-gradient(circle at 2px 2px, #FFD700 1px, transparent 0)',
@@ -51,81 +58,87 @@ const EcosystemPage = () => {
           }} />
         </div>
 
-        <div className="container-custom relative z-10">
-          <motion.div
-            className="text-center mb-16"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
+        {/* Content */}
+        <div className="relative z-10 container-custom py-32">
+          <div className="max-w-5xl mx-auto text-center">
+            {/* Badge */}
             <motion.div
-              className="inline-flex items-center gap-2 bg-primary-500/10 border border-primary-500/30 px-4 py-2 rounded-full mb-6"
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.2 }}
+              className="flex justify-center mb-8"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
             >
-              <Settings className="w-4 h-4 text-primary-500 animate-spin" style={{ animationDuration: '3s' }} />
-              <span className="text-primary-500 font-semibold text-sm">ARQUITETURA ESTRATÉGICA</span>
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border-2 border-primary-500/30 bg-primary-500/10 text-primary-500 backdrop-blur-sm">
+                <Settings className="w-4 h-4 animate-spin" style={{ animationDuration: '3s' }} />
+                <span className="text-sm font-semibold">Arquitetura Estratégica</span>
+              </div>
             </motion.div>
 
-            <h1 className="text-5xl md:text-6xl font-bold mb-6 text-white">
-              Orientohub <span className="text-primary-500">Ecossistema</span>
-            </h1>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-              Um ecossistema completo de inovação, aceleração e produtos conectados.
-              Conheça nossa arquitetura em 3 camadas que transforma ideias em negócios escaláveis.
-            </p>
-          </motion.div>
+            {/* Main heading */}
+            <motion.h1
+              className="text-5xl sm:text-6xl lg:text-7xl font-bold text-center mb-6 tracking-tight"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+            >
+              <span className="block text-white mb-2">
+                Orientohub
+              </span>
+              <span className="bg-gradient-to-r from-primary-400 via-primary-500 to-primary-600 bg-clip-text text-transparent">
+                Ecossistema
+              </span>
+            </motion.h1>
 
-          {/* Interactive Architecture Diagram */}
-          <motion.div
-            className="relative max-w-5xl mx-auto"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.4, duration: 0.8 }}
-          >
-            <div className="relative flex flex-col items-center gap-8">
-              {/* Layer indicators */}
-              <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-12 w-full">
-                <LayerButton
-                  number={0}
-                  title="Núcleo"
-                  icon={<Compass className="w-6 h-6" />}
-                  color="primary"
-                  active={selectedLayer === 0}
-                  onClick={() => setSelectedLayer(selectedLayer === 0 ? null : 0)}
-                />
-                <LayerButton
-                  number={1}
-                  title="Plataforma"
-                  icon={<Network className="w-6 h-6" />}
-                  color="blue"
-                  active={selectedLayer === 1}
-                  onClick={() => setSelectedLayer(selectedLayer === 1 ? null : 1)}
-                />
-                <LayerButton
-                  number={2}
-                  title="MVPs & Soluções"
-                  icon={<Rocket className="w-6 h-6" />}
-                  color="green"
-                  active={selectedLayer === 2}
-                  onClick={() => setSelectedLayer(selectedLayer === 2 ? null : 2)}
-                />
-                <LayerButton
-                  number={3}
-                  title="Verticais"
-                  icon={<TrendingUp className="w-6 h-6" />}
-                  color="purple"
-                  active={selectedLayer === 3}
-                  onClick={() => setSelectedLayer(selectedLayer === 3 ? null : 3)}
-                />
-              </div>
-            </div>
-          </motion.div>
+            {/* Description */}
+            <motion.p
+              className="text-xl sm:text-2xl text-gray-300 text-center max-w-3xl mx-auto mb-12 leading-relaxed"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+            >
+              Um ecossistema completo de inovação, aceleração e produtos conectados em 4 camadas estratégicas.
+            </motion.p>
+
+            {/* Layer Navigation */}
+            <motion.div
+              className="flex flex-wrap items-center justify-center gap-4 mb-8"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.6 }}
+            >
+              <a href="#nucleo" className="group px-6 py-3 bg-primary-500/10 border-2 border-primary-500/50 hover:border-primary-500 hover:bg-primary-500/20 rounded-xl backdrop-blur-sm transition-all">
+                <div className="flex items-center gap-2">
+                  <Compass className="w-5 h-5 text-primary-500" />
+                  <span className="text-primary-500 font-semibold">Núcleo</span>
+                </div>
+              </a>
+              
+              <a href="#plataforma" className="group px-6 py-3 bg-blue-500/10 border-2 border-blue-500/50 hover:border-blue-500 hover:bg-blue-500/20 rounded-xl backdrop-blur-sm transition-all">
+                <div className="flex items-center gap-2">
+                  <Network className="w-5 h-5 text-blue-500" />
+                  <span className="text-blue-500 font-semibold">Plataforma</span>
+                </div>
+              </a>
+              
+              <a href="#mvps" className="group px-6 py-3 bg-green-500/10 border-2 border-green-500/50 hover:border-green-500 hover:bg-green-500/20 rounded-xl backdrop-blur-sm transition-all">
+                <div className="flex items-center gap-2">
+                  <Rocket className="w-5 h-5 text-green-500" />
+                  <span className="text-green-500 font-semibold">MVPs</span>
+                </div>
+              </a>
+              
+              <a href="#verticais" className="group px-6 py-3 bg-purple-500/10 border-2 border-purple-500/50 hover:border-purple-500 hover:bg-purple-500/20 rounded-xl backdrop-blur-sm transition-all">
+                <div className="flex items-center gap-2">
+                  <TrendingUp className="w-5 h-5 text-purple-500" />
+                  <span className="text-purple-500 font-semibold">Verticais</span>
+                </div>
+              </a>
+            </motion.div>
+          </div>
         </div>
       </section>
 
-      {/* Núcleo - Core Business Section */}
+      {/* Núcleo Section */}
       <section id="nucleo" className="py-24 bg-white dark:bg-gray-900">
         <div className="container-custom">
           <motion.div
@@ -134,48 +147,48 @@ const EcosystemPage = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <div className="inline-flex items-center gap-2 bg-primary-500/10 border border-primary-500/30 px-4 py-2 rounded-full mb-4">
+            <div className="inline-flex items-center gap-2 bg-primary-500/10 border border-primary-500/30 px-4 py-2 rounded-full mb-6">
               <Compass className="w-5 h-5 text-primary-500" />
-              <span className="text-primary-500 font-semibold">NÚCLEO</span>
+              <span className="text-primary-500 font-semibold text-sm">NÚCLEO</span>
             </div>
-            <h2 className="text-4xl font-bold mb-4">Orientohub Soluções Empresariais</h2>
+            <h2 className="text-4xl md:text-5xl font-bold mb-6">Orientohub Soluções Empresariais</h2>
             <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
               Base institucional e marca-mãe. Responsável por governança, cultura, metodologia e estrutura de aceleração.
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <CoreFeatureCard
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <FeatureCard
               icon={<Shield className="w-8 h-8" />}
               title="Gestão do Ecossistema"
               description="Governança estratégica e alinhamento de todas as iniciativas do ecossistema."
               delay={0.1}
             />
-            <CoreFeatureCard
+            <FeatureCard
               icon={<Target className="w-8 h-8" />}
               title="Curadoria de Projetos"
               description="Seleção e acompanhamento de founders e startups de alto potencial."
               delay={0.2}
             />
-            <CoreFeatureCard
+            <FeatureCard
               icon={<Zap className="w-8 h-8" />}
               title="Aceleração Ágil"
               description="Metodologias ágeis para validação rápida e crescimento sustentável."
               delay={0.3}
             />
-            <CoreFeatureCard
+            <FeatureCard
               icon={<Layers className="w-8 h-8" />}
               title="Framework de Inovação"
               description="Estrutura proprietária para inovação contínua e sistemática."
               delay={0.4}
             />
-            <CoreFeatureCard
+            <FeatureCard
               icon={<Sparkles className="w-8 h-8" />}
               title="Branding & Posicionamento"
               description="Construção de marca e posicionamento estratégico no mercado."
               delay={0.5}
             />
-            <CoreFeatureCard
+            <FeatureCard
               icon={<Users className="w-8 h-8" />}
               title="Cultura & Comunidade"
               description="Desenvolvimento de cultura de inovação e comunidade de founders."
@@ -185,7 +198,7 @@ const EcosystemPage = () => {
         </div>
       </section>
 
-      {/* Camada 1 - Platform Layer */}
+      {/* Camada 1 - Plataforma */}
       <section id="plataforma" className="py-24 bg-gradient-to-b from-gray-50 to-white dark:from-gray-800 dark:to-gray-900">
         <div className="container-custom">
           <motion.div
@@ -194,50 +207,50 @@ const EcosystemPage = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <div className="inline-flex items-center gap-2 bg-blue-500/10 border border-blue-500/30 px-4 py-2 rounded-full mb-4">
+            <div className="inline-flex items-center gap-2 bg-blue-500/10 border border-blue-500/30 px-4 py-2 rounded-full mb-6">
               <Network className="w-5 h-5 text-blue-500" />
-              <span className="text-blue-500 font-semibold">CAMADA 1</span>
+              <span className="text-blue-500 font-semibold text-sm">CAMADA 1</span>
             </div>
-            <h2 className="text-4xl font-bold mb-4">Plataforma Orientohub</h2>
+            <h2 className="text-4xl md:text-5xl font-bold mb-6">Plataforma Orientohub</h2>
             <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
               O hub digital onde startups, founders e parceiros interagem, compartilham recursos e validam ideias.
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
             <PlatformCard
               icon={<Users className="w-10 h-10" />}
               title="Comunidade de Founders"
               description="Rede exclusiva para conexão, troca de experiências e colaboração entre empreendedores."
-              features={["Networking qualificado", "Eventos exclusivos", "Grupos de mastermind"]}
+              features={["Networking qualificado", "Eventos exclusivos", "Grupos de mastermind", "Fórum de discussão"]}
               delay={0.1}
             />
             <PlatformCard
               icon={<Lightbulb className="w-10 h-10" />}
               title="Framework de Aceleração"
               description="Metodologias comprovadas: Design Thinking, OKRs, Lean Startup e mais."
-              features={["Design Thinking", "OKRs", "Lean Startup"]}
+              features={["Design Thinking", "OKRs", "Lean Startup", "Business Model Canvas"]}
               delay={0.2}
             />
             <PlatformCard
               icon={<BarChart3 className="w-10 h-10" />}
               title="Dashboard de Progresso"
               description="Acompanhamento em tempo real do desenvolvimento das startups aceleradas."
-              features={["Métricas em tempo real", "KPIs personalizados", "Relatórios automáticos"]}
+              features={["Métricas em tempo real", "KPIs personalizados", "Relatórios automáticos", "Analytics avançado"]}
               delay={0.3}
             />
             <PlatformCard
               icon={<Database className="w-10 h-10" />}
               title="Repositório de Conhecimento"
               description="Biblioteca completa de metodologias, templates e boas práticas de mercado."
-              features={["Templates prontos", "Cases de sucesso", "Documentação completa"]}
+              features={["Templates prontos", "Cases de sucesso", "Documentação completa", "Vídeo-aulas"]}
               delay={0.4}
             />
           </div>
         </div>
       </section>
 
-      {/* Camada 2 - MVPs & Solutions */}
+      {/* Camada 2 - MVPs */}
       <section id="mvps" className="py-24 bg-white dark:bg-gray-900">
         <div className="container-custom">
           <motion.div
@@ -246,64 +259,72 @@ const EcosystemPage = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <div className="inline-flex items-center gap-2 bg-green-500/10 border border-green-500/30 px-4 py-2 rounded-full mb-4">
+            <div className="inline-flex items-center gap-2 bg-green-500/10 border border-green-500/30 px-4 py-2 rounded-full mb-6">
               <Rocket className="w-5 h-5 text-green-500" />
-              <span className="text-green-500 font-semibold">CAMADA 2</span>
+              <span className="text-green-500 font-semibold text-sm">CAMADA 2</span>
             </div>
-            <h2 className="text-4xl font-bold mb-4">MVPs & Soluções Plugadas</h2>
+            <h2 className="text-4xl md:text-5xl font-bold mb-6">MVPs & Soluções Conectadas</h2>
             <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
               Produtos criados ou incubados dentro do ecossistema. Cada um com autonomia, mas conectados via participação societária de 20%.
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             <MVPCard
               name="Humansys + BrainSys"
-              description="Plataforma de RH inteligente com algoritmo ontológico"
-              focus="Gestão de pessoas e cultura"
-              icon={<Brain className="w-12 h-12" />}
+              description="Plataforma de RH inteligente com algoritmo ontológico para gestão de pessoas e cultura organizacional."
+              focus="Gestão de Pessoas"
+              icon={<Brain className="w-12 h-12 text-white" />}
               color="from-blue-500 to-cyan-500"
-              id="humansys"
-              flipped={flippedCard === 'humansys'}
-              onFlip={() => setFlippedCard(flippedCard === 'humansys' ? null : 'humansys')}
               delay={0.1}
               link="https://humansys.com.br"
+              status="active"
+              metrics={[
+                { label: 'Empresas', value: '50+' },
+                { label: 'Usuários', value: '2k+' }
+              ]}
             />
             <MVPCard
               name="Simples Metrics"
-              description="Plataforma de marketing analítico e performance"
-              focus="Growth e dados"
-              icon={<BarChart3 className="w-12 h-12" />}
+              description="Plataforma de marketing analítico focada em performance e growth para startups e negócios digitais."
+              focus="Growth & Analytics"
+              icon={<BarChart3 className="w-12 h-12 text-white" />}
               color="from-green-500 to-emerald-500"
-              id="metrics"
-              flipped={flippedCard === 'metrics'}
-              onFlip={() => setFlippedCard(flippedCard === 'metrics' ? null : 'metrics')}
               delay={0.2}
               link="https://simplesmetrics.com.br"
+              status="active"
+              metrics={[
+                { label: 'Métricas', value: '100+' },
+                { label: 'Integrações', value: '20+' }
+              ]}
             />
             <MVPCard
               name="Vo.ai"
-              description="Plataforma de convergência vocacional e testes de perfil"
-              focus="Educação e autoconhecimento"
-              icon={<Compass className="w-12 h-12" />}
+              description="Plataforma de convergência vocacional com testes de perfil e inteligência artificial para autoconhecimento."
+              focus="Educação & IA"
+              icon={<Compass className="w-12 h-12 text-white" />}
               color="from-purple-500 to-pink-500"
-              id="voai"
-              flipped={flippedCard === 'voai'}
-              onFlip={() => setFlippedCard(flippedCard === 'voai' ? null : 'voai')}
               delay={0.3}
               link="https://vo.ai"
+              status="beta"
+              metrics={[
+                { label: 'Testes', value: '15k+' },
+                { label: 'Precisão', value: '94%' }
+              ]}
             />
             <MVPCard
               name="Vibe Coding"
-              description="Stack tech com IA aplicada a desenvolvimento"
-              focus="Tecnologia e automação"
-              icon={<Code className="w-12 h-12" />}
+              description="Stack de tecnologia com IA aplicada ao desenvolvimento, automação de código e produtividade para devs."
+              focus="Tech & Automação"
+              icon={<Code className="w-12 h-12 text-white" />}
               color="from-orange-500 to-red-500"
-              id="vibe"
-              flipped={flippedCard === 'vibe'}
-              onFlip={() => setFlippedCard(flippedCard === 'vibe' ? null : 'vibe')}
               delay={0.4}
               link="https://vibecodingstack.netlify.app/"
+              status="active"
+              metrics={[
+                { label: 'Ferramentas', value: '30+' },
+                { label: 'Economia', value: '60%' }
+              ]}
             />
           </div>
 
@@ -324,28 +345,20 @@ const EcosystemPage = () => {
         </div>
       </section>
 
-      {/* Camada 3 - Expansion Verticals */}
-      <section id="verticais" className="py-24 bg-gradient-to-b from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 relative overflow-hidden">
-        <div className="absolute inset-0 opacity-5">
-          <div className="absolute inset-0" style={{
-            backgroundImage: 'linear-gradient(45deg, #FFD700 25%, transparent 25%), linear-gradient(-45deg, #FFD700 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #FFD700 75%), linear-gradient(-45deg, transparent 75%, #FFD700 75%)',
-            backgroundSize: '60px 60px',
-            backgroundPosition: '0 0, 0 30px, 30px -30px, -30px 0px'
-          }} />
-        </div>
-
-        <div className="container-custom relative z-10">
+      {/* Camada 3 - Verticais */}
+      <section id="verticais" className="py-24 bg-gradient-to-b from-gray-50 to-white dark:from-gray-800 dark:to-gray-900">
+        <div className="container-custom">
           <motion.div
             className="text-center mb-16"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <div className="inline-flex items-center gap-2 bg-purple-500/10 border border-purple-500/30 px-4 py-2 rounded-full mb-4">
+            <div className="inline-flex items-center gap-2 bg-purple-500/10 border border-purple-500/30 px-4 py-2 rounded-full mb-6">
               <TrendingUp className="w-5 h-5 text-purple-500" />
-              <span className="text-purple-500 font-semibold">CAMADA 3</span>
+              <span className="text-purple-500 font-semibold text-sm">CAMADA 3</span>
             </div>
-            <h2 className="text-4xl font-bold mb-4">Verticais de Expansão</h2>
+            <h2 className="text-4xl md:text-5xl font-bold mb-6">Verticais de Expansão</h2>
             <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
               Produtos e iniciativas de fortalecimento da comunidade e monetização de conhecimento.
             </p>
@@ -384,9 +397,12 @@ const EcosystemPage = () => {
       </section>
 
       {/* Business Model Section */}
-      <section className="py-24 bg-black text-white relative overflow-hidden">
+      <section className="py-24 bg-gradient-to-br from-black via-gray-900 to-black text-white relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
-          <div className="absolute inset-0 bg-gradient-to-br from-primary-500 via-transparent to-primary-500" />
+          <div className="absolute inset-0" style={{
+            backgroundImage: 'radial-gradient(circle at 2px 2px, #FFD700 1px, transparent 0)',
+            backgroundSize: '40px 40px'
+          }} />
         </div>
 
         <div className="container-custom relative z-10">
@@ -396,11 +412,11 @@ const EcosystemPage = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <div className="inline-flex items-center gap-2 bg-primary-500/20 border border-primary-500/40 px-4 py-2 rounded-full mb-4">
+            <div className="inline-flex items-center gap-2 bg-primary-500/20 border-2 border-primary-500/40 px-4 py-2 rounded-full mb-6">
               <Building2 className="w-5 h-5 text-primary-500" />
-              <span className="text-primary-500 font-semibold">MODELO DE NEGÓCIO</span>
+              <span className="text-primary-500 font-semibold text-sm">MODELO DE NEGÓCIO</span>
             </div>
-            <h2 className="text-4xl font-bold mb-4">Como Geramos Valor</h2>
+            <h2 className="text-4xl md:text-5xl font-bold mb-6">Como Geramos Valor</h2>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto">
               Um modelo de negócio diversificado que sustenta o ecossistema e gera valor para todos os participantes.
             </p>
@@ -444,7 +460,7 @@ const EcosystemPage = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-4xl font-bold mb-4">Jornada do Founder</h2>
+            <h2 className="text-4xl md:text-5xl font-bold mb-6">Jornada do Founder</h2>
             <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
               Da validação da ideia até o crescimento escalável. Acompanhamos você em cada etapa.
             </p>
@@ -495,139 +511,95 @@ const EcosystemPage = () => {
       </section>
 
       {/* Final CTA Section */}
-<section className="relative py-32 bg-gradient-to-br from-black via-gray-900 to-black overflow-hidden">
-  {/* Animated background elements */}
-  <div className="absolute inset-0 overflow-hidden">
-    <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary-500/20 rounded-full blur-3xl animate-pulse" />
-    <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-primary-400/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1000ms' }} />
-  </div>
+      <section className="relative py-32 bg-gradient-to-br from-black via-gray-900 to-black overflow-hidden">
+        {/* Animated background elements */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary-500/20 rounded-full blur-3xl animate-pulse" />
+          <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-primary-400/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1000ms' }} />
+        </div>
 
-  {/* Grid pattern overlay */}
-  <div className="absolute inset-0 opacity-10">
-    <div className="absolute inset-0" style={{
-      backgroundImage: 'radial-gradient(circle at 2px 2px, #FFD700 1px, transparent 0)',
-      backgroundSize: '40px 40px'
-    }} />
-  </div>
+        {/* Grid pattern overlay */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute inset-0" style={{
+            backgroundImage: 'radial-gradient(circle at 2px 2px, #FFD700 1px, transparent 0)',
+            backgroundSize: '40px 40px'
+          }} />
+        </div>
 
-  <div className="container-custom relative z-10">
-    <motion.div
-      className="text-center mb-16"
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-    >
-      <div className="inline-flex items-center gap-2 bg-primary-500/20 border-2 border-primary-500/40 px-5 py-2 rounded-full mb-8 backdrop-blur-sm">
-        <Sparkles className="w-4 h-4 text-primary-500" />
-        <span className="text-primary-500 font-bold text-sm uppercase tracking-wide">
-          Junte-se a Nós
-        </span>
-      </div>
+        <div className="container-custom relative z-10">
+          <motion.div
+            className="text-center mb-16"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <div className="inline-flex items-center gap-2 bg-primary-500/20 border-2 border-primary-500/40 px-5 py-2 rounded-full mb-8 backdrop-blur-sm">
+              <Sparkles className="w-4 h-4 text-primary-500" />
+              <span className="text-primary-500 font-bold text-sm uppercase tracking-wide">
+                Junte-se a Nós
+              </span>
+            </div>
 
-      <h2 className="text-4xl md:text-6xl font-bold mb-6 text-white leading-tight">
-        Pronto para{' '}
-        <span className="bg-gradient-to-r from-primary-400 via-primary-500 to-primary-600 bg-clip-text text-transparent">
-          Fazer Parte
-        </span>?
-      </h2>
-      <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto">
-        Escolha como você quer se conectar ao ecossistema Orientohub
-      </p>
-    </motion.div>
+            <h2 className="text-4xl md:text-6xl font-bold mb-6 text-white leading-tight">
+              Pronto para{' '}
+              <span className="bg-gradient-to-r from-primary-400 via-primary-500 to-primary-600 bg-clip-text text-transparent">
+                Fazer Parte
+              </span>?
+            </h2>
+            <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto">
+              Escolha como você quer se conectar ao ecossistema Orientohub
+            </p>
+          </motion.div>
 
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-      <CTACard
-        title="Sou Founder"
-        description="Quero acelerar minha startup e fazer parte da comunidade"
-        features={["Acesso ao ecossistema", "Mentorias especializadas", "Networking qualificado"]}
-        ctaText="Aplicar Agora"
-        ctaLink="/cadastro"
-        icon={Rocket}
-        delay={0.1}
-      />
-      <CTACard
-        title="Sou Parceiro"
-        description="Quero contribuir com conhecimento e recursos"
-        features={["Visibilidade no mercado", "Acesso a startups", "Eventos exclusivos"]}
-        ctaText="Tornar-se Parceiro"
-        ctaLink="/cadastro"
-        icon={Users}
-        delay={0.2}
-        featured={true}
-      />
-      <CTACard
-        title="Sou Investidor"
-        description="Quero investir em startups promissoras"
-        features={["Deal flow qualificado", "Due diligence", "Co-investimento"]}
-        ctaText="Conhecer Oportunidades"
-        ctaLink="/cadastro"
-        icon={TrendingUp}
-        delay={0.3}
-      />
-    </div>
-  </div>
-</section>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            <CTACard
+              title="Sou Founder"
+              description="Quero acelerar minha startup e fazer parte da comunidade"
+              features={["Acesso ao ecossistema", "Mentorias especializadas", "Networking qualificado"]}
+              ctaText="Aplicar Agora"
+              ctaLink="/cadastro"
+              icon={Rocket}
+              delay={0.1}
+            />
+            <CTACard
+              title="Sou Parceiro"
+              description="Quero contribuir com conhecimento e recursos"
+              features={["Visibilidade no mercado", "Acesso a startups", "Eventos exclusivos"]}
+              ctaText="Tornar-se Parceiro"
+              ctaLink="/contato"
+              icon={Users}
+              delay={0.2}
+              featured={true}
+            />
+            <CTACard
+              title="Sou Investidor"
+              description="Quero investir em startups promissoras"
+              features={["Deal flow qualificado", "Due diligence", "Co-investimento"]}
+              ctaText="Conhecer Oportunidades"
+              ctaLink="/contato"
+              icon={TrendingUp}
+              delay={0.3}
+            />
+          </div>
+        </div>
+      </section>
     </>
-  );
-};    
-
-interface LayerButtonProps {
-  number: number;
-  title: string;
-  icon: React.ReactNode;
-  color: 'primary' | 'blue' | 'green' | 'purple';
-  active: boolean;
-  onClick: () => void;
-}
-
-const LayerButton = ({ number, title, icon, color, active, onClick }: LayerButtonProps) => {
-  const colorClasses = {
-    primary: 'bg-primary-500/20 border-primary-500/50 text-primary-500 hover:bg-primary-500/30',
-    blue: 'bg-blue-500/20 border-blue-500/50 text-blue-500 hover:bg-blue-500/30',
-    green: 'bg-green-500/20 border-green-500/50 text-green-500 hover:bg-green-500/30',
-    purple: 'bg-purple-500/20 border-purple-500/50 text-purple-500 hover:bg-purple-500/30',
-  };
-
-  const activeClasses = {
-    primary: 'ring-2 ring-primary-500 bg-primary-500/30',
-    blue: 'ring-2 ring-blue-500 bg-blue-500/30',
-    green: 'ring-2 ring-green-500 bg-green-500/30',
-    purple: 'ring-2 ring-purple-500 bg-purple-500/30',
-  };
-
-  return (
-    <motion.button
-      onClick={onClick}
-      className={`
-        flex flex-col items-center gap-2 p-6 rounded-xl border-2 transition-all duration-300
-        ${colorClasses[color]}
-        ${active ? activeClasses[color] : ''}
-      `}
-      whileHover={{ scale: 1.05, y: -5 }}
-      whileTap={{ scale: 0.95 }}
-    >
-      <div className="flex items-center justify-center w-12 h-12 rounded-full bg-black/20">
-        {icon}
-      </div>
-      <div className="text-center">
-        <div className="text-xs font-semibold opacity-60">CAMADA {number}</div>
-        <div className="font-bold">{title}</div>
-      </div>
-    </motion.button>
   );
 };
 
-interface CoreFeatureCardProps {
+// ===== COMPONENTS =====
+
+interface FeatureCardProps {
   icon: React.ReactNode;
   title: string;
   description: string;
   delay: number;
 }
 
-const CoreFeatureCard = ({ icon, title, description, delay }: CoreFeatureCardProps) => {
+const FeatureCard = ({ icon, title, description, delay }: FeatureCardProps) => {
   return (
     <motion.div
-      className="group bg-gradient-to-br from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 p-6 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-primary-500 dark:hover:border-primary-500 transition-all duration-300 hover:shadow-lg hover:shadow-primary-500/10"
+      className="group bg-gradient-to-br from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 p-6 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-primary-500 dark:hover:border-primary-500 transition-all duration-300 hover:shadow-xl"
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
@@ -677,82 +649,112 @@ const PlatformCard = ({ icon, title, description, features, delay }: PlatformCar
     </motion.div>
   );
 };
+
 interface MVPCardProps {
   name: string;
   description: string;
   focus: string;
   icon: React.ReactNode;
   color: string;
-  id: string;
-  flipped: boolean;
-  onFlip: () => void;
   delay: number;
-  link?: string; // ← ADICIONADO ESTA LINHA
+  link?: string;
+  status?: 'active' | 'beta' | 'coming-soon';
+  metrics?: { label: string; value: string }[];
 }
 
-const MVPCard = ({ name, description, focus, icon, color, flipped, onFlip, delay, link }: MVPCardProps) => {
+const MVPCard = ({ name, description, focus, icon, color, delay, link, status = 'active', metrics }: MVPCardProps) => {
   return (
     <motion.div
-      className="relative h-80 cursor-pointer perspective-1000"
+      className="group relative h-[480px] rounded-2xl overflow-hidden"
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ delay }}
-      onClick={onFlip}
+      whileHover={{ y: -8 }}
     >
-      <motion.div
-        className="relative w-full h-full"
-        initial={false}
-        animate={{ rotateY: flipped ? 180 : 0 }}
-        transition={{ duration: 0.6 }}
-        style={{ transformStyle: 'preserve-3d' }}
-      >
-        {/* Front */}
-        <div
-          className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${color} p-6 flex flex-col items-center justify-center text-white`}
-          style={{ backfaceVisibility: 'hidden' }}
-        >
-          <div className="mb-4">
-            {icon}
-          </div>
-          <h3 className="text-xl font-bold text-center mb-2">{name}</h3>
-          <p className="text-center text-sm opacity-90">Clique para saber mais</p>
-        </div>
+      {/* Main Card Container */}
+      <div className={`relative h-full bg-gradient-to-br ${color} p-[2px] rounded-2xl`}>
+        <div className="relative h-full bg-white dark:bg-gray-900 rounded-2xl overflow-hidden">
+          {/* Header Section with Gradient */}
+          <div className={`relative bg-gradient-to-br ${color} p-6 pb-20`}>
+            {/* Status Badge */}
+            <div className="absolute top-4 right-4">
+              <div className={`px-3 py-1 rounded-full text-xs font-bold ${
+                status === 'active' ? 'bg-green-500 text-white' :
+                status === 'beta' ? 'bg-primary-500 text-black' :
+                'bg-gray-800 text-white'
+              }`}>
+                {status === 'active' ? '✓ Ativo' : status === 'beta' ? '⚡ Beta' : '🔜 Em Breve'}
+              </div>
+            </div>
 
-        {/* Back */}
-        <div
-          className="absolute inset-0 rounded-2xl bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 p-6 flex flex-col justify-between"
-          style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
-        >
-          <div>
-            <h3 className="text-lg font-bold mb-3">{name}</h3>
-            <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">{description}</p>
-            <div className="flex items-center gap-2 text-sm">
-              <Target className="w-4 h-4 text-primary-500" />
-              <span className="font-semibold text-primary-500">{focus}</span>
+            {/* Icon */}
+            <div className="mb-4 transform group-hover:scale-110 transition-transform duration-300">
+              <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">
+                {icon}
+              </div>
+            </div>
+
+            {/* Name */}
+            <h3 className="text-2xl font-bold text-white mb-2">{name}</h3>
+            
+            {/* Focus Tag */}
+            <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-3 py-1 rounded-lg">
+              <Target className="w-4 h-4 text-white" />
+              <span className="text-white text-sm font-medium">{focus}</span>
             </div>
           </div>
-          <div className="space-y-3">
-  <div className="flex items-center justify-center gap-2 text-xs text-gray-500 dark:text-gray-400">
-    <CircleDot className="w-3 h-3" />
-    <span>20% participação</span>
-  </div>
-  
-  {link && (
-    <a
-      href={link}
-      target="_blank"
-      rel="noopener noreferrer"
-      onClick={(e) => e.stopPropagation()}
-      className="flex items-center justify-center gap-2 w-full px-4 py-2 bg-primary-500 hover:bg-primary-600 text-black font-semibold rounded-lg transition-colors duration-300"
-    >
-      Visitar Site
-      <ArrowRight className="w-4 h-4" />
-    </a>
-  )}
-</div>
+
+          {/* Content Section */}
+          <div className="relative -mt-12 px-6 pb-6 space-y-4">
+            {/* Description Card */}
+            <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-lg border border-gray-200 dark:border-gray-700">
+              <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                {description}
+              </p>
+            </div>
+
+            {/* Metrics (if provided) */}
+            {metrics && metrics.length > 0 && (
+              <div className="grid grid-cols-2 gap-3">
+                {metrics.map((metric, index) => (
+                  <div key={index} className="bg-gray-50 dark:bg-gray-800 rounded-lg p-3 border border-gray-200 dark:border-gray-700">
+                    <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">{metric.label}</div>
+                    <div className="text-lg font-bold text-gray-900 dark:text-white">{metric.value}</div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* Equity Badge */}
+            <div className="flex items-center justify-center gap-2 bg-primary-500/10 border-2 border-primary-500/30 rounded-lg p-3">
+              <CircleDot className="w-4 h-4 text-primary-500" />
+              <span className="text-sm font-bold text-primary-600 dark:text-primary-400">
+                20% Participação Societária
+              </span>
+            </div>
+
+            {/* Visit Site Button */}
+            {link && (
+              <a
+                href={link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`group/btn flex items-center justify-center gap-2 w-full px-4 py-3 bg-gradient-to-r ${color} text-white font-bold rounded-xl transition-all duration-300 hover:shadow-lg hover:scale-105`}
+              >
+                Visitar Site
+                <ArrowRight className="w-5 h-5 group-hover/btn:translate-x-1 transition-transform" />
+              </a>
+            )}
+          </div>
+
+          {/* Hover Glow Effect */}
+          <div className={`absolute inset-0 bg-gradient-to-br ${color} opacity-0 group-hover:opacity-10 transition-opacity duration-300 pointer-events-none`} />
         </div>
-        </motion.div>
+      </div>
+
+      {/* External Glow on Hover */}
+      <div className={`absolute inset-0 bg-gradient-to-br ${color} opacity-0 group-hover:opacity-20 blur-2xl -z-10 transition-opacity duration-300`} />
     </motion.div>
   );
 };
@@ -845,7 +847,7 @@ const JourneyStep = ({ number, title, description, delay }: JourneyStepProps) =>
       viewport={{ once: true }}
       transition={{ delay }}
     >
-      <div className="flex-shrink-0 w-16 h-16 rounded-full bg-gradient-to-br from-primary-500 to-primary-600 flex items-center justify-center text-black font-bold text-xl group-hover:scale-110 transition-transform duration-300">
+      <div className="flex-shrink-0 w-16 h-16 rounded-full bg-gradient-to-br from-primary-500 to-primary-600 flex items-center justify-center text-black font-bold text-xl group-hover:scale-110 transition-transform shadow-lg">
         {number}
       </div>
       <div className="flex-1 pt-2">
@@ -863,7 +865,7 @@ interface StatCardProps {
 
 const StatCard = ({ number, label }: StatCardProps) => {
   return (
-    <div className="text-center p-6 bg-gradient-to-br from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 rounded-xl border border-gray-200 dark:border-gray-700">
+    <div className="text-center p-6 bg-gradient-to-br from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-primary-500 transition-all">
       <div className="text-3xl font-bold text-primary-500 mb-2">{number}</div>
       <div className="text-sm text-gray-600 dark:text-gray-400">{label}</div>
     </div>
