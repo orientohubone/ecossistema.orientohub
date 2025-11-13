@@ -72,10 +72,17 @@ const Header = () => {
           {/* Logo */}
 <div className="flex-shrink-0">
   <Link to="/" className="flex items-center">
+    {/* Logo para modo light (fundo branco) */}
+    <img 
+      src="/orientohub-dark.png" 
+      alt="Orientohub" 
+      className="h-6 w-auto dark:hidden"
+    />
+    {/* Logo para modo dark (fundo escuro) */}
     <img 
       src="/orientohub.png" 
       alt="Orientohub" 
-      className="h-6 w-auto"
+      className="h-6 w-auto hidden dark:block"
     />
   </Link>
 </div>
