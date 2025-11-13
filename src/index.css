@@ -2,53 +2,50 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ============================================
-   Global Scrollbar Styles - Amarelo Arredondado
-   ============================================ */
-
-/* Para navegadores Webkit (Chrome, Safari, Edge) */
-::-webkit-scrollbar {
-  width: 12px;
-  height: 12px;
+@layer base {
+  body {
+    @apply text-gray-900 dark:text-gray-100 antialiased;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display font-semibold;
+  }
 }
 
-::-webkit-scrollbar-track {
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.2));
-  border-radius: 10px;
-  margin: 4px;
-}
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center px-4 py-2 rounded-md font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2;
+  }
+  
+  .btn-primary {
+    @apply btn bg-primary-500 text-black hover:bg-primary-600 focus:ring-primary-500;
+  }
+  
+  .btn-secondary {
+    @apply btn bg-gray-800 text-white hover:bg-gray-700 focus:ring-gray-800 dark:bg-gray-700 dark:hover:bg-gray-600;
+  }
+  
+  .btn-outline {
+    @apply btn border border-gray-300 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 focus:ring-gray-300 dark:focus:ring-gray-700;
+  }
+  
+  .container-custom {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+  
+  .card {
+    @apply bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden;
+  }
 
-::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #FFD700, #CCAC00);
-  border-radius: 10px;
-  border: 2px solid rgba(0, 0, 0, 0.1);
-  box-shadow: 0 2px 6px rgba(255, 215, 0, 0.3);
-  transition: all 0.3s ease;
-}
+  .animated-card {
+    @apply relative overflow-hidden;
+  }
 
-::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #FFEF85, #FFD700);
-  box-shadow: 0 4px 12px rgba(255, 215, 0, 0.5);
-  border-color: rgba(255, 215, 0, 0.3);
-}
-
-::-webkit-scrollbar-thumb:active {
-  background: linear-gradient(180deg, #CCAC00, #998100);
-}
-
-/* Dark mode scrollbar */
-.dark ::-webkit-scrollbar-track {
-  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.1));
-}
-
-/* Para Firefox */
-* {
-  scrollbar-width: thin;
-  scrollbar-color: #FFD700 rgba(0, 0, 0, 0.1);
-}
-
-.dark * {
-  scrollbar-color: #FFD700 rgba(255, 255, 255, 0.1);
+  .animated-card::before {
+    content: '';
+    @apply absolute inset-0 bg-card-border bg-[length:200%_100%] animate-border-flow;
+    z-index: -1;
+  }
 }
 
 /* ============================================
@@ -129,9 +126,9 @@
   @apply bg-white dark:bg-gray-800 p-3 rounded-lg mb-1 border border-gray-200 dark:border-gray-700 transition-all hover:shadow-md hover:border-primary-300 dark:hover:border-primary-700;
 }
 
-/* Custom scrollbar for styled-scrollbar class (mantido para compatibilidade) */
+/* Custom scrollbar */
 .styled-scrollbar::-webkit-scrollbar {
-  width: 10px;
+  @apply w-2;
 }
 
 .styled-scrollbar::-webkit-scrollbar-track {
@@ -139,12 +136,54 @@
 }
 
 .styled-scrollbar::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #FFD700, #CCAC00);
-  @apply rounded-full;
-  border: 2px solid transparent;
+  @apply bg-gray-300 dark:bg-gray-600 rounded-full hover:bg-gray-400 dark:hover:bg-gray-500;
 }
 
-.styled-scrollbar::-webkit-scrollbar-thumb:hover {
+/* ============================================
+   Global Scrollbar Personalizada - Amarelo Arredondado
+   ============================================ */
+
+/* Para navegadores Webkit (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.2));
+  border-radius: 10px;
+  margin: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #FFD700, #CCAC00);
+  border-radius: 10px;
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 6px rgba(255, 215, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(180deg, #FFEF85, #FFD700);
-  box-shadow: 0 2px 8px rgba(255, 215, 0, 0.4);
+  box-shadow: 0 4px 12px rgba(255, 215, 0, 0.5);
+  border-color: rgba(255, 215, 0, 0.3);
+}
+
+::-webkit-scrollbar-thumb:active {
+  background: linear-gradient(180deg, #CCAC00, #998100);
+}
+
+/* Dark mode scrollbar */
+.dark ::-webkit-scrollbar-track {
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.1));
+}
+
+/* Para Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #FFD700 rgba(0, 0, 0, 0.1);
+}
+
+dark * {
+  scrollbar-color: #FFD700 rgba(255, 255, 255, 0.1);
 }
