@@ -122,13 +122,13 @@ const HomePage = () => {
           <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
         </a>
         
-        <a
-          href="#saiba-mais"
-          className="group inline-flex items-center gap-2 px-8 py-4 border-2 border-primary-500/50 hover:border-primary-500 hover:bg-primary-500/10 text-primary-500 font-bold text-lg rounded-lg backdrop-blur-sm transition-all duration-300"
-        >
-          <Play className="w-5 h-5 group-hover:scale-110 transition-transform" />
-          Saiba mais
-        </a>
+        <Link
+  to="/contato"
+  className="group inline-flex items-center gap-2 px-8 py-4 border-2 border-primary-500/50 hover:border-primary-500 hover:bg-primary-500/10 text-primary-500 font-bold text-lg rounded-lg backdrop-blur-sm transition-all"
+>
+  <Play className="w-5 h-5 group-hover:scale-110 transition-transform" />
+  Saiba mais
+</Link>
       </motion.div>
 
       {/* Subtext */}
