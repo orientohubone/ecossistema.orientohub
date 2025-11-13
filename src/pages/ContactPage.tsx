@@ -71,21 +71,21 @@ const ContactPage = () => {
     {
       icon: Mail,
       title: 'E-mail',
-      value: 'contato@orientohub.com',
+      value: 'oriento.contato@pm.me',
       description: 'Respondemos em até 24h',
-      href: 'mailto:contato@orientohub.com'
+      href: 'mailto:oriento.contato@pm.me'
     },
     {
       icon: Phone,
-      title: 'Telefone',
-      value: '+55 (11) 9999-9999',
+      title: 'Fale direto com Founder',
+      value: '+55 (14) 99861-8547',
       description: 'Seg-Sex, 9h às 18h',
-      href: 'tel:+5511999999999'
+      href: 'tel:+5514998618547'
     },
     {
       icon: MapPin,
       title: 'Localização',
-      value: 'São Paulo, Brasil',
+      value: 'Pompeia, Brasil',
       description: 'Remoto-first',
       href: 'https://maps.google.com'
     }
