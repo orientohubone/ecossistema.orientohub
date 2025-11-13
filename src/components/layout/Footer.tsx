@@ -42,9 +42,9 @@ const Footer = () => {
   ];
 
   const contactInfo = [
-    { icon: Mail, text: 'contato@orientohub.com' },
-    { icon: Phone, text: '+55 (11) 9999-9999' },
-    { icon: MapPin, text: 'São Paulo, Brasil' },
+    { icon: Mail, text: 'oriento.contato@pm.me' },
+    { icon: Phone, text: '+55 (14) 99861-8547' },
+    { icon: MapPin, text: 'Pompeia, Brasil' },
   ];
   
   return (
