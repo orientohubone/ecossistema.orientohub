@@ -433,15 +433,15 @@ const PricingCard = ({ plan, isAnnual, delay }: PricingCardProps) => {
 
       {/* CTA */}
       <Link
-        to={plan.href}
+       to={`${plan.href}${plan.href.includes('?') ? '&' : '?'}billing=${isAnnual ? 'annual' : 'monthly'}`}
         className={`block w-full text-center px-6 py-4 rounded-xl font-bold transition-all duration-300 ${
-          plan.featured
-            ? 'bg-primary-500 hover:bg-primary-600 text-black shadow-lg shadow-primary-500/30'
-            : 'bg-gray-900 dark:bg-white hover:bg-gray-800 dark:hover:bg-gray-100 text-white dark:text-black'
-        }`}
+         plan.featured
+         ? 'bg-primary-500 hover:bg-primary-600 text-black shadow-lg shadow-primary-500/30'
+         : 'bg-gray-900 dark:bg-white hover:bg-gray-800 dark:hover:bg-gray-100 text-white dark:text-black'
+         }`}
       >
-        {plan.cta}
-      </Link>
+      {plan.cta}
+     </Link>
     </motion.div>
   );
 };
