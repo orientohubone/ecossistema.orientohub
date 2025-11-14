@@ -23,8 +23,8 @@ const GlossaryPage = () => {
   const categories = [
     { id: 'all', name: 'Todos', icon: BookOpen },
     { id: 'funding', name: 'Investimento', icon: DollarSign },
-    { id: 'metrics', name: 'Metricas', icon: BarChart2 },
-    { id: 'strategy', name: 'Estrategia', icon: Target },
+    { id: 'metrics', name: 'Métricas', icon: BarChart2 },
+    { id: 'strategy', name: 'Estratégia', icon: Target },
     { id: 'growth', name: 'Crescimento', icon: TrendingUp }
   ];
 
@@ -33,105 +33,105 @@ const GlossaryPage = () => {
       term: 'MVP',
       fullName: 'Minimum Viable Product',
       category: 'strategy',
-      definition: 'Versao mais simples de um produto que pode ser lancada com recursos minimos suficientes para validar uma hipotese de negocio e coletar feedback dos primeiros usuarios.',
+      definition: 'Versão mais simples de um produto que pode ser lançada com recursos mínimos suficientes para validar uma hipótese de negócio e coletar feedback dos primeiros usuários.',
       icon: Rocket
     },
     {
       term: 'Burn Rate',
       fullName: 'Taxa de Queima',
       category: 'funding',
-      definition: 'Velocidade com que uma startup gasta seu capital disponivel, geralmente medida mensalmente. Indica quanto tempo a empresa pode operar antes de precisar de mais investimento.',
+      definition: 'Velocidade com que uma startup gasta seu capital disponível, geralmente medida mensalmente. Indica quanto tempo a empresa pode operar antes de precisar de mais investimento.',
       icon: Clock
     },
     {
       term: 'PMF',
       fullName: 'Product-Market Fit',
       category: 'strategy',
-      definition: 'Momento em que um produto atende com sucesso uma forte demanda de mercado. E quando o produto resolve um problema real de forma tao eficaz que os clientes o promovem naturalmente.',
+      definition: 'Momento em que um produto atende com sucesso uma forte demanda de mercado. É quando o produto resolve um problema real de forma tão eficaz que os clientes o promovem naturalmente.',
       icon: Target
     },
     {
       term: 'CAC',
       fullName: 'Customer Acquisition Cost',
       category: 'metrics',
-      definition: 'Custo total para adquirir um novo cliente, incluindo todos os investimentos em marketing e vendas divididos pelo numero de clientes conquistados.',
+      definition: 'Custo total para adquirir um novo cliente, incluindo todos os investimentos em marketing e vendas divididos pelo número de clientes conquistados.',
       icon: DollarSign
     },
     {
       term: 'LTV',
       fullName: 'Lifetime Value',
       category: 'metrics',
-      definition: 'Valor total que um cliente gera para a empresa durante todo o periodo de relacionamento. Metrica fundamental para avaliar a sustentabilidade do negocio.',
+      definition: 'Valor total que um cliente gera para a empresa durante todo o período de relacionamento. Métrica fundamental para avaliar a sustentabilidade do negócio.',
       icon: TrendingUp
     },
     {
       term: 'Runway',
       fullName: 'Pista de Decolagem',
       category: 'funding',
-      definition: 'Tempo que uma startup consegue operar com o capital disponivel antes de precisar de mais investimento ou se tornar lucrativa.',
+      definition: 'Tempo que uma startup consegue operar com o capital disponível antes de precisar de mais investimento ou se tornar lucrativa.',
       icon: Rocket
     },
     {
       term: 'Churn Rate',
       fullName: 'Taxa de Cancelamento',
       category: 'metrics',
-      definition: 'Percentual de clientes que cancelam o servico em um determinado periodo. Indicador crucial da satisfacao e retencao de clientes.',
+      definition: 'Percentual de clientes que cancelam o serviço em um determinado período. Indicador crucial da satisfação e retenção de clientes.',
       icon: Users
     },
     {
       term: 'Valuation',
-      fullName: 'Avaliacao',
+      fullName: 'Avaliação',
       category: 'funding',
-      definition: 'Valor estimado de uma empresa, geralmente calculado em rodadas de investimento. Pode ser pre-money (antes do investimento) ou pos-money (depois do investimento).',
+      definition: 'Valor estimado de uma empresa, geralmente calculado em rodadas de investimento. Pode ser pré-money (antes do investimento) ou pós-money (depois do investimento).',
       icon: Award
     },
     {
       term: 'Pivot',
-      fullName: 'Mudanca de Direcao',
+      fullName: 'Mudança de Direção',
       category: 'strategy',
-      definition: 'Mudanca estrategica significativa no modelo de negocio ou produto, baseada em aprendizados e feedback do mercado.',
+      definition: 'Mudança estratégica significativa no modelo de negócio ou produto, baseada em aprendizados e feedback do mercado.',
       icon: Zap
     },
     {
       term: 'Traction',
-      fullName: 'Tracao',
+      fullName: 'Tração',
       category: 'growth',
-      definition: 'Evidencia mensuravel de demanda do mercado, demonstrada atraves de crescimento de usuarios, receita ou outros indicadores-chave.',
+      definition: 'Evidência mensurável de demanda do mercado, demonstrada através de crescimento de usuários, receita ou outros indicadores-chave.',
       icon: TrendingUp
     },
     {
       term: 'Seed Round',
       fullName: 'Rodada Semente',
       category: 'funding',
-      definition: 'Primeira rodada formal de investimento, geralmente usada para desenvolver o MVP e validar o modelo de negocio.',
+      definition: 'Primeira rodada formal de investimento, geralmente usada para desenvolver o MVP e validar o modelo de negócio.',
       icon: DollarSign
     },
     {
       term: 'Scalability',
       fullName: 'Escalabilidade',
       category: 'growth',
-      definition: 'Capacidade de uma startup crescer exponencialmente sem aumentar custos proporcionalmente. Caracteristica essencial de modelos de negocio digitais.',
+      definition: 'Capacidade de uma startup crescer exponencialmente sem aumentar custos proporcionalmente. Característica essencial de modelos de negócio digitais.',
       icon: BarChart2
     },
     {
       term: 'Unit Economics',
-      fullName: 'Economia Unitaria',
+      fullName: 'Economia Unitária',
       category: 'metrics',
-      definition: 'Analise da rentabilidade por unidade (cliente, transacao, produto), considerando receita e custos associados a cada unidade.',
+      definition: 'Análise da rentabilidade por unidade (cliente, transação, produto), considerando receita e custos associados a cada unidade.',
       icon: BarChart2
     },
     {
       term: 'Growth Hacking',
       fullName: 'Hacking de Crescimento',
       category: 'growth',
-      definition: 'Conjunto de estrategias e tecnicas focadas em crescimento rapido e sustentavel, usando criatividade, analise de dados e automacao.',
+      definition: 'Conjunto de estratégias e técnicas focadas em crescimento rápido e sustentável, usando criatividade, análise de dados e automação.',
       icon: Lightbulb
     },
     {
       term: 'Due Diligence',
-      fullName: 'Diligencia Previa',
+      fullName: 'Diligência Prévia',
       category: 'funding',
-      definition: 'Processo de investigacao detalhada que investidores realizam antes de investir, analisando aspectos financeiros, legais, tecnicos e de mercado.',
+      definition: 'Processo de investigação detalhada que investidores realizam antes de investir, analisando aspectos financeiros, legais, técnicos e de mercado.',
       icon: Search
     }
   ];
@@ -170,7 +170,7 @@ const GlossaryPage = () => {
             >
               <BookOpen className="w-4 h-4 text-primary-500 flex-shrink-0" />
               <span className="text-primary-500 font-bold text-sm uppercase tracking-wide text-center">
-                Glossario de Startups
+                Glossário de Startups
               </span>
             </motion.div>
 
@@ -193,7 +193,7 @@ const GlossaryPage = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
             >
-              Termos essenciais, conceitos fundamentais e o vocabulario que todo empreendedor precisa conhecer.
+              Termos essenciais, conceitos fundamentais e o vocabulário que todo empreendedor precisa conhecer.
             </motion.p>
 
             <motion.div
@@ -315,7 +315,7 @@ const GlossaryPage = () => {
             </h2>
 
             <p className="text-xl text-gray-300 mb-12 max-w-2xl mx-auto">
-              Transforme teoria em pratica com nossa plataforma gamificada de desenvolvimento de startups.
+              Transforme teoria em prática com nossa plataforma gamificada de desenvolvimento de startups.
             </p>
 
             <div className="mt-16">
@@ -324,7 +324,7 @@ const GlossaryPage = () => {
                 className="inline-flex items-center gap-3 px-10 py-5 bg-primary-500 hover:bg-primary-600 text-black font-bold text-xl rounded-xl shadow-2xl shadow-primary-500/30 hover:shadow-primary-500/50 transition-all duration-300 hover:scale-105"
               >
                 <Rocket className="w-6 h-6" />
-                Comecar Agora
+                Começar Agora
               </a>
             </div>
           </motion.div>
