@@ -432,34 +432,34 @@ const InsightsPage = () => {
           </div>
 
           {/* AI Insights Alert */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl p-6 text-white"
-          >
-            <div className="flex items-start gap-4">
-              <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center flex-shrink-0">
-                <Sparkles className="w-6 h-6" />
-              </div>
-              <div className="flex-1">
-                <h3 className="text-xl font-bold mb-2 flex items-center gap-2">
-                  🎯 Insight da IA: Oportunidade de Crescimento Detectada!
-                </h3>
-                <p className="text-white/90 mb-4">
-                  Nossa IA identificou que clientes validados por entrevista em vídeo têm <strong>3.2x mais taxa de conversão</strong>. 
-                  Recomendamos priorizar esse canal nas próximas 2 semanas para potencializar resultados.
-                </p>
-                <div className="flex items-center gap-3">
-                  <button className="px-6 py-2.5 bg-white text-purple-600 font-bold rounded-xl hover:bg-gray-100 transition-all">
-                    Implementar Agora
-                  </button>
-                  <button className="px-6 py-2.5 bg-white/10 backdrop-blur-sm text-white font-medium rounded-xl hover:bg-white/20 transition-all">
-                    Ver Análise Completa
-                  </button>
-                </div>
-              </div>
-            </div>
-          </motion.div>
+<motion.div
+  initial={{ opacity: 0, y: 20 }}
+  animate={{ opacity: 1, y: 0 }}
+  className="bg-gradient-to-r from-primary-500 to-blue-600 rounded-2xl p-6 text-white"
+>
+  <div className="flex items-start gap-4">
+    <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center flex-shrink-0">
+      <Sparkles className="w-6 h-6" />
+    </div>
+    <div className="flex-1">
+      <h3 className="text-xl font-bold mb-2 flex items-center gap-2">
+        🎯 Insight da IA: Oportunidade de Crescimento Detectada!
+      </h3>
+      <p className="text-white/90 mb-4">
+        Nossa IA identificou que clientes validados por entrevista em vídeo têm <strong>3.2x mais taxa de conversão</strong>. 
+        Recomendamos priorizar esse canal nas próximas 2 semanas para potencializar resultados.
+      </p>
+      <div className="flex items-center gap-3">
+        <button className="px-6 py-2.5 bg-white text-primary-600 font-bold rounded-xl hover:bg-gray-100 transition-all">
+          Implementar Agora
+        </button>
+        <button className="px-6 py-2.5 bg-white/10 backdrop-blur-sm text-white font-medium rounded-xl hover:bg-white/20 transition-all">
+          Ver Análise Completa
+        </button>
+      </div>
+    </div>
+  </div>
+</motion.div>
 
           {/* Charts Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
