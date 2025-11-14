@@ -33,52 +33,15 @@ import ExperimentsList from '../components/projects/ExperimentsList';
 import InterviewsList from '../components/projects/InterviewsList';
 import ValidationChecklist from '../components/projects/ValidationChecklist';
 
-interface Project {
-  id: string;
-  name: string;
-  description: string;
-  stage: 'ideation' | 'validation' | 'mvp' | 'traction' | 'growth';
-  progress: number;
-  created_at: string;
-  hypotheses: Hypothesis[];
-  experiments: Experiment[];
-  interviews: Interview[];
-  tasks: Task[];
-  validation_score: number;
-  customer_interviews: number;
-  validated_assumptions: number;
-  pivot_count: number;
-}
+// Imports dos hooks e serviços
+import { useProjects, useProject } from '../hooks/useProjects';
+import { ProjectWithRelations } from '../services/projectsService';
+import type { Hypothesis, Experiment, Interview } from '../services/projectsService';
 
-interface Hypothesis {
-  id: string;
-  statement: string;
-  validated: boolean;
-  confidence: number;
-  experiments: string[];
-}
-
-interface Experiment {
-  id: string;
-  title: string;
-  hypothesis: string;
-  method: string;
-  results: string;
-  learnings: string;
-  status: 'planned' | 'in_progress' | 'completed';
-  date: string;
-  success_rate?: number;
-}
-
-interface Interview {
-  id: string;
-  customerName: string;
-  date: string;
-  script: string;
-  responses: Record<string, string>;
-  insights: string[];
-  status: 'scheduled' | 'completed';
-  sentiment?: 'positive' | 'neutral' | 'negative';
+// Interface adaptada para compatibilidade com componentes existentes
+interface Project extends ProjectWithRelations {
+  // Mantém compatibilidade com componentes que esperam string IDs
+  id: string | number;
 }
 
 interface Task {
@@ -93,169 +56,108 @@ interface Task {
 
 const ProjectsPage = () => {
   const { t } = useTranslation();
-  const [projects, setProjects] = useState<Project[]>([]);
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const { projects: dbProjects, loading, error, createProject, updateProject, deleteProject, refresh } = useProjects();
+  const [selectedProjectId, setSelectedProjectId] = useState<number | null>(null);
+  const { project: selectedProjectData, loading: loadingProject } = useProject(selectedProjectId);
   const [showAddModal, setShowAddModal] = useState(false);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const [newProject, setNewProject] = useState({
     name: '',
     description: '',
     stage: 'ideation' as const,
-    target_customer: '',
-    problem_statement: '',
-    solution_hypothesis: ''
   });
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  useEffect(() => {
-    loadProjects();
-  }, []);
+  // Converter projetos do banco para formato compatível com componentes
+  // Para a lista, não precisamos carregar todas as relações (melhor performance)
+  const projects: Project[] = dbProjects.map(p => ({
+    ...p,
+    id: p.id.toString(), // Converter número para string para compatibilidade
+    hypotheses: [],
+    experiments: [],
+    interviews: [],
+    tasks: [],
+    customer_interviews: 0,
+    validated_assumptions: 0,
+    pivot_count: 0,
+  }));
 
-  const loadProjects = () => {
-    // Mock data
-    const mockProjects: Project[] = [
-      {
-        id: '1',
-        name: 'App de Delivery para Pets',
-        description: 'Plataforma para conectar tutores de pets a serviços de entrega de ração e produtos',
-        stage: 'validation',
-        progress: 65,
-        created_at: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString(),
-        validation_score: 72,
-        customer_interviews: 12,
-        validated_assumptions: 8,
-        pivot_count: 1,
-        hypotheses: [
-          { 
-            id: '1', 
-            statement: 'Tutores preferem comprar online do que em lojas físicas', 
-            validated: true,
-            confidence: 85,
-            experiments: ['exp1', 'exp2'] 
-          },
-          { 
-            id: '2', 
-            statement: 'Clientes pagariam 15% a mais por entrega rápida', 
-            validated: false,
-            confidence: 45,
-            experiments: ['exp3'] 
-          }
-        ],
-        experiments: [
-          {
-            id: 'exp1',
-            title: 'Landing Page com pré-cadastro',
-            hypothesis: 'Tutores preferem comprar online',
-            method: 'Landing page + Google Ads',
-            results: '150 inscrições em 7 dias, taxa de conversão 8%',
-            learnings: 'Público está interessado, mas preço é sensível',
-            status: 'completed',
-            date: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
-            success_rate: 75
-          }
-        ],
-        interviews: [
-          {
-            id: 'int1',
-            customerName: 'Maria Silva',
-            date: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
-            script: 'Roteiro sobre hábitos de compra',
-            responses: {
-              'frequencia': 'Semanal',
-              'gasto_medio': 'R$ 200/mês'
-            },
-            insights: [
-              'Prefere comprar em grandes quantidades',
-              'Valoriza entrega rápida',
-              'Precisa de variedade de marcas'
-            ],
-            status: 'completed',
-            sentiment: 'positive'
-          }
-        ],
-        tasks: [
-          {
-            id: 'task1',
-            title: 'Validar precificação com 10 clientes',
-            description: 'Realizar entrevistas para entender disposição a pagar',
-            status: 'doing',
-            dueDate: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString(),
-            priority: 'high'
-          },
-          {
-            id: 'task2',
-            title: 'Criar protótipo no Figma',
-            description: 'Wireframes de baixa fidelidade',
-            status: 'done',
-            dueDate: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
-            priority: 'medium'
-          },
-          {
-            id: 'task3',
-            title: 'Analisar concorrentes',
-            description: 'Mapear 5 principais concorrentes',
-            status: 'todo',
-            dueDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
-            priority: 'medium'
-          }
-        ]
-      }
-    ];
+  // Converter projeto selecionado com todos os dados carregados
+  const selectedProject: Project | null = selectedProjectData ? {
+    ...selectedProjectData,
+    id: selectedProjectData.id.toString(),
+    // Garantir que arrays estejam presentes
+    hypotheses: selectedProjectData.hypotheses || [],
+    experiments: selectedProjectData.experiments || [],
+    interviews: selectedProjectData.interviews || [],
+    tasks: selectedProjectData.tasks || [],
+  } : null;
 
-    setProjects(mockProjects);
+  const handleCreateProject = async () => {
+    if (!newProject.name.trim()) {
+      setErrorMessage('Nome do projeto é obrigatório');
+      return;
+    }
+
+    try {
+      setErrorMessage(null);
+      await createProject({
+        name: newProject.name,
+        description: newProject.description || undefined,
+        stage: newProject.stage,
+      });
+      setNewProject({
+        name: '',
+        description: '',
+        stage: 'ideation',
+      });
+      setShowAddModal(false);
+    } catch (err) {
+      setErrorMessage(err instanceof Error ? err.message : 'Erro ao criar projeto');
+      console.error('Error creating project:', err);
+    }
   };
 
-  const handleCreateProject = () => {
-    if (!newProject.name || !newProject.description) return;
-
-    const project: Project = {
-      id: `proj-${Date.now()}`,
-      name: newProject.name,
-      description: newProject.description,
-      stage: newProject.stage,
-      progress: 0,
-      created_at: new Date().toISOString(),
-      validation_score: 0,
-      customer_interviews: 0,
-      validated_assumptions: 0,
-      pivot_count: 0,
-      hypotheses: [],
-      experiments: [],
-      interviews: [],
-      tasks: []
-    };
-
-    setProjects([...projects, project]);
-    setNewProject({
-      name: '',
-      description: '',
-      stage: 'ideation',
-      target_customer: '',
-      problem_statement: '',
-      solution_hypothesis: ''
-    });
-    setShowAddModal(false);
-  };
-
-  const handleDeleteProject = (id: string) => {
+  const handleDeleteProject = async (id: string | number) => {
     if (!confirm('Tem certeza que deseja excluir este projeto?')) return;
-    setProjects(projects.filter(p => p.id !== id));
-    if (selectedProject?.id === id) {
-      setShowDetailsModal(false);
-      setSelectedProject(null);
+    
+    try {
+      const projectId = typeof id === 'string' ? parseInt(id) : id;
+      await deleteProject(projectId);
+      if (selectedProjectId === projectId) {
+        setShowDetailsModal(false);
+        setSelectedProjectId(null);
+      }
+    } catch (err) {
+      setErrorMessage(err instanceof Error ? err.message : 'Erro ao excluir projeto');
+      console.error('Error deleting project:', err);
     }
   };
 
   const handleViewDetails = (project: Project) => {
-    setSelectedProject(project);
+    const projectId = typeof project.id === 'string' ? parseInt(project.id) : project.id;
+    setSelectedProjectId(projectId);
     setShowDetailsModal(true);
   };
 
-  const handleUpdateProject = (updatedProject: Project) => {
-    setProjects(projects.map(p => 
-      p.id === updatedProject.id ? updatedProject : p
-    ));
-    setSelectedProject(updatedProject);
+  const handleUpdateProject = async (updatedProject: Project) => {
+    try {
+      const projectId = typeof updatedProject.id === 'string' ? parseInt(updatedProject.id) : updatedProject.id;
+      await updateProject(projectId, {
+        name: updatedProject.name,
+        description: updatedProject.description || undefined,
+        stage: updatedProject.stage,
+        progress: updatedProject.progress,
+        validation_score: updatedProject.validation_score,
+      });
+      // Refresh project data
+      if (selectedProjectId === projectId) {
+        refresh();
+      }
+    } catch (err) {
+      setErrorMessage(err instanceof Error ? err.message : 'Erro ao atualizar projeto');
+      console.error('Error updating project:', err);
+    }
   };
 
   const getStageInfo = (stage: Project['stage']) => {
@@ -281,7 +183,7 @@ const ProjectsPage = () => {
     return 'Precisa Validar';
   };
 
-  if (isLoading) {
+  if (loading && projects.length === 0) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 flex items-center justify-center">
         <motion.div
@@ -323,6 +225,22 @@ const ProjectsPage = () => {
                 </div>
               </div>
             </div>
+
+            {/* Error Message */}
+            {errorMessage && (
+              <div className="w-full lg:w-auto p-4 bg-red-50 dark:bg-red-900/20 border-2 border-red-200 dark:border-red-800 rounded-xl">
+                <div className="flex items-center gap-2">
+                  <AlertTriangle className="w-5 h-5 text-red-600 dark:text-red-400" />
+                  <p className="text-sm text-red-700 dark:text-red-300">{errorMessage}</p>
+                  <button
+                    onClick={() => setErrorMessage(null)}
+                    className="ml-auto text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-200"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+            )}
 
             <div className="flex items-center gap-3">
               <div className="px-4 py-2 bg-blue-50 dark:bg-blue-900/20 border-2 border-blue-200 dark:border-blue-800 rounded-xl">
@@ -514,19 +432,30 @@ const ProjectsPage = () => {
       />
 
       {/* Project Details Modal */}
-      {selectedProject && (
+      {selectedProject && !loadingProject && (
         <ProjectDetailsModal
           project={selectedProject}
           show={showDetailsModal}
           onClose={() => {
             setShowDetailsModal(false);
-            setSelectedProject(null);
+            setSelectedProjectId(null);
           }}
           getStageInfo={getStageInfo}
           getValidationHealthColor={getValidationHealthColor}
           getValidationHealthLabel={getValidationHealthLabel}
           onUpdate={handleUpdateProject}
         />
+      )}
+
+      {/* Loading state for project details */}
+      {showDetailsModal && loadingProject && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+            className="w-16 h-16 border-4 border-primary-500/30 border-t-primary-500 rounded-full"
+          />
+        </div>
       )}
     </>
   );
