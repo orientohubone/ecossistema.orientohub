@@ -9,7 +9,7 @@ import {
   Zap,
   Rocket,
   DollarSign,
-  BarChart,
+  BarChart2,
   Lightbulb,
   Award,
   Clock,
@@ -23,7 +23,7 @@ const GlossaryPage = () => {
   const categories = [
     { id: 'all', name: 'Todos', icon: BookOpen },
     { id: 'funding', name: 'Investimento', icon: DollarSign },
-    { id: 'metrics', name: 'Metricas', icon: BarChart },
+    { id: 'metrics', name: 'Metricas', icon: BarChart2 },
     { id: 'strategy', name: 'Estrategia', icon: Target },
     { id: 'growth', name: 'Crescimento', icon: TrendingUp }
   ];
@@ -111,14 +111,14 @@ const GlossaryPage = () => {
       fullName: 'Escalabilidade',
       category: 'growth',
       definition: 'Capacidade de uma startup crescer exponencialmente sem aumentar custos proporcionalmente. Caracteristica essencial de modelos de negocio digitais.',
-      icon: BarChart
+      icon: BarChart2
     },
     {
       term: 'Unit Economics',
       fullName: 'Economia Unitaria',
       category: 'metrics',
       definition: 'Analise da rentabilidade por unidade (cliente, transacao, produto), considerando receita e custos associados a cada unidade.',
-      icon: BarChart
+      icon: BarChart2
     },
     {
       term: 'Growth Hacking',
