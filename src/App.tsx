@@ -24,6 +24,7 @@ import InsightsPage from './pages/InsightsPage';
 import FrameworksPage from './pages/FrameworksPage';
 import FrameworkGamePage from './pages/FrameworkGamePage';
 import ProjectsPage from './pages/ProjectsPage';
+import JourneyPage from './pages/JourneyPage';
 import SolutionsPage from './pages/SolutionsPage';
 import CommunityPage from './pages/CommunityPage';
 import SettingsPage from './pages/SettingsPage';
@@ -94,6 +95,7 @@ function App() {
           <Route path="frameworks" element={<FrameworksPage />} />
           <Route path="frameworks/:id/game" element={<FrameworkGamePage />} />
           <Route path="projects" element={<ProjectsPage />} />
+          <Route path="/jornada" element={<JourneyPage />} />
           <Route path="solutions" element={<SolutionsPage />} />
           <Route path="community" element={<CommunityPage />} />
           <Route path="settings" element={<SettingsPage />} />
