@@ -245,13 +245,12 @@ const HomePage = () => {
 </section>
 
      {/* Testimonials Section */}
+{/*
 <section className="py-24 bg-gradient-to-b from-white via-gray-50 to-white dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 relative overflow-hidden">
-  {/* Background decorative elements */}
   <div className="absolute inset-0 opacity-5">
     <div className="absolute top-20 left-10 w-72 h-72 bg-primary-500 rounded-full blur-3xl" />
     <div className="absolute bottom-20 right-10 w-96 h-96 bg-primary-400 rounded-full blur-3xl" />
   </div>
-
   <div className="container-custom relative z-10">
     <motion.div
       className="text-center max-w-3xl mx-auto mb-16"
@@ -266,7 +265,6 @@ const HomePage = () => {
       <h2 className="text-4xl md:text-5xl font-bold mb-6">{t('home.testimonials.title')}</h2>
       <p className="text-xl text-gray-600 dark:text-gray-300">{t('home.testimonials.subtitle')}</p>
     </motion.div>
-
     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
       <TestimonialCard 
         quote="O Orientohub transformou completamente a forma como desenvolvemos nossa startup. A metodologia gamificada manteve toda a equipe engajada."
@@ -292,6 +290,7 @@ const HomePage = () => {
     </div>
   </div>
 </section>
+*/}
 
      {/* CTA Section */}
 <section className="relative py-32 bg-gradient-to-br from-black via-gray-900 to-black overflow-hidden">
