@@ -113,8 +113,23 @@ const ProjectsPage = () => {
       });
       setShowAddModal(false);
     } catch (err) {
-      setErrorMessage(err instanceof Error ? err.message : 'Erro ao criar projeto');
+      const errorMessage = err instanceof Error ? err.message : 'Erro ao criar projeto';
+      setErrorMessage(errorMessage);
       console.error('Error creating project:', err);
+      
+      // Se for erro de tabela não encontrada, mostrar instruções
+      if (errorMessage.includes('tabela') || errorMessage.includes('migração')) {
+        setTimeout(() => {
+          alert(
+            '⚠️ Migração do Banco de Dados Necessária\n\n' +
+            'A tabela "projects" não foi encontrada. Por favor:\n\n' +
+            '1. Acesse o Supabase Dashboard\n' +
+            '2. Vá em SQL Editor\n' +
+            '3. Execute o arquivo: supabase/migrations/20250115000000_fix_projects_user_id.sql\n\n' +
+            'Veja o arquivo MIGRATION_INSTRUCTIONS.md para instruções detalhadas.'
+          );
+        }, 500);
+      }
     }
   };
 
