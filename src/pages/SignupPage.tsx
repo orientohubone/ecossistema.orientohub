@@ -176,11 +176,13 @@ const SignupPage = () => {
               <div className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl p-8 rounded-2xl border-2 border-white/10 shadow-2xl">
                 {/* Mobile Logo */}
                 <div className="lg:hidden text-center mb-8">
-                  <Link to="/" className="inline-block">
-                    <span className="text-3xl font-bold text-white">
-                      Oriento<span className="text-primary-500">hub</span>
-                    </span>
-                  </Link>
+                  <Link to="/" className="inline-block mb-8">
+                  <img 
+                  src="/orientohub.png" 
+                  alt="Orientohub" 
+                  className="h-10 w-auto"
+            />
+             </Link>
                 </div>
 
                 {/* Header */}
