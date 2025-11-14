@@ -100,10 +100,12 @@ const SignupPage = () => {
               transition={{ duration: 0.8 }}
             >
               <Link to="/" className="inline-block mb-8">
-                <span className="text-4xl font-bold text-white">
-                  Oriento<span className="text-primary-500">hub</span>
-                </span>
-              </Link>
+              <img 
+              src="/orientohub.png" 
+              alt="Orientohub" 
+              className="h-10 w-auto"
+            />
+          </Link>
 
               <h1 className="text-5xl md:text-6xl font-bold text-white mb-6 leading-tight">
                 Comece sua jornada{' '}
