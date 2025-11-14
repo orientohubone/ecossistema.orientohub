@@ -66,18 +66,18 @@ const HomePage = () => {
   {/* Content */}
   <div className="relative z-10 container-custom pt-32 pb-24">
     <div className="max-w-5xl mx-auto">
-      {/* Badge */}
-      <motion.div
-        className="flex justify-center mb-8"
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-      >
-        <div className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-full border-2 border-primary-500/30 bg-primary-500/10 text-primary-500 backdrop-blur-sm">
-          <Sparkles className="w-4 h-4" />
-          <span className="text-sm font-semibold">O hub para quem constrói o futuro das startups</span>
-        </div>
-      </motion.div>
+     {/* Badge */}
+<motion.div
+  className="flex justify-center mb-8"
+  initial={{ opacity: 0, y: -10 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.6 }}
+>
+  <div className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-full border-2 border-primary-500/30 bg-primary-500/10 text-primary-500 backdrop-blur-sm">
+    <Sparkles className="w-4 h-4 flex-shrink-0" />
+    <span className="text-sm font-semibold text-center">O hub para quem constrói o futuro das startups</span>
+  </div>
+</motion.div>
 
       {/* Main heading */}
 <motion.h1
