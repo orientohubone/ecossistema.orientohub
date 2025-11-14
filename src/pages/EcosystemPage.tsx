@@ -452,67 +452,65 @@ const EcosystemPage = () => {
       </section>
 
       {/* Founder Journey Timeline */}
-      <section className="py-24 bg-white dark:bg-gray-900">
-        <div className="container-custom">
-          <motion.div
-            className="text-center mb-16"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">Jornada do Founder</h2>
-            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-              Da validação da ideia até o crescimento escalável. Acompanhamos você em cada etapa.
-            </p>
-          </motion.div>
-
-          <div className="max-w-4xl mx-auto">
-            <div className="space-y-8">
-              <JourneyStep
-                number={1}
-                title="Validação & Entrada"
-                description="Valide sua ideia com metodologias comprovadas, receba mentoria de founders que já trilharam esse caminho e conecte-se com uma comunidade ativa de empreendedores"
-                highlights={["Análise de mercado", "Mentoria 1:1", "Network inicial"]}
-                delay={0.1}
-              />
-              <JourneyStep
-                number={2}
-                title="Desenvolvimento & MVP"
-                description="Acesse frameworks exclusivos para acelerar o desenvolvimento, construa seu MVP com suporte técnico e realize as primeiras validações com clientes reais"
-                highlights={["Frameworks prontos", "Suporte técnico", "Feedback de mercado"]}
-                delay={0.2}
-              />
-              <JourneyStep
-                number={3}
-                title="Tração & Crescimento"
-                description="Implemente estratégias de growth hacking, conecte-se com investidores alinhados à sua visão e estruture seu time para escalar"
-                highlights={["Growth hacking", "Investor matching", "Formação de time"]}
-                delay={0.3}
-              />
-              <JourneyStep
-                number={4}
-                title="Escala & Investimento"
-                description="Prepare e execute rodadas de investimento, expanda para novos mercados com estratégia sólida e consolide sua posição como líder do setor"
-                highlights={["Due diligence", "Expansão estratégica", "Consolidação"]}
-                delay={0.4}
-              />
-            </div>
-          </div>
-
-          <motion.div
-            className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.6 }}
-          >
-            <StatCard number="50+" label="Startups Aceleradas" />
-            <StatCard number="R$ 15M+" label="Investimento Captado" />
-            <StatCard number="200+" label="Founders na Comunidade" />
-            <StatCard number="95%" label="Taxa de Sucesso" />
-          </motion.div>
-        </div>
-      </section>
+<section className="py-24 bg-white dark:bg-gray-900">
+  <div className="container-custom">
+    <motion.div
+      className="text-center mb-16"
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+    >
+      <h2 className="text-4xl md:text-5xl font-bold mb-6">Jornada do Founder</h2>
+      <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+        Da validação da ideia até o crescimento escalável. Acompanhamos você em cada etapa.
+      </p>
+    </motion.div>
+    
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+      <JourneyStep
+        number={1}
+        title="Validação & Entrada"
+        description="Valide sua ideia com metodologias comprovadas, receba mentoria de founders que já trilharam esse caminho e conecte-se com uma comunidade ativa de empreendedores"
+        highlights={["Análise de mercado", "Mentoria 1:1", "Network inicial"]}
+        delay={0.1}
+      />
+      <JourneyStep
+        number={2}
+        title="Desenvolvimento & MVP"
+        description="Acesse frameworks exclusivos para acelerar o desenvolvimento, construa seu MVP com suporte técnico e realize as primeiras validações com clientes reais"
+        highlights={["Frameworks prontos", "Suporte técnico", "Feedback de mercado"]}
+        delay={0.2}
+      />
+      <JourneyStep
+        number={3}
+        title="Tração & Crescimento"
+        description="Implemente estratégias de growth hacking, conecte-se com investidores alinhados à sua visão e estruture seu time para escalar"
+        highlights={["Growth hacking", "Investor matching", "Formação de time"]}
+        delay={0.3}
+      />
+      <JourneyStep
+        number={4}
+        title="Escala & Investimento"
+        description="Prepare e execute rodadas de investimento, expanda para novos mercados com estratégia sólida e consolide sua posição como líder do setor"
+        highlights={["Due diligence", "Expansão estratégica", "Consolidação"]}
+        delay={0.4}
+      />
+    </div>
+    
+    <motion.div
+      className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto"
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay: 0.6 }}
+    >
+      <StatCard number="50+" label="Startups Aceleradas" />
+      <StatCard number="R$ 15M+" label="Investimento Captado" />
+      <StatCard number="200+" label="Founders na Comunidade" />
+      <StatCard number="95%" label="Taxa de Sucesso" />
+    </motion.div>
+  </div>
+</section>
 
       {/* Final CTA Section */}
       <section className="relative py-32 bg-gradient-to-br from-black via-gray-900 to-black overflow-hidden">
@@ -839,28 +837,59 @@ interface JourneyStepProps {
   number: number;
   title: string;
   description: string;
+  highlights: string[];
   delay: number;
 }
 
-const JourneyStep = ({ number, title, description, delay }: JourneyStepProps) => {
-  return (
-    <motion.div
-      className="flex gap-6 items-start group"
-      initial={{ opacity: 0, x: -20 }}
-      whileInView={{ opacity: 1, x: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay }}
-    >
-      <div className="flex-shrink-0 w-16 h-16 rounded-full bg-gradient-to-br from-primary-500 to-primary-600 flex items-center justify-center text-black font-bold text-xl group-hover:scale-110 transition-transform shadow-lg">
-        {number}
+const JourneyStep = ({ number, title, description, highlights, delay }: JourneyStepProps) => (
+  <motion.div
+    className="group relative"
+    initial={{ opacity: 0, y: 20 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+    transition={{ delay }}
+  >
+    <div className="absolute -inset-0.5 bg-gradient-to-r from-primary-500 to-purple-600 rounded-2xl blur opacity-0 group-hover:opacity-100 transition duration-500" />
+    <div className="relative h-full bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 overflow-hidden transition-all duration-300 hover:shadow-2xl hover:border-primary-500/50 dark:hover:border-primary-500/50">
+      {/* Gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-br from-primary-500/5 via-transparent to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+      
+      {/* Number badge */}
+      <div className="absolute -top-4 -left-4 w-24 h-24">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary-500 to-purple-600 rounded-full blur-xl opacity-50 group-hover:opacity-100 transition-opacity" />
+        <div className="relative w-full h-full bg-gradient-to-br from-primary-500 to-purple-600 rounded-full flex items-center justify-center shadow-2xl transform group-hover:scale-110 group-hover:rotate-12 transition-all duration-500">
+          <span className="text-3xl font-black text-white">{number}</span>
+        </div>
       </div>
-      <div className="flex-1 pt-2">
-        <h3 className="text-xl font-bold mb-2 group-hover:text-primary-500 transition-colors">{title}</h3>
-        <p className="text-gray-600 dark:text-gray-400">{description}</p>
+
+      {/* Content */}
+      <div className="relative p-8 pt-12">
+        <h3 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white group-hover:text-primary-500 dark:group-hover:text-primary-400 transition-colors duration-300">
+          {title}
+        </h3>
+        
+        <p className="text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
+          {description}
+        </p>
+        
+        <div className="flex flex-wrap gap-2">
+          {highlights.map((highlight, index) => (
+            <span
+              key={index}
+              className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-primary-50 to-purple-50 dark:from-primary-900/20 dark:to-purple-900/20 text-primary-600 dark:text-primary-400 text-sm font-semibold rounded-full border border-primary-200 dark:border-primary-800 transform group-hover:scale-105 transition-transform"
+            >
+              <span className="w-1.5 h-1.5 bg-primary-500 rounded-full mr-2" />
+              {highlight}
+            </span>
+          ))}
+        </div>
       </div>
-    </motion.div>
-  );
-};
+
+      {/* Decorative corner */}
+      <div className="absolute bottom-0 right-0 w-32 h-32 bg-gradient-to-tl from-primary-500/10 to-transparent rounded-tl-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+    </div>
+  </motion.div>
+);
 
 interface StatCardProps {
   number: string;
