@@ -37,3 +37,23 @@ export const testSupabaseConnection = async () => {
     };
   }
 };
+
+// Check if projects table exists
+export const checkProjectsTable = async () => {
+  try {
+    const { data, error } = await supabase
+      .from('projects')
+      .select('count', { count: 'exact', head: true });
+    
+    if (error) {
+      if (error.code === 'PGRST205' || error.code === 'PGRST116') {
+        return { exists: false, error: 'Table not found' };
+      }
+      return { exists: false, error: error.message };
+    }
+    
+    return { exists: true, error: null };
+  } catch (error: any) {
+    return { exists: false, error: error.message || 'Unknown error' };
+  }
+};
