@@ -210,20 +210,32 @@ export const projectsService = {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) throw new Error('User not authenticated');
 
+    const insertData = {
+      user_id: user.id,
+      name: data.name,
+      description: data.description || null,
+      stage: data.stage || 'ideation',
+      progress: 0,
+      validation_score: 0,
+    };
+
+    console.log('Creating project with data:', insertData);
+
     const { data: project, error } = await supabase
       .from('projects')
-      .insert({
-        user_id: user.id,
-        name: data.name,
-        description: data.description || null,
-        stage: data.stage || 'ideation',
-        progress: 0,
-        validation_score: 0,
-      })
+      .insert(insertData)
       .select()
       .single();
 
-    if (error) throw error;
+    if (error) {
+      console.error('Supabase error creating project:', error);
+      throw new Error(error.message || 'Failed to create project');
+    }
+    
+    if (!project) {
+      throw new Error('Project was not created');
+    }
+    
     return project;
   },
 
@@ -503,4 +515,3 @@ export const projectsService = {
     if (error) throw error;
   },
 };
-
