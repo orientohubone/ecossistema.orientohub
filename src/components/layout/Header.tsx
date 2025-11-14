@@ -63,7 +63,7 @@ const Header = () => {
     { name: t('nav.ecosystem'), href: '/ecossistema' },
     { name: t('nav.pricing'), href: '/planos' },
     { name: t('nav.blog'), href: '/blog' },
-    { name: t('nav.glossário'), href: '/glossário' },
+    { name: 'Glossário', href: '/glossário' },
   ];
 
   return (
