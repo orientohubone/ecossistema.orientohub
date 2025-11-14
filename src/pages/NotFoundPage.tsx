@@ -29,7 +29,7 @@ const NotFoundPage = () => {
             }}
           />
           <motion.div
-            className="absolute bottom-1/4 -right-48 w-96 h-96 bg-purple-500/5 rounded-full blur-3xl"
+            className="absolute bottom-1/4 -right-48 w-96 h-96 bg-primary-500/5 rounded-full blur-3xl"
             animate={{
               scale: [1.2, 1, 1.2],
               opacity: [0.5, 0.3, 0.5],
@@ -56,8 +56,8 @@ const NotFoundPage = () => {
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 0.8, delay: 0.2 }}
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-primary-500 to-purple-600 blur-3xl opacity-30" />
-              <h1 className="relative text-[12rem] md:text-[16rem] font-black bg-gradient-to-r from-primary-500 via-purple-600 to-primary-500 bg-clip-text text-transparent leading-none">
+              <div className="absolute inset-0 bg-primary-500/20 blur-3xl" />
+              <h1 className="relative text-[12rem] md:text-[16rem] font-black text-primary-500 leading-none">
                 404
               </h1>
             </motion.div>
@@ -85,11 +85,10 @@ const NotFoundPage = () => {
             >
               <Link
                 to="/"
-                className="group relative inline-flex items-center px-8 py-4 overflow-hidden rounded-xl bg-gradient-to-r from-primary-500 to-purple-600 text-white font-semibold shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-105"
+                className="group relative inline-flex items-center px-8 py-4 overflow-hidden rounded-xl bg-primary-500 hover:bg-primary-600 text-white font-semibold shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-105"
               >
-                <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
-                <Home size={20} className="mr-2 relative z-10" />
-                <span className="relative z-10">Voltar para Home</span>
+                <Home size={20} className="mr-2" />
+                Voltar para Home
               </Link>
 
               <Link
