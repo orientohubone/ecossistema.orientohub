@@ -471,25 +471,29 @@ const EcosystemPage = () => {
               <JourneyStep
                 number={1}
                 title="Validação & Entrada"
-                description="Validação inicial da ideia, mentoria de founders experientes e acesso à comunidade"
+                description="Valide sua ideia com metodologias comprovadas, receba mentoria de founders que já trilharam esse caminho e conecte-se com uma comunidade ativa de empreendedores"
+                highlights={["Análise de mercado", "Mentoria 1:1", "Network inicial"]}
                 delay={0.1}
               />
               <JourneyStep
                 number={2}
                 title="Desenvolvimento & MVP"
-                description="Acesso aos frameworks, construção de MVP e primeiras validações de mercado"
+                description="Acesse frameworks exclusivos para acelerar o desenvolvimento, construa seu MVP com suporte técnico e realize as primeiras validações com clientes reais"
+                highlights={["Frameworks prontos", "Suporte técnico", "Feedback de mercado"]}
                 delay={0.2}
               />
               <JourneyStep
                 number={3}
                 title="Tração & Crescimento"
-                description="Estratégias de growth, conexão com investidores e expansão do time"
+                description="Implemente estratégias de growth hacking, conecte-se com investidores alinhados à sua visão e estruture seu time para escalar"
+                highlights={["Growth hacking", "Investor matching", "Formação de time"]}
                 delay={0.3}
               />
               <JourneyStep
                 number={4}
                 title="Escala & Investimento"
-                description="Rodadas de investimento, expansão de mercado e consolidação do negócio"
+                description="Prepare e execute rodadas de investimento, expanda para novos mercados com estratégia sólida e consolide sua posição como líder do setor"
+                highlights={["Due diligence", "Expansão estratégica", "Consolidação"]}
                 delay={0.4}
               />
             </div>
