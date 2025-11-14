@@ -12,6 +12,7 @@ import DashboardLayout from './layouts/DashboardLayout';
 import HomePage from './pages/HomePage';
 import ContactPage from './pages/ContactPage';
 import ManifestoPage from './pages/ManifestoPage';
+import GlossaryPage from './pages/GlossaryPage';
 import AboutPage from './pages/AboutPage';
 import EcosystemPage from './pages/EcosystemPage';
 import PricingPage from './pages/PricingPage';
@@ -69,6 +70,7 @@ function App() {
           <Route path="/contato" element={<ContactPage />} />
           <Route path="sobre" element={<AboutPage />} />
           <Route path="manifesto" element={<ManifestoPage />} />
+          <Route path="glossario" element={<GlossaryPage />} />
           <Route path="ecossistema" element={<EcosystemPage />} />
           <Route path="planos" element={<PricingPage />} />
           <Route path="checkout" element={<CheckoutPage />} />
