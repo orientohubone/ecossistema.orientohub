@@ -73,7 +73,7 @@ const HomePage = () => {
   animate={{ opacity: 1, y: 0 }}
   transition={{ duration: 0.6 }}
 >
-  <div className="inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-full border-2 border-primary-500/30 bg-primary-500/10 text-primary-500 backdrop-blur-sm">
+  <div className="inline-flex items-center justify-center gap-1.0 px-4 py-2 rounded-full border-2 border-primary-500/30 bg-primary-500/10 text-primary-500 backdrop-blur-sm">
     <Sparkles className="w-4 h-4 flex-shrink-0" />
     <span className="text-sm font-semibold text-center">O hub para quem constrói o futuro das startups</span>
   </div>
