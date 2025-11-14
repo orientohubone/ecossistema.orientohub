@@ -379,7 +379,7 @@ const DashboardPage = () => {
                 <Rocket className="w-6 h-6 text-primary-500" />
                 Sua Jornada Empreendedora
               </h2>
-              <Link to="/jornada" className="text-primary-500 hover:text-primary-600 font-medium text-sm flex items-center gap-1">
+              <Link to="jornada" className="text-primary-500 hover:text-primary-600 font-medium text-sm flex items-center gap-1">
                 Ver detalhes
                 <ChevronRight className="w-4 h-4" />
               </Link>
