@@ -148,7 +148,7 @@ const GlossaryPage = () => {
   return (
     <>
       <Helmet>
-        <title>Glossário de Startups - Orientohub</title>
+        <title>Glossario de Startups - Orientohub</title>
         <meta name="description" content="Domine o vocabulário do ecossistema de startups. Glossário completo com termos essenciais para founders, investidores e empreendedores." />
       </Helmet>
 
