@@ -95,7 +95,7 @@ function App() {
           <Route path="frameworks" element={<FrameworksPage />} />
           <Route path="frameworks/:id/game" element={<FrameworkGamePage />} />
           <Route path="projects" element={<ProjectsPage />} />
-          <Route path="/jornada" element={<JourneyPage />} />
+          <Route path="jornada" element={<JourneyPage />} />
           <Route path="solutions" element={<SolutionsPage />} />
           <Route path="community" element={<CommunityPage />} />
           <Route path="settings" element={<SettingsPage />} />
