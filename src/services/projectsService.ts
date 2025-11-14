@@ -161,7 +161,24 @@ export const projectsService = {
       .eq('user_id', user.id)
       .order('created_at', { ascending: false });
 
-    if (error) throw error;
+    if (error) {
+      console.error('Supabase error getting projects:', error);
+      
+      // Handle specific error codes
+      if (error.code === 'PGRST205' || error.message?.includes('schema cache')) {
+        throw new Error(
+          'A tabela "projects" não foi encontrada. Por favor, execute a migração do banco de dados no Supabase. ' +
+          'Acesse o SQL Editor e execute o arquivo: supabase/migrations/20250115000000_fix_projects_user_id.sql'
+        );
+      }
+      
+      if (error.code === 'PGRST116') {
+        throw new Error('A tabela "projects" não existe. Execute a migração do banco de dados.');
+      }
+      
+      throw error;
+    }
+    
     return data || [];
   },
 
@@ -229,6 +246,19 @@ export const projectsService = {
 
     if (error) {
       console.error('Supabase error creating project:', error);
+      
+      // Handle specific error codes
+      if (error.code === 'PGRST205' || error.message?.includes('schema cache')) {
+        throw new Error(
+          'A tabela "projects" não foi encontrada. Por favor, execute a migração do banco de dados no Supabase. ' +
+          'Acesse o SQL Editor e execute o arquivo: supabase/migrations/20250115000000_fix_projects_user_id.sql'
+        );
+      }
+      
+      if (error.code === 'PGRST116') {
+        throw new Error('A tabela "projects" não existe. Execute a migração do banco de dados.');
+      }
+      
       throw new Error(error.message || 'Failed to create project');
     }
     
