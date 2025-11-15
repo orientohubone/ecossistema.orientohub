@@ -2,7 +2,7 @@ import { supabase } from '../config/supabase';
 
 // Types
 export interface Project {
-  id: number;
+  id: number | string; // Pode ser número (SERIAL) ou string (UUID)
   user_id: string;
   name: string;
   description: string | null;
@@ -161,6 +161,17 @@ export const projectsService = {
       .eq('user_id', user.id)
       .order('created_at', { ascending: false });
 
+    // Debug: Log dos dados retornados
+    if (data && data.length > 0) {
+      console.log('Projects returned from Supabase:', data.map(p => ({
+        id: p.id,
+        idType: typeof p.id,
+        name: p.name,
+        user_id: p.user_id,
+        user_idType: typeof p.user_id
+      })));
+    }
+
     if (error) {
       console.error('Supabase error getting projects:', {
         code: error.code,
@@ -227,11 +238,11 @@ export const projectsService = {
   },
 
   // Get single project with all relations
-  async getById(id: number): Promise<ProjectWithRelations> {
+  async getById(id: number | string): Promise<ProjectWithRelations> {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) throw new Error('User not authenticated');
 
-    // Get project
+    // Get project - aceita tanto número quanto string (UUID)
     const { data: project, error: projectError } = await supabase
       .from('projects')
       .select('*')
@@ -375,7 +386,7 @@ export const projectsService = {
   },
 
   // Update project
-  async update(id: number, data: UpdateProjectData): Promise<Project> {
+  async update(id: number | string, data: UpdateProjectData): Promise<Project> {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) throw new Error('User not authenticated');
 
@@ -419,7 +430,7 @@ export const projectsService = {
   },
 
   // Delete project
-  async delete(id: number): Promise<void> {
+  async delete(id: number | string): Promise<void> {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) throw new Error('User not authenticated');
 
@@ -455,7 +466,7 @@ export const projectsService = {
   },
 
   // Hypotheses
-  async getHypothesesByProject(projectId: number): Promise<Hypothesis[]> {
+  async getHypothesesByProject(projectId: number | string): Promise<Hypothesis[]> {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) throw new Error('User not authenticated');
 
@@ -520,7 +531,7 @@ export const projectsService = {
   },
 
   // Experiments
-  async getExperimentsByProject(projectId: number): Promise<Experiment[]> {
+  async getExperimentsByProject(projectId: number | string): Promise<Experiment[]> {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) throw new Error('User not authenticated');
 
@@ -600,7 +611,7 @@ export const projectsService = {
   },
 
   // Interviews
-  async getInterviewsByProject(projectId: number): Promise<Interview[]> {
+  async getInterviewsByProject(projectId: number | string): Promise<Interview[]> {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) throw new Error('User not authenticated');
 
