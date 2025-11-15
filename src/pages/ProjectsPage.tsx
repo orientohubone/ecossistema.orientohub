@@ -37,6 +37,7 @@ import ValidationChecklist from '../components/projects/ValidationChecklist';
 import { useProjects, useProject } from '../hooks/useProjects';
 import { ProjectWithRelations } from '../services/projectsService';
 import type { Hypothesis, Experiment, Interview } from '../services/projectsService';
+import { diagnoseProjectsTable } from '../config/supabase';
 
 // Interface adaptada para compatibilidade com componentes existentes
 interface Project extends ProjectWithRelations {
@@ -117,18 +118,44 @@ const ProjectsPage = () => {
       setErrorMessage(errorMessage);
       console.error('Error creating project:', err);
       
-      // Se for erro de tabela não encontrada, mostrar instruções
-      if (errorMessage.includes('tabela') || errorMessage.includes('migração')) {
-        setTimeout(() => {
-          alert(
-            '⚠️ Migração do Banco de Dados Necessária\n\n' +
-            'A tabela "projects" não foi encontrada. Por favor:\n\n' +
-            '1. Acesse o Supabase Dashboard\n' +
-            '2. Vá em SQL Editor\n' +
-            '3. Execute o arquivo: supabase/migrations/20250115000000_fix_projects_user_id.sql\n\n' +
-            'Veja o arquivo MIGRATION_INSTRUCTIONS.md para instruções detalhadas.'
-          );
-        }, 500);
+      // Se for erro relacionado a tabela, RLS ou permissão, executar diagnóstico
+      if (errorMessage.includes('tabela') || errorMessage.includes('migração') || 
+          errorMessage.includes('permissão') || errorMessage.includes('RLS') ||
+          errorMessage.includes('Permission denied')) {
+        
+        // Executar diagnóstico em background
+        diagnoseProjectsTable().then(diagnostics => {
+          console.log('Diagnóstico completo:', diagnostics);
+          
+          // Determinar mensagem baseada no diagnóstico
+          let diagnosticMessage = '';
+          if (diagnostics.tableExists?.exists === false) {
+            diagnosticMessage = 'A tabela "projects" não foi encontrada no banco de dados.';
+          } else if (diagnostics.tableExists?.error?.includes('Permission denied') || 
+                     diagnostics.tableExists?.error?.includes('RLS')) {
+            diagnosticMessage = 'A tabela existe, mas as políticas de segurança (RLS) estão bloqueando o acesso.';
+          } else if (!diagnostics.authentication?.authenticated) {
+            diagnosticMessage = 'Você não está autenticado. Por favor, faça login novamente.';
+          } else {
+            diagnosticMessage = 'Erro ao acessar a tabela. Verifique o console para mais detalhes.';
+          }
+          
+          setTimeout(() => {
+            alert(
+              '⚠️ Erro ao Criar Projeto\n\n' +
+              errorMessage + '\n\n' +
+              '📊 Diagnóstico:\n' +
+              diagnosticMessage + '\n\n' +
+              '💡 Soluções:\n' +
+              '1. Verifique se a migração foi executada corretamente no Supabase\n' +
+              '2. Verifique as políticas RLS (Row Level Security) no Supabase Dashboard\n' +
+              '3. Verifique se você está autenticado corretamente\n' +
+              '4. Veja o console do navegador (F12) para mais detalhes técnicos'
+            );
+          }, 500);
+        }).catch(diagError => {
+          console.error('Erro ao executar diagnóstico:', diagError);
+        });
       }
     }
   };
