@@ -71,17 +71,70 @@ const ProjectsPage = () => {
 
   // Converter projetos do banco para formato compatível com componentes
   // Para a lista, não precisamos carregar todas as relações (melhor performance)
-  const projects: Project[] = dbProjects.map(p => ({
-    ...p,
-    id: p.id.toString(), // Converter número para string para compatibilidade
-    hypotheses: [],
-    experiments: [],
-    interviews: [],
-    tasks: [],
-    customer_interviews: 0,
-    validated_assumptions: 0,
-    pivot_count: 0,
-  }));
+  const projects: Project[] = dbProjects.map((p, index) => {
+    // Debug: Log do projeto antes da conversão
+    if (index === 0) {
+      console.log('First project before mapping:', {
+        id: p.id,
+        idType: typeof p.id,
+        name: p.name,
+        user_id: p.user_id,
+        fullProject: p
+      });
+    }
+    
+    // Garantir que o ID seja sempre um número (SERIAL)
+    // Se vier como string numérica, converter; se for UUID, logar erro
+    let projectId: number;
+    
+    if (typeof p.id === 'number') {
+      projectId = p.id;
+    } else if (typeof p.id === 'string') {
+      // Tentar converter string para número
+      const parsed = parseInt(p.id, 10);
+      if (isNaN(parsed)) {
+        // Se não for um número válido, pode ser UUID - isso não deveria acontecer mas vamos tratar
+        console.error('⚠️ ID de projeto é UUID em vez de número!', {
+          id: p.id,
+          type: typeof p.id,
+          projectName: p.name,
+          fullProject: p
+        });
+        // Tentar usar o user_id como fallback? Não, isso está errado
+        // Vamos lançar erro para identificar o problema
+        throw new Error(`ID do projeto "${p.name}" é UUID (${p.id}) em vez de número. Verifique o schema do banco de dados.`);
+      }
+      projectId = parsed;
+    } else {
+      console.error('⚠️ ID de projeto tem tipo desconhecido:', {
+        id: p.id,
+        type: typeof p.id,
+        projectName: p.name
+      });
+      throw new Error(`ID do projeto "${p.name}" tem tipo inválido: ${typeof p.id}`);
+    }
+    
+    if (isNaN(projectId) || projectId <= 0) {
+      console.error('⚠️ ID de projeto inválido no mapeamento:', {
+        originalId: p.id,
+        type: typeof p.id,
+        projectName: p.name,
+        fullProject: p
+      });
+    }
+    
+    return {
+      ...p,
+      id: projectId.toString(), // Converter para string para compatibilidade com componentes
+      hypotheses: [],
+      experiments: [],
+      interviews: [],
+      tasks: [],
+      customer_interviews: 0,
+      validated_assumptions: 0,
+      pivot_count: 0,
+    };
+  });
 
   // Converter projeto selecionado com todos os dados carregados
   const selectedProject: Project | null = selectedProjectData ? {
@@ -177,15 +230,30 @@ const ProjectsPage = () => {
     if (!confirm('Tem certeza que deseja excluir este projeto?')) return;
     
     try {
-      // Converter ID de forma segura
-      const projectId = typeof id === 'string' ? parseInt(id, 10) : id;
+      // Converter ID: pode ser número (SERIAL) ou string (se for UUID ou string numérica)
+      let projectId: number;
+      
+      if (typeof id === 'number') {
+        projectId = id;
+      } else if (typeof id === 'string') {
+        // Tentar converter string para número
+        const parsed = parseInt(id, 10);
+        if (isNaN(parsed)) {
+          // Se não for um número válido, pode ser UUID - isso não deveria acontecer mas vamos tratar
+          console.error('ID recebido é uma string não numérica (possivelmente UUID):', id);
+          throw new Error(`ID de projeto inválido: esperado um número, recebido "${id}"`);
+        }
+        projectId = parsed;
+      } else {
+        throw new Error(`ID de projeto inválido: tipo ${typeof id}`);
+      }
       
       // Validar se o ID é um número válido
       if (isNaN(projectId) || projectId <= 0) {
         throw new Error(`ID de projeto inválido: ${id}`);
       }
       
-      console.log('Deleting project with ID:', projectId, 'Original ID:', id);
+      console.log('Deleting project with ID:', projectId, 'Original ID:', id, 'Type:', typeof id);
       await deleteProject(projectId);
       
       if (selectedProjectId === projectId) {
@@ -196,13 +264,32 @@ const ProjectsPage = () => {
       const errorMsg = err instanceof Error ? err.message : 'Erro ao excluir projeto';
       setErrorMessage(errorMsg);
       console.error('Error deleting project:', err);
-      console.error('ID recebido:', id, 'Tipo:', typeof id);
+      console.error('ID recebido:', id, 'Tipo:', typeof id, 'Valor completo:', JSON.stringify(id));
     }
   };
 
   const handleViewDetails = (project: Project) => {
-    // Converter ID de forma segura
-    const projectId = typeof project.id === 'string' ? parseInt(project.id, 10) : project.id;
+    // Converter ID: pode ser número (SERIAL) ou string (se for UUID ou string numérica)
+    let projectId: number;
+    
+    if (typeof project.id === 'number') {
+      projectId = project.id;
+    } else if (typeof project.id === 'string') {
+      // Tentar converter string para número
+      const parsed = parseInt(project.id, 10);
+      if (isNaN(parsed)) {
+        // Se não for um número válido, pode ser UUID - isso não deveria acontecer mas vamos tratar
+        console.error('ID de projeto inválido ao visualizar detalhes:', project.id, 'Tipo:', typeof project.id);
+        console.error('Projeto completo:', project);
+        setErrorMessage(`ID de projeto inválido: esperado um número, recebido "${project.id}". Verifique o console para mais detalhes.`);
+        return;
+      }
+      projectId = parsed;
+    } else {
+      console.error('ID de projeto tem tipo inválido:', typeof project.id, 'Valor:', project.id);
+      setErrorMessage(`ID de projeto inválido: tipo ${typeof project.id}`);
+      return;
+    }
     
     // Validar se o ID é um número válido
     if (isNaN(projectId) || projectId <= 0) {
@@ -211,7 +298,7 @@ const ProjectsPage = () => {
       return;
     }
     
-    console.log('Viewing project details with ID:', projectId, 'Original ID:', project.id);
+    console.log('Viewing project details with ID:', projectId, 'Original ID:', project.id, 'Type:', typeof project.id);
     setSelectedProjectId(projectId);
     setShowDetailsModal(true);
   };
