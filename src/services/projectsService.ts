@@ -150,8 +150,8 @@ export interface UpdateInterviewData {
 
 // Projects Service
 export const projectsService = {
-  // Get all projects for current user
-  async getAll(): Promise<Project[]> {
+  // Get all projects for current user with retry mechanism
+  async getAll(retryCount = 0): Promise<Project[]> {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) throw new Error('User not authenticated');
 
@@ -167,14 +167,24 @@ export const projectsService = {
         message: error.message,
         details: error.details,
         hint: error.hint,
-        fullError: error
+        fullError: error,
+        retryCount
       });
       
       // Handle specific error codes
       if (error.code === 'PGRST205' || error.message?.includes('schema cache')) {
+        // Se for erro de cache e ainda temos tentativas, aguardar e tentar novamente
+        if (retryCount < 2) {
+          console.log(`Cache error detected in getAll, retrying in ${(retryCount + 1) * 2} seconds... (attempt ${retryCount + 1}/3)`);
+          await new Promise(resolve => setTimeout(resolve, (retryCount + 1) * 2000));
+          return this.getAll(retryCount + 1);
+        }
+        
         throw new Error(
-          'A tabela "projects" não foi encontrada. Por favor, execute a migração do banco de dados no Supabase. ' +
-          'Acesse o SQL Editor e execute o arquivo: supabase/migrations/20250115000000_fix_projects_user_id.sql\n\n' +
+          'A tabela "projects" não foi encontrada no cache do PostgREST. ' +
+          'Por favor, execute a migração no Supabase SQL Editor:\n' +
+          'supabase/migrations/20250115000003_force_cache_refresh.sql\n\n' +
+          'Após executar, aguarde 10-30 segundos e recarregue a página.\n\n' +
           `Erro técnico: ${error.code} - ${error.message}`
         );
       }
@@ -283,8 +293,8 @@ export const projectsService = {
     };
   },
 
-  // Create new project
-  async create(data: CreateProjectData): Promise<Project> {
+  // Create new project with retry mechanism for cache issues
+  async create(data: CreateProjectData, retryCount = 0): Promise<Project> {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) throw new Error('User not authenticated');
 
@@ -297,7 +307,7 @@ export const projectsService = {
       validation_score: 0,
     };
 
-    console.log('Creating project with data:', insertData);
+    console.log('Creating project with data:', insertData, 'Retry:', retryCount);
 
     const { data: project, error } = await supabase
       .from('projects')
