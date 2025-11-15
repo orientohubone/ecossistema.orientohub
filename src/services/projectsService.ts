@@ -162,21 +162,55 @@ export const projectsService = {
       .order('created_at', { ascending: false });
 
     if (error) {
-      console.error('Supabase error getting projects:', error);
+      console.error('Supabase error getting projects:', {
+        code: error.code,
+        message: error.message,
+        details: error.details,
+        hint: error.hint,
+        fullError: error
+      });
       
       // Handle specific error codes
       if (error.code === 'PGRST205' || error.message?.includes('schema cache')) {
         throw new Error(
           'A tabela "projects" não foi encontrada. Por favor, execute a migração do banco de dados no Supabase. ' +
-          'Acesse o SQL Editor e execute o arquivo: supabase/migrations/20250115000000_fix_projects_user_id.sql'
+          'Acesse o SQL Editor e execute o arquivo: supabase/migrations/20250115000000_fix_projects_user_id.sql\n\n' +
+          `Erro técnico: ${error.code} - ${error.message}`
         );
       }
       
       if (error.code === 'PGRST116') {
-        throw new Error('A tabela "projects" não existe. Execute a migração do banco de dados.');
+        throw new Error(
+          'A tabela "projects" não existe. Execute a migração do banco de dados.\n\n' +
+          `Erro técnico: ${error.code} - ${error.message}`
+        );
       }
       
-      throw error;
+      // Handle RLS (Row Level Security) errors
+      if (error.code === '42501' || error.message?.toLowerCase().includes('permission denied') || 
+          error.message?.toLowerCase().includes('row-level security')) {
+        throw new Error(
+          'Erro de permissão: As políticas de segurança (RLS) podem estar bloqueando o acesso. ' +
+          'Verifique se as políticas RLS estão configuradas corretamente no Supabase.\n\n' +
+          `Erro técnico: ${error.code} - ${error.message}${error.hint ? '\nDica: ' + error.hint : ''}`
+        );
+      }
+      
+      // Handle authentication errors
+      if (error.code === 'PGRST301' || error.message?.toLowerCase().includes('jwt')) {
+        throw new Error(
+          'Erro de autenticação: Por favor, faça login novamente.\n\n' +
+          `Erro técnico: ${error.code} - ${error.message}`
+        );
+      }
+      
+      // Generic error with full details
+      throw new Error(
+        `Erro ao buscar projetos: ${error.message || 'Erro desconhecido'}\n\n` +
+        `Código: ${error.code || 'N/A'}\n` +
+        `${error.details ? `Detalhes: ${error.details}\n` : ''}` +
+        `${error.hint ? `Dica: ${error.hint}` : ''}`
+      );
     }
     
     return data || [];
@@ -195,7 +229,34 @@ export const projectsService = {
       .eq('user_id', user.id)
       .single();
 
-    if (projectError) throw projectError;
+    if (projectError) {
+      console.error('Supabase error getting project by id:', {
+        code: projectError.code,
+        message: projectError.message,
+        details: projectError.details,
+        hint: projectError.hint,
+        fullError: projectError
+      });
+      
+      // Handle RLS errors
+      if (projectError.code === '42501' || projectError.message?.toLowerCase().includes('permission denied')) {
+        throw new Error(
+          'Erro de permissão: Você não tem permissão para acessar este projeto. ' +
+          'Verifique as políticas RLS no Supabase.\n\n' +
+          `Erro técnico: ${projectError.code} - ${projectError.message}`
+        );
+      }
+      
+      if (projectError.code === 'PGRST116') {
+        throw new Error('Projeto não encontrado ou você não tem permissão para acessá-lo.');
+      }
+      
+      throw new Error(
+        `Erro ao buscar projeto: ${projectError.message || 'Erro desconhecido'}\n\n` +
+        `Código: ${projectError.code || 'N/A'}`
+      );
+    }
+    
     if (!project) throw new Error('Project not found');
 
     // Get related data
@@ -245,21 +306,55 @@ export const projectsService = {
       .single();
 
     if (error) {
-      console.error('Supabase error creating project:', error);
+      console.error('Supabase error creating project:', {
+        code: error.code,
+        message: error.message,
+        details: error.details,
+        hint: error.hint,
+        fullError: error
+      });
       
       // Handle specific error codes
       if (error.code === 'PGRST205' || error.message?.includes('schema cache')) {
         throw new Error(
           'A tabela "projects" não foi encontrada. Por favor, execute a migração do banco de dados no Supabase. ' +
-          'Acesse o SQL Editor e execute o arquivo: supabase/migrations/20250115000000_fix_projects_user_id.sql'
+          'Acesse o SQL Editor e execute o arquivo: supabase/migrations/20250115000000_fix_projects_user_id.sql\n\n' +
+          `Erro técnico: ${error.code} - ${error.message}`
         );
       }
       
       if (error.code === 'PGRST116') {
-        throw new Error('A tabela "projects" não existe. Execute a migração do banco de dados.');
+        throw new Error(
+          'A tabela "projects" não existe. Execute a migração do banco de dados.\n\n' +
+          `Erro técnico: ${error.code} - ${error.message}`
+        );
       }
       
-      throw new Error(error.message || 'Failed to create project');
+      // Handle RLS (Row Level Security) errors
+      if (error.code === '42501' || error.message?.toLowerCase().includes('permission denied') || 
+          error.message?.toLowerCase().includes('row-level security')) {
+        throw new Error(
+          'Erro de permissão: As políticas de segurança (RLS) podem estar bloqueando o acesso. ' +
+          'Verifique se as políticas RLS estão configuradas corretamente no Supabase.\n\n' +
+          `Erro técnico: ${error.code} - ${error.message}${error.hint ? '\nDica: ' + error.hint : ''}`
+        );
+      }
+      
+      // Handle authentication errors
+      if (error.code === 'PGRST301' || error.message?.toLowerCase().includes('jwt')) {
+        throw new Error(
+          'Erro de autenticação: Por favor, faça login novamente.\n\n' +
+          `Erro técnico: ${error.code} - ${error.message}`
+        );
+      }
+      
+      // Generic error with full details for debugging
+      throw new Error(
+        `Erro ao criar projeto: ${error.message || 'Erro desconhecido'}\n\n` +
+        `Código: ${error.code || 'N/A'}\n` +
+        `${error.details ? `Detalhes: ${error.details}\n` : ''}` +
+        `${error.hint ? `Dica: ${error.hint}` : ''}`
+      );
     }
     
     if (!project) {
@@ -282,7 +377,34 @@ export const projectsService = {
       .select()
       .single();
 
-    if (error) throw error;
+    if (error) {
+      console.error('Supabase error updating project:', {
+        code: error.code,
+        message: error.message,
+        details: error.details,
+        hint: error.hint,
+        fullError: error
+      });
+      
+      // Handle RLS errors
+      if (error.code === '42501' || error.message?.toLowerCase().includes('permission denied')) {
+        throw new Error(
+          'Erro de permissão: Você não tem permissão para atualizar este projeto. ' +
+          'Verifique as políticas RLS no Supabase.\n\n' +
+          `Erro técnico: ${error.code} - ${error.message}`
+        );
+      }
+      
+      throw new Error(
+        `Erro ao atualizar projeto: ${error.message || 'Erro desconhecido'}\n\n` +
+        `Código: ${error.code || 'N/A'}`
+      );
+    }
+    
+    if (!project) {
+      throw new Error('Projeto não encontrado ou você não tem permissão para atualizá-lo');
+    }
+    
     return project;
   },
 
@@ -297,7 +419,29 @@ export const projectsService = {
       .eq('id', id)
       .eq('user_id', user.id);
 
-    if (error) throw error;
+    if (error) {
+      console.error('Supabase error deleting project:', {
+        code: error.code,
+        message: error.message,
+        details: error.details,
+        hint: error.hint,
+        fullError: error
+      });
+      
+      // Handle RLS errors
+      if (error.code === '42501' || error.message?.toLowerCase().includes('permission denied')) {
+        throw new Error(
+          'Erro de permissão: Você não tem permissão para excluir este projeto. ' +
+          'Verifique as políticas RLS no Supabase.\n\n' +
+          `Erro técnico: ${error.code} - ${error.message}`
+        );
+      }
+      
+      throw new Error(
+        `Erro ao excluir projeto: ${error.message || 'Erro desconhecido'}\n\n` +
+        `Código: ${error.code || 'N/A'}`
+      );
+    }
   },
 
   // Hypotheses
