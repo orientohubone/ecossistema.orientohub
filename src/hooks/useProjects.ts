@@ -37,11 +37,16 @@ export const useProjects = () => {
     }
   }, []);
 
-  const updateProject = useCallback(async (id: number, data: UpdateProjectData) => {
+  const updateProject = useCallback(async (id: number | string, data: UpdateProjectData) => {
     try {
       setError(null);
       const updatedProject = await projectsService.update(id, data);
-      setProjects(prev => prev.map(p => p.id === id ? updatedProject : p));
+      setProjects(prev => prev.map(p => {
+        // Comparar IDs independente do tipo (número ou string)
+        const pid = typeof p.id === 'number' ? p.id.toString() : p.id;
+        const uid = typeof id === 'number' ? id.toString() : id;
+        return pid === uid ? updatedProject : p;
+      }));
       return updatedProject;
     } catch (err) {
       const error = err instanceof Error ? err : new Error('Failed to update project');
@@ -50,11 +55,22 @@ export const useProjects = () => {
     }
   }, []);
 
-  const deleteProject = useCallback(async (id: number) => {
+  const deleteProject = useCallback(async (id: number | string) => {
     try {
+      // Validar ID antes de deletar
+      if (!id || (typeof id === 'number' && (isNaN(id) || id <= 0))) {
+        throw new Error(`ID de projeto inválido: ${id}`);
+      }
+      
       setError(null);
+      console.log('Deleting project from hook, ID:', id);
       await projectsService.delete(id);
-      setProjects(prev => prev.filter(p => p.id !== id));
+      // Remover projeto da lista (comparar independente do tipo)
+      setProjects(prev => prev.filter(p => {
+        const pid = typeof p.id === 'number' ? p.id.toString() : p.id;
+        const uid = typeof id === 'number' ? id.toString() : id;
+        return pid !== uid;
+      }));
     } catch (err) {
       const error = err instanceof Error ? err : new Error('Failed to delete project');
       setError(error);
@@ -73,7 +89,7 @@ export const useProjects = () => {
   };
 };
 
-export const useProject = (id: number | null) => {
+export const useProject = (id: number | string | null) => {
   const [project, setProject] = useState<ProjectWithRelations | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
@@ -109,4 +125,3 @@ export const useProject = (id: number | null) => {
     refresh: loadProject,
   };
 };
-
