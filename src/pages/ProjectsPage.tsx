@@ -93,6 +93,19 @@ const ProjectsPage = () => {
     interviews: selectedProjectData.interviews || [],
     tasks: selectedProjectData.tasks || [],
   } : null;
+  
+  // Debug: Log do estado do modal e projeto selecionado
+  console.log('Modal debug:', {
+    showDetailsModal,
+    selectedProjectId,
+    hasSelectedProject: !!selectedProject,
+    loadingProject,
+    shouldShowModal: selectedProject && !loadingProject,
+    selectedProjectData: selectedProjectData ? {
+      id: selectedProjectData.id,
+      name: selectedProjectData.name
+    } : null
+  });
 
   const handleCreateProject = async () => {
     if (!newProject.name.trim()) {
@@ -164,27 +177,55 @@ const ProjectsPage = () => {
     if (!confirm('Tem certeza que deseja excluir este projeto?')) return;
     
     try {
-      const projectId = typeof id === 'string' ? parseInt(id) : id;
+      // Converter ID de forma segura
+      const projectId = typeof id === 'string' ? parseInt(id, 10) : id;
+      
+      // Validar se o ID é um número válido
+      if (isNaN(projectId) || projectId <= 0) {
+        throw new Error(`ID de projeto inválido: ${id}`);
+      }
+      
+      console.log('Deleting project with ID:', projectId, 'Original ID:', id);
       await deleteProject(projectId);
+      
       if (selectedProjectId === projectId) {
         setShowDetailsModal(false);
         setSelectedProjectId(null);
       }
     } catch (err) {
-      setErrorMessage(err instanceof Error ? err.message : 'Erro ao excluir projeto');
+      const errorMsg = err instanceof Error ? err.message : 'Erro ao excluir projeto';
+      setErrorMessage(errorMsg);
       console.error('Error deleting project:', err);
+      console.error('ID recebido:', id, 'Tipo:', typeof id);
     }
   };
 
   const handleViewDetails = (project: Project) => {
-    const projectId = typeof project.id === 'string' ? parseInt(project.id) : project.id;
+    // Converter ID de forma segura
+    const projectId = typeof project.id === 'string' ? parseInt(project.id, 10) : project.id;
+    
+    // Validar se o ID é um número válido
+    if (isNaN(projectId) || projectId <= 0) {
+      console.error('ID de projeto inválido ao visualizar detalhes:', project.id, 'Tipo:', typeof project.id);
+      setErrorMessage(`ID de projeto inválido: ${project.id}`);
+      return;
+    }
+    
+    console.log('Viewing project details with ID:', projectId, 'Original ID:', project.id);
     setSelectedProjectId(projectId);
     setShowDetailsModal(true);
   };
 
   const handleUpdateProject = async (updatedProject: Project) => {
     try {
-      const projectId = typeof updatedProject.id === 'string' ? parseInt(updatedProject.id) : updatedProject.id;
+      // Converter ID de forma segura
+      const projectId = typeof updatedProject.id === 'string' ? parseInt(updatedProject.id, 10) : updatedProject.id;
+      
+      // Validar se o ID é um número válido
+      if (isNaN(projectId) || projectId <= 0) {
+        throw new Error(`ID de projeto inválido: ${updatedProject.id}`);
+      }
+      
       await updateProject(projectId, {
         name: updatedProject.name,
         description: updatedProject.description || undefined,
@@ -197,8 +238,10 @@ const ProjectsPage = () => {
         refresh();
       }
     } catch (err) {
-      setErrorMessage(err instanceof Error ? err.message : 'Erro ao atualizar projeto');
+      const errorMsg = err instanceof Error ? err.message : 'Erro ao atualizar projeto';
+      setErrorMessage(errorMsg);
       console.error('Error updating project:', err);
+      console.error('ID recebido:', updatedProject.id, 'Tipo:', typeof updatedProject.id);
     }
   };
 
