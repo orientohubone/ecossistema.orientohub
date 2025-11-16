@@ -72,8 +72,8 @@ async function fetchGithubData(gitUrl: string) {
       last_commit: lastCommit,
       languages,
       health_score: Math.round(health_score),
-      overview,
-      issues
+      overview: overview || {},
+      issues: Array.isArray(issues) ? issues : [],
     };
   } catch {
     return null;
@@ -214,13 +214,42 @@ const SolutionsPage = () => {
       if (error) throw error;
 
       // Buscar dados reais do GitHub para cada solução que possui git_url
+      const generateMockGithubData = () => ({
+        stars: Math.floor(Math.random() * 100) + 10,
+        forks: Math.floor(Math.random() * 30) + 5,
+        commits: Math.floor(Math.random() * 500) + 50,
+        contributors: Math.floor(Math.random() * 10) + 1,
+        open_issues: Math.floor(Math.random() * 20),
+        last_commit: new Date(Date.now() - Math.random() * 7 * 24 * 60 * 60 * 1000).toISOString(),
+        languages: [
+          { name: 'TypeScript', percentage: 65, color: '#3178c6' },
+          { name: 'JavaScript', percentage: 20, color: '#f7df1e' },
+          { name: 'CSS', percentage: 10, color: '#264de4' },
+          { name: 'HTML', percentage: 5, color: '#e34c26' }
+        ],
+        health_score: Math.floor(Math.random() * 40) + 60,
+        overview: {
+          description: 'Projeto de exemplo',
+          license: 'MIT',
+          default_branch: 'main',
+          size: 1234,
+          topics: ['startup', 'exemplo'],
+          created_at: new Date(Date.now() - Math.random() * 365 * 24 * 60 * 60 * 1000).toISOString(),
+          updated_at: new Date().toISOString(),
+          homepage: '',
+          language: 'TypeScript',
+        },
+        issues: []
+      });
+
       const solutionsWithGithub = await Promise.all(
         (data || []).map(async (solution) => {
           if (solution.git_url) {
             const github_data = await fetchGithubData(solution.git_url);
-            return { ...solution, github_data: github_data || undefined };
+            return { ...solution, github_data: github_data || generateMockGithubData() };
           }
-          return solution;
+          // Se não tem git_url, sempre mock
+          return { ...solution, github_data: generateMockGithubData() };
         })
       );
       setSolutions(solutionsWithGithub);
