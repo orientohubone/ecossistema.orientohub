@@ -141,7 +141,6 @@ interface Solution {
   database_url: string | null;
   instagram_url: string | null;
   created_at: string;
-  // Dados do GitHub (simulados - em produção viriam da API do GitHub)
   github_data?: {
     stars: number;
     forks: number;
@@ -151,6 +150,18 @@ interface Solution {
     last_commit: string;
     languages: { name: string; percentage: number; color: string }[];
     health_score: number;
+    overview?: {
+      description: string;
+      license: string;
+      default_branch: string;
+      size: number;
+      topics: string[];
+      created_at: string;
+      updated_at: string;
+      homepage: string;
+      language: string;
+    };
+    issues?: any[];
   };
 }
 
@@ -220,22 +231,7 @@ const SolutionsPage = () => {
     }
   };
 
-  // Simular dados do GitHub (em produção, chamar API real)
-  const generateMockGithubData = () => ({
-    stars: Math.floor(Math.random() * 100) + 10,
-    forks: Math.floor(Math.random() * 30) + 5,
-    commits: Math.floor(Math.random() * 500) + 50,
-    contributors: Math.floor(Math.random() * 10) + 1,
-    open_issues: Math.floor(Math.random() * 20),
-    last_commit: new Date(Date.now() - Math.random() * 7 * 24 * 60 * 60 * 1000).toISOString(),
-    languages: [
-      { name: 'TypeScript', percentage: 65, color: '#3178c6' },
-      { name: 'JavaScript', percentage: 20, color: '#f7df1e' },
-      { name: 'CSS', percentage: 10, color: '#264de4' },
-      { name: 'HTML', percentage: 5, color: '#e34c26' }
-    ],
-    health_score: Math.floor(Math.random() * 40) + 60
-  });
+  // Removido: não usar mais dados mockados
 
   const handleAddSolution = async () => {
     if (!newSolution.name || !newSolution.solution_url) return;
