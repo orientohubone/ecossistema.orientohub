@@ -1,3 +1,68 @@
+// Utilitário para extrair owner/repo de uma URL do GitHub
+function parseGithubRepo(url: string): { owner: string; repo: string } | null {
+  try {
+    const match = url.match(/github.com\/(.+?)\/(.+?)(?:$|\/|\?|#)/);
+    if (!match) return null;
+    return { owner: match[1], repo: match[2] };
+  } catch {
+    return null;
+  }
+}
+
+// Função para buscar dados do GitHub
+async function fetchGithubData(gitUrl: string) {
+  const repo = parseGithubRepo(gitUrl);
+  if (!repo) return null;
+  const headers = { Accept: 'application/vnd.github.v3+json' };
+  try {
+    // Dados principais do repositório
+    const repoRes = await fetch(`https://api.github.com/repos/${repo.owner}/${repo.repo}`, { headers });
+    if (!repoRes.ok) return null;
+    const repoData = await repoRes.json();
+
+    // Commits
+    const commitsRes = await fetch(`https://api.github.com/repos/${repo.owner}/${repo.repo}/commits?per_page=1`, { headers });
+    const commits = commitsRes.ok ? parseInt(commitsRes.headers.get('Link')?.match(/&page=(\d+)>; rel="last"/)?.[1] || '1', 10) : 0;
+
+    // Contribuidores
+    const contributorsRes = await fetch(`https://api.github.com/repos/${repo.owner}/${repo.repo}/contributors?per_page=1&anon=true`, { headers });
+    const contributors = contributorsRes.ok ? parseInt(contributorsRes.headers.get('Link')?.match(/&page=(\d+)>; rel="last"/)?.[1] || '1', 10) : 0;
+
+    // Issues abertas
+    const openIssues = repoData.open_issues_count || 0;
+
+    // Linguagens
+    const languagesRes = await fetch(`https://api.github.com/repos/${repo.owner}/${repo.repo}/languages`, { headers });
+    const languagesData = languagesRes.ok ? await languagesRes.json() : {};
+    const total = Object.values(languagesData).reduce((a: any, b: any) => a + b, 0);
+    const languages = Object.entries(languagesData).map(([name, value]: any) => ({
+      name,
+      percentage: total ? Math.round((value as number / total) * 100) : 0,
+      color: '#888' // Pode ser melhorado com um mapa de cores
+    }));
+
+    // Último commit
+    const lastCommitRes = await fetch(`https://api.github.com/repos/${repo.owner}/${repo.repo}/commits?per_page=1`, { headers });
+    const lastCommitData = lastCommitRes.ok ? await lastCommitRes.json() : [];
+    const lastCommit = lastCommitData[0]?.commit?.committer?.date || null;
+
+    // Score de saúde (exemplo simples)
+    const health_score = Math.max(0, Math.min(100, 60 + (repoData.stargazers_count || 0) / 10 - openIssues));
+
+    return {
+      stars: repoData.stargazers_count,
+      forks: repoData.forks_count,
+      commits,
+      contributors,
+      open_issues: openIssues,
+      last_commit: lastCommit,
+      languages,
+      health_score: Math.round(health_score)
+    };
+  } catch {
+    return null;
+  }
+}
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet-async';
@@ -121,12 +186,16 @@ const SolutionsPage = () => {
 
       if (error) throw error;
 
-      // Simular dados do GitHub para cada solução
-      const solutionsWithGithub = (data || []).map(solution => ({
-        ...solution,
-        github_data: solution.git_url ? generateMockGithubData() : undefined
-      }));
-
+      // Buscar dados reais do GitHub para cada solução que possui git_url
+      const solutionsWithGithub = await Promise.all(
+        (data || []).map(async (solution) => {
+          if (solution.git_url) {
+            const github_data = await fetchGithubData(solution.git_url);
+            return { ...solution, github_data: github_data || undefined };
+          }
+          return solution;
+        })
+      );
       setSolutions(solutionsWithGithub);
     } catch (err: any) {
       setError(err.message);
@@ -226,8 +295,15 @@ const SolutionsPage = () => {
     }
   };
 
-  const handleViewDetails = (solution: Solution) => {
-    setSelectedSolution(solution);
+
+  const handleViewDetails = async (solution: Solution) => {
+    // Se houver git_url, buscar dados reais do GitHub
+    if (solution.git_url) {
+      const githubData = await fetchGithubData(solution.git_url);
+      setSelectedSolution({ ...solution, github_data: githubData || undefined });
+    } else {
+      setSelectedSolution(solution);
+    }
     setShowDetailsModal(true);
   };
 
