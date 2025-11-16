@@ -9,7 +9,7 @@ function parseGithubRepo(url: string): { owner: string; repo: string } | null {
   }
 }
 
-// Função para buscar dados do GitHub
+// Função para buscar dados do GitHub (agora inclui overview técnico e issues)
 async function fetchGithubData(gitUrl: string) {
   const repo = parseGithubRepo(gitUrl);
   if (!repo) return null;
@@ -28,8 +28,9 @@ async function fetchGithubData(gitUrl: string) {
     const contributorsRes = await fetch(`https://api.github.com/repos/${repo.owner}/${repo.repo}/contributors?per_page=1&anon=true`, { headers });
     const contributors = contributorsRes.ok ? parseInt(contributorsRes.headers.get('Link')?.match(/&page=(\d+)>; rel="last"/)?.[1] || '1', 10) : 0;
 
-    // Issues abertas
-    const openIssues = repoData.open_issues_count || 0;
+    // Issues abertas (detalhes)
+    const issuesRes = await fetch(`https://api.github.com/repos/${repo.owner}/${repo.repo}/issues?state=open&per_page=10`, { headers });
+    const issues = issuesRes.ok ? await issuesRes.json() : [];
 
     // Linguagens
     const languagesRes = await fetch(`https://api.github.com/repos/${repo.owner}/${repo.repo}/languages`, { headers });
@@ -47,17 +48,32 @@ async function fetchGithubData(gitUrl: string) {
     const lastCommit = lastCommitData[0]?.commit?.committer?.date || null;
 
     // Score de saúde (exemplo simples)
-    const health_score = Math.max(0, Math.min(100, 60 + (repoData.stargazers_count || 0) / 10 - openIssues));
+    const health_score = Math.max(0, Math.min(100, 60 + (repoData.stargazers_count || 0) / 10 - (repoData.open_issues_count || 0)));
+
+    // Overview técnico
+    const overview = {
+      description: repoData.description,
+      license: repoData.license?.name || 'Sem licença',
+      default_branch: repoData.default_branch,
+      size: repoData.size,
+      topics: repoData.topics || [],
+      created_at: repoData.created_at,
+      updated_at: repoData.updated_at,
+      homepage: repoData.homepage,
+      language: repoData.language
+    };
 
     return {
       stars: repoData.stargazers_count,
       forks: repoData.forks_count,
       commits,
       contributors,
-      open_issues: openIssues,
+      open_issues: repoData.open_issues_count || 0,
       last_commit: lastCommit,
       languages,
-      health_score: Math.round(health_score)
+      health_score: Math.round(health_score),
+      overview,
+      issues
     };
   } catch {
     return null;
@@ -992,6 +1008,7 @@ const SolutionDetailsModal = ({
 
   const hasGithub = !!solution.github_data;
   const [activeTab, setActiveTab] = useState<'overview' | 'code' | 'issues'>('overview');
+  const githubData = solution.github_data;
 
   return (
     <AnimatePresence>
@@ -1106,16 +1123,16 @@ const SolutionDetailsModal = ({
                 </div>
 
                 {/* GitHub Stats */}
-                {hasGithub && solution.github_data && (
+                {hasGithub && githubData && (
                   <>
                     <div className="grid grid-cols-3 gap-4">
                       {[
-                        { icon: Star, label: 'Stars', value: solution.github_data.stars, color: 'text-yellow-500' },
-                        { icon: GitBranch, label: 'Forks', value: solution.github_data.forks, color: 'text-blue-500' },
-                        { icon: Users, label: 'Contribuidores', value: solution.github_data.contributors, color: 'text-purple-500' },
-                        { icon: GitCommit, label: 'Commits', value: solution.github_data.commits, color: 'text-green-500' },
-                        { icon: Bug, label: 'Issues Abertas', value: solution.github_data.open_issues, color: 'text-red-500' },
-                        { icon: Activity, label: 'Saúde', value: `${solution.github_data.health_score}%`, color: getHealthColor(solution.github_data.health_score) }
+                        { icon: Star, label: 'Stars', value: githubData.stars, color: 'text-yellow-500' },
+                        { icon: GitBranch, label: 'Forks', value: githubData.forks, color: 'text-blue-500' },
+                        { icon: Users, label: 'Contribuidores', value: githubData.contributors, color: 'text-purple-500' },
+                        { icon: GitCommit, label: 'Commits', value: githubData.commits, color: 'text-green-500' },
+                        { icon: Bug, label: 'Issues Abertas', value: githubData.open_issues, color: 'text-red-500' },
+                        { icon: Activity, label: 'Saúde', value: `${githubData.health_score}%`, color: getHealthColor(githubData.health_score) }
                       ].map((stat, i) => {
                         const Icon = stat.icon;
                         return (
@@ -1135,7 +1152,7 @@ const SolutionDetailsModal = ({
                         Linguagens
                       </h3>
                       <div className="space-y-3">
-                        {solution.github_data.languages.map((lang, i) => (
+                        {githubData.languages.map((lang, i) => (
                           <div key={i}>
                             <div className="flex items-center justify-between mb-1">
                               <div className="flex items-center gap-2">
@@ -1168,20 +1185,87 @@ const SolutionDetailsModal = ({
             )}
 
             {activeTab === 'code' && (
-              <div className="text-center py-12">
-                <FileCode className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                <p className="text-gray-600 dark:text-gray-400">
-                  Análise de código em desenvolvimento
-                </p>
+              <div className="space-y-6">
+                {hasGithub && githubData && githubData.overview ? (
+                  <>
+                    <h3 className="font-semibold flex items-center gap-2 mb-4">
+                      <FileCode className="w-5 h-5 text-primary-500" />
+                      Overview Técnico
+                    </h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <p className="text-sm text-gray-500 mb-1">Descrição</p>
+                        <p className="font-medium mb-2">{githubData.overview.description || 'Sem descrição.'}</p>
+                        <p className="text-sm text-gray-500 mb-1">Linguagem Principal</p>
+                        <p className="font-medium mb-2">{githubData.overview.language || 'N/A'}</p>
+                        <p className="text-sm text-gray-500 mb-1">Licença</p>
+                        <p className="font-medium mb-2">{githubData.overview.license}</p>
+                        <p className="text-sm text-gray-500 mb-1">Branch Padrão</p>
+                        <p className="font-medium mb-2">{githubData.overview.default_branch}</p>
+                        <p className="text-sm text-gray-500 mb-1">Tamanho</p>
+                        <p className="font-medium mb-2">{githubData.overview.size} KB</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-500 mb-1">Criado em</p>
+                        <p className="font-medium mb-2">{new Date(githubData.overview.created_at).toLocaleDateString()}</p>
+                        <p className="text-sm text-gray-500 mb-1">Atualizado em</p>
+                        <p className="font-medium mb-2">{new Date(githubData.overview.updated_at).toLocaleDateString()}</p>
+                        <p className="text-sm text-gray-500 mb-1">Homepage</p>
+                        <p className="font-medium mb-2">
+                          {githubData.overview.homepage ? (
+                            <a href={githubData.overview.homepage} target="_blank" rel="noopener noreferrer" className="text-primary-500 underline">{githubData.overview.homepage}</a>
+                          ) : 'N/A'}
+                        </p>
+                        <p className="text-sm text-gray-500 mb-1">Tópicos</p>
+                        <div className="flex flex-wrap gap-2">
+                          {githubData.overview.topics.length > 0 ? githubData.overview.topics.map((topic: string, i: number) => (
+                            <span key={i} className="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded-full text-xs">{topic}</span>
+                          )) : <span className="text-xs">Nenhum tópico</span>}
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  <div className="text-center py-12">
+                    <FileCode className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                    <p className="text-gray-600 dark:text-gray-400">
+                      Análise de código não disponível.
+                    </p>
+                  </div>
+                )}
               </div>
             )}
 
             {activeTab === 'issues' && (
-              <div className="text-center py-12">
-                <Bug className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                <p className="text-gray-600 dark:text-gray-400">
-                  Lista de issues em desenvolvimento
-                </p>
+              <div>
+                {hasGithub && githubData && githubData.issues && githubData.issues.length > 0 ? (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {githubData.issues.map((issue: any) => (
+                      <div key={issue.id} className="p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl border border-gray-200 dark:border-gray-700">
+                        <div className="flex items-center gap-2 mb-2">
+                          <Bug className="w-5 h-5 text-red-500" />
+                          <a href={issue.html_url} target="_blank" rel="noopener noreferrer" className="font-semibold text-primary-500 hover:underline flex-1">
+                            {issue.title}
+                          </a>
+                        </div>
+                        <p className="text-xs text-gray-500 mb-2">#{issue.number} aberto por {issue.user?.login}</p>
+                        <p className="text-sm text-gray-700 dark:text-gray-300 mb-2 line-clamp-3">{issue.body ? issue.body.substring(0, 180) + (issue.body.length > 180 ? '...' : '') : 'Sem descrição.'}</p>
+                        <div className="flex flex-wrap gap-2 mt-2">
+                          {issue.labels && issue.labels.length > 0 && issue.labels.map((label: any) => (
+                            <span key={label.id} className="px-2 py-1 rounded-full text-xs" style={{ backgroundColor: `#${label.color || 'eee'}`, color: '#222' }}>{label.name}</span>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-12">
+                    <Bug className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                    <p className="text-gray-600 dark:text-gray-400">
+                      Nenhuma issue aberta encontrada.
+                    </p>
+                  </div>
+                )}
               </div>
             )}
           </div>
