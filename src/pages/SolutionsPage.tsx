@@ -239,7 +239,47 @@ const SolutionsPage = () => {
           homepage: '',
           language: 'TypeScript',
         },
-        issues: []
+        issues: [
+          {
+            id: 12345,
+            number: 1,
+            title: "Exemplo de issue aberta",
+            html_url: "https://github.com/exemplo/repo/issues/1",
+            body: "Esta é uma issue de exemplo para demonstração da funcionalidade da tab issues.",
+            user: {
+              login: "usuario-exemplo"
+            },
+            labels: [
+              {
+                id: 1,
+                name: "bug",
+                color: "d73a4a"
+              },
+              {
+                id: 2,
+                name: "enhancement",
+                color: "a2eeef"
+              }
+            ]
+          },
+          {
+            id: 67890,
+            number: 2,
+            title: "Melhorar documentação",
+            html_url: "https://github.com/exemplo/repo/issues/2",
+            body: "Adicionar mais detalhes na documentação do projeto para facilitar o entendimento.",
+            user: {
+              login: "contribuidor"
+            },
+            labels: [
+              {
+                id: 3,
+                name: "documentation",
+                color: "0075ca"
+              }
+            ]
+          }
+        ]
       });
 
       const solutionsWithGithub = await Promise.all(
@@ -363,7 +403,47 @@ const SolutionsPage = () => {
       homepage: '',
       language: 'TypeScript',
     },
-    issues: []
+    issues: [
+          {
+            id: 12345,
+            number: 1,
+            title: "Exemplo de issue aberta",
+            html_url: "https://github.com/exemplo/repo/issues/1",
+            body: "Esta é uma issue de exemplo para demonstração da funcionalidade da tab issues.",
+            user: {
+              login: "usuario-exemplo"
+            },
+            labels: [
+              {
+                id: 1,
+                name: "bug",
+                color: "d73a4a"
+              },
+              {
+                id: 2,
+                name: "enhancement",
+                color: "a2eeef"
+              }
+            ]
+          },
+          {
+            id: 67890,
+            number: 2,
+            title: "Melhorar documentação",
+            html_url: "https://github.com/exemplo/repo/issues/2",
+            body: "Adicionar mais detalhes na documentação do projeto para facilitar o entendimento.",
+            user: {
+              login: "contribuidor"
+            },
+            labels: [
+              {
+                id: 3,
+                name: "documentation",
+                color: "0075ca"
+              }
+            ]
+          }
+        ]
   });
 
   const handleViewDetails = async (solution: Solution) => {
@@ -1238,6 +1318,39 @@ const SolutionDetailsModal = ({
               </div>
             )}
 
+            {activeTab === 'issues' && (
+              <div>
+                {hasGithub && githubData && githubData.issues && githubData.issues.length > 0 ? (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {githubData.issues.map((issue: any) => (
+                      <div key={issue.id} className="p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl border border-gray-200 dark:border-gray-700">
+                        <div className="flex items-center gap-2 mb-2">
+                          <Bug className="w-5 h-5 text-red-500" />
+                          <a href={issue.html_url} target="_blank" rel="noopener noreferrer" className="font-semibold text-primary-500 hover:underline flex-1">
+                            {issue.title}
+                          </a>
+                        </div>
+                        <p className="text-xs text-gray-500 mb-2">#{issue.number} aberto por {issue.user?.login}</p>
+                        <p className="text-sm text-gray-700 dark:text-gray-300 mb-2 line-clamp-3">{issue.body ? issue.body.substring(0, 180) + (issue.body.length > 180 ? '...' : '') : 'Sem descrição.'}</p>
+                        <div className="flex flex-wrap gap-2 mt-2">
+                          {issue.labels && issue.labels.length > 0 && issue.labels.map((label: any) => (
+                            <span key={label.id} className="px-2 py-1 rounded-full text-xs" style={{ backgroundColor: `#${label.color || 'eee'}`, color: '#222' }}>{label.name}</span>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-12">
+                    <Bug className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                    <p className="text-gray-600 dark:text-gray-400">
+                      Nenhuma issue aberta encontrada.
+                    </p>
+                  </div>
+                )}
+              </div>
+            )}
+
             {activeTab === 'code' && (
               <div className="space-y-6">
                 {hasGithub && githubData && githubData.overview ? (
@@ -1281,42 +1394,9 @@ const SolutionDetailsModal = ({
                   </>
                 ) : (
                   <div className="text-center py-12">
-                    <FileCode className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                    <Code className="w-16 h-16 text-gray-400 mx-auto mb-4" />
                     <p className="text-gray-600 dark:text-gray-400">
-                      Análise de código não disponível.
-                    </p>
-                  </div>
-                )}
-              </div>
-            )}
-
-            {activeTab === 'issues' && (
-              <div>
-                {hasGithub && githubData && githubData.issues && githubData.issues.length > 0 ? (
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {githubData.issues.map((issue: any) => (
-                      <div key={issue.id} className="p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl border border-gray-200 dark:border-gray-700">
-                        <div className="flex items-center gap-2 mb-2">
-                          <Bug className="w-5 h-5 text-red-500" />
-                          <a href={issue.html_url} target="_blank" rel="noopener noreferrer" className="font-semibold text-primary-500 hover:underline flex-1">
-                            {issue.title}
-                          </a>
-                        </div>
-                        <p className="text-xs text-gray-500 mb-2">#{issue.number} aberto por {issue.user?.login}</p>
-                        <p className="text-sm text-gray-700 dark:text-gray-300 mb-2 line-clamp-3">{issue.body ? issue.body.substring(0, 180) + (issue.body.length > 180 ? '...' : '') : 'Sem descrição.'}</p>
-                        <div className="flex flex-wrap gap-2 mt-2">
-                          {issue.labels && issue.labels.length > 0 && issue.labels.map((label: any) => (
-                            <span key={label.id} className="px-2 py-1 rounded-full text-xs" style={{ backgroundColor: `#${label.color || 'eee'}`, color: '#222' }}>{label.name}</span>
-                          ))}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="text-center py-12">
-                    <Bug className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                    <p className="text-gray-600 dark:text-gray-400">
-                      Nenhuma issue aberta encontrada.
+                      Nenhuma informação técnica disponível.
                     </p>
                   </div>
                 )}
