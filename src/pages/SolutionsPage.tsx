@@ -235,16 +235,16 @@ const SolutionsPage = () => {
           size: 1234,
           topics: ['startup', 'exemplo'],
           created_at: new Date(Date.now() - Math.random() * 365 * 24 * 60 * 60 * 1000).toISOString(),
-          updated_at: new Date().toISOString(),
-          homepage: '',
-          language: 'TypeScript',
+          updated_at: new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000).toISOString(),
+          homepage: 'https://example.com',
+          language: 'TypeScript'
         },
         issues: [
           {
             id: 12345,
             number: 1,
             title: "Exemplo de issue aberta",
-            html_url: "https://github.com/exemplo/repo/issues/1",
+            html_url: null, // Mock não tem URL real
             body: "Esta é uma issue de exemplo para demonstração da funcionalidade da tab issues.",
             user: {
               login: "usuario-exemplo"
@@ -266,7 +266,7 @@ const SolutionsPage = () => {
             id: 67890,
             number: 2,
             title: "Melhorar documentação",
-            html_url: "https://github.com/exemplo/repo/issues/2",
+            html_url: null, // Mock não tem URL real
             body: "Adicionar mais detalhes na documentação do projeto para facilitar o entendimento.",
             user: {
               login: "contribuidor"
@@ -276,6 +276,28 @@ const SolutionsPage = () => {
                 id: 3,
                 name: "documentation",
                 color: "0075ca"
+              }
+            ]
+          },
+          {
+            id: 11111,
+            number: 3,
+            title: "Corrigir responsive design",
+            html_url: null, // Mock não tem URL real
+            body: "A interface não está se adaptando corretamente em dispositivos móveis. Precisamos ajustar o CSS para melhorar a experiência mobile.",
+            user: {
+              login: "designer"
+            },
+            labels: [
+              {
+                id: 4,
+                name: "ui",
+                color: "fbca04"
+              },
+              {
+                id: 5,
+                name: "mobile",
+                color: "0052cc"
               }
             ]
           }
@@ -393,57 +415,79 @@ const SolutionsPage = () => {
     ],
     health_score: Math.floor(Math.random() * 40) + 60,
     overview: {
-      description: 'Projeto de exemplo',
-      license: 'MIT',
+      description: 'Este é um projeto exemplo desenvolvido com tecnologias modernas.',
+      license: 'MIT License',
       default_branch: 'main',
-      size: 1234,
-      topics: ['startup', 'exemplo'],
+      size: Math.floor(Math.random() * 10000) + 1000,
+      topics: ['react', 'typescript', 'tailwindcss'],
       created_at: new Date(Date.now() - Math.random() * 365 * 24 * 60 * 60 * 1000).toISOString(),
-      updated_at: new Date().toISOString(),
-      homepage: '',
-      language: 'TypeScript',
+      updated_at: new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000).toISOString(),
+      homepage: 'https://example.com',
+      language: 'TypeScript'
     },
     issues: [
+      {
+        id: 12345,
+        number: 1,
+        title: "Exemplo de issue aberta",
+        html_url: null, // Mock não tem URL real
+        body: "Esta é uma issue de exemplo para demonstração da funcionalidade da tab issues.",
+        user: {
+          login: "usuario-exemplo"
+        },
+        labels: [
           {
-            id: 12345,
-            number: 1,
-            title: "Exemplo de issue aberta",
-            html_url: "https://github.com/exemplo/repo/issues/1",
-            body: "Esta é uma issue de exemplo para demonstração da funcionalidade da tab issues.",
-            user: {
-              login: "usuario-exemplo"
-            },
-            labels: [
-              {
-                id: 1,
-                name: "bug",
-                color: "d73a4a"
-              },
-              {
-                id: 2,
-                name: "enhancement",
-                color: "a2eeef"
-              }
-            ]
+            id: 1,
+            name: "bug",
+            color: "d73a4a"
           },
           {
-            id: 67890,
-            number: 2,
-            title: "Melhorar documentação",
-            html_url: "https://github.com/exemplo/repo/issues/2",
-            body: "Adicionar mais detalhes na documentação do projeto para facilitar o entendimento.",
-            user: {
-              login: "contribuidor"
-            },
-            labels: [
-              {
-                id: 3,
-                name: "documentation",
-                color: "0075ca"
-              }
-            ]
+            id: 2,
+            name: "enhancement",
+            color: "a2eeef"
           }
         ]
+      },
+      {
+        id: 67890,
+        number: 2,
+        title: "Melhorar documentação",
+        html_url: null, // Mock não tem URL real
+        body: "Adicionar mais detalhes na documentação do projeto para facilitar o entendimento.",
+        user: {
+          login: "contribuidor"
+        },
+        labels: [
+          {
+            id: 3,
+            name: "documentation",
+            color: "0075ca"
+          }
+        ]
+      },
+      {
+        id: 11111,
+        number: 3,
+        title: "Corrigir responsive design",
+        html_url: null, // Mock não tem URL real
+        body: "A interface não está se adaptando corretamente em dispositivos móveis. Precisamos ajustar o CSS para melhorar a experiência mobile.",
+        user: {
+          login: "designer"
+        },
+        labels: [
+          {
+            id: 4,
+            name: "ui",
+            color: "fbca04"
+          },
+          {
+            id: 5,
+            name: "mobile",
+            color: "0052cc"
+          }
+        ]
+      }
+    ]
   });
 
   const handleViewDetails = async (solution: Solution) => {
@@ -1323,10 +1367,21 @@ const SolutionDetailsModal = ({
                 {hasGithub && githubData && githubData.issues && githubData.issues.length > 0 ? (
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {githubData.issues.map((issue: any) => (
-                      <div key={issue.id} className="p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl border border-gray-200 dark:border-gray-700">
+                      <div key={issue.id} className="p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-shadow cursor-pointer">
                         <div className="flex items-center gap-2 mb-2">
                           <Bug className="w-5 h-5 text-red-500" />
-                          <a href={issue.html_url} target="_blank" rel="noopener noreferrer" className="font-semibold text-primary-500 hover:underline flex-1">
+                          <a 
+                            href={issue.html_url || '#'} 
+                            target="_blank" 
+                            rel="noopener noreferrer" 
+                            className="font-semibold text-primary-500 hover:underline flex-1"
+                            onClick={(e) => {
+                              if (!issue.html_url) {
+                                e.preventDefault();
+                                alert('Issue mock - link não disponível');
+                              }
+                            }}
+                          >
                             {issue.title}
                           </a>
                         </div>
@@ -1334,7 +1389,14 @@ const SolutionDetailsModal = ({
                         <p className="text-sm text-gray-700 dark:text-gray-300 mb-2 line-clamp-3">{issue.body ? issue.body.substring(0, 180) + (issue.body.length > 180 ? '...' : '') : 'Sem descrição.'}</p>
                         <div className="flex flex-wrap gap-2 mt-2">
                           {issue.labels && issue.labels.length > 0 && issue.labels.map((label: any) => (
-                            <span key={label.id} className="px-2 py-1 rounded-full text-xs" style={{ backgroundColor: `#${label.color || 'eee'}`, color: '#222' }}>{label.name}</span>
+                            <span 
+                              key={label.id} 
+                              className="px-2 py-1 rounded-full text-xs cursor-pointer hover:opacity-80 transition-opacity"
+                              style={{ backgroundColor: `#${label.color || 'eee'}`, color: '#222' }}
+                              onClick={() => alert(`Label: ${label.name}`)}
+                            >
+                              {label.name}
+                            </span>
                           ))}
                         </div>
                       </div>
@@ -1346,6 +1408,11 @@ const SolutionDetailsModal = ({
                     <p className="text-gray-600 dark:text-gray-400">
                       Nenhuma issue aberta encontrada.
                     </p>
+                    {hasGithub && (
+                      <p className="text-xs text-gray-500 mt-2">
+                        Verifique se o repositório GitHub possui issues abertas.
+                      </p>
+                    )}
                   </div>
                 )}
               </div>
