@@ -1364,6 +1364,10 @@ const SolutionDetailsModal = ({
 
             {activeTab === 'issues' && (
               <div>
+                {(() => {
+                  console.log('Debug - Issues tab render:', { hasGithub, githubData, issues: githubData?.issues, issuesLength: githubData?.issues?.length });
+                  return null;
+                })()}
                 {hasGithub && githubData && githubData.issues && githubData.issues.length > 0 ? (
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {githubData.issues.map((issue: any) => (
@@ -1408,11 +1412,9 @@ const SolutionDetailsModal = ({
                     <p className="text-gray-600 dark:text-gray-400">
                       Nenhuma issue aberta encontrada.
                     </p>
-                    {hasGithub && (
-                      <p className="text-xs text-gray-500 mt-2">
-                        Verifique se o repositório GitHub possui issues abertas.
-                      </p>
-                    )}
+                    <p className="text-xs text-gray-500 mt-2">
+                      {hasGithub ? 'Verifique se o repositório GitHub possui issues abertas.' : 'Adicione uma URL do GitHub para ver as issues.'}
+                    </p>
                   </div>
                 )}
               </div>
