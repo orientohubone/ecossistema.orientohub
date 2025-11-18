@@ -90,12 +90,17 @@ const eventTypeColors = {
   outro: "bg-gray-100 dark:bg-gray-700/30 text-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-600",
 };
 
+type ViewMode = 'day' | 'month' | 'year';
+
 export default function CalendarPage() {
   const today = startOfToday();
   const [selectedDay, setSelectedDay] = React.useState(today);
   const [currentMonth, setCurrentMonth] = React.useState(format(today, "MMM-yyyy"));
   const [data, setData] = React.useState<CalendarData[]>(initialEvents);
   const [showModal, setShowModal] = React.useState(false);
+  const [viewMode, setViewMode] = React.useState<ViewMode>('month');
+  const [showDayDetail, setShowDayDetail] = React.useState(false);
+  const [lastClick, setLastClick] = React.useState<number>(0);
   const [newEvent, setNewEvent] = React.useState({ 
     name: "", 
     time: "", 
@@ -163,7 +168,25 @@ export default function CalendarPage() {
     setNewEvent({ name: "", time: "", type: "outro", location: "" });
   }
 
-  const selectedDayEvents = data.find((d: CalendarData) => isSameDay(d.day, selectedDay))?.events || [];
+  function handleDayClick(day: Date) {
+    const now = Date.now();
+    const timeSinceLastClick = now - lastClick;
+    
+    if (timeSinceLastClick < 300 && isSameDay(day, selectedDay)) {
+      // Duplo clique - abre detalhes ou modal
+      const dayEvents = data.find((d) => isSameDay(d.day, day))?.events || [];
+      if (dayEvents.length > 0) {
+        setShowDayDetail(true);
+      } else {
+        setShowModal(true);
+      }
+    } else {
+      // Clique simples - seleciona dia
+      setSelectedDay(day);
+    }
+    
+    setLastClick(now);
+  }
 
   return (
     <>
@@ -203,6 +226,49 @@ export default function CalendarPage() {
 
               {/* Right side - Actions */}
               <div className="flex items-center gap-4">
+                {/* View Mode Toggle */}
+                <div className="flex items-center bg-gray-100 dark:bg-gray-800 rounded-xl p-1">
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => setViewMode('day')}
+                    className={[
+                      "px-4 py-2 text-sm font-semibold rounded-lg transition-colors",
+                      viewMode === 'day' 
+                        ? "bg-white dark:bg-gray-700 text-primary-600 dark:text-primary-400 shadow-sm" 
+                        : "text-gray-600 dark:text-gray-400"
+                    ].join(" ")}
+                  >
+                    Dia
+                  </motion.button>
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => setViewMode('month')}
+                    className={[
+                      "px-4 py-2 text-sm font-semibold rounded-lg transition-colors",
+                      viewMode === 'month' 
+                        ? "bg-white dark:bg-gray-700 text-primary-600 dark:text-primary-400 shadow-sm" 
+                        : "text-gray-600 dark:text-gray-400"
+                    ].join(" ")}
+                  >
+                    Mês
+                  </motion.button>
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => setViewMode('year')}
+                    className={[
+                      "px-4 py-2 text-sm font-semibold rounded-lg transition-colors",
+                      viewMode === 'year' 
+                        ? "bg-white dark:bg-gray-700 text-primary-600 dark:text-primary-400 shadow-sm" 
+                        : "text-gray-600 dark:text-gray-400"
+                    ].join(" ")}
+                  >
+                    Ano
+                  </motion.button>
+                </div>
+
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
@@ -256,156 +322,175 @@ export default function CalendarPage() {
 
         <div className="container-custom py-8">
           <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-800 overflow-hidden">
-            {/* Calendar Grid */}
-            <div className="grid grid-cols-7 border-b border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50">
-              {['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'].map((day) => (
-                <div key={day} className="py-4 text-center text-sm font-semibold text-gray-700 dark:text-gray-300 border-r border-gray-200 dark:border-gray-800 last:border-r-0">
-                  {day}
+            {/* Renderiza a view apropriada */}
+            {viewMode === 'year' && renderYearView()}
+            {viewMode === 'day' && renderDayView()}
+            {viewMode === 'month' && (
+              <>
+                {/* Calendar Grid */}
+                <div className="grid grid-cols-7 border-b border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50">
+                  {['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'].map((day) => (
+                    <div key={day} className="py-4 text-center text-sm font-semibold text-gray-700 dark:text-gray-300 border-r border-gray-200 dark:border-gray-800 last:border-r-0">
+                      {day}
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
 
-            <div className="grid grid-cols-7">
-              {days.map((day, dayIdx) => {
-                const dayEvents = data.find((d) => isSameDay(d.day, day))?.events || [];
-                const isSelected = isEqual(day, selectedDay);
-                const isTodayDate = isToday(day);
-                const isCurrentMonth = isSameMonth(day, firstDayCurrentMonth);
+                <div className="grid grid-cols-7">
+                  {days.map((day, dayIdx) => {
+                    const dayEvents = data.find((d) => isSameDay(d.day, day))?.events || [];
+                    const isSelected = isEqual(day, selectedDay);
+                    const isTodayDate = isToday(day);
+                    const isCurrentMonth = isSameMonth(day, firstDayCurrentMonth);
 
-                return (
-                  <motion.div
-                    key={dayIdx}
-                    whileHover={{ scale: 1.02 }}
-                    onClick={() => setSelectedDay(day)}
-                    className={[
-                      dayIdx === 0 ? colStartClasses[getDay(day)] : "",
-                      "relative min-h-[120px] p-3 border-r border-b border-gray-200 dark:border-gray-800 cursor-pointer transition-all",
-                      isSelected 
-                        ? "bg-primary-50 dark:bg-primary-900/20 ring-2 ring-primary-500 ring-inset" 
-                        : "hover:bg-gray-50 dark:hover:bg-gray-800/50",
-                      !isCurrentMonth && "bg-gray-50/50 dark:bg-gray-800/20"
-                    ].join(" ")}
-                  >
-                    {/* Day number */}
-                    <div className="flex items-center justify-between mb-2">
-                      <span className={[
-                        "text-sm font-semibold",
-                        isTodayDate 
-                          ? "w-7 h-7 flex items-center justify-center rounded-full bg-primary-500 text-white"
-                          : isSelected
-                          ? "text-primary-600 dark:text-primary-400"
-                          : !isCurrentMonth
-                          ? "text-gray-400 dark:text-gray-600"
-                          : "text-gray-700 dark:text-gray-300"
-                      ].join(" ")}>
-                        {format(day, "d")}
-                      </span>
-                    </div>
+                    return (
+                      <motion.div
+                        key={dayIdx}
+                        whileHover={{ scale: 1.02 }}
+                        onClick={() => handleDayClick(day)}
+                        className={[
+                          dayIdx === 0 ? colStartClasses[getDay(day)] : "",
+                          "relative min-h-[120px] p-3 border-r border-b border-gray-200 dark:border-gray-800 cursor-pointer transition-all",
+                          isSelected 
+                            ? "bg-primary-50 dark:bg-primary-900/20 ring-2 ring-primary-500 ring-inset" 
+                            : "hover:bg-gray-50 dark:hover:bg-gray-800/50",
+                          !isCurrentMonth && "bg-gray-50/50 dark:bg-gray-800/20"
+                        ].join(" ")}
+                      >
+                        {/* Day number */}
+                        <div className="flex items-center justify-between mb-2">
+                          <span className={[
+                            "text-sm font-semibold",
+                            isTodayDate 
+                              ? "w-7 h-7 flex items-center justify-center rounded-full bg-primary-500 text-white"
+                              : isSelected
+                              ? "text-primary-600 dark:text-primary-400"
+                              : !isCurrentMonth
+                              ? "text-gray-400 dark:text-gray-600"
+                              : "text-gray-700 dark:text-gray-300"
+                          ].join(" ")}>
+                            {format(day, "d")}
+                          </span>
+                        </div>
 
-                    {/* Events */}
-                    <div className="space-y-1">
-                      {dayEvents.slice(0, 2).map((event) => (
-                        <motion.div
-                          key={event.id}
-                          initial={{ opacity: 0, y: -10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          className={[
-                            "text-xs p-2 rounded-lg border font-medium truncate",
-                            eventTypeColors[event.type || 'outro']
-                          ].join(" ")}
-                        >
-                          <div className="flex items-center gap-1">
-                            <Clock size={10} />
-                            <span>{event.time}</span>
-                          </div>
-                          <p className="truncate mt-0.5">{event.name}</p>
-                        </motion.div>
-                      ))}
-                      {dayEvents.length > 2 && (
-                        <p className="text-xs text-gray-600 dark:text-gray-400 font-medium pl-2">
-                          +{dayEvents.length - 2} mais
-                        </p>
-                      )}
-                    </div>
-                  </motion.div>
-                );
-              })}
-            </div>
+                        {/* Events */}
+                        <div className="space-y-1">
+                          {dayEvents.slice(0, 2).map((event) => (
+                            <motion.div
+                              key={event.id}
+                              initial={{ opacity: 0, y: -10 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              className={[
+                                "text-xs p-2 rounded-lg border font-medium truncate",
+                                eventTypeColors[event.type || 'outro']
+                              ].join(" ")}
+                            >
+                              <div className="flex items-center gap-1">
+                                <Clock size={10} />
+                                <span>{event.time}</span>
+                              </div>
+                              <p className="truncate mt-0.5">{event.name}</p>
+                            </motion.div>
+                          ))}
+                          {dayEvents.length > 2 && (
+                            <p className="text-xs text-gray-600 dark:text-gray-400 font-medium pl-2">
+                              +{dayEvents.length - 2} mais
+                            </p>
+                          )}
+                        </div>
+                      </motion.div>
+                    );
+                  })}
+                </div>
+              </>
+            )}
           </div>
 
-          {/* Selected Day Events */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mt-8 bg-white dark:bg-gray-900 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-800 p-8"
-          >
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-12 h-12 bg-primary-100 dark:bg-primary-900/30 rounded-xl flex items-center justify-center">
-                <CalendarIcon className="w-6 h-6 text-primary-600 dark:text-primary-400" />
-              </div>
-              <div>
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white">
-                  {format(selectedDay, "d 'de' MMMM", { locale: ptBR })}
-                </h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
-                  {selectedDayEvents.length} {selectedDayEvents.length === 1 ? 'evento' : 'eventos'}
-                </p>
-              </div>
-            </div>
-
-            {selectedDayEvents.length === 0 ? (
-              <div className="text-center py-12">
-                <div className="w-20 h-20 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <CalendarIcon className="w-10 h-10 text-gray-400" />
+          {/* Selected Day Events - só mostra na view de mês */}
+          {viewMode === 'month' && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mt-8 bg-white dark:bg-gray-900 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-800 p-8"
+            >
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-12 h-12 bg-primary-100 dark:bg-primary-900/30 rounded-xl flex items-center justify-center">
+                  <CalendarIcon className="w-6 h-6 text-primary-600 dark:text-primary-400" />
                 </div>
-                <p className="text-gray-600 dark:text-gray-400">Nenhum evento agendado para este dia</p>
+                <div>
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+                    {format(selectedDay, "d 'de' MMMM", { locale: ptBR })}
+                  </h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    {selectedDayEvents.length} {selectedDayEvents.length === 1 ? 'evento' : 'eventos'}
+                    {selectedDayEvents.length === 0 && ' - Duplo clique para adicionar'}
+                  </p>
+                </div>
               </div>
-            ) : (
-              <div className="space-y-4">
-                {selectedDayEvents.map((event) => (
-                  <motion.div
-                    key={event.id}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    className="p-6 rounded-xl border-2 border-gray-200 dark:border-gray-800 hover:border-primary-500 dark:hover:border-primary-500 transition-colors group"
+
+              {selectedDayEvents.length === 0 ? (
+                <div className="text-center py-12">
+                  <div className="w-20 h-20 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <CalendarIcon className="w-10 h-10 text-gray-400" />
+                  </div>
+                  <p className="text-gray-600 dark:text-gray-400 mb-4">Nenhum evento agendado para este dia</p>
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => setShowModal(true)}
+                    className="inline-flex items-center gap-2 px-6 py-3 bg-primary-500 hover:bg-primary-600 text-white font-semibold rounded-xl transition-colors"
                   >
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-3 mb-2">
-                          <span className={[
-                            "px-3 py-1 rounded-full text-xs font-semibold",
-                            eventTypeColors[event.type || 'outro']
-                          ].join(" ")}>
-                            {event.type || 'outro'}
-                          </span>
-                          <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
-                            <Clock size={16} />
-                            <span className="font-semibold">{event.time}</span>
+                    <PlusCircle size={20} />
+                    Adicionar Evento
+                  </motion.button>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {selectedDayEvents.map((event) => (
+                    <motion.div
+                      key={event.id}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      className="p-6 rounded-xl border-2 border-gray-200 dark:border-gray-800 hover:border-primary-500 dark:hover:border-primary-500 transition-colors group"
+                    >
+                      <div className="flex items-start justify-between">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-3 mb-2">
+                            <span className={[
+                              "px-3 py-1 rounded-full text-xs font-semibold",
+                              eventTypeColors[event.type || 'outro']
+                            ].join(" ")}>
+                              {event.type || 'outro'}
+                            </span>
+                            <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                              <Clock size={16} />
+                              <span className="font-semibold">{event.time}</span>
+                            </div>
                           </div>
+                          <h4 className="text-lg font-bold text-gray-900 dark:text-white mb-2 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
+                            {event.name}
+                          </h4>
+                          {event.location && (
+                            <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                              <MapPin size={16} />
+                              <span>{event.location}</span>
+                            </div>
+                          )}
                         </div>
-                        <h4 className="text-lg font-bold text-gray-900 dark:text-white mb-2 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
-                          {event.name}
-                        </h4>
-                        {event.location && (
-                          <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
-                            <MapPin size={16} />
-                            <span>{event.location}</span>
-                          </div>
-                        )}
+                        <motion.button
+                          whileHover={{ scale: 1.1 }}
+                          whileTap={{ scale: 0.9 }}
+                          className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                        >
+                          <X size={20} className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300" />
+                        </motion.button>
                       </div>
-                      <motion.button
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.9 }}
-                        className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                      >
-                        <X size={20} className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300" />
-                      </motion.button>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            )}
-          </motion.div>
+                    </motion.div>
+                  ))}
+                </div>
+              )}
+            </motion.div>
+          )}
         </div>
 
         {/* Modal */}
