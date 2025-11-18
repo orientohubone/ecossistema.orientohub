@@ -41,7 +41,11 @@ const DashboardPage = () => {
   
   // Mock data for dashboard
   const userData = {
-    name: user?.email?.split('@')[0] || 'Founder',
+    name:
+      user?.user_metadata?.name?.trim() ||
+      user?.user_metadata?.full_name?.trim() ||
+      user?.email?.split('@')[0] ||
+      'Founder',
     avatar: user?.avatar || '',
     level: 12,
     currentXP: 2850,
