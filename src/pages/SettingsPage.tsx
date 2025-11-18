@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
@@ -62,7 +62,33 @@ interface Plan {
   current?: boolean;
 }
 
+import { supabase } from '../config/supabase';
+
 const SettingsPage = () => {
+  const avatarInputRef = useRef<HTMLInputElement>(null);
+  const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
+  // const { user } = useAuthStore(); // Removido para evitar duplicidade
+
+  async function handleAvatarChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file || !user) return;
+    setIsUploadingAvatar(true);
+    try {
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${user.id}_${Date.now()}.${fileExt}`;
+      const { error: uploadError } = await supabase.storage.from('avatars').upload(fileName, file, { upsert: true });
+      if (uploadError) throw uploadError;
+      const { data: publicUrlData } = await supabase.storage.from('avatars').getPublicUrl(fileName);
+      const avatarUrl = publicUrlData?.publicUrl;
+      if (!avatarUrl) throw new Error('Erro ao obter URL do avatar');
+      await supabase.auth.updateUser({ data: { avatar_url: avatarUrl } });
+      window.location.reload();
+    } catch (err) {
+      alert('Erro ao atualizar avatar. Tente novamente.');
+    } finally {
+      setIsUploadingAvatar(false);
+    }
+  }
   const { t } = useTranslation();
   const { user, logout } = useAuthStore();
   const [activeTab, setActiveTab] = useState('profile');
@@ -314,10 +340,54 @@ const SettingsPage = () => {
                           alt="Avatar"
                           className="w-24 h-24 rounded-full border-4 border-primary-500 shadow-xl"
                         />
-                        <button className="absolute bottom-0 right-0 p-2 bg-primary-500 text-white rounded-full shadow-lg hover:bg-primary-600 transition-colors">
-                          <Upload className="w-4 h-4" />
+                        <input
+                          type="file"
+                          accept="image/*"
+                          ref={avatarInputRef}
+                          style={{ display: 'none' }}
+                          onChange={handleAvatarChange}
+                        />
+                        <button
+                          type="button"
+                          className="absolute bottom-0 right-0 p-2 bg-primary-500 text-white rounded-full shadow-lg hover:bg-primary-600 transition-colors"
+                          onClick={() => avatarInputRef.current?.click()}
+                          disabled={isUploadingAvatar}
+                        >
+                          {isUploadingAvatar ? (
+                            <span className="w-4 h-4 animate-spin border-2 border-white border-t-transparent rounded-full inline-block" />
+                          ) : (
+                            <Upload className="w-4 h-4" />
+                          )}
                         </button>
                       </div>
+                      // ...outro código do componente...
+
+                      // Hooks e função de upload de avatar devem estar dentro do componente SettingsPage
+                      // Adicione no início do componente SettingsPage:
+                      // const avatarInputRef = useRef<HTMLInputElement>(null);
+                      // const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
+
+                      // E dentro do componente:
+                      // async function handleAvatarChange(e: React.ChangeEvent<HTMLInputElement>) {
+                      //   const file = e.target.files?.[0];
+                      //   if (!file || !user) return;
+                      //   setIsUploadingAvatar(true);
+                      //   try {
+                      //     const fileExt = file.name.split('.').pop();
+                      //     const fileName = `${user.id}_${Date.now()}.${fileExt}`;
+                      //     const { data, error } = await supabase.storage.from('avatars').upload(fileName, file, { upsert: true });
+                      //     if (error) throw error;
+                      //     const { data: publicUrlData } = await supabase.storage.from('avatars').getPublicUrl(fileName);
+                      //     const avatarUrl = publicUrlData?.publicUrl;
+                      //     if (!avatarUrl) throw new Error('Erro ao obter URL do avatar');
+                      //     await supabase.auth.updateUser({ data: { avatar_url: avatarUrl } });
+                      //     window.location.reload();
+                      //   } catch (err) {
+                      //     alert('Erro ao atualizar avatar. Tente novamente.');
+                      //   } finally {
+                      //     setIsUploadingAvatar(false);
+                      //   }
+                      // }
                       <div>
                         <h3 className="font-bold text-lg">{user?.user_metadata?.name || user?.email?.split('@')[0]}</h3>
                         <p className="text-gray-600 dark:text-gray-400">{user?.email}</p>
