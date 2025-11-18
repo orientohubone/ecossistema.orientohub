@@ -22,11 +22,21 @@ async function fetchGithubData(gitUrl: string) {
 
     // Commits
     const commitsRes = await fetch(`https://api.github.com/repos/${repo.owner}/${repo.repo}/commits?per_page=1`, { headers });
-    const commits = commitsRes.ok ? parseInt(commitsRes.headers.get('Link')?.match(/&page=(\d+)>; rel="last"/)?[1] || '1', 10) : 0;
+    let commits = 0;
+    if (commitsRes.ok) {
+      const link = commitsRes.headers.get('Link');
+      const match = link ? link.match(/&page=(\d+)>; rel="last"/) : null;
+      commits = match ? parseInt(match[1], 10) : 1;
+    }
 
     // Contribuidores
     const contributorsRes = await fetch(`https://api.github.com/repos/${repo.owner}/${repo.repo}/contributors?per_page=1&anon=true`, { headers });
-    const contributors = contributorsRes.ok ? parseInt(contributorsRes.headers.get('Link')?.match(/&page=(\d+)>; rel="last"/)?[1] || '1', 10) : 0;
+    let contributors = 0;
+    if (contributorsRes.ok) {
+      const link = contributorsRes.headers.get('Link');
+      const match = link ? link.match(/&page=(\d+)>; rel="last"/) : null;
+      contributors = match ? parseInt(match[1], 10) : 1;
+    }
 
     // Issues abertas (detalhes)
     let issues: any[] = [];
