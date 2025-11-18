@@ -32,9 +32,10 @@ import {
   Gift,
   Activity
 } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const DashboardPage = () => {
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const { user } = useAuthStore();
   const [selectedPhase, setSelectedPhase] = useState('validation');
@@ -511,7 +512,10 @@ const DashboardPage = () => {
                             </div>
 
                             {!task.completed && (
-                              <button className="px-4 py-2 bg-primary-500 hover:bg-primary-600 text-black text-sm font-medium rounded-lg opacity-0 group-hover:opacity-100 transition-opacity">
+                              <button
+                                className="px-4 py-2 bg-primary-500 hover:bg-primary-600 text-black text-sm font-medium rounded-lg opacity-0 group-hover:opacity-100 transition-opacity"
+                                onClick={() => alert(`Inicie a tarefa: ${task.title}`)}
+                              >
                                 Começar
                               </button>
                             )}
@@ -538,7 +542,10 @@ const DashboardPage = () => {
                   ))}
                 </div>
 
-                <button className="mt-4 w-full py-3 border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-xl text-gray-600 dark:text-gray-400 hover:border-primary-500 hover:text-primary-500 transition-all duration-300 font-medium">
+                <button
+                  className="mt-4 w-full py-3 border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-xl text-gray-600 dark:text-gray-400 hover:border-primary-500 hover:text-primary-500 transition-all duration-300 font-medium"
+                  onClick={() => navigate('/tarefas')}
+                >
                   + Ver todas as tarefas
                 </button>
               </motion.div>
@@ -555,10 +562,13 @@ const DashboardPage = () => {
                     <FileText className="w-6 h-6 text-primary-500" />
                     Frameworks em Andamento
                   </h2>
-                  <Link to="/frameworks" className="text-primary-500 hover:text-primary-600 font-medium text-sm flex items-center gap-1">
+                  <button
+                    className="text-primary-500 hover:text-primary-600 font-medium text-sm flex items-center gap-1"
+                    onClick={() => navigate('/frameworks')}
+                  >
                     Ver todos
                     <ChevronRight className="w-4 h-4" />
-                  </Link>
+                  </button>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -606,7 +616,10 @@ const DashboardPage = () => {
                         </div>
                       </div>
 
-                      <button className="mt-4 w-full py-2 bg-primary-500/10 hover:bg-primary-500 text-primary-600 hover:text-black rounded-lg font-medium transition-all duration-300 flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100">
+                      <button
+                        className="mt-4 w-full py-2 bg-primary-500/10 hover:bg-primary-500 text-primary-600 hover:text-black rounded-lg font-medium transition-all duration-300 flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100"
+                        onClick={() => alert(`Continuar framework: ${framework.name}`)}
+                      >
                         <Play className="w-4 h-4" />
                         Continuar
                       </button>
@@ -668,7 +681,10 @@ const DashboardPage = () => {
                   ))}
                 </div>
 
-                <button className="mt-4 w-full py-2 text-primary-500 hover:text-primary-600 font-medium text-sm">
+                <button
+                  className="mt-4 w-full py-2 text-primary-500 hover:text-primary-600 font-medium text-sm"
+                  onClick={() => navigate('/calendario')}
+                >
                   Ver calendário completo
                 </button>
               </motion.div>
@@ -713,11 +729,14 @@ const DashboardPage = () => {
                             <p className="text-xs text-gray-600 dark:text-gray-400">{rec.description}</p>
                           </div>
                         </div>
-                        <button className={`w-full py-2 rounded-lg font-medium text-sm transition-all ${
-                          rec.color === 'primary' ? 'bg-primary-500 hover:bg-primary-600 text-black' :
-                          rec.color === 'blue' ? 'bg-blue-500 hover:bg-blue-600 text-white' :
-                          'bg-purple-500 hover:bg-purple-600 text-white'
-                        }`}>
+                        <button
+                          className={`w-full py-2 rounded-lg font-medium text-sm transition-all ${
+                            rec.color === 'primary' ? 'bg-primary-500 hover:bg-primary-600 text-black' :
+                            rec.color === 'blue' ? 'bg-blue-500 hover:bg-blue-600 text-white' :
+                            'bg-purple-500 hover:bg-purple-600 text-white'
+                          }`}
+                          onClick={() => alert(`Ação: ${rec.action}`)}
+                        >
                           {rec.action}
                         </button>
                       </motion.div>
