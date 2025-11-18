@@ -346,55 +346,54 @@ const EcosystemPage = () => {
       </section>
 
       {/* Camada 3 - Verticais */}
-      <section id="verticais" className="py-24 bg-gradient-to-b from-gray-50 to-white dark:from-gray-800 dark:to-gray-900">
-        <div className="container-custom">
-          <motion.div
-            className="text-center mb-16"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <div className="inline-flex items-center gap-2 bg-purple-500/10 border border-purple-500/30 px-4 py-2 rounded-full mb-6">
-              <TrendingUp className="w-5 h-5 text-purple-500" />
-              <span className="text-purple-500 font-semibold text-sm">CAMADA 3</span>
-            </div>
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">Verticais de Expansão</h2>
-            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-              Produtos e iniciativas de fortalecimento da comunidade e monetização de conhecimento.
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            <VerticalCard
-              icon={<Mic className="w-12 h-12" />}
-              title="OrientoCast"
-              emoji="🎙️"
-              description="Podcast com founders e parceiros para difundir ideias do ecossistema"
-              features={["Episódios semanais", "Convidados especiais", "Insights exclusivos"]}
-              status="active"
-              delay={0.1}
-            />
-            <VerticalCard
-              icon={<GraduationCap className="w-12 h-12" />}
-              title="Oriento Academy"
-              emoji="🎓"
-              description="Plataforma de cursos e certificações orientadas a inovação e negócios"
-              features={["Cursos práticos", "Certificações", "Mentoria ao vivo"]}
-              status="active"
-              delay={0.2}
-            />
-            <VerticalCard
-              icon={<Briefcase className="w-12 h-12" />}
-              title="Oriento Ventures"
-              emoji="💼"
-              description="Fundo interno de investimento anjo e equity compartilhado"
-              features={["Investimento anjo", "Equity compartilhado", "Due diligence"]}
-              status="coming-soon"
-              delay={0.3}
-            />
-          </div>
-        </div>
-      </section>
+<section id="verticais" className="py-24 bg-gradient-to-b from-gray-50 to-white dark:from-gray-800 dark:to-gray-900">
+  <div className="container-custom">
+    <motion.div
+      className="text-center mb-16"
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+    >
+      <div className="inline-flex items-center gap-2 bg-purple-500/10 border border-purple-500/30 px-4 py-2 rounded-full mb-6">
+        <TrendingUp className="w-5 h-5 text-purple-500" />
+        <span className="text-purple-500 font-semibold text-sm">CAMADA 3</span>
+      </div>
+      <h2 className="text-4xl md:text-5xl font-bold mb-6">Verticais de Expansão</h2>
+      <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+        Produtos e iniciativas de fortalecimento da comunidade e monetização de conhecimento.
+      </p>
+    </motion.div>
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+      <VerticalCard
+        logo="/orientocast-logo.png"
+        title="OrientoCast"
+        emoji="🎙️"
+        description="Podcast com founders e parceiros para difundir ideias do ecossistema"
+        features={["Episódios semanais", "Convidados especiais", "Insights exclusivos"]}
+        status="active"
+        delay={0.1}
+      />
+      <VerticalCard
+        logo="/oriento-academy-logo.png"
+        title="Oriento Academy"
+        emoji="🎓"
+        description="Plataforma de cursos e certificações orientadas a inovação e negócios"
+        features={["Cursos práticos", "Certificações", "Mentoria ao vivo"]}
+        status="active"
+        delay={0.2}
+      />
+      <VerticalCard
+        logo="/oriento-ventures-logo.png"
+        title="Oriento Ventures"
+        emoji="💼"
+        description="Fundo interno de investimento anjo e equity compartilhado"
+        features={["Investimento anjo", "Equity compartilhado", "Due diligence"]}
+        status="coming-soon"
+        delay={0.3}
+      />
+    </div>
+  </div>
+</section>
 
       {/* Business Model Section */}
       <section className="py-24 bg-gradient-to-br from-black via-gray-900 to-black text-white relative overflow-hidden">
@@ -762,7 +761,8 @@ const MVPCard = ({ name, description, focus, icon, color, delay, link, status = 
 };
 
 interface VerticalCardProps {
-  icon: React.ReactNode;
+  logo?: string;  // Adicionado
+  icon?: React.ReactNode;
   title: string;
   emoji: string;
   description: string;
@@ -771,43 +771,63 @@ interface VerticalCardProps {
   delay: number;
 }
 
-const VerticalCard = ({ icon, title, emoji, description, features, status, delay }: VerticalCardProps) => {
-  return (
-    <motion.div
-      className="relative bg-white dark:bg-gray-800 p-8 rounded-2xl border-2 border-purple-500/20 hover:border-purple-500 transition-all duration-300 hover:shadow-xl hover:shadow-purple-500/10"
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay }}
-      whileHover={{ y: -8 }}
-    >
-      {status === 'coming-soon' && (
-        <div className="absolute top-4 right-4 bg-primary-500 text-black text-xs font-bold px-3 py-1 rounded-full">
-          Em Breve
-        </div>
-      )}
-
-      <div className="flex items-center gap-3 mb-4">
-        <div className="text-purple-500">
-          {icon}
-        </div>
-        <span className="text-3xl">{emoji}</span>
+const VerticalCard = ({ logo, icon, title, emoji, description, features, status, delay }: VerticalCardProps) => (
+  <motion.div
+    className="group relative"
+    initial={{ opacity: 0, y: 20 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+    transition={{ delay }}
+  >
+    <div className="absolute -inset-0.5 bg-gradient-to-r from-primary-500 to-purple-600 rounded-2xl blur opacity-0 group-hover:opacity-100 transition duration-500" />
+    <div className="relative h-full bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-8 hover:shadow-2xl transition-all duration-300">
+      {/* Logo ou Icon */}
+      <div className="mb-6">
+        {logo ? (
+          <img 
+            src={logo} 
+            alt={title} 
+            className="h-16 w-auto"
+          />
+        ) : (
+          <div className="text-primary-500">
+            {icon}
+          </div>
+        )}
+      </div>
+      
+      {/* Status badge */}
+      <div className="mb-4">
+        {status === 'active' ? (
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 text-xs font-semibold rounded-full">
+            <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />
+            Ativo
+          </span>
+        ) : (
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400 text-xs font-semibold rounded-full">
+            <Clock className="w-3 h-3" />
+            Em Breve
+          </span>
+        )}
       </div>
 
-      <h3 className="text-xl font-bold mb-3">{title}</h3>
-      <p className="text-gray-600 dark:text-gray-300 mb-4">{description}</p>
-
+      <h3 className="text-2xl font-bold mb-3 text-gray-900 dark:text-white group-hover:text-primary-500 transition-colors">
+        {emoji} {title}
+      </h3>
+      <p className="text-gray-600 dark:text-gray-300 mb-6">
+        {description}
+      </p>
       <ul className="space-y-2">
         {features.map((feature, index) => (
-          <li key={index} className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
-            <CheckCircle2 className="w-4 h-4 text-purple-500 flex-shrink-0" />
+          <li key={index} className="flex items-center text-sm text-gray-600 dark:text-gray-300">
+            <CheckCircle className="w-4 h-4 text-primary-500 mr-2 flex-shrink-0" />
             {feature}
           </li>
         ))}
       </ul>
-    </motion.div>
-  );
-};
+    </div>
+  </motion.div>
+);
 
 interface BusinessModelCardProps {
   icon: string;
