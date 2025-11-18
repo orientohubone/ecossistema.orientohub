@@ -34,6 +34,7 @@ import TermsPage from './pages/TermsPage';
 import PrivacyPage from './pages/PrivacyPage';
 import CookiesPage from './pages/CookiesPage';
 import NotFoundPage from './pages/NotFoundPage';
+import CalendarPage from './pages/CalendarPage';
 
 // Auth
 import { useAuthStore } from './stores/authStore';
@@ -99,6 +100,7 @@ function App() {
           <Route path="solutions" element={<SolutionsPage />} />
           <Route path="community" element={<CommunityPage />} />
           <Route path="settings" element={<SettingsPage />} />
+          <Route path="calendario" element={<CalendarPage />} />
         </Route>
         
         {/* 404 */}
