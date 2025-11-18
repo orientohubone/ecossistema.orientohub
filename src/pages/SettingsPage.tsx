@@ -360,34 +360,6 @@ const SettingsPage = () => {
                           )}
                         </button>
                       </div>
-                      // ...outro código do componente...
-
-                      // Hooks e função de upload de avatar devem estar dentro do componente SettingsPage
-                      // Adicione no início do componente SettingsPage:
-                      // const avatarInputRef = useRef<HTMLInputElement>(null);
-                      // const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
-
-                      // E dentro do componente:
-                      // async function handleAvatarChange(e: React.ChangeEvent<HTMLInputElement>) {
-                      //   const file = e.target.files?.[0];
-                      //   if (!file || !user) return;
-                      //   setIsUploadingAvatar(true);
-                      //   try {
-                      //     const fileExt = file.name.split('.').pop();
-                      //     const fileName = `${user.id}_${Date.now()}.${fileExt}`;
-                      //     const { data, error } = await supabase.storage.from('avatars').upload(fileName, file, { upsert: true });
-                      //     if (error) throw error;
-                      //     const { data: publicUrlData } = await supabase.storage.from('avatars').getPublicUrl(fileName);
-                      //     const avatarUrl = publicUrlData?.publicUrl;
-                      //     if (!avatarUrl) throw new Error('Erro ao obter URL do avatar');
-                      //     await supabase.auth.updateUser({ data: { avatar_url: avatarUrl } });
-                      //     window.location.reload();
-                      //   } catch (err) {
-                      //     alert('Erro ao atualizar avatar. Tente novamente.');
-                      //   } finally {
-                      //     setIsUploadingAvatar(false);
-                      //   }
-                      // }
                       <div>
                         <h3 className="font-bold text-lg">{user?.user_metadata?.name || user?.email?.split('@')[0]}</h3>
                         <p className="text-gray-600 dark:text-gray-400">{user?.email}</p>
