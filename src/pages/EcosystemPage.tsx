@@ -28,7 +28,9 @@ import {
   Layers,
   Award,
   Heart,
-  Play
+  Play,
+  CheckCircle,
+  Clock
 } from 'lucide-react';
 
 const EcosystemPage = () => {
