@@ -683,7 +683,7 @@ const DashboardPage = () => {
 
                 <button
                   className="mt-4 w-full py-2 text-primary-500 hover:text-primary-600 font-medium text-sm"
-                  onClick={() => navigate('/calendario')}
+                  onClick={() => navigate('/dashboard/calendario')}
                 >
                   Ver calendário completo
                 </button>
