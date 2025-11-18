@@ -24,6 +24,7 @@ import { Helmet } from "react-helmet-async";
 import { Button } from "../components/ui/button";
 import { Separator } from "../components/ui/separator";
 
+
 const colStartClasses = [
   "",
   "col-start-2",
@@ -103,8 +104,8 @@ export default function CalendarPage() {
 
   function handleAddEvent() {
     if (!newEvent.name || !newEvent.time) return;
-    setData((prev) => {
-      const idx = prev.findIndex((d) => isSameDay(d.day, selectedDay));
+    setData((prev: CalendarData[]) => {
+      const idx = prev.findIndex((d: CalendarData) => isSameDay(d.day, selectedDay));
       if (idx > -1) {
         const updated = [...prev];
         updated[idx].events.push({
@@ -135,7 +136,7 @@ export default function CalendarPage() {
     setNewEvent({ name: "", time: "" });
   }
 
-  const selectedDayEvents = data.find((d) => isSameDay(d.day, selectedDay))?.events || [];
+  const selectedDayEvents = data.find((d: CalendarData) => isSameDay(d.day, selectedDay))?.events || [];
 
   return (
     <>
@@ -300,4 +301,5 @@ export default function CalendarPage() {
 }
 
 export default CalendarPage;
+
 
