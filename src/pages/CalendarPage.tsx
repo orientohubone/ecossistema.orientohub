@@ -299,7 +299,3 @@ export default function CalendarPage() {
     </>
   );
 }
-
-export default CalendarPage;
-
-
