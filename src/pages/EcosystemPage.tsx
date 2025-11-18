@@ -368,7 +368,7 @@ const EcosystemPage = () => {
     <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
       <VerticalCard
         logo="/orientocast-logo.png"
-        title="OrientoCast"
+        title="Oriento Podcast"
         emoji="🎙️"
         description="Podcast com founders e parceiros para difundir ideias do ecossistema"
         features={["Episódios semanais", "Convidados especiais", "Insights exclusivos"]}
