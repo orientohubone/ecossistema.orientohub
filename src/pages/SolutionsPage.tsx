@@ -1187,6 +1187,7 @@ const SolutionDetailsModal = ({
   const hasGithub = !!solution.github_data;
   const [activeTab, setActiveTab] = useState<'overview' | 'code' | 'issues'>('overview');
   const githubData = solution.github_data;
+  const issues = Array.isArray(githubData?.issues) ? githubData.issues : [];
 
   return (
     <AnimatePresence>
@@ -1364,13 +1365,9 @@ const SolutionDetailsModal = ({
 
             {activeTab === 'issues' && (
               <div>
-                {(() => {
-                  console.log('Debug - Issues tab render:', { hasGithub, githubData, issues: githubData?.issues, issuesLength: githubData?.issues?.length });
-                  return null;
-                })()}
-                {hasGithub && githubData && githubData.issues && githubData.issues.length > 0 ? (
+                {hasGithub && issues.length > 0 ? (
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {githubData.issues.map((issue: any) => (
+                    {issues.map((issue: any) => (
                       <div key={issue.id} className="p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-shadow cursor-pointer">
                         <div className="flex items-center gap-2 mb-2">
                           <Bug className="w-5 h-5 text-red-500" />
