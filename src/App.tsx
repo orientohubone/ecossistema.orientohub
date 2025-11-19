@@ -20,8 +20,10 @@ import PricingPage from './pages/PricingPage';
 import CheckoutPage from './pages/CheckoutPage';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
+import AcademyLoginPage from './pages/AcademyLoginPage';
 import DashboardPage from './pages/DashboardPage';
 import OrientoAcademyPage from './pages/OrientoAcademyPage';
+import PedagogicPanelPage from './pages/PedagogicPanelPage';
 import InsightsPage from './pages/InsightsPage';
 import FrameworksPage from './pages/FrameworksPage';
 import FrameworkGamePage from './pages/FrameworkGamePage';
@@ -41,6 +43,7 @@ import CalendarPage from './pages/CalendarPage';
 // Auth
 import { useAuthStore } from './stores/authStore';
 import ProtectedRoute from './components/auth/ProtectedRoute';
+import FounderRoute from './components/auth/FounderRoute';
 
 function App() {
   const { i18n } = useTranslation();
@@ -77,6 +80,7 @@ function App() {
           <Route path="glossario" element={<GlossaryPage />} />
           <Route path="ecossistema" element={<EcosystemPage />} />
           <Route path="/academy" element={<AcademyPage />} />
+          <Route path="/academy/login" element={<AcademyLoginPage />} />
           <Route path="planos" element={<PricingPage />} />
           <Route path="checkout" element={<CheckoutPage />} />
           <Route path="entrar" element={<LoginPage />} />
@@ -101,6 +105,14 @@ function App() {
           <Route path="projects" element={<ProjectsPage />} />
           <Route path="jornada" element={<JourneyPage />} />
           <Route path="academy" element={<OrientoAcademyPage />} />
+          <Route
+            path="pedagogico"
+            element={
+              <FounderRoute>
+                <PedagogicPanelPage />
+              </FounderRoute>
+            }
+          />
           <Route path="solutions" element={<SolutionsPage />} />
           <Route path="community" element={<CommunityPage />} />
           <Route path="settings" element={<SettingsPage />} />
