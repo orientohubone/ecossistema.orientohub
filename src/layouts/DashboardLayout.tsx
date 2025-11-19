@@ -175,17 +175,23 @@ const SidebarLink = ({ item, pathname, collapsed = false, onNavigate }: { item: 
   const { user } = useAuthStore();
   if (item.protected && !user) return null;
   const active = pathname === item.href;
+  const isAcademy = item.id === 'academy';
   return (
     <Link
       to={item.href}
       onClick={onNavigate}
-      className={`group flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-md transition-colors ${active ? 'bg-primary-100 dark:bg-primary-900/50 text-primary-900 dark:text-primary-100' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'}`}
+      className={`group flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-md transition-colors
+        ${active ? 'bg-primary-100 dark:bg-primary-900/50 text-primary-900 dark:text-primary-100' :
+          isAcademy ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300 font-bold shadow-sm' :
+          'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'}
+      `}
       aria-current={active ? 'page' : undefined}
+      style={isAcademy && !active ? { border: '1.5px solid #FFD600', boxShadow: '0 0 0 2px #FFD60022' } : {}}
     >
       {collapsed ? (
         <Tooltip.Root delayDuration={100}>
           <Tooltip.Trigger asChild>
-            <span className={`flex items-center justify-center w-6 h-6 rounded ${active ? 'text-primary-500' : 'text-gray-500 group-hover:text-gray-700 dark:group-hover:text-gray-300'}`}>{item.icon}</span>
+            <span className={`flex items-center justify-center w-6 h-6 rounded ${active ? 'text-primary-500' : isAcademy ? 'text-yellow-500' : 'text-gray-500 group-hover:text-gray-700 dark:group-hover:text-gray-300'}`}>{item.icon}</span>
           </Tooltip.Trigger>
           <Tooltip.Portal>
             <Tooltip.Content
@@ -203,7 +209,7 @@ const SidebarLink = ({ item, pathname, collapsed = false, onNavigate }: { item: 
           </Tooltip.Portal>
         </Tooltip.Root>
       ) : (
-        <span className={`flex items-center justify-center w-6 h-6 rounded ${active ? 'text-primary-500' : 'text-gray-500 group-hover:text-gray-700 dark:group-hover:text-gray-300'}`}>{item.icon}</span>
+        <span className={`flex items-center justify-center w-6 h-6 rounded ${active ? 'text-primary-500' : isAcademy ? 'text-yellow-500' : 'text-gray-500 group-hover:text-gray-700 dark:group-hover:text-gray-300'}`}>{item.icon}</span>
       )}
       {!collapsed && <span className="truncate">{item.name}</span>}
     </Link>
