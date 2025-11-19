@@ -17,20 +17,23 @@ const VideoShowcase = ({ image, videoUrl, alt, playerOffsetX = '0px', playerOffs
     <div className="w-full flex flex-col items-center justify-center py-20">
       <div className="relative group max-w-5xl mx-auto w-full">
         {/* Container with animated border */}
-        <div className="relative rounded-3xl p-[4px] overflow-hidden bg-gradient-to-r from-transparent via-primary-500 to-transparent">
-          {/* Animated gradient overlay */}
-          <div className="absolute inset-0 rounded-3xl overflow-hidden">
+        <div className="relative rounded-3xl overflow-hidden">
+          {/* Animated gradient border - visible light running */}
+          <div className="absolute inset-0 rounded-3xl">
             <div 
-              className="absolute inset-0 bg-gradient-to-r from-transparent via-yellow-400 to-transparent animate-border-slide"
+              className="absolute inset-0 animate-spin-slow"
               style={{
-                width: '200%',
-                left: '-100%'
+                background: 'conic-gradient(from 0deg, transparent 0%, transparent 70%, #FFB703 85%, #FFB703 100%)',
+                animation: 'spin 3s linear infinite'
               }}
             />
           </div>
           
+          {/* Inner content with padding for border */}
+          <div className="absolute inset-[3px] rounded-3xl bg-white dark:bg-gray-900" />
+          
           {/* Image container */}
-          <div className="relative rounded-3xl overflow-hidden shadow-2xl bg-white dark:bg-gray-900">
+          <div className="relative m-[3px] rounded-3xl overflow-hidden shadow-2xl">
             <img
               src={image}
               alt={alt || 'Demo'}
@@ -101,7 +104,7 @@ const VideoShowcase = ({ image, videoUrl, alt, playerOffsetX = '0px', playerOffs
             onClick={() => setOpen(false)}
           >
             <motion.div
-              className="relative bg-black rounded-2xl overflow-hidden shadow-2xl max-w-6xl w-full"
+              className="relative bg-black rounded-2xl overflow-hidden shadow-2xl max-w-4xl w-full"
               initial={{ scale: 0.9, opacity: 0, y: 20 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.9, opacity: 0, y: 20 }}
@@ -135,17 +138,13 @@ const VideoShowcase = ({ image, videoUrl, alt, playerOffsetX = '0px', playerOffs
       </AnimatePresence>
 
       <style>{`
-        @keyframes border-slide {
-          0% {
-            transform: translateX(0);
+        @keyframes spin {
+          from {
+            transform: rotate(0deg);
           }
-          100% {
-            transform: translateX(50%);
+          to {
+            transform: rotate(360deg);
           }
-        }
-        
-        .animate-border-slide {
-          animation: border-slide 2s linear infinite;
         }
       `}</style>
     </div>
