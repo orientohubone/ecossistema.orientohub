@@ -89,7 +89,7 @@ const Header = () => {
 </div>
           
           {/* Desktop navigation */}
-          <nav className="hidden md:flex space-x-8">
+          <nav className="hidden md:flex space-x-8 items-center">
             {navItems.map((item) => (
               <Link
                 key={item.name}
@@ -103,6 +103,16 @@ const Header = () => {
                 {item.name}
               </Link>
             ))}
+            <Link
+              to="/academy"
+              className={`ml-2 px-4 py-2 rounded-lg font-bold shadow-sm border-2 border-primary-500 bg-primary-500/10 text-primary-600 dark:text-primary-400 hover:bg-primary-500/20 hover:text-black transition-all duration-200 ${location.pathname === '/academy' ? 'bg-primary-500 text-black border-primary-500 shadow-lg' : ''}`}
+              style={{
+                letterSpacing: '0.01em',
+                fontSize: '1rem',
+              }}
+            >
+              Academy
+            </Link>
           </nav>
           
           {/* Right side buttons */}
@@ -195,6 +205,17 @@ const Header = () => {
               {item.name}
             </Link>
           ))}
+          <Link
+            to="/academy"
+            className={`block mt-2 px-4 py-2 rounded-lg font-bold shadow-sm border-2 border-primary-500 bg-primary-500/10 text-primary-600 dark:text-primary-400 hover:bg-primary-500/20 hover:text-black transition-all duration-200 ${location.pathname === '/academy' ? 'bg-primary-500 text-black border-primary-500 shadow-lg' : ''}`}
+            style={{
+              letterSpacing: '0.01em',
+              fontSize: '1rem',
+            }}
+            onClick={() => setIsOpen(false)}
+          >
+            Academy
+          </Link>
           
           <div className="pt-4 pb-3 border-t border-gray-200 dark:border-gray-700">
             <div className="flex items-center justify-between px-3">
