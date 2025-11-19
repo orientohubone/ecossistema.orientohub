@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react';
+import * as Tooltip from '@radix-ui/react-tooltip';
 import { Link, useLocation, useNavigate, Outlet } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -77,7 +78,11 @@ const DashboardLayout = () => {
       <aside className={`hidden lg:flex lg:flex-col ${collapsed ? 'w-20' : 'w-72'} transition-width duration-200 ease-in-out bg-white dark:bg-gray-800 border-r dark:border-gray-700`}>
         <div className="flex items-center justify-between h-16 px-4 border-b dark:border-gray-700">
           <Link to="/" className="flex items-center gap-3">
-            <span className={`${collapsed ? 'text-primary-500 text-lg' : 'text-xl font-bold text-primary-500'}`}>Orientohub</span>
+            {collapsed ? (
+              <span className="text-primary-500 text-2xl font-extrabold">O</span>
+            ) : (
+              <span className="text-xl font-bold text-primary-500">Orientohub</span>
+            )}
           </Link>
           <div className="flex items-center gap-2">
             <button onClick={toggleCollapse} title={collapsed ? 'Expandir' : 'Recolher'} className="p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700">
@@ -164,8 +169,27 @@ const SearchBox = ({ collapsed = false }: { collapsed?: boolean }) => {
 const SidebarLink = ({ item, pathname, collapsed = false, onNavigate }: { item: any; pathname: string; collapsed?: boolean; onNavigate?: () => void }) => {
   const active = pathname === item.href;
   return (
-    <Link to={item.href} onClick={onNavigate} className={`group flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-md transition-colors ${active ? 'bg-primary-100 dark:bg-primary-900/50 text-primary-900 dark:text-primary-100' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'}`} aria-current={active ? 'page' : undefined}>
-      <span className={`flex items-center justify-center w-6 h-6 rounded ${active ? 'text-primary-500' : 'text-gray-500 group-hover:text-gray-700 dark:group-hover:text-gray-300'}`}>{item.icon}</span>
+    <Link
+      to={item.href}
+      onClick={onNavigate}
+      className={`group flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-md transition-colors ${active ? 'bg-primary-100 dark:bg-primary-900/50 text-primary-900 dark:text-primary-100' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'}`}
+      aria-current={active ? 'page' : undefined}
+    >
+      {collapsed ? (
+        <Tooltip.Root delayDuration={100}>
+          <Tooltip.Trigger asChild>
+            <span className={`flex items-center justify-center w-6 h-6 rounded ${active ? 'text-primary-500' : 'text-gray-500 group-hover:text-gray-700 dark:group-hover:text-gray-300'}`}>{item.icon}</span>
+          </Tooltip.Trigger>
+          <Tooltip.Portal>
+            <Tooltip.Content side="right" sideOffset={8} className="z-50 px-2 py-1 text-xs rounded bg-gray-900 text-white shadow-lg">
+              {item.name}
+              <Tooltip.Arrow className="fill-gray-900" />
+            </Tooltip.Content>
+          </Tooltip.Portal>
+        </Tooltip.Root>
+      ) : (
+        <span className={`flex items-center justify-center w-6 h-6 rounded ${active ? 'text-primary-500' : 'text-gray-500 group-hover:text-gray-700 dark:group-hover:text-gray-300'}`}>{item.icon}</span>
+      )}
       {!collapsed && <span className="truncate">{item.name}</span>}
     </Link>
   );
