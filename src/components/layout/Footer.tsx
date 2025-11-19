@@ -74,6 +74,8 @@ const Footer = () => {
         whileTap={{ scale: 0.9 }}
       >
         <div className="relative">
+      { to: '/glossario', label: 'Glossário' },
+      { to: '/academy', label: 'Academy' },
           <div className="absolute inset-0 bg-primary-500/30 rounded-full blur-xl group-hover:blur-2xl transition-all" />
           <div className="relative w-14 h-14 bg-gradient-to-br from-primary-500 to-primary-600 rounded-full flex items-center justify-center shadow-lg shadow-primary-500/30 group-hover:shadow-xl group-hover:shadow-primary-500/50 transition-all border-2 border-primary-400">
             <ArrowUp className="w-6 h-6 text-black group-hover:scale-110 transition-transform" />
@@ -227,6 +229,16 @@ const Footer = () => {
               </ul>
             </div>
           </div>
+                  <li>
+                    <Link
+                      to="/academy"
+                      onClick={handleLinkClick}
+                      className="mt-2 px-4 py-2 rounded-lg font-bold shadow-sm border-2 border-primary-500 bg-primary-500/10 text-primary-500 hover:bg-primary-500/20 hover:text-black transition-all duration-200 flex items-center gap-2"
+                    >
+                      <Sparkles className="w-4 h-4" />
+                      Academy
+                    </Link>
+                  </li>
         </div>
         
         {/* Bottom Bar */}
