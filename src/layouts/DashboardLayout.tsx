@@ -183,9 +183,17 @@ const SidebarLink = ({ item, pathname, collapsed = false, onNavigate }: { item: 
             <span className={`flex items-center justify-center w-6 h-6 rounded ${active ? 'text-primary-500' : 'text-gray-500 group-hover:text-gray-700 dark:group-hover:text-gray-300'}`}>{item.icon}</span>
           </Tooltip.Trigger>
           <Tooltip.Portal>
-            <Tooltip.Content side="right" sideOffset={8} className="z-50 px-2 py-1 text-xs rounded bg-gray-900 text-white shadow-lg">
+            <Tooltip.Content
+              side="right"
+              sideOffset={10}
+              className="z-50 px-3 py-2 text-sm font-medium rounded-lg bg-gray-900 text-white border border-primary-500 shadow-xl animate-fadein"
+              style={{
+                boxShadow: '0 8px 32px 0 rgba(31, 41, 55, 0.25), 0 1.5px 4px 0 rgba(0,0,0,0.10)',
+                transition: 'opacity 0.18s cubic-bezier(0.4,0,0.2,1)'
+              }}
+            >
               {item.name}
-              <Tooltip.Arrow className="fill-gray-900" />
+              <Tooltip.Arrow className="fill-primary-500" />
             </Tooltip.Content>
           </Tooltip.Portal>
         </Tooltip.Root>
