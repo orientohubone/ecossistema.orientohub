@@ -108,6 +108,13 @@ const HomePage = () => {
         Ideal para aceleradoras, incubadoras, fundadores e aspirantes.
       </motion.p>
 
+       {/* Showcase Jornada Empreendedora */}
+      <VideoShowcase
+        image={jornadaPrint}
+        videoUrl="https://www.youtube.com/embed/2Xc9gXyf2G4"
+        alt="Jornada Empreendedora Print"
+      />   
+
       {/* CTA Buttons */}
       <motion.div
         className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8"
@@ -144,12 +151,6 @@ const HomePage = () => {
         Comece gratuitamente, sem cartão de crédito
       </motion.p>
 
-      {/* Showcase Jornada Empreendedora */}
-      <VideoShowcase
-        image={jornadaPrint}
-        videoUrl="https://www.youtube.com/embed/2Xc9gXyf2G4"
-        alt="Jornada Empreendedora Print"
-      />
       {/* Feature cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-20 max-w-4xl mx-auto">
         {[
