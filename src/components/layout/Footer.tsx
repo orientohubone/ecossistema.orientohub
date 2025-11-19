@@ -243,36 +243,14 @@ const Footer = () => {
               </div>
 
               <div className="flex items-center gap-6">
-                {/* Custom Language Dropdown */}
-                <div className="relative group">
-                  <button
-                    type="button"
-                    className="flex items-center gap-2 bg-gray-800/50 border border-gray-700 text-gray-400 text-sm rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all backdrop-blur-sm hover:bg-gray-700"
-                  >
-                    <span className="text-lg">🇧🇷</span>
-                    <span>Português (BR)</span>
-                    <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
-                  </button>
-                  <div className="absolute left-0 mt-2 w-48 bg-gray-900 border border-gray-700 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity z-20">
-                    <ul className="py-2">
-                      <li>
-                        <button className="flex items-center w-full gap-2 px-4 py-2 text-gray-300 hover:bg-gray-800 text-sm" type="button">
-                          <span className="text-lg">🇧🇷</span> Português (BR)
-                        </button>
-                      </li>
-                      <li>
-                        <button className="flex items-center w-full gap-2 px-4 py-2 text-gray-300 hover:bg-gray-800 text-sm" type="button">
-                          <span className="text-lg">🇺🇸</span> English (US)
-                        </button>
-                      </li>
-                      <li>
-                        <button className="flex items-center w-full gap-2 px-4 py-2 text-gray-300 hover:bg-gray-800 text-sm" type="button">
-                          <span className="text-lg">🇪🇸</span> Español (ES)
-                        </button>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
+                <select
+                  className="bg-gray-800/50 border border-gray-700 text-gray-400 text-sm rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all backdrop-blur-sm"
+                  defaultValue="pt-BR"
+                >
+                  <option value="pt-BR">🇧🇷 Português (BR)</option>
+                  <option value="en-US">🇺🇸 English (US)</option>
+                  <option value="es-ES">🇪🇸 Español (ES)</option>
+                </select>
 
                 <div className="flex items-center gap-2 text-gray-500 text-xs">
                   <Rocket className="w-4 h-4 text-primary-500" />
