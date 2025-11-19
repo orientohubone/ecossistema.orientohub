@@ -168,7 +168,6 @@ const OrientoAcademyPage = () => {
                 <div className="flex items-center gap-1 mb-4">
                   {[...Array(5)].map((_, i) => (
                     <Star key={i} className={`w-5 h-5 ${i < Math.round(selectedCourse.rating) ? 'text-yellow-400' : 'text-gray-300'}`} />
-                      category: string;
                   ))}
                   <span className="ml-2 text-sm text-gray-500 font-semibold">{selectedCourse.rating}</span>
                 </div>
@@ -177,7 +176,6 @@ const OrientoAcademyPage = () => {
                   <h3 className="text-lg font-bold mb-2 flex items-center gap-2"><MessageCircle className="w-5 h-5 text-primary-500" /> {t('academy.comments')}</h3>
                   <div className="space-y-3 max-h-40 overflow-y-auto">
                     <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-3">
-                    const [courses, setCourses] = useState<Course[]>(initialCourses);
                       <span className="font-semibold text-primary-500">@founderbr</span> <span className="text-gray-600 dark:text-gray-300">Excelente didática e muito prático!</span>
                     </div>
                     <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-3">
