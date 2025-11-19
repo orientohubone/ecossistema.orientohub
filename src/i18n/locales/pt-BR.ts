@@ -200,4 +200,49 @@ export default {
       customerName: 'Nome do Cliente',
     },
   },
+  academy: {
+    title: 'Oriento Academy',
+    headline: 'Aprendizagem Lúdica & Gamificada',
+    description: 'Cursos, badges, comentários, ranking e experiências de aprendizagem premium para founders e inovadores.',
+    addCourse: 'Novo Curso',
+    edit: 'Editar',
+    remove: 'Remover',
+    completed: 'Concluído',
+    start: 'Iniciar Curso',
+    lessons: 'aulas',
+    reviews: 'avaliações',
+    comments: 'Comentários',
+    commentPlaceholder: 'Deixe seu comentário...',
+    send: 'Enviar',
+    categories: {
+      all: 'Todos',
+      validation: 'Validação',
+      growth: 'Growth',
+      leadership: 'Liderança',
+    },
+    courses: {
+      validation: {
+        title: 'Jornada do Founder',
+        description: 'Do zero à validação: aprenda a criar, validar e acelerar sua startup com metodologia Orientohub.'
+      },
+      growth: {
+        title: 'Growth & Tração',
+        description: 'Estratégias práticas de growth hacking, marketing digital e tração para startups.'
+      },
+      leadership: {
+        title: 'Liderança & Cultura',
+        description: 'Desenvolva habilidades de liderança, cultura organizacional e gestão de times inovadores.'
+      }
+    },
+    badge: {
+      founder: 'Founder Starter',
+      growth: 'Growth Hacker',
+      leader: 'Líder Inovador',
+    },
+    level: {
+      beginner: 'Iniciante',
+      intermediate: 'Intermediário',
+      advanced: 'Avançado',
+    },
+  },
 };
