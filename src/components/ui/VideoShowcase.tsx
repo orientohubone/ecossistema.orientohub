@@ -24,7 +24,7 @@ const VideoShowcase = ({ image, videoUrl, alt, playerOffsetX = '0px', playerOffs
               className="absolute inset-0 animate-spin-slow"
               style={{
                 background: 'conic-gradient(from 0deg, transparent 0%, transparent 70%, #FFB703 85%, #FFB703 100%)',
-                animation: 'spin 3s linear infinite'
+                animation: 'spin 6s linear infinite'
               }}
             />
           </div>
