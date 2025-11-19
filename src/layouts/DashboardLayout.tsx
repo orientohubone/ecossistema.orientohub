@@ -47,7 +47,7 @@ const DashboardLayout = () => {
     { id: 'insights', name: t('dashboard.insights'), icon: <BarChart2 size={18} />, href: '/dashboard/insights' },
     { id: 'frameworks', name: t('dashboard.frameworks'), icon: <FileText size={18} />, href: '/dashboard/frameworks' },
     { id: 'projects', name: t('projects.title'), icon: <Lightbulb size={18} />, href: '/dashboard/projects' },
-    { id: 'academy', name: 'Conheça Oriento Academy', icon: <GraduationCap size={18} />, href: '/dashboard/academy', protected: true },
+    { id: 'academy', name: 'Oriento Academy', icon: <GraduationCap size={18} />, href: '/dashboard/academy', protected: true },
     { id: 'solutions', name: 'Soluções', icon: <Link2 size={18} />, href: '/dashboard/solutions' },
     { id: 'community', name: 'Comunidade', icon: <Users size={18} />, href: '/dashboard/community' },
     { id: 'settings', name: t('common.settings'), icon: <Settings size={18} />, href: '/dashboard/settings' }
