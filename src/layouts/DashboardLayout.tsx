@@ -176,22 +176,88 @@ const SidebarLink = ({ item, pathname, collapsed = false, onNavigate }: { item: 
   if (item.protected && !user) return null;
   const active = pathname === item.href;
   const isAcademy = item.id === 'academy';
+
+  // Custom premium effect for Oriento Academy
+  if (isAcademy) {
+    return (
+      <div className={`relative my-1 group ${collapsed ? 'flex justify-center' : ''}`}>
+        <div
+          className={`absolute inset-0 z-0 rounded-xl pointer-events-none transition-all duration-700
+            ${active ? 'opacity-100 scale-105' : 'opacity-80 group-hover:opacity-100 group-hover:scale-105'}
+          `}
+        >
+          {/* Multi-layered conic-gradient border effect */}
+          <div className="absolute inset-0 rounded-xl blur-[2.5px]" style={{
+            background: 'conic-gradient(from 120deg, #FFD600 0%, #cf30aa 30%, #18116a 60%, #FFD600 100%)',
+            filter: 'brightness(1.15)',
+            opacity: 0.7
+          }} />
+          <div className="absolute inset-0 rounded-xl blur-[6px]" style={{
+            background: 'conic-gradient(from 60deg, #fffbe6 0%, #cf30aa33 40%, #18116a22 80%, #FFD600 100%)',
+            opacity: 0.5
+          }} />
+        </div>
+        <Link
+          to={item.href}
+          onClick={onNavigate}
+          className={`relative z-10 group flex items-center gap-3 px-3 py-2 text-sm font-bold rounded-xl transition-all duration-300
+            ${active
+              ? 'bg-yellow-200/80 dark:bg-yellow-900/60 text-yellow-900 dark:text-yellow-100 shadow-lg ring-2 ring-yellow-400/80'
+              : 'bg-yellow-100/80 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300 shadow-md hover:shadow-lg hover:ring-2 hover:ring-yellow-400/60'}
+            border border-yellow-300/80 dark:border-yellow-700/60
+            focus:outline-none focus:ring-2 focus:ring-yellow-400/90
+          `}
+          aria-current={active ? 'page' : undefined}
+          style={{
+            boxShadow: active
+              ? '0 0 0 3px #FFD60055, 0 2px 8px 0 #FFD60033'
+              : '0 0 0 2px #FFD60022, 0 1.5px 4px 0 #FFD60022'
+          }}
+        >
+          {collapsed ? (
+            <Tooltip.Root delayDuration={100}>
+              <Tooltip.Trigger asChild>
+                <span className={`flex items-center justify-center w-6 h-6 rounded ${active ? 'text-yellow-600 dark:text-yellow-200' : 'text-yellow-500 group-hover:text-yellow-700 dark:group-hover:text-yellow-300'}`}>{item.icon}</span>
+              </Tooltip.Trigger>
+              <Tooltip.Portal>
+                <Tooltip.Content
+                  side="right"
+                  sideOffset={10}
+                  className="z-50 px-3 py-2 text-sm font-medium rounded-lg bg-gray-900 text-white border border-yellow-400 shadow-xl animate-fadein"
+                  style={{
+                    boxShadow: '0 8px 32px 0 #FFD60033, 0 1.5px 4px 0 #FFD60022',
+                    transition: 'opacity 0.18s cubic-bezier(0.4,0,0.2,1)'
+                  }}
+                >
+                  {item.name}
+                  <Tooltip.Arrow className="fill-yellow-400" />
+                </Tooltip.Content>
+              </Tooltip.Portal>
+            </Tooltip.Root>
+          ) : (
+            <span className={`flex items-center justify-center w-6 h-6 rounded ${active ? 'text-yellow-600 dark:text-yellow-200' : 'text-yellow-500 group-hover:text-yellow-700 dark:group-hover:text-yellow-300'}`}>{item.icon}</span>
+          )}
+          {!collapsed && <span className="truncate">{item.name}</span>}
+        </Link>
+      </div>
+    );
+  }
+
+  // Default link for other items
   return (
     <Link
       to={item.href}
       onClick={onNavigate}
       className={`group flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-md transition-colors
         ${active ? 'bg-primary-100 dark:bg-primary-900/50 text-primary-900 dark:text-primary-100' :
-          isAcademy ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300 font-bold shadow-sm' :
           'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'}
       `}
       aria-current={active ? 'page' : undefined}
-      style={isAcademy && !active ? { border: '1.5px solid #FFD600', boxShadow: '0 0 0 2px #FFD60022' } : {}}
     >
       {collapsed ? (
         <Tooltip.Root delayDuration={100}>
           <Tooltip.Trigger asChild>
-            <span className={`flex items-center justify-center w-6 h-6 rounded ${active ? 'text-primary-500' : isAcademy ? 'text-yellow-500' : 'text-gray-500 group-hover:text-gray-700 dark:group-hover:text-gray-300'}`}>{item.icon}</span>
+            <span className={`flex items-center justify-center w-6 h-6 rounded ${active ? 'text-primary-500' : 'text-gray-500 group-hover:text-gray-700 dark:group-hover:text-gray-300'}`}>{item.icon}</span>
           </Tooltip.Trigger>
           <Tooltip.Portal>
             <Tooltip.Content
@@ -209,7 +275,7 @@ const SidebarLink = ({ item, pathname, collapsed = false, onNavigate }: { item: 
           </Tooltip.Portal>
         </Tooltip.Root>
       ) : (
-        <span className={`flex items-center justify-center w-6 h-6 rounded ${active ? 'text-primary-500' : isAcademy ? 'text-yellow-500' : 'text-gray-500 group-hover:text-gray-700 dark:group-hover:text-gray-300'}`}>{item.icon}</span>
+        <span className={`flex items-center justify-center w-6 h-6 rounded ${active ? 'text-primary-500' : 'text-gray-500 group-hover:text-gray-700 dark:group-hover:text-gray-300'}`}>{item.icon}</span>
       )}
       {!collapsed && <span className="truncate">{item.name}</span>}
     </Link>
