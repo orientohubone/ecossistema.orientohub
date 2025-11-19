@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Sparkles, Rocket, Zap, ArrowRight, Play, Users, BarChart2, Award, Target, CheckCircle, TrendingUp, Brain } from 'lucide-react';
 import VideoShowcase from '../components/ui/VideoShowcase';
+import jornadaPrint from '../../assets/jornada-print.png';
 
 // Componente de texto rotativo -->>
       
@@ -145,7 +146,7 @@ const HomePage = () => {
 
       {/* Showcase Jornada Empreendedora */}
       <VideoShowcase
-        image={require('../../assets/jornada-print.png')}
+        image={jornadaPrint}
         videoUrl="https://www.youtube.com/embed/2Xc9gXyf2G4"
         alt="Jornada Empreendedora Print"
       />
