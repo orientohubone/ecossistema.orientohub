@@ -80,7 +80,8 @@ export const MovingBorder = ({ children, duration = 2000, rx = 0, ry = 0 }: Movi
           top: 0,
           left: 0,
           transform,
-          filter: 'drop-shadow(0 0 35px rgba(255, 193, 59, 0.65))',
+          filter: 'drop-shadow(0 0 35px rgba(255, 214, 94, 0.8))',
+          mixBlendMode: 'screen',
           pointerEvents: 'none'
         }}
         aria-hidden
