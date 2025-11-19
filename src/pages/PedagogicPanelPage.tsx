@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState, type FormEvent, type ChangeEvent } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { CheckCircle, ClipboardList, FileText, Layers, Lock, Plus, Target } from 'lucide-react';
+import { CheckCircle, ClipboardList, FileText, Layers, Lock, Plus, Target, ShieldCheck } from 'lucide-react';
 import { academyCategories, defaultCourses, type Course, type CourseMaterial } from '../data/academyCourses';
 
 interface CourseFormState {
@@ -69,14 +69,14 @@ const PedagogicPanelPage = () => {
     setCourses(prev => prev.map(course => (
       course.id === editingCourse.id
         ? {
-            ...course,
-            title: courseForm.title,
-            description: courseForm.description,
-            youtubeUrl: courseForm.youtubeUrl,
-            level: courseForm.level,
-            category: courseForm.category,
-            isPremium: courseForm.isPremium,
-          }
+          ...course,
+          title: courseForm.title,
+          description: courseForm.description,
+          youtubeUrl: courseForm.youtubeUrl,
+          level: courseForm.level,
+          category: courseForm.category,
+          isPremium: courseForm.isPremium,
+        }
         : course
     )));
   };
