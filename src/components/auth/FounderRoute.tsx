@@ -11,7 +11,11 @@ const FounderRoute = ({ children }: FounderRouteProps) => {
   const { user, isAuthenticated, isLoading } = useAuthStore();
   const location = useLocation();
 
-  const isFounder = useMemo(() => {
+  const isFounderBase = useMemo(() => {
+    return isFounderUser(user, { requireSecret: false });
+  }, [user]);
+
+  const isFounderUnlocked = useMemo(() => {
     return isFounderUser(user, { requireSecret: true });
   }, [user]);
 
@@ -27,8 +31,14 @@ const FounderRoute = ({ children }: FounderRouteProps) => {
     return <Navigate to="/entrar" state={{ from: location }} replace />;
   }
 
-  if (!isFounder) {
+  // If not a founder at all, deny access
+  if (!isFounderBase) {
     return <Navigate to="/dashboard" state={{ forbidden: true }} replace />;
+  }
+
+  // If founder but locked (no secret), redirect to unlock page
+  if (!isFounderUnlocked) {
+    return <Navigate to="/dashboard/academy" state={{ from: location, unlockRequired: true }} replace />;
   }
 
   return <>{children}</>;
