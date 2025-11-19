@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
-import { GraduationCap, Sparkles, CheckCircle2, Users, BookOpen, Award, Star, Lightbulb } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { GraduationCap, Sparkles, CheckCircle2, Users, BookOpen, Award, Star, Lightbulb, ArrowRight } from 'lucide-react';
 
 const AcademyPage = () => {
   return (
@@ -14,8 +15,8 @@ const AcademyPage = () => {
       <section className="relative min-h-[80vh] w-full overflow-hidden bg-gradient-to-br from-black via-gray-900 to-black flex items-center">
         {/* Animated background elements */}
         <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary-500/20 rounded-full blur-3xl animate-pulse" />
-          <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-primary-400/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1000ms' }} />
+          <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary-500/15 rounded-full blur-3xl animate-[pulse_8s_ease-in-out_infinite]" />
+          <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-primary-400/10 rounded-full blur-3xl animate-[pulse_8s_ease-in-out_infinite]" style={{ animationDelay: '2400ms' }} />
         </div>
         {/* Grid pattern overlay */}
         <div className="absolute inset-0 opacity-10">
@@ -61,6 +62,27 @@ const AcademyPage = () => {
             >
               Cursos, certificações, badges e uma experiência gamificada para founders, inovadores e quem quer transformar o futuro dos negócios.
             </motion.p>
+            <motion.div
+              className="flex flex-col sm:flex-row gap-4 justify-center"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 }}
+            >
+              <Link
+                to="/academy"
+                className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-primary-500 hover:bg-primary-600 text-black font-semibold rounded-2xl shadow-lg shadow-primary-500/30 transition"
+              >
+                Explorar catálogo
+                <ArrowRight size={18} />
+              </Link>
+              <Link
+                to="/academy/login"
+                className="inline-flex items-center justify-center gap-3 px-8 py-4 border border-white/30 text-white font-semibold rounded-2xl hover:bg-white/10 transition"
+              >
+                Sou founder da Academy
+                <Sparkles size={18} />
+              </Link>
+            </motion.div>
             <motion.div
               className="flex items-center justify-center gap-4"
               initial={{ opacity: 0, y: 20 }}
@@ -147,13 +169,22 @@ const AcademyPage = () => {
               </p>
             </div>
             <div className="mt-16">
-              <a
-                href="/cadastro"
-                className="inline-flex items-center gap-3 px-10 py-5 bg-primary-500 hover:bg-primary-600 text-black font-bold text-xl rounded-xl shadow-2xl shadow-primary-500/30 hover:shadow-primary-500/50 transition-all duration-300 hover:scale-105"
-              >
-                <Sparkles className="w-6 h-6" />
-                Quero fazer parte
-              </a>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <a
+                  href="/cadastro"
+                  className="inline-flex items-center gap-3 px-10 py-5 bg-primary-500 hover:bg-primary-600 text-black font-bold text-xl rounded-xl shadow-2xl shadow-primary-500/30 hover:shadow-primary-500/50 transition-all duration-300 hover:scale-105"
+                >
+                  <Sparkles className="w-6 h-6" />
+                  Quero fazer parte
+                </a>
+                <Link
+                  to="/academy/login"
+                  className="inline-flex items-center gap-3 px-10 py-5 border border-white/30 text-white font-semibold text-xl rounded-xl hover:bg-white/10 transition"
+                >
+                  Acesso do founder
+                  <ArrowRight size={20} />
+                </Link>
+              </div>
             </div>
           </motion.div>
         </div>
