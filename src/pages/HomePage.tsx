@@ -4,6 +4,7 @@ import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Sparkles, Rocket, Zap, ArrowRight, Play, Users, BarChart2, Award, Target, CheckCircle, TrendingUp, Brain } from 'lucide-react';
+import VideoShowcase from '../components/ui/VideoShowcase';
 
 // Componente de texto rotativo -->>
       
@@ -46,7 +47,7 @@ const HomePage = () => {
         <meta name="description" content={t('home.hero.subtitle')} />
       </Helmet>
 
-     {/* Hero Section */}
+    {/* Hero Section */}
 <section className="relative min-h-screen w-full overflow-hidden bg-gradient-to-br from-black via-gray-900 to-black">
   {/* Animated background elements */}
   <div className="absolute inset-0 overflow-hidden">
@@ -142,6 +143,12 @@ const HomePage = () => {
         Comece gratuitamente, sem cartão de crédito
       </motion.p>
 
+      {/* Showcase Jornada Empreendedora */}
+      <VideoShowcase
+        image={require('../../assets/jornada-print.png')}
+        videoUrl="https://www.youtube.com/embed/2Xc9gXyf2G4"
+        alt="Jornada Empreendedora Print"
+      />
       {/* Feature cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-20 max-w-4xl mx-auto">
         {[
