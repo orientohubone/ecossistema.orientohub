@@ -19,6 +19,7 @@ import {
 import { academyCategories, defaultCourses, type Course } from '../data/academyCourses';
 import { useAuthStore } from '../stores/authStore';
 import { isFounderUser, DEFAULT_FOUNDER_SECRET } from '../utils/founderAccess';
+import { supabase } from '../config/supabase';
 
 const OrientoAcademyPage = () => {
   const courses = defaultCourses;
@@ -90,18 +91,9 @@ const OrientoAcademyPage = () => {
     setSearchQuery(event.target.value);
   };
 
-  const handlePedagogicCtaClick = () => {
-    if (founderUnlocked) {
-      navigate('/dashboard/pedagogico');
-      return;
-    }
 
-    if (typeof window !== 'undefined') {
-      document.getElementById('painel-pedagogico')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  };
 
-  const handleFounderSecretSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleFounderSecretSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const normalizedSecret = founderSecretInput.trim();
     if (!normalizedSecret) {
@@ -116,6 +108,16 @@ const OrientoAcademyPage = () => {
     if (typeof window !== 'undefined') {
       sessionStorage.setItem('founderSecret', normalizedSecret);
     }
+
+    // Persist to Supabase to link the key to the user account
+    try {
+      await supabase.auth.updateUser({
+        data: { founder_secret: normalizedSecret }
+      });
+    } catch (error) {
+      console.error('Failed to link founder secret:', error);
+    }
+
     setSecretRefreshToken((prev: number) => prev + 1);
 
     const unlocksPanel = isFounderUser(useAuthStore.getState().user, { requireSecret: true });
@@ -156,90 +158,99 @@ const OrientoAcademyPage = () => {
                 >
                   Explorar trilhas
                 </a>
-                <button
-                  type="button"
-                  onClick={handlePedagogicCtaClick}
+                <a
+                  href="#catalogo"
                   className="inline-flex items-center justify-center rounded-xl border border-slate-300 px-6 py-3 font-semibold text-slate-900 dark:text-white hover:bg-slate-100 dark:hover:bg-slate-900/40"
                 >
-                  {founderUnlocked ? 'Abrir painel pedagógico' : 'Desbloquear painel pedagógico'}
-                </button>
+                  Ver catálogo
+                </a>
               </div>
             </motion.div>
 
             <div className="space-y-6">
-              <div id="painel-pedagogico" className="rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/80 p-6 shadow-sm">
-                <div className="flex items-center gap-2 text-xs uppercase tracking-[0.25em] text-primary-500">
-                  <Lock size={14} /> Painel pedagógico
-                </div>
-                <h3 className="mt-3 text-2xl font-semibold">Governança da Academy</h3>
-                <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
-                  Área exclusiva para founders Orientohub e tutores pedagógicos.
-                </p>
+              {/* Pedagogic Panel Card - Only visible to authenticated users */}
+              {user && (
+                <div id="painel-pedagogico" className="rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/80 p-6 shadow-sm">
+                  <div className="flex items-center gap-2 text-xs uppercase tracking-[0.25em] text-primary-500">
+                    <Lock size={14} /> Painel pedagógico
+                  </div>
+                  <h3 className="mt-3 text-2xl font-semibold">Governança da Academy</h3>
+                  <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
+                    Área exclusiva para founders Orientohub e tutores pedagógicos.
+                  </p>
 
-                {founderUnlocked ? (
-                  <div className="mt-6 space-y-4">
-                    <div className="rounded-2xl border border-green-400/40 bg-green-500/10 p-4 text-sm text-green-200 dark:text-green-100">
-                      Acesso liberado. Você pode administrar currículos, materiais e checklists do painel pedagógico.
-                    </div>
-                    <div className="flex flex-col gap-3">
-                      <button
-                        type="button"
-                        onClick={() => navigate('/dashboard/pedagogico')}
-                        className="inline-flex items-center justify-center rounded-xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white hover:bg-slate-800"
-                      >
-                        Entrar no painel
-                      </button>
+                  {isFounderUser(user, { requireSecret: false }) ? (
+                    // Is a Founder/Tutor (Base Access)
+                    founderUnlocked ? (
+                      // Has Valid Key
+                      <div className="mt-6 space-y-4">
+                        <div className="rounded-2xl border border-green-400/40 bg-green-500/10 p-4 text-sm text-green-200 dark:text-green-100">
+                          Acesso liberado. Você pode administrar currículos, materiais e checklists do painel pedagógico.
+                        </div>
+                        <div className="flex flex-col gap-3">
+                          <button
+                            type="button"
+                            onClick={() => navigate('/dashboard/pedagogico')}
+                            className="inline-flex items-center justify-center rounded-xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white hover:bg-slate-800"
+                          >
+                            Entrar no painel
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      // Pending Key
+                      <form onSubmit={handleFounderSecretSubmit} className="mt-6 space-y-4">
+                        <div>
+                          <label className="text-sm font-semibold text-slate-700 dark:text-slate-200">Chave pedagógica</label>
+                          <input
+                            type="password"
+                            value={founderSecretInput}
+                            onChange={(event) => {
+                              setFounderSecretInput(event.target.value);
+                              setSecretStatus('idle');
+                            }}
+                            placeholder="Digite a chave de acesso..."
+                            className="mt-2 w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 px-4 py-3 text-sm"
+                          />
+                        </div>
+                        <button
+                          type="submit"
+                          className="w-full rounded-xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white hover:bg-slate-800"
+                        >
+                          Validar acesso
+                        </button>
+                        {secretStatus === 'error' && (
+                          <div className="rounded-xl border border-red-500/40 bg-red-500/10 p-3 text-sm text-red-200">
+                            Chave incorreta. Tente novamente.
+                          </div>
+                        )}
+                        {secretStatus === 'success' && (
+                          <div className="rounded-xl border border-green-500/40 bg-green-500/10 p-3 text-sm text-green-200">
+                            Chave validada. Abrindo painel…
+                          </div>
+                        )}
+                        <p className="text-xs text-slate-500 dark:text-slate-400">
+                          Caso não possua a chave, fale com o founder Orientohub.
+                        </p>
+                      </form>
+                    )
+                  ) : (
+                    // Not a Founder
+                    <div className="mt-6 space-y-4">
+                      <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 p-4 text-sm text-slate-600 dark:text-slate-400">
+                        <p className="font-semibold mb-1">Acesso Restrito</p>
+                        Este painel é reservado para a equipe pedagógica da Orientohub.
+                      </div>
                       <a
                         href="#catalogo"
-                        className="inline-flex items-center justify-center rounded-xl border border-slate-300 px-5 py-3 text-sm font-semibold text-slate-900 dark:text-white hover:bg-slate-100 dark:hover:bg-slate-900/40"
+                        className="inline-flex items-center justify-center w-full rounded-xl border border-slate-300 px-5 py-3 text-sm font-semibold text-slate-900 dark:text-white hover:bg-slate-100 dark:hover:bg-slate-900/40"
                       >
-                        Acessar catálogo público
+                        Acessar catálogo
                       </a>
                     </div>
-                  </div>
-                ) : (
-                  <form onSubmit={handleFounderSecretSubmit} className="mt-6 space-y-4">
-                    <div>
-                      <label className="text-sm font-semibold text-slate-700 dark:text-slate-200">Chave pedagógica</label>
-                      <input
-                        type="password"
-                        value={founderSecretInput}
-                        onChange={(event) => {
-                          setFounderSecretInput(event.target.value);
-                          setSecretStatus('idle');
-                        }}
-                        placeholder={`Ex.: ${DEFAULT_FOUNDER_SECRET}`}
-                        className="mt-2 w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 px-4 py-3 text-sm"
-                      />
-                    </div>
-                    <button
-                      type="submit"
-                      className="w-full rounded-xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white hover:bg-slate-800"
-                    >
-                      Validar acesso
-                    </button>
-                    {secretStatus === 'error' && (
-                      <div className="rounded-xl border border-red-500/40 bg-red-500/10 p-3 text-sm text-red-200">
-                        Acesso restrito. Apenas o founder da Orientohub ou tutores autorizados podem acessar o painel pedagógico.
-                      </div>
-                    )}
-                    {secretStatus === 'success' && (
-                      <div className="rounded-xl border border-green-500/40 bg-green-500/10 p-3 text-sm text-green-200">
-                        Chave validada. Abrindo painel…
-                      </div>
-                    )}
-                    <p className="text-xs text-slate-500 dark:text-slate-400">
-                      Caso não possua a chave, fale com o founder Orientohub ou com o tutor pedagógico responsável.
-                    </p>
-                    <a
-                      href="#catalogo"
-                      className="inline-flex items-center justify-center rounded-xl border border-slate-300 px-5 py-3 text-sm font-semibold text-slate-900 dark:text-white hover:bg-slate-100 dark:hover:bg-slate-900/40"
-                    >
-                      Acessar catálogo
-                    </a>
-                  </form>
-                )}
-              </div>
+                  )}
+                </div>
+              )}
 
               <div className="rounded-3xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/40 p-8">
                 <dl className="grid grid-cols-2 gap-6">
