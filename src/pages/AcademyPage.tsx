@@ -38,17 +38,21 @@ const AcademyPage = () => {
               </span>
             </motion.div>
             <motion.h1
-              className="text-5xl md:text-7xl font-bold mb-8 text-white leading-tight"
+              className="text-4xl md:text-6xl font-bold mb-4 text-white leading-tight"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.3 }}
             >
               O futuro da aprendizagem para founders
-              <br />
-              <span className="bg-gradient-to-r from-primary-400 via-primary-500 to-primary-600 bg-clip-text text-transparent">
-                Premium, Gamificada, Real
-              </span>
             </motion.h1>
+            <motion.p
+              className="text-lg md:text-2xl font-semibold mb-8 bg-gradient-to-r from-primary-400 via-primary-500 to-primary-600 bg-clip-text text-transparent tracking-tight"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.35 }}
+            >
+              Premium, Gamificada, Real
+            </motion.p>
             <motion.p
               className="text-xl md:text-2xl text-gray-300 mb-12 leading-relaxed max-w-3xl mx-auto"
               initial={{ opacity: 0, y: 20 }}
