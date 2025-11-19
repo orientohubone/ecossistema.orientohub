@@ -201,14 +201,19 @@ const SidebarLink = ({ item, pathname, collapsed = false, onNavigate }: { item: 
           to={item.href}
           onClick={onNavigate}
           className={`relative z-10 group flex items-center gap-3 px-3 py-2 text-sm font-bold rounded-xl transition-all duration-300
-            ${active
-              ? 'bg-yellow-200/80 dark:bg-yellow-900/60 text-yellow-900 dark:text-yellow-100 shadow-lg ring-2 ring-yellow-400/80'
-              : 'bg-yellow-100/80 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300 shadow-md hover:shadow-lg hover:ring-2 hover:ring-yellow-400/60'}
             border border-yellow-300/80 dark:border-yellow-700/60
             focus:outline-none focus:ring-2 focus:ring-yellow-400/90
+            ${active
+              ? 'shadow-lg ring-2 ring-yellow-400/80'
+              : 'shadow-md hover:shadow-lg hover:ring-2 hover:ring-yellow-400/60'}
           `}
           aria-current={active ? 'page' : undefined}
           style={{
+            background: active
+              ? 'linear-gradient(90deg, #fffbe6 0%, #ffe7fa 40%, #f9e7ff 70%, #fffbe6 100%)'
+              : 'linear-gradient(90deg, #fffbe6 0%, #f9e7ff 40%, #e6e6fa 70%, #fffbe6 100%)',
+            backgroundSize: '200% 200%',
+            animation: active ? 'academyGlow 2.5s ease-in-out infinite alternate' : 'academyGlow 4s ease-in-out infinite alternate',
             boxShadow: active
               ? '0 0 0 3px #FFD60055, 0 2px 8px 0 #FFD60033'
               : '0 0 0 2px #FFD60022, 0 1.5px 4px 0 #FFD60022'
@@ -239,6 +244,14 @@ const SidebarLink = ({ item, pathname, collapsed = false, onNavigate }: { item: 
           )}
           {!collapsed && <span className="truncate">{item.name}</span>}
         </Link>
+        {/* Keyframes for animated gradient background */}
+        <style>{`
+          @keyframes academyGlow {
+            0% { background-position: 0% 50%; filter: brightness(1.05); }
+            50% { background-position: 100% 50%; filter: brightness(1.18); }
+            100% { background-position: 0% 50%; filter: brightness(1.05); }
+          }
+        `}</style>
       </div>
     );
   }
