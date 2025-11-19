@@ -33,6 +33,8 @@ const Footer = () => {
     { to: '/ecossistema', label: t('nav.ecosystem') },
     { to: '/planos', label: t('nav.pricing') },
     { to: '/blog', label: t('nav.blog') },
+    { to: '/glossario', label: 'Glossário' },
+    { to: '/academy', label: 'Academy' },
   ];
 
   const legalLinks = [
@@ -74,8 +76,6 @@ const Footer = () => {
         whileTap={{ scale: 0.9 }}
       >
         <div className="relative">
-      { to: '/glossario', label: 'Glossário' },
-      { to: '/academy', label: 'Academy' },
           <div className="absolute inset-0 bg-primary-500/30 rounded-full blur-xl group-hover:blur-2xl transition-all" />
           <div className="relative w-14 h-14 bg-gradient-to-br from-primary-500 to-primary-600 rounded-full flex items-center justify-center shadow-lg shadow-primary-500/30 group-hover:shadow-xl group-hover:shadow-primary-500/50 transition-all border-2 border-primary-400">
             <ArrowUp className="w-6 h-6 text-black group-hover:scale-110 transition-transform" />
