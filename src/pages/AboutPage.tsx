@@ -298,19 +298,19 @@ const AboutPage = () => {
 
     {/* Founder Card - Destacado */}
     <motion.div
-      className="max-w-4xl mx-auto"
+      className="relative max-w-4xl mx-auto"
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ delay: 0.2 }}
     >
-      <div className="relative bg-gradient-to-br from-black via-gray-900 to-black p-12 rounded-3xl border-2 border-primary-500/30 shadow-2xl overflow-hidden">
-        {/* Depth glow backdrop */}
-        <div className="absolute -inset-12 -z-10">
-          <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/40 via-amber-300/25 to-transparent blur-3xl opacity-80" />
-          <div className="absolute inset-8 bg-yellow-300/15 blur-[140px]" />
-        </div>
+      {/* Depth glow backdrop */}
+      <div className="pointer-events-none absolute -inset-20 -z-10">
+        <div className="absolute inset-0 bg-yellow-200/25 blur-[160px]" />
+        <div className="absolute inset-12 bg-amber-400/30 blur-3xl opacity-80" />
+      </div>
 
+      <div className="relative bg-gradient-to-br from-black via-gray-900 to-black p-12 rounded-3xl border-2 border-primary-500/30 shadow-2xl overflow-hidden">
         {/* Background decoration */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-0 right-0 w-96 h-96 bg-primary-500 rounded-full blur-3xl" />
@@ -318,7 +318,13 @@ const AboutPage = () => {
 
         {/* Running border */}
         <div className="absolute inset-0 rounded-3xl">
-          <GlowBorder duration={4200} rx={32} ry={32} borderRadiusClass="rounded-3xl" />
+          <GlowBorder
+            duration={4200}
+            rx={32}
+            ry={32}
+            borderRadiusClass="rounded-3xl"
+            glowElement={<div className="h-32 w-32 bg-[radial-gradient(circle,rgba(255,230,97,1)_0%,rgba(255,230,97,0)_70%)] blur-3xl opacity-90" />}
+          />
         </div>
 
         {/* Content */}
