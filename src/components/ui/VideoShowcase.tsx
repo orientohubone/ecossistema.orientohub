@@ -1,81 +1,147 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Play } from 'lucide-react';
+import { Play, X } from 'lucide-react';
 
 interface VideoShowcaseProps {
   image: string;
   videoUrl: string;
   alt?: string;
-  playerOffsetX:'-80px', '10%' // Ex: '-80px', '10%'string;
-  playerOffsetY:'20px', '-5%'  // Ex: '20px', '-5%'string;
+  playerOffsetX?: string; // Ex: '-80px', '10%'
+  playerOffsetY?: string; // Ex: '20px', '-5%'
 }
 
-const VideoShowcase = ({ image, videoUrl, alt, playerOffsetX, playerOffsetY }: VideoShowcaseProps) => {
+const VideoShowcase = ({ image, videoUrl, alt, playerOffsetX = '0px', playerOffsetY = '0px' }: VideoShowcaseProps) => {
   const [open, setOpen] = useState(false);
 
   return (
     <div className="w-full flex flex-col items-center justify-center py-20">
-      <div className="relative group rounded-3xl overflow-hidden shadow-2xl max-w-5xl mx-auto min-h-[420px]">
-        <img
-          src={image}
-          alt={alt || 'Demo'}
-          className="w-full h-auto object-cover rounded-3xl border-8 border-primary-700/60 shadow-2xl min-h-[420px] max-h-[520px] object-top"
-        />
-        <motion.button
-          onClick={() => setOpen(true)}
-          initial={{ scale: 1 }}
-          whileHover={{ scale: 1.18, boxShadow: '0 0 0 8px #FFD70044, 0 0 32px #FFD70099' }}
-          whileTap={{ scale: 0.95 }}
-          className="absolute flex items-center justify-center w-32 h-32 bg-gradient-to-br from-yellow-400 via-primary-500 to-yellow-500 animate-pulse hover:animate-none rounded-full shadow-2xl border-4 border-white/80 ring-4 ring-primary-500/30 transition-all duration-300 cursor-pointer z-10 group"
-          style={{
-            left: `calc(50% + ${playerOffsetX || '0px'})`,
-            top: `calc(50% + ${playerOffsetY || '0px'})`,
-            transform: 'translate(-50%, -50%)',
-          }}
-          aria-label="Assistir vídeo"
-        >
-          <span className="absolute inset-0 rounded-full bg-white/30 blur-2xl opacity-60 group-hover:opacity-80 transition-all" />
-          <Play className="w-20 h-20 text-primary-900 drop-shadow-xl group-hover:scale-110 transition-transform duration-200" />
-        </motion.button>
+      <div className="relative group max-w-5xl mx-auto w-full">
+        {/* Animated border container */}
+        <div className="relative rounded-3xl overflow-hidden">
+          {/* Animated gradient border */}
+          <div className="absolute inset-0 rounded-3xl p-[3px] bg-gradient-to-r from-primary-500 via-yellow-400 to-primary-500 bg-[length:200%_100%] animate-border-flow">
+            <div className="w-full h-full bg-white dark:bg-gray-900 rounded-3xl" />
+          </div>
+          
+          {/* Image container */}
+          <div className="relative rounded-3xl overflow-hidden shadow-2xl">
+            <img
+              src={image}
+              alt={alt || 'Demo'}
+              className="w-full h-auto object-cover rounded-3xl min-h-[420px] max-h-[600px] object-top"
+            />
+            
+            {/* Overlay gradient on hover */}
+            <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+            {/* Play button */}
+            <motion.button
+              onClick={() => setOpen(true)}
+              initial={{ scale: 1 }}
+              whileHover={{ scale: 1.15 }}
+              whileTap={{ scale: 0.95 }}
+              className="absolute left-1/2 top-1/2 flex items-center justify-center w-24 h-24 bg-gradient-to-br from-primary-500 to-yellow-500 rounded-full shadow-2xl border-4 border-white/90 transition-all duration-300 cursor-pointer z-10 group-hover:shadow-[0_0_40px_rgba(255,183,3,0.6)]"
+              style={{
+                transform: `translate(calc(-50% + ${playerOffsetX}), calc(-50% + ${playerOffsetY}))`
+              }}
+              aria-label="Assistir vídeo"
+            >
+              {/* Pulsing ring effect */}
+              <motion.div
+                className="absolute inset-0 rounded-full bg-primary-500/30"
+                animate={{
+                  scale: [1, 1.3, 1],
+                  opacity: [0.5, 0, 0.5],
+                }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+              />
+              
+              {/* Second pulsing ring */}
+              <motion.div
+                className="absolute inset-0 rounded-full bg-yellow-400/30"
+                animate={{
+                  scale: [1, 1.5, 1],
+                  opacity: [0.3, 0, 0.3],
+                }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                  delay: 0.5
+                }}
+              />
+
+              <Play className="w-10 h-10 text-white drop-shadow-lg ml-1" fill="white" />
+            </motion.button>
+          </div>
+        </div>
       </div>
+
       {/* Modal */}
       <AnimatePresence>
         {open && (
           <motion.div
-            className="fixed inset-0 bg-black/90 flex items-center justify-center z-50"
+            className="fixed inset-0 bg-black/95 backdrop-blur-sm flex items-center justify-center z-50 p-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setOpen(false)}
           >
             <motion.div
-              className="bg-black rounded-2xl overflow-hidden shadow-2xl max-w-4xl w-full relative"
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
+              className="relative bg-black rounded-2xl overflow-hidden shadow-2xl max-w-6xl w-full"
+              initial={{ scale: 0.9, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 20 }}
               onClick={e => e.stopPropagation()}
             >
-              <iframe
-                width="900"
-                height="500"
-                src={videoUrl}
-                title="YouTube video player"
-                frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-                className="w-full h-[500px] bg-black"
-              />
-              <button
+              {/* Video container with aspect ratio */}
+              <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
+                <iframe
+                  className="absolute inset-0 w-full h-full"
+                  src={videoUrl}
+                  title="YouTube video player"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
+              </div>
+
+              {/* Close button */}
+              <motion.button
+                whileHover={{ scale: 1.1, rotate: 90 }}
+                whileTap={{ scale: 0.9 }}
                 onClick={() => setOpen(false)}
-                className="absolute top-2 right-2 text-white bg-black/60 rounded-full p-2 hover:bg-black/80 transition"
+                className="absolute top-4 right-4 p-3 bg-black/80 hover:bg-black text-white rounded-full transition-colors backdrop-blur-sm"
                 aria-label="Fechar"
               >
-                <svg width="28" height="28" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
-              </button>
+                <X size={24} />
+              </motion.button>
             </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
+
+      <style>{`
+        @keyframes border-flow {
+          0% {
+            background-position: 0% 50%;
+          }
+          50% {
+            background-position: 100% 50%;
+          }
+          100% {
+            background-position: 0% 50%;
+          }
+        }
+        
+        .animate-border-flow {
+          animation: border-flow 3s linear infinite;
+        }
+      `}</style>
     </div>
   );
 };
