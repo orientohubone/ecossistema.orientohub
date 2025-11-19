@@ -16,7 +16,7 @@ import {
   CheckCircle2,
   User
 } from 'lucide-react';
-import { GlowBorder } from '@/components/ui/GlowBorder';
+import { GlowBorder } from '../components/ui/GlowBorder';
 
 const AboutPage = () => {
   const { t } = useTranslation();
