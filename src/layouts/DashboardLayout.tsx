@@ -21,7 +21,8 @@ import {
   User as UserIcon,
   RefreshCw,
   Save,
-  Check
+  Check,
+  GraduationCap
 } from 'lucide-react';
 import { useAuthStore } from '../stores/authStore';
 
@@ -46,6 +47,7 @@ const DashboardLayout = () => {
     { id: 'insights', name: t('dashboard.insights'), icon: <BarChart2 size={18} />, href: '/dashboard/insights' },
     { id: 'frameworks', name: t('dashboard.frameworks'), icon: <FileText size={18} />, href: '/dashboard/frameworks' },
     { id: 'projects', name: t('projects.title'), icon: <Lightbulb size={18} />, href: '/dashboard/projects' },
+    { id: 'academy', name: 'Conheça Oriento Academy', icon: <GraduationCap size={18} />, href: '/dashboard/academy', protected: true },
     { id: 'solutions', name: 'Soluções', icon: <Link2 size={18} />, href: '/dashboard/solutions' },
     { id: 'community', name: 'Comunidade', icon: <Users size={18} />, href: '/dashboard/community' },
     { id: 'settings', name: t('common.settings'), icon: <Settings size={18} />, href: '/dashboard/settings' }
@@ -169,6 +171,9 @@ const SearchBox = ({ collapsed = false }: { collapsed?: boolean }) => {
 };
 
 const SidebarLink = ({ item, pathname, collapsed = false, onNavigate }: { item: any; pathname: string; collapsed?: boolean; onNavigate?: () => void }) => {
+  // Protege rota se item.protected e não houver user
+  const { user } = useAuthStore();
+  if (item.protected && !user) return null;
   const active = pathname === item.href;
   return (
     <Link
