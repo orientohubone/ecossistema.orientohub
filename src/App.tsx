@@ -20,6 +20,7 @@ import CheckoutPage from './pages/CheckoutPage';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import DashboardPage from './pages/DashboardPage';
+import OrientoAcademyPage from './pages/OrientoAcademyPage';
 import InsightsPage from './pages/InsightsPage';
 import FrameworksPage from './pages/FrameworksPage';
 import FrameworkGamePage from './pages/FrameworkGamePage';
@@ -97,6 +98,7 @@ function App() {
           <Route path="frameworks/:id/game" element={<FrameworkGamePage />} />
           <Route path="projects" element={<ProjectsPage />} />
           <Route path="jornada" element={<JourneyPage />} />
+          <Route path="academy" element={<OrientoAcademyPage />} />
           <Route path="solutions" element={<SolutionsPage />} />
           <Route path="community" element={<CommunityPage />} />
           <Route path="settings" element={<SettingsPage />} />
