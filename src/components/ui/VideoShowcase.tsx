@@ -1,5 +1,6 @@
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useRef, useState } from 'react';
+import type { MouseEvent, ReactNode } from 'react';
+import { motion, AnimatePresence, useAnimationFrame, useMotionTemplate, useMotionValue, useTransform } from 'framer-motion';
 import { Play, X } from 'lucide-react';
 
 interface VideoShowcaseProps {
@@ -18,20 +19,11 @@ const VideoShowcase = ({ image, videoUrl, alt, playerOffsetX = '0px', playerOffs
       <div className="relative group max-w-5xl mx-auto w-full">
         {/* Container with animated border */}
         <div className="relative rounded-3xl overflow-hidden">
-          {/* Animated gradient border - visible light running */}
-          <div className="absolute inset-0 rounded-3xl">
-            <div 
-              className="absolute inset-0 animate-spin-slow"
-              style={{
-                background: 'conic-gradient(from 0deg, transparent 0%, transparent 70%, #FFB703 85%, #FFB703 100%)',
-                animation: 'spin 6s linear infinite'
-              }}
-            />
-          </div>
-          
+          <BorderGlow />
+
           {/* Inner content with padding for border */}
           <div className="absolute inset-[3px] rounded-3xl bg-white dark:bg-gray-900" />
-          
+
           {/* Image container */}
           <div className="relative m-[3px] rounded-3xl overflow-hidden shadow-2xl">
             <img
@@ -108,7 +100,7 @@ const VideoShowcase = ({ image, videoUrl, alt, playerOffsetX = '0px', playerOffs
               initial={{ scale: 0.9, opacity: 0, y: 20 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.9, opacity: 0, y: 20 }}
-              onClick={e => e.stopPropagation()}
+              onClick={(e: MouseEvent<HTMLDivElement>) => e.stopPropagation()}
             >
               {/* Video container with aspect ratio */}
               <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
@@ -137,17 +129,76 @@ const VideoShowcase = ({ image, videoUrl, alt, playerOffsetX = '0px', playerOffs
         )}
       </AnimatePresence>
 
-      <style>{`
-        @keyframes spin {
-          from {
-            transform: rotate(0deg);
-          }
-          to {
-            transform: rotate(360deg);
-          }
-        }
-      `}</style>
     </div>
+  );
+};
+
+const BorderGlow = ({ duration = 3600 }: { duration?: number }) => (
+  <div className="absolute inset-0 rounded-3xl pointer-events-none">
+    <div className="absolute inset-0 rounded-3xl border border-yellow-400/30 bg-gradient-to-br from-yellow-300/15 via-transparent to-amber-400/20" />
+    <MovingBorder duration={duration} rx="28" ry="28">
+      <div className="h-32 w-32 opacity-80 bg-[radial-gradient(circle,rgba(255,209,92,0.95)_0%,rgba(255,209,92,0)_65%)] blur-2xl" />
+    </MovingBorder>
+  </div>
+);
+
+interface MovingBorderProps {
+  children: ReactNode;
+  duration?: number;
+  rx?: string;
+  ry?: string;
+}
+
+const MovingBorder = ({ children, duration = 2000, rx = '0', ry = '0' }: MovingBorderProps) => {
+  const pathRef = useRef<SVGRectElement | null>(null);
+  const progress = useMotionValue(0);
+
+  useAnimationFrame((time: number) => {
+    if (!pathRef.current) return;
+    const length = pathRef.current.getTotalLength();
+    if (!length) return;
+    const pxPerMillisecond = length / duration;
+    progress.set((time * pxPerMillisecond) % length);
+  });
+
+  const x = useTransform(progress, (val: number) => {
+    if (!pathRef.current) return 0;
+    return pathRef.current.getPointAtLength(val).x;
+  });
+
+  const y = useTransform(progress, (val: number) => {
+    if (!pathRef.current) return 0;
+    return pathRef.current.getPointAtLength(val).y;
+  });
+
+  const transform = useMotionTemplate`translateX(${x}px) translateY(${y}px) translateX(-50%) translateY(-50%)`;
+
+  return (
+    <>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        preserveAspectRatio="none"
+        className="absolute inset-0 h-full w-full"
+        width="100%"
+        height="100%"
+        aria-hidden
+      >
+        <rect fill="none" width="100%" height="100%" rx={rx} ry={ry} ref={pathRef} />
+      </svg>
+      <motion.div
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          transform,
+          filter: 'drop-shadow(0 0 35px rgba(255, 193, 59, 0.65))',
+          pointerEvents: 'none'
+        }}
+        aria-hidden
+      >
+        {children}
+      </motion.div>
+    </>
   );
 };
 
