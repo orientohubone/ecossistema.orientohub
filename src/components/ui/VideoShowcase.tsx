@@ -17,6 +17,12 @@ const VideoShowcase = ({ image, videoUrl, alt, playerOffsetX = '0px', playerOffs
   return (
     <div className="w-full flex flex-col items-center justify-center py-20">
       <div className="relative group max-w-5xl mx-auto w-full">
+        {/* Depth glow backdrop */}
+        <div className="absolute -inset-10 -z-10">
+          <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/50 via-amber-300/30 to-transparent blur-3xl opacity-80" />
+          <div className="absolute inset-10 bg-yellow-300/20 blur-[120px]" />
+        </div>
+
         {/* Container with animated border */}
         <div className="relative rounded-3xl overflow-hidden">
           <BorderGlow />
