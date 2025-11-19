@@ -179,6 +179,7 @@ const SidebarLink = ({ item, pathname, collapsed = false, onNavigate }: { item: 
 
   // Custom premium effect for Oriento Academy
   if (isAcademy) {
+    const isDark = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
     return (
       <div className={`relative my-1 group ${collapsed ? 'flex justify-center' : ''}`}>
         <div
@@ -206,23 +207,35 @@ const SidebarLink = ({ item, pathname, collapsed = false, onNavigate }: { item: 
             ${active
               ? 'shadow-lg ring-2 ring-yellow-400/80'
               : 'shadow-md hover:shadow-lg hover:ring-2 hover:ring-yellow-400/60'}
+            ${isDark ? 'bg-[#FFD600] text-black' : ''}
           `}
           aria-current={active ? 'page' : undefined}
-          style={{
-            background: active
-              ? 'linear-gradient(90deg, #fffbe6 0%, #ffe7fa 40%, #f9e7ff 70%, #fffbe6 100%)'
-              : 'linear-gradient(90deg, #fffbe6 0%, #f9e7ff 40%, #e6e6fa 70%, #fffbe6 100%)',
-            backgroundSize: '200% 200%',
-            animation: active ? 'academyGlow 2.5s ease-in-out infinite alternate' : 'academyGlow 4s ease-in-out infinite alternate',
-            boxShadow: active
-              ? '0 0 0 3px #FFD60055, 0 2px 8px 0 #FFD60033'
-              : '0 0 0 2px #FFD60022, 0 1.5px 4px 0 #FFD60022'
-          }}
+          style={
+            isDark
+              ? {
+                  background: '#FFD600',
+                  color: '#18181b',
+                  boxShadow: active
+                    ? '0 0 0 3px #FFD60099, 0 2px 8px 0 #FFD60033'
+                    : '0 0 0 2px #FFD60022, 0 1.5px 4px 0 #FFD60022'
+                }
+              : {
+                  background: active
+                    ? 'linear-gradient(90deg, #fffbe6 0%, #ffe7fa 40%, #f9e7ff 70%, #fffbe6 100%)'
+                    : 'linear-gradient(90deg, #fffbe6 0%, #f9e7ff 40%, #e6e6fa 70%, #fffbe6 100%)',
+                  backgroundSize: '200% 200%',
+                  animation: active ? 'academyGlow 2.5s ease-in-out infinite alternate' : 'academyGlow 4s ease-in-out infinite alternate',
+                  color: '#7a5600',
+                  boxShadow: active
+                    ? '0 0 0 3px #FFD60055, 0 2px 8px 0 #FFD60033'
+                    : '0 0 0 2px #FFD60022, 0 1.5px 4px 0 #FFD60022'
+                }
+          }
         >
           {collapsed ? (
             <Tooltip.Root delayDuration={100}>
               <Tooltip.Trigger asChild>
-                <span className={`flex items-center justify-center w-6 h-6 rounded ${active ? 'text-yellow-600 dark:text-yellow-200' : 'text-yellow-500 group-hover:text-yellow-700 dark:group-hover:text-yellow-300'}`}>{item.icon}</span>
+                <span className={`flex items-center justify-center w-6 h-6 rounded ${active ? (isDark ? 'text-black' : 'text-yellow-600') : (isDark ? 'text-black' : 'text-yellow-500 group-hover:text-yellow-700')}`}>{item.icon}</span>
               </Tooltip.Trigger>
               <Tooltip.Portal>
                 <Tooltip.Content
@@ -240,7 +253,7 @@ const SidebarLink = ({ item, pathname, collapsed = false, onNavigate }: { item: 
               </Tooltip.Portal>
             </Tooltip.Root>
           ) : (
-            <span className={`flex items-center justify-center w-6 h-6 rounded ${active ? 'text-yellow-600 dark:text-yellow-200' : 'text-yellow-500 group-hover:text-yellow-700 dark:group-hover:text-yellow-300'}`}>{item.icon}</span>
+            <span className={`flex items-center justify-center w-6 h-6 rounded ${active ? (isDark ? 'text-black' : 'text-yellow-600') : (isDark ? 'text-black' : 'text-yellow-500 group-hover:text-yellow-700')}`}>{item.icon}</span>
           )}
           {!collapsed && <span className="truncate">{item.name}</span>}
         </Link>
