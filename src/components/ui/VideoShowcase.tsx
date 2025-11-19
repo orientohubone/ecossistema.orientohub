@@ -6,7 +6,7 @@ interface VideoShowcaseProps {
   image: string;
   videoUrl: string;
   alt?: string;
-  playerOffsetX?: string; // Ex: '-80px', '10%'
+  playerOffsetX:"-80px" // Ex: '-80px', '10%'string;
 }
 
 const VideoShowcase = ({ image, videoUrl, alt, playerOffsetX }: VideoShowcaseProps) => {
@@ -76,3 +76,4 @@ const VideoShowcase = ({ image, videoUrl, alt, playerOffsetX }: VideoShowcasePro
 };
 
 export default VideoShowcase;
+
