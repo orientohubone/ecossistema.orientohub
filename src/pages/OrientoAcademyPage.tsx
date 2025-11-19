@@ -1,6 +1,6 @@
-import { useMemo, useState, type ChangeEvent } from 'react';
+import { useEffect, useMemo, useState, type ChangeEvent, type FormEvent } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Star,
@@ -17,12 +17,21 @@ import {
   X
 } from 'lucide-react';
 import { academyCategories, defaultCourses, type Course } from '../data/academyCourses';
+import { useAuthStore } from '../stores/authStore';
+import { isFounderUser, DEFAULT_FOUNDER_SECRET } from '../utils/founderAccess';
 
 const OrientoAcademyPage = () => {
   const courses = defaultCourses;
+  const navigate = useNavigate();
+  const { user } = useAuthStore();
   const [activeCategory, setActiveCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCourseId, setSelectedCourseId] = useState<number | null>(null);
+  const [founderSecretInput, setFounderSecretInput] = useState<string>(() => (
+    typeof window !== 'undefined' ? sessionStorage.getItem('founderSecret') ?? '' : ''
+  ));
+  const [secretStatus, setSecretStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [secretRefreshToken, setSecretRefreshToken] = useState<number>(0);
 
   const selectedCourse: Course | null = selectedCourseId ? courses.find(course => course.id === selectedCourseId) ?? null : null;
 
@@ -52,6 +61,14 @@ const OrientoAcademyPage = () => {
     };
   }, [courses]);
 
+  const founderUnlocked = useMemo(() => isFounderUser(user, { requireSecret: true }), [user, secretRefreshToken]);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined' && sessionStorage.getItem('founderSecret')) {
+      setSecretRefreshToken((prev: number) => prev + 1);
+    }
+  }, []);
+
   const instructionalPillars = [
     {
       title: 'Percursos guiados',
@@ -71,6 +88,43 @@ const OrientoAcademyPage = () => {
 
   const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
+  };
+
+  const handlePedagogicCtaClick = () => {
+    if (founderUnlocked) {
+      navigate('/dashboard/pedagogico');
+      return;
+    }
+
+    if (typeof window !== 'undefined') {
+      document.getElementById('painel-pedagogico')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
+  const handleFounderSecretSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const normalizedSecret = founderSecretInput.trim();
+    if (!normalizedSecret) {
+      if (typeof window !== 'undefined') {
+        sessionStorage.removeItem('founderSecret');
+      }
+      setSecretRefreshToken((prev: number) => prev + 1);
+      setSecretStatus('error');
+      return;
+    }
+
+    if (typeof window !== 'undefined') {
+      sessionStorage.setItem('founderSecret', normalizedSecret);
+    }
+    setSecretRefreshToken((prev: number) => prev + 1);
+
+    const unlocksPanel = isFounderUser(useAuthStore.getState().user, { requireSecret: true });
+    if (unlocksPanel) {
+      setSecretStatus('success');
+      navigate('/dashboard/pedagogico');
+    } else {
+      setSecretStatus('error');
+    }
   };
 
   return (
@@ -102,36 +156,113 @@ const OrientoAcademyPage = () => {
                 >
                   Explorar trilhas
                 </a>
-                <Link
-                  to="/academy/login"
+                <button
+                  type="button"
+                  onClick={handlePedagogicCtaClick}
                   className="inline-flex items-center justify-center rounded-xl border border-slate-300 px-6 py-3 font-semibold text-slate-900 dark:text-white hover:bg-slate-100 dark:hover:bg-slate-900/40"
                 >
-                  Acesso pedagógico
-                </Link>
+                  {founderUnlocked ? 'Abrir painel pedagógico' : 'Desbloquear painel pedagógico'}
+                </button>
               </div>
             </motion.div>
 
-            <div className="rounded-3xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/40 p-8">
-              <dl className="grid grid-cols-2 gap-6">
-                <div>
-                  <dt className="text-sm text-slate-500">Cursos ativos</dt>
-                  <dd className="text-3xl font-bold">{stats.totalCourses}</dd>
+            <div className="space-y-6">
+              <div id="painel-pedagogico" className="rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/80 p-6 shadow-sm">
+                <div className="flex items-center gap-2 text-xs uppercase tracking-[0.25em] text-primary-500">
+                  <Lock size={14} /> Painel pedagógico
                 </div>
-                <div>
-                  <dt className="text-sm text-slate-500">Avaliação média</dt>
-                  <dd className="text-3xl font-bold">{stats.avgRating}</dd>
+                <h3 className="mt-3 text-2xl font-semibold">Governança da Academy</h3>
+                <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
+                  Área exclusiva para founders Orientohub e tutores pedagógicos.
+                </p>
+
+                {founderUnlocked ? (
+                  <div className="mt-6 space-y-4">
+                    <div className="rounded-2xl border border-green-400/40 bg-green-500/10 p-4 text-sm text-green-200 dark:text-green-100">
+                      Acesso liberado. Você pode administrar currículos, materiais e checklists do painel pedagógico.
+                    </div>
+                    <div className="flex flex-col gap-3">
+                      <button
+                        type="button"
+                        onClick={() => navigate('/dashboard/pedagogico')}
+                        className="inline-flex items-center justify-center rounded-xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white hover:bg-slate-800"
+                      >
+                        Entrar no painel
+                      </button>
+                      <a
+                        href="#catalogo"
+                        className="inline-flex items-center justify-center rounded-xl border border-slate-300 px-5 py-3 text-sm font-semibold text-slate-900 dark:text-white hover:bg-slate-100 dark:hover:bg-slate-900/40"
+                      >
+                        Acessar catálogo público
+                      </a>
+                    </div>
+                  </div>
+                ) : (
+                  <form onSubmit={handleFounderSecretSubmit} className="mt-6 space-y-4">
+                    <div>
+                      <label className="text-sm font-semibold text-slate-700 dark:text-slate-200">Chave pedagógica</label>
+                      <input
+                        type="password"
+                        value={founderSecretInput}
+                        onChange={(event) => {
+                          setFounderSecretInput(event.target.value);
+                          setSecretStatus('idle');
+                        }}
+                        placeholder={`Ex.: ${DEFAULT_FOUNDER_SECRET}`}
+                        className="mt-2 w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 px-4 py-3 text-sm"
+                      />
+                    </div>
+                    <button
+                      type="submit"
+                      className="w-full rounded-xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white hover:bg-slate-800"
+                    >
+                      Validar acesso
+                    </button>
+                    {secretStatus === 'error' && (
+                      <div className="rounded-xl border border-red-500/40 bg-red-500/10 p-3 text-sm text-red-200">
+                        Acesso restrito. Apenas o founder da Orientohub ou tutores autorizados podem acessar o painel pedagógico.
+                      </div>
+                    )}
+                    {secretStatus === 'success' && (
+                      <div className="rounded-xl border border-green-500/40 bg-green-500/10 p-3 text-sm text-green-200">
+                        Chave validada. Abrindo painel…
+                      </div>
+                    )}
+                    <p className="text-xs text-slate-500 dark:text-slate-400">
+                      Caso não possua a chave, fale com o founder Orientohub ou com o tutor pedagógico responsável.
+                    </p>
+                    <a
+                      href="#catalogo"
+                      className="inline-flex items-center justify-center rounded-xl border border-slate-300 px-5 py-3 text-sm font-semibold text-slate-900 dark:text-white hover:bg-slate-100 dark:hover:bg-slate-900/40"
+                    >
+                      Acessar catálogo
+                    </a>
+                  </form>
+                )}
+              </div>
+
+              <div className="rounded-3xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/40 p-8">
+                <dl className="grid grid-cols-2 gap-6">
+                  <div>
+                    <dt className="text-sm text-slate-500">Cursos ativos</dt>
+                    <dd className="text-3xl font-bold">{stats.totalCourses}</dd>
+                  </div>
+                  <div>
+                    <dt className="text-sm text-slate-500">Avaliação média</dt>
+                    <dd className="text-3xl font-bold">{stats.avgRating}</dd>
+                  </div>
+                  <div>
+                    <dt className="text-sm text-slate-500">Horas desenhadas</dt>
+                    <dd className="text-3xl font-bold">{stats.totalHours}h</dd>
+                  </div>
+                  <div>
+                    <dt className="text-sm text-slate-500">Trilhas concluídas</dt>
+                    <dd className="text-3xl font-bold">{stats.completedCourses}</dd>
+                  </div>
+                </dl>
+                <div className="mt-8 rounded-2xl border border-dashed border-slate-300 dark:border-slate-800 p-4 text-sm text-slate-600 dark:text-slate-300">
+                  Atualizamos conteúdos com base em evidências de aprendizagem e métricas reais dos founders.
                 </div>
-                <div>
-                  <dt className="text-sm text-slate-500">Horas desenhadas</dt>
-                  <dd className="text-3xl font-bold">{stats.totalHours}h</dd>
-                </div>
-                <div>
-                  <dt className="text-sm text-slate-500">Trilhas concluídas</dt>
-                  <dd className="text-3xl font-bold">{stats.completedCourses}</dd>
-                </div>
-              </dl>
-              <div className="mt-8 rounded-2xl border border-dashed border-slate-300 dark:border-slate-800 p-4 text-sm text-slate-600 dark:text-slate-300">
-                Atualizamos conteúdos com base em evidências de aprendizagem e métricas reais dos founders.
               </div>
             </div>
           </div>
