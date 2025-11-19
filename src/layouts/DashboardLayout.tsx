@@ -52,87 +52,89 @@ const DashboardLayout = () => {
   ], [t]);
 
   return (
-    <div className="flex h-screen bg-gray-50 dark:bg-gray-900">
-      {/* Mobile Sidebar Overlay */}
-      <AnimatePresence>
-        {sidebarOpen && (
-          <motion.aside initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-40 lg:hidden">
-            <div className="absolute inset-0 bg-black/50" onClick={toggleSidebar} />
-            <motion.div initial={{ x: -320 }} animate={{ x: 0 }} exit={{ x: -320 }} transition={{ type: 'spring', stiffness: 300 }} className="relative w-72 max-w-xs h-full bg-white dark:bg-gray-800 shadow-2xl">
-              <div className="flex items-center justify-between p-4 border-b dark:border-gray-700">
-                <div className="flex items-center gap-2"><span className="text-lg font-bold text-primary-500">Orientohub</span></div>
-                <button onClick={toggleSidebar} className="p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700"><X size={20} /></button>
-              </div>
-              <div className="p-4 flex flex-col gap-4 overflow-y-auto h-[calc(100%-64px)]">
-                <SidebarHeader user={user} />
-                <SearchBox />
-                <nav className="space-y-1">{navItems.map(item => <SidebarLink key={item.id} item={item} pathname={location.pathname} onNavigate={() => setSidebarOpen(false)} />)}</nav>
-                <div className="mt-auto space-y-3"><PlanCTA compact /><LogoutButton onLogout={handleLogout} /></div>
-              </div>
-            </motion.div>
-          </motion.aside>
-        )}
-      </AnimatePresence>
-
-      {/* Desktop Sidebar */}
-      <aside className={`hidden lg:flex lg:flex-col ${collapsed ? 'w-20' : 'w-72'} transition-width duration-200 ease-in-out bg-white dark:bg-gray-800 border-r dark:border-gray-700`}>
-        <div className="flex items-center justify-between h-16 px-4 border-b dark:border-gray-700">
-          <Link to="/" className="flex items-center gap-3">
-            {collapsed ? (
-              <span className="text-primary-500 text-2xl font-extrabold">O</span>
-            ) : (
-              <span className="text-xl font-bold text-primary-500">Orientohub</span>
-            )}
-          </Link>
-          <div className="flex items-center gap-2">
-            <button onClick={toggleCollapse} title={collapsed ? 'Expandir' : 'Recolher'} className="p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700">
-              {collapsed ? <ChevronDown size={18} /> : <Menu size={18} />}
-            </button>
-          </div>
-        </div>
-
-        <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-4">
-          <SidebarHeader user={user} collapsed={collapsed} />
-          <SearchBox collapsed={collapsed} />
-          <nav className="flex-1 space-y-1 mt-2">{navItems.map(item => <SidebarLink key={item.id} item={item} pathname={location.pathname} collapsed={collapsed} />)}</nav>
-          <div className="mt-4"><PlanCTA compact={collapsed} /></div>
-          <div className="mt-auto"><LogoutButton onLogout={handleLogout} compact={collapsed} /></div>
-        </div>
-      </aside>
-
-      {/* Main content */}
-      <div className="flex flex-col flex-1 overflow-hidden">
-        {/* Top navbar */}
-        <header className="sticky top-0 z-20 bg-white dark:bg-gray-800 shadow-sm">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between h-16">
-              <div className="flex items-center gap-3">
-                <button className="lg:hidden p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700" onClick={toggleSidebar}><Menu size={20} /></button>
-                <div className="hidden md:flex items-center gap-3 bg-gray-100 dark:bg-gray-900 px-3 py-1 rounded-lg">
-                  <Search size={16} className="text-gray-500" />
-                  <input type="search" placeholder="Buscar projetos, soluções, insights..." className="bg-transparent text-sm outline-none placeholder-gray-500 dark:placeholder-gray-400" />
+    <Tooltip.Provider delayDuration={100}>
+      <div className="flex h-screen bg-gray-50 dark:bg-gray-900">
+        {/* Mobile Sidebar Overlay */}
+        <AnimatePresence>
+          {sidebarOpen && (
+            <motion.aside initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-40 lg:hidden">
+              <div className="absolute inset-0 bg-black/50" onClick={toggleSidebar} />
+              <motion.div initial={{ x: -320 }} animate={{ x: 0 }} exit={{ x: -320 }} transition={{ type: 'spring', stiffness: 300 }} className="relative w-72 max-w-xs h-full bg-white dark:bg-gray-800 shadow-2xl">
+                <div className="flex items-center justify-between p-4 border-b dark:border-gray-700">
+                  <div className="flex items-center gap-2"><span className="text-lg font-bold text-primary-500">Orientohub</span></div>
+                  <button onClick={toggleSidebar} className="p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700"><X size={20} /></button>
                 </div>
-              </div>
-
-              <div className="flex items-center gap-4">
-                <div className="hidden sm:flex items-center gap-3 text-sm">
-                  <span className="text-gray-600 dark:text-gray-300">Plano: <strong className="ml-1 text-primary-600 dark:text-primary-400">Free</strong></span>
-                  <button className="px-3 py-1 bg-primary-500 hover:bg-primary-600 text-black rounded-md text-sm font-medium">Upgrade</button>
+                <div className="p-4 flex flex-col gap-4 overflow-y-auto h-[calc(100%-64px)]">
+                  <SidebarHeader user={user} />
+                  <SearchBox />
+                  <nav className="space-y-1">{navItems.map(item => <SidebarLink key={item.id} item={item} pathname={location.pathname} onNavigate={() => setSidebarOpen(false)} />)}</nav>
+                  <div className="mt-auto space-y-3"><PlanCTA compact /><LogoutButton onLogout={handleLogout} /></div>
                 </div>
-                <div className="flex items-center gap-3"><UserMenu user={user} /></div>
-              </div>
+              </motion.div>
+            </motion.aside>
+          )}
+        </AnimatePresence>
+
+        {/* Desktop Sidebar */}
+        <aside className={`hidden lg:flex lg:flex-col ${collapsed ? 'w-20' : 'w-72'} transition-width duration-200 ease-in-out bg-white dark:bg-gray-800 border-r dark:border-gray-700`}>
+          <div className="flex items-center justify-between h-16 px-4 border-b dark:border-gray-700">
+            <Link to="/" className="flex items-center gap-3">
+              {collapsed ? (
+                <span className="text-primary-500 text-2xl font-extrabold">O</span>
+              ) : (
+                <span className="text-xl font-bold text-primary-500">Orientohub</span>
+              )}
+            </Link>
+            <div className="flex items-center gap-2">
+              <button onClick={toggleCollapse} title={collapsed ? 'Expandir' : 'Recolher'} className="p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700">
+                {collapsed ? <ChevronDown size={18} /> : <Menu size={18} />}
+              </button>
             </div>
           </div>
-        </header>
 
-        {/* Page content */}
-        <motion.main className="flex-1 overflow-y-auto bg-gray-50 dark:bg-gray-900" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }}>
-          <div className="py-6">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"><Outlet /></div>
+          <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-4">
+            <SidebarHeader user={user} collapsed={collapsed} />
+            <SearchBox collapsed={collapsed} />
+            <nav className="flex-1 space-y-1 mt-2">{navItems.map(item => <SidebarLink key={item.id} item={item} pathname={location.pathname} collapsed={collapsed} />)}</nav>
+            <div className="mt-4"><PlanCTA compact={collapsed} /></div>
+            <div className="mt-auto"><LogoutButton onLogout={handleLogout} compact={collapsed} /></div>
           </div>
-        </motion.main>
+        </aside>
+
+        {/* Main content */}
+        <div className="flex flex-col flex-1 overflow-hidden">
+          {/* Top navbar */}
+          <header className="sticky top-0 z-20 bg-white dark:bg-gray-800 shadow-sm">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="flex items-center justify-between h-16">
+                <div className="flex items-center gap-3">
+                  <button className="lg:hidden p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700" onClick={toggleSidebar}><Menu size={20} /></button>
+                  <div className="hidden md:flex items-center gap-3 bg-gray-100 dark:bg-gray-900 px-3 py-1 rounded-lg">
+                    <Search size={16} className="text-gray-500" />
+                    <input type="search" placeholder="Buscar projetos, soluções, insights..." className="bg-transparent text-sm outline-none placeholder-gray-500 dark:placeholder-gray-400" />
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-4">
+                  <div className="hidden sm:flex items-center gap-3 text-sm">
+                    <span className="text-gray-600 dark:text-gray-300">Plano: <strong className="ml-1 text-primary-600 dark:text-primary-400">Free</strong></span>
+                    <button className="px-3 py-1 bg-primary-500 hover:bg-primary-600 text-black rounded-md text-sm font-medium">Upgrade</button>
+                  </div>
+                  <div className="flex items-center gap-3"><UserMenu user={user} /></div>
+                </div>
+              </div>
+            </div>
+          </header>
+
+          {/* Page content */}
+          <motion.main className="flex-1 overflow-y-auto bg-gray-50 dark:bg-gray-900" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }}>
+            <div className="py-6">
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"><Outlet /></div>
+            </div>
+          </motion.main>
+        </div>
       </div>
-    </div>
+    </Tooltip.Provider>
   );
 };
 
