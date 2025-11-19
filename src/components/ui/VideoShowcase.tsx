@@ -6,10 +6,11 @@ interface VideoShowcaseProps {
   image: string;
   videoUrl: string;
   alt?: string;
-  playerOffsetX:"-80px" // Ex: '-80px', '10%'string;
+  playerOffsetX:'-80px', '10%' // Ex: '-80px', '10%'string;
+  playerOffsetY:'20px', '-5%'  // Ex: '20px', '-5%'string;
 }
 
-const VideoShowcase = ({ image, videoUrl, alt, playerOffsetX }: VideoShowcaseProps) => {
+const VideoShowcase = ({ image, videoUrl, alt, playerOffsetX, playerOffsetY }: VideoShowcaseProps) => {
   const [open, setOpen] = useState(false);
 
   return (
@@ -25,8 +26,12 @@ const VideoShowcase = ({ image, videoUrl, alt, playerOffsetX }: VideoShowcasePro
           initial={{ scale: 1 }}
           whileHover={{ scale: 1.18, boxShadow: '0 0 0 8px #FFD70044, 0 0 32px #FFD70099' }}
           whileTap={{ scale: 0.95 }}
-          className="absolute top-1/2 -translate-y-1/2 flex items-center justify-center w-32 h-32 bg-gradient-to-br from-yellow-400 via-primary-500 to-yellow-500 animate-pulse hover:animate-none rounded-full shadow-2xl border-4 border-white/80 ring-4 ring-primary-500/30 transition-all duration-300 cursor-pointer z-10 group"
-          style={{ left: `calc(50% + ${playerOffsetX || '0px'})`, transform: 'translate(-50%, -50%)' }}
+          className="absolute flex items-center justify-center w-32 h-32 bg-gradient-to-br from-yellow-400 via-primary-500 to-yellow-500 animate-pulse hover:animate-none rounded-full shadow-2xl border-4 border-white/80 ring-4 ring-primary-500/30 transition-all duration-300 cursor-pointer z-10 group"
+          style={{
+            left: `calc(50% + ${playerOffsetX || '0px'})`,
+            top: `calc(50% + ${playerOffsetY || '0px'})`,
+            transform: 'translate(-50%, -50%)',
+          }}
           aria-label="Assistir vídeo"
         >
           <span className="absolute inset-0 rounded-full bg-white/30 blur-2xl opacity-60 group-hover:opacity-80 transition-all" />
@@ -76,4 +81,3 @@ const VideoShowcase = ({ image, videoUrl, alt, playerOffsetX }: VideoShowcasePro
 };
 
 export default VideoShowcase;
-
