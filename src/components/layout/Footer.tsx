@@ -229,16 +229,6 @@ const Footer = () => {
               </ul>
             </div>
           </div>
-                  <li>
-                    <Link
-                      to="/academy"
-                      onClick={handleLinkClick}
-                      className="mt-2 px-4 py-2 rounded-lg font-bold shadow-sm border-2 border-primary-500 bg-primary-500/10 text-primary-500 hover:bg-primary-500/20 hover:text-black transition-all duration-200 flex items-center gap-2"
-                    >
-                      <Sparkles className="w-4 h-4" />
-                      Academy
-                    </Link>
-                  </li>
         </div>
         
         {/* Bottom Bar */}
