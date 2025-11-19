@@ -16,6 +16,7 @@ import {
   CheckCircle2,
   User
 } from 'lucide-react';
+import { GlowBorder } from '@/components/ui/GlowBorder';
 
 const AboutPage = () => {
   const { t } = useTranslation();
@@ -304,9 +305,20 @@ const AboutPage = () => {
       transition={{ delay: 0.2 }}
     >
       <div className="relative bg-gradient-to-br from-black via-gray-900 to-black p-12 rounded-3xl border-2 border-primary-500/30 shadow-2xl overflow-hidden">
+        {/* Depth glow backdrop */}
+        <div className="absolute -inset-12 -z-10">
+          <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/40 via-amber-300/25 to-transparent blur-3xl opacity-80" />
+          <div className="absolute inset-8 bg-yellow-300/15 blur-[140px]" />
+        </div>
+
         {/* Background decoration */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-0 right-0 w-96 h-96 bg-primary-500 rounded-full blur-3xl" />
+        </div>
+
+        {/* Running border */}
+        <div className="absolute inset-0 rounded-3xl">
+          <GlowBorder duration={4200} rx={32} ry={32} borderRadiusClass="rounded-3xl" />
         </div>
 
         {/* Content */}
