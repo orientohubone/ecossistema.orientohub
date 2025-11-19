@@ -399,6 +399,15 @@ const EcosystemPage = () => {
         features={["Cursos práticos", "Certificações", "Mentoria ao vivo"]}
         status="active"
         delay={0.2}
+        actions={[
+          {
+            href: '/academy',
+            label: 'Conheça a Oriento Academy',
+            icon: (
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><rect width="24" height="24" rx="12" fill="#FFD600"/><path d="M12 7l7 4-7 4-7-4 7-4zm0 8c-2.21 0-4.2-.9-5.6-2.36l1.45-1.45C8.68 12.37 10.26 13 12 13s3.32-.63 4.15-1.81l1.45 1.45C16.2 14.1 14.21 15 12 15z" fill="#18181b"/></svg>
+            )
+          }
+        ]}
       />
       <VerticalCard
         logo="/oriento-ventures-logo.png"
