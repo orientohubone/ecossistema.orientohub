@@ -23,8 +23,6 @@ import {
   Calendar as CalendarIcon,
   Clock,
   X,
-  Video,
-  Users,
   MapPin,
 } from "lucide-react";
 import { Helmet } from "react-helmet-async";
@@ -99,7 +97,6 @@ export default function CalendarPage() {
   const [data, setData] = React.useState<CalendarData[]>(initialEvents);
   const [showModal, setShowModal] = React.useState(false);
   const [viewMode, setViewMode] = React.useState<ViewMode>('month');
-  const [showDayDetail, setShowDayDetail] = React.useState(false);
   const [lastClick, setLastClick] = React.useState<number>(0);
   const [newEvent, setNewEvent] = React.useState({ 
     name: "", 
@@ -115,6 +112,8 @@ export default function CalendarPage() {
     end: endOfWeek(endOfMonth(firstDayCurrentMonth)),
   });
 
+  const selectedDayEvents = data.find((d: CalendarData) => isSameDay(d.day, selectedDay))?.events || [];
+
   function previousMonth() {
     const firstDayNextMonth = add(firstDayCurrentMonth, { months: -1 });
     setCurrentMonth(format(firstDayNextMonth, "MMM-yyyy"));
@@ -128,6 +127,26 @@ export default function CalendarPage() {
   function goToToday() {
     setCurrentMonth(format(today, "MMM-yyyy"));
     setSelectedDay(today);
+  }
+
+  function handleDayClick(day: Date) {
+    const now = Date.now();
+    const timeSinceLastClick = now - lastClick;
+    
+    if (timeSinceLastClick < 300 && isSameDay(day, selectedDay)) {
+      // Duplo clique - abre detalhes ou modal
+      const dayEvents = data.find((d) => isSameDay(d.day, day))?.events || [];
+      if (dayEvents.length > 0) {
+        setViewMode('day');
+      } else {
+        setShowModal(true);
+      }
+    } else {
+      // Clique simples - seleciona dia
+      setSelectedDay(day);
+    }
+    
+    setLastClick(now);
   }
 
   function handleAddEvent() {
@@ -168,25 +187,100 @@ export default function CalendarPage() {
     setNewEvent({ name: "", time: "", type: "outro", location: "" });
   }
 
-  function handleDayClick(day: Date) {
-    const now = Date.now();
-    const timeSinceLastClick = now - lastClick;
+  // Função para renderizar view de ano
+  const renderYearView = () => {
+    const currentYear = parse(currentMonth, "MMM-yyyy", new Date()).getFullYear();
+    const months = Array.from({ length: 12 }, (_, i) => new Date(currentYear, i, 1));
     
-    if (timeSinceLastClick < 300 && isSameDay(day, selectedDay)) {
-      // Duplo clique - abre detalhes ou modal
-      const dayEvents = data.find((d) => isSameDay(d.day, day))?.events || [];
-      if (dayEvents.length > 0) {
-        setShowDayDetail(true);
-      } else {
-        setShowModal(true);
-      }
-    } else {
-      // Clique simples - seleciona dia
-      setSelectedDay(day);
-    }
+    return (
+      <div className="grid grid-cols-3 md:grid-cols-4 gap-4 p-6">
+        {months.map((month, idx) => (
+          <motion.div
+            key={idx}
+            whileHover={{ scale: 1.05 }}
+            onClick={() => {
+              setCurrentMonth(format(month, "MMM-yyyy"));
+              setViewMode('month');
+            }}
+            className="p-4 bg-gray-50 dark:bg-gray-800 rounded-xl hover:bg-primary-50 dark:hover:bg-primary-900/20 cursor-pointer transition-colors border border-gray-200 dark:border-gray-700"
+          >
+            <h3 className="text-sm font-bold text-gray-900 dark:text-white capitalize mb-2">
+              {format(month, "MMMM", { locale: ptBR })}
+            </h3>
+            <div className="grid grid-cols-7 gap-1 text-xs">
+              {eachDayOfInterval({
+                start: startOfWeek(month),
+                end: endOfWeek(endOfMonth(month)),
+              }).map((day, dayIdx) => (
+                <div
+                  key={dayIdx}
+                  className={[
+                    "aspect-square flex items-center justify-center rounded",
+                    isSameMonth(day, month) ? "text-gray-700 dark:text-gray-300" : "text-gray-300 dark:text-gray-700",
+                    isToday(day) ? "bg-primary-500 text-white font-bold" : "",
+                  ].join(" ")}
+                >
+                  {format(day, "d")}
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        ))}
+      </div>
+    );
+  };
+
+  // Função para renderizar view de dia
+  const renderDayView = () => {
+    const hourSlots = Array.from({ length: 24 }, (_, i) => i);
     
-    setLastClick(now);
-  }
+    return (
+      <div className="p-6">
+        <div className="space-y-1">
+          {hourSlots.map((hour) => {
+            const hourEvents = selectedDayEvents.filter(e => 
+              parseInt(e.time.split(':')[0]) === hour
+            );
+            
+            return (
+              <div key={hour} className="flex border-b border-gray-100 dark:border-gray-800">
+                <div className="w-20 py-3 text-sm text-gray-600 dark:text-gray-400 font-medium">
+                  {hour.toString().padStart(2, '0')}:00
+                </div>
+                <div className="flex-1 py-2 pl-4">
+                  {hourEvents.map((event) => (
+                    <motion.div
+                      key={event.id}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      className={[
+                        "p-3 rounded-lg mb-2 border-l-4",
+                        eventTypeColors[event.type || 'outro']
+                      ].join(" ")}
+                    >
+                      <h4 className="font-semibold text-sm">{event.name}</h4>
+                      <div className="flex items-center gap-4 mt-1 text-xs">
+                        <span className="flex items-center gap-1">
+                          <Clock size={12} />
+                          {event.time}
+                        </span>
+                        {event.location && (
+                          <span className="flex items-center gap-1">
+                            <MapPin size={12} />
+                            {event.location}
+                          </span>
+                        )}
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    );
+  };
 
   return (
     <>
@@ -225,7 +319,7 @@ export default function CalendarPage() {
               </div>
 
               {/* Right side - Actions */}
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-4 flex-wrap">
                 {/* View Mode Toggle */}
                 <div className="flex items-center bg-gray-100 dark:bg-gray-800 rounded-xl p-1">
                   <motion.button
