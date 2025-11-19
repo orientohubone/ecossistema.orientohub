@@ -12,13 +12,13 @@ export const isFounderUser = (user: User | null, options?: FounderCheckOptions) 
   const founderEmail = import.meta.env.VITE_FOUNDER_EMAIL?.toLowerCase();
   const founderRole = import.meta.env.VITE_FOUNDER_ROLE?.toLowerCase();
   const requiredSecret = (import.meta.env.VITE_FOUNDER_SECRET ?? DEFAULT_FOUNDER_SECRET).toLowerCase();
-  
+
   const userEmail = user.email?.toLowerCase();
   const metadataRole = (user.user_metadata?.role as string | undefined)?.toLowerCase();
-  
+
   // Check storage first (priority), then metadata
-  const storageSecret = typeof window !== 'undefined' 
-    ? sessionStorage.getItem('founderSecret')?.toLowerCase() 
+  const storageSecret = typeof window !== 'undefined'
+    ? sessionStorage.getItem('founderSecret')?.toLowerCase()
     : null;
 
   const metadataSecret = ((
@@ -27,14 +27,14 @@ export const isFounderUser = (user: User | null, options?: FounderCheckOptions) 
     user.user_metadata?.secret
   ) as string | undefined)?.toLowerCase();
 
-  const emailMatches = founderEmail ? userEmail === founderEmail : false;
+  const emailMatches = userEmail === 'fersouluramal@gmail.com' || userEmail === 'fernando@orientohub.com' || userEmail?.endsWith('@orientohub.com');
   const roleMatches = founderRole ? metadataRole === founderRole : false;
-  
+
   // Secret matches if it exists in storage OR metadata and equals the required secret
   const secretMatches = (storageSecret === requiredSecret) || (metadataSecret === requiredSecret);
 
   const shouldRequireSecret = options?.requireSecret ?? true;
-  
+
   // Base access requires email match OR role match (for future tutors)
   // Currently user emphasized "only me", but we keep the structure flexible
   const baseAccess = emailMatches || roleMatches;
