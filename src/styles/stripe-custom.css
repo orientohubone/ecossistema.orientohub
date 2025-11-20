@@ -6,7 +6,10 @@
 /* Ocultar footer do Stripe Elements */
 .p-Footer,
 [class*="Footer"],
-.__PrivateStripeElement + div {
+.__PrivateStripeElement+div,
+[class*="PoweredBy"],
+[class*="p-PoweredBy"],
+div[class*="stripe"] {
   display: none !important;
 }
 
@@ -14,3 +17,17 @@
 .StripeElement {
   padding-bottom: 0 !important;
 }
+
+/* Ocultar widget flutuante do Stripe no canto inferior direito */
+iframe[name*="stripe"],
+iframe[src*="stripe.com"],
+.__PrivateStripeElement-overlay {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* Garantir que apenas o PaymentElement seja visível */
+#payment-element iframe {
+  display: block !important;
