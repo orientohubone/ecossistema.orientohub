@@ -708,8 +708,8 @@ const MVPCard = ({ name, description, focus, icon, color, delay, link, status = 
             {/* Status Badge */}
             <div className="absolute top-4 right-4">
               <div className={`px-3 py-1 rounded-full text-xs font-bold ${status === 'active' ? 'bg-green-500 text-white' :
-                  status === 'beta' ? 'bg-primary-500 text-black' :
-                    'bg-gray-800 text-white'
+                status === 'beta' ? 'bg-primary-500 text-black' :
+                  'bg-gray-800 text-white'
                 }`}>
                 {status === 'active' ? '✓ Ativo' : status === 'beta' ? '⚡ Beta' : '🔜 Em Breve'}
               </div>
@@ -927,16 +927,16 @@ const JourneyStep = ({ number, title, description, highlights, delay }: JourneyS
     viewport={{ once: true }}
     transition={{ delay }}
   >
-    <div className="absolute -inset-0.5 bg-gradient-to-r from-primary-500 to-purple-600 rounded-2xl blur opacity-0 group-hover:opacity-100 transition duration-500" />
+    <div className="absolute -inset-0.5 bg-primary-500 rounded-2xl blur opacity-0 group-hover:opacity-100 transition duration-500" />
     <div className="relative h-full bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 overflow-hidden transition-all duration-300 hover:shadow-2xl hover:border-primary-500/50 dark:hover:border-primary-500/50">
       {/* Gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary-500/5 via-transparent to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+      <div className="absolute inset-0 bg-gradient-to-br from-primary-500/5 via-transparent to-primary-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
       {/* Number badge */}
-      <div className="absolute -top-4 -left-4 w-24 h-24">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary-500 to-purple-600 rounded-full blur-xl opacity-50 group-hover:opacity-100 transition-opacity" />
-        <div className="relative w-full h-full bg-gradient-to-br from-primary-500 to-purple-600 rounded-full flex items-center justify-center shadow-2xl transform group-hover:scale-110 group-hover:rotate-12 transition-all duration-500">
-          <span className="text-3xl font-black text-white">{number}</span>
+      <div className="absolute -top-5 -left-5 w-20 h-20">
+        <div className="absolute inset-0 bg-primary-500 rounded-full blur-lg opacity-40 group-hover:opacity-60 transition-opacity" />
+        <div className="relative w-full h-full bg-primary-500 rounded-full flex items-center justify-center shadow-xl transform group-hover:scale-110 transition-all duration-300">
+          <span className="text-2xl font-black text-black">{number}</span>
         </div>
       </div>
 
@@ -954,7 +954,7 @@ const JourneyStep = ({ number, title, description, highlights, delay }: JourneyS
           {highlights.map((highlight, index) => (
             <span
               key={index}
-              className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-primary-50 to-purple-50 dark:from-primary-900/20 dark:to-purple-900/20 text-primary-600 dark:text-primary-400 text-sm font-semibold rounded-full border border-primary-200 dark:border-primary-800 transform group-hover:scale-105 transition-transform"
+              className="inline-flex items-center px-4 py-2 bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400 text-sm font-semibold rounded-full border border-primary-200 dark:border-primary-800 transform group-hover:scale-105 transition-transform"
             >
               <span className="w-1.5 h-1.5 bg-primary-500 rounded-full mr-2" />
               {highlight}
@@ -978,13 +978,13 @@ const StatCard = ({ number, label }: StatCardProps) => {
   return (
     <motion.div
       className="group relative text-center p-8 bg-gradient-to-br from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 rounded-2xl border-2 border-gray-200 dark:border-gray-700 hover:border-primary-500 dark:hover:border-primary-500 transition-all duration-300 hover:shadow-xl hover:shadow-primary-500/10 overflow-hidden"
-      whileHover={{ y: -5, scale: 1.05 }}
+      whileHover={{ y: -5, scale: 1.02 }}
     >
       {/* Gradient overlay on hover */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary-500/5 via-transparent to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+      <div className="absolute inset-0 bg-gradient-to-br from-primary-500/5 via-transparent to-primary-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-      {/* Number with gradient */}
-      <div className="relative text-5xl font-black mb-3 bg-gradient-to-r from-primary-500 to-purple-600 bg-clip-text text-transparent group-hover:scale-110 transition-transform duration-300">
+      {/* Number */}
+      <div className="relative text-5xl font-black mb-3 text-primary-500 group-hover:scale-105 transition-transform duration-300">
         {number}
       </div>
 
@@ -1014,8 +1014,8 @@ const CTACard = ({ title, description, features, ctaText, ctaLink, icon: Icon, d
   return (
     <motion.div
       className={`group relative bg-gradient-to-br from-gray-900 to-black p-8 rounded-2xl border-2 transition-all duration-300 hover:shadow-2xl ${featured
-          ? 'border-primary-500 shadow-xl shadow-primary-500/20 scale-105'
-          : 'border-gray-700 hover:border-primary-500 hover:shadow-primary-500/10'
+        ? 'border-primary-500 shadow-xl shadow-primary-500/20 scale-105'
+        : 'border-gray-700 hover:border-primary-500 hover:shadow-primary-500/10'
         }`}
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -1052,8 +1052,8 @@ const CTACard = ({ title, description, features, ctaText, ctaLink, icon: Icon, d
       <a
         href={ctaLink}
         className={`block w-full text-center px-6 py-4 rounded-xl font-bold transition-all duration-300 ${featured
-            ? 'bg-primary-500 hover:bg-primary-600 text-black shadow-lg shadow-primary-500/30'
-            : 'bg-white/5 hover:bg-primary-500 text-white hover:text-black border-2 border-primary-500/30 hover:border-primary-500'
+          ? 'bg-primary-500 hover:bg-primary-600 text-black shadow-lg shadow-primary-500/30'
+          : 'bg-white/5 hover:bg-primary-500 text-white hover:text-black border-2 border-primary-500/30 hover:border-primary-500'
           }`}
       >
         {ctaText}
