@@ -523,20 +523,20 @@ const EcosystemPage = () => {
             />
           </div>
 
-          {/* <motion.div
+          <motion.div
             className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.6 }}
           >
-            <StatCard number="50+" label="Startups Aceleradas" />
+            {/* <StatCard number="50+" label="Startups Aceleradas" />
             <StatCard number="R$ 15M+" label="Investimento Captado" />
             <StatCard number="200+" label="Founders na Comunidade" />
-            <StatCard number="95%" label="Taxa de Sucesso" />
+            <StatCard number="95%" label="Taxa de Sucesso" /> */}
           </motion.div>
         </div>
-      </section>*}
+      </section>
 
       {/* Final CTA Section */}
       <section className="relative py-32 bg-gradient-to-br from-black via-gray-900 to-black overflow-hidden">
@@ -1064,5 +1064,6 @@ const CTACard = ({ title, description, features, ctaText, ctaLink, icon: Icon, d
     </motion.div>
   );
 };
+
 
 export default EcosystemPage;
