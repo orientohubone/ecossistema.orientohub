@@ -113,26 +113,44 @@ const CheckoutPage = () => {
       setPaymentError(null);
 
       try {
-        const response = await fetch('/api/create-payment-intent', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
+        // Detectar se está em desenvolvimento (Vite)
+        const isDevelopment = import.meta.env.DEV;
+
+        if (isDevelopment) {
+          // Usar mock em desenvolvimento local
+          console.log('🧪 Usando mock da API (desenvolvimento)');
+          const { mockCreatePaymentIntent } = await import('../api-mock/create-payment-intent');
+          const data = await mockCreatePaymentIntent({
             plan: selectedPlan,
             billing: billingPeriod,
             email: formData.email,
             name: formData.name,
-          }),
-        });
+          });
+          setClientSecret(data.clientSecret);
+        } else {
+          // Usar API real em produção
+          console.log('🚀 Usando API real (produção)');
+          const response = await fetch('/api/create-payment-intent', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              plan: selectedPlan,
+              billing: billingPeriod,
+              email: formData.email,
+              name: formData.name,
+            }),
+          });
 
-        const data = await response.json();
+          const data = await response.json();
 
-        if (!response.ok) {
-          throw new Error(data.message || 'Erro ao criar pagamento');
+          if (!response.ok) {
+            throw new Error(data.message || 'Erro ao criar pagamento');
+          }
+
+          setClientSecret(data.clientSecret);
         }
-
-        setClientSecret(data.clientSecret);
       } catch (error: any) {
-        console.error('Erro ao criar PaymentIntent:', error);
+        console.error('❌ Erro ao criar PaymentIntent:', error);
         setPaymentError(error.message || 'Erro ao processar pagamento. Tente novamente.');
       } finally {
         setIsLoadingPaymentIntent(false);
