@@ -2,6 +2,7 @@ import { useState, FormEvent } from 'react';
 import { useStripe, useElements, PaymentElement } from '@stripe/react-stripe-js';
 import { motion } from 'framer-motion';
 import { Lock, ChevronRight, Shield, AlertCircle } from 'lucide-react';
+import { InteractiveCard } from './InteractiveCard';
 
 interface CheckoutFormProps {
     amount: number;
@@ -15,6 +16,14 @@ export const CheckoutForm = ({ amount, plan, billing }: CheckoutFormProps) => {
 
     const [isProcessing, setIsProcessing] = useState(false);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+    // Estados para o cartão interativo
+    const [cardData, setCardData] = useState({
+        number: '',
+        name: '',
+        expiry: '',
+        cvv: '',
+    });
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
@@ -45,9 +54,94 @@ export const CheckoutForm = ({ amount, plan, billing }: CheckoutFormProps) => {
     };
 
     return (
-        <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="min-h-[500px] overflow-visible">
-                <PaymentElement />
+        <form onSubmit={handleSubmit} className="space-y-8">
+            {/* Cartão Interativo */}
+            <div className="mb-8">
+                <InteractiveCard
+                    cardNumber={cardData.number}
+                    cardholderName={cardData.name}
+                    expiryDate={cardData.expiry}
+                    cvv={cardData.cvv}
+                />
+            </div>
+
+            {/* Campos para Preview do Cartão */}
+            <div className="bg-gray-50 dark:bg-gray-900/50 p-6 rounded-xl border-2 border-gray-200 dark:border-gray-700 space-y-4">
+                <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-4">
+                    Preview do Cartão (apenas visual)
+                </h4>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label className="block text-sm font-medium mb-2">Número do Cartão</label>
+                        <input
+                            type="text"
+                            maxLength={19}
+                            placeholder="1234 5678 9012 3456"
+                            value={cardData.number}
+                            onChange={(e) => {
+                                const value = e.target.value.replace(/\s/g, '').replace(/(\d{4})/g, '$1 ').trim();
+                                setCardData({ ...cardData, number: value });
+                            }}
+                            className="w-full px-4 py-3 bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600 rounded-xl focus:border-primary-500 focus:outline-none transition-all"
+                        />
+                    </div>
+
+                    <div>
+                        <label className="block text-sm font-medium mb-2">Nome no Cartão</label>
+                        <input
+                            type="text"
+                            placeholder="NOME COMPLETO"
+                            value={cardData.name}
+                            onChange={(e) => setCardData({ ...cardData, name: e.target.value.toUpperCase() })}
+                            className="w-full px-4 py-3 bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600 rounded-xl focus:border-primary-500 focus:outline-none transition-all"
+                        />
+                    </div>
+
+                    <div>
+                        <label className="block text-sm font-medium mb-2">Validade</label>
+                        <input
+                            type="text"
+                            maxLength={5}
+                            placeholder="MM/AA"
+                            value={cardData.expiry}
+                            onChange={(e) => {
+                                let value = e.target.value.replace(/\D/g, '');
+                                if (value.length >= 2) {
+                                    value = value.slice(0, 2) + '/' + value.slice(2, 4);
+                                }
+                                setCardData({ ...cardData, expiry: value });
+                            }}
+                            className="w-full px-4 py-3 bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600 rounded-xl focus:border-primary-500 focus:outline-none transition-all"
+                        />
+                    </div>
+
+                    <div>
+                        <label className="block text-sm font-medium mb-2">CVV</label>
+                        <input
+                            type="text"
+                            maxLength={4}
+                            placeholder="123"
+                            value={cardData.cvv}
+                            onChange={(e) => setCardData({ ...cardData, cvv: e.target.value.replace(/\D/g, '') })}
+                            className="w-full px-4 py-3 bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600 rounded-xl focus:border-primary-500 focus:outline-none transition-all"
+                        />
+                    </div>
+                </div>
+
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
+                    ℹ️ Estes campos são apenas para visualização. Use o formulário abaixo para pagamento seguro.
+                </p>
+            </div>
+
+            {/* Stripe Payment Element (Pagamento Real) */}
+            <div>
+                <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-4">
+                    Dados de Pagamento Seguro
+                </h4>
+                <div className="min-h-[500px] overflow-visible">
+                    <PaymentElement />
+                </div>
             </div>
 
             {errorMessage && (
