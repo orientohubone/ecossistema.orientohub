@@ -78,7 +78,7 @@ const AcademyLoginPage = () => {
               className="space-y-6"
             >
               <Link to="/">
-                <img src="/orientohub.png" alt="Orientohub" className="h-10 w-auto" />
+                <img src="/oriento-academy-logo.png" alt="Orientoacademy" className="h-10 w-auto" />
               </Link>
               <div className="inline-flex items-center gap-2 rounded-full border border-amber-400/30 bg-amber-400/10 px-4 py-2 text-xs font-semibold tracking-[0.3em] uppercase text-amber-200">
                 <Sparkles size={14} /> Academy
@@ -204,3 +204,4 @@ const AcademyLoginPage = () => {
 };
 
 export default AcademyLoginPage;
+
