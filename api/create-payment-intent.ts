@@ -95,7 +95,7 @@ export default async function handler(
         const paymentIntent = await stripe.paymentIntents.create({
             amount: amount * 100, // Centavos
             currency: 'brl',
-            payment_method_types: ['card'],
+            payment_method_types: ['card', 'boleto'], // PIX via 'pix' quando disponível
             receipt_email: email,
             metadata: {
                 plan,
