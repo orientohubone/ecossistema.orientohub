@@ -1,6 +1,7 @@
 /* Ocultar branding "Powered by Stripe" */
 .__PrivateStripeElement iframe {
   height: 100% !important;
+  min-height: 500px !important;
 }
 
 /* Ocultar footer do Stripe Elements */
@@ -15,6 +16,13 @@
 /* Ajustar altura do container para remover espaço do footer */
 .StripeElement {
   padding-bottom: 0 !important;
+  min-height: 500px !important;
+}
+
+/* Garantir que o container do PaymentElement se expanda */
+.__PrivateStripeElement {
+  min-height: 500px !important;
+  height: auto !important;
 }
 
 /* Ocultar widget flutuante do Stripe no canto inferior direito */
