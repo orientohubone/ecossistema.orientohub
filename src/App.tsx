@@ -18,6 +18,7 @@ import EcosystemPage from './pages/EcosystemPage';
 import AcademyPage from './pages/AcademyPage';
 import PricingPage from './pages/PricingPage';
 import CheckoutPage from './pages/CheckoutPage';
+import CheckoutSuccessPage from './pages/CheckoutSuccessPage';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import AcademyLoginPage from './pages/AcademyLoginPage';
@@ -83,6 +84,7 @@ function App() {
           <Route path="/academy/login" element={<AcademyLoginPage />} />
           <Route path="planos" element={<PricingPage />} />
           <Route path="checkout" element={<CheckoutPage />} />
+          <Route path="checkout/success" element={<CheckoutSuccessPage />} />
           <Route path="entrar" element={<LoginPage />} />
           <Route path="cadastro" element={<SignupPage />} />
           <Route path="blog" element={<BlogPage />} />
