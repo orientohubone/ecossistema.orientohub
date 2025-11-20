@@ -16,7 +16,7 @@ import {
   Search,
   X
 } from 'lucide-react';
-import { academyCategories, type Course } from '../data/academyCourses';
+import { academyCategories, getCourseIcon, type Course } from '../data/academyCourses';
 import { useAuthStore } from '../stores/authStore';
 import { useCourseStore } from '../stores/courseStore';
 import { isFounderUser, DEFAULT_FOUNDER_SECRET } from '../utils/founderAccess';
@@ -349,100 +349,103 @@ const OrientoAcademyPage = () => {
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {filteredCourses.map((course: Course, index: number) => (
-                  <motion.div
-                    key={course.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: index * 0.1 }}
-                    className="flex h-full"
-                  >
-                    <div className="flex flex-col rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/60 shadow-sm transition hover:-translate-y-1 hover:shadow-md w-full">
-                      <div className="relative h-40 overflow-hidden rounded-t-2xl border-b border-slate-100 dark:border-slate-800 bg-slate-100 dark:bg-slate-900 flex items-center justify-center group-hover:bg-slate-200 dark:group-hover:bg-slate-800 transition-colors">
-                        {course.thumbnail ? (
-                          <img src={course.thumbnail} alt={course.title} className="h-full w-full object-cover" loading="lazy" />
-                        ) : (
-                          <div className="flex flex-col items-center gap-3 text-slate-400 dark:text-slate-500">
-                            <course.icon size={48} strokeWidth={1.5} />
-                          </div>
-                        )}
-                        {course.isPremium && (
-                          <div className="absolute top-4 right-4 inline-flex items-center gap-1 rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-800 shadow-sm">
-                            <Lock size={14} /> Premium
-                          </div>
-                        )}
-                      </div>
-
-                      <div className="flex flex-1 flex-col p-6">
-                        <div className="flex items-center justify-between text-xs uppercase tracking-wide text-slate-500">
-                          <span>{course.level}</span>
-                          <span className="flex items-center gap-1 text-slate-600 dark:text-slate-300">
-                            <Star className="h-4 w-4 text-yellow-400" /> {course.rating}
-                          </span>
+                {filteredCourses.map((course: Course, index: number) => {
+                  const Icon = getCourseIcon(course.iconName);
+                  return (
+                    <motion.div
+                      key={course.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: index * 0.1 }}
+                      className="flex h-full"
+                    >
+                      <div className="flex flex-col rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/60 shadow-sm transition hover:-translate-y-1 hover:shadow-md w-full">
+                        <div className="relative h-40 overflow-hidden rounded-t-2xl border-b border-slate-100 dark:border-slate-800 bg-slate-100 dark:bg-slate-900 flex items-center justify-center group-hover:bg-slate-200 dark:group-hover:bg-slate-800 transition-colors">
+                          {course.thumbnail ? (
+                            <img src={course.thumbnail} alt={course.title} className="h-full w-full object-cover" loading="lazy" />
+                          ) : (
+                            <div className="flex flex-col items-center gap-3 text-slate-400 dark:text-slate-500">
+                              <Icon size={48} strokeWidth={1.5} />
+                            </div>
+                          )}
+                          {course.isPremium && (
+                            <div className="absolute top-4 right-4 inline-flex items-center gap-1 rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-800 shadow-sm">
+                              <Lock size={14} /> Premium
+                            </div>
+                          )}
                         </div>
 
-                        <h3 className="mt-3 text-xl font-semibold text-slate-900 dark:text-white">{course.title}</h3>
-                        <p className="mt-2 text-sm text-slate-600 dark:text-slate-300 line-clamp-3">{course.description}</p>
-
-                        <div className="mt-4 flex flex-wrap gap-4 text-sm text-slate-500 dark:text-slate-400">
-                          <span className="inline-flex items-center gap-1">
-                            <BookOpen size={16} /> {course.lessonsCount} aulas
-                          </span>
-                          <span className="inline-flex items-center gap-1">
-                            <Clock size={16} /> {course.duration}
-                          </span>
-                          <span className="inline-flex items-center gap-1">
-                            <Users size={16} /> {course.students}
-                          </span>
-                        </div>
-
-                        <div className="mt-4 flex flex-wrap gap-2">
-                          {course.tags.map((tag: string) => (
-                            <span key={tag} className="rounded-full bg-slate-100 dark:bg-slate-800 px-3 py-1 text-xs font-medium text-slate-600 dark:text-slate-300">
-                              {tag}
+                        <div className="flex flex-1 flex-col p-6">
+                          <div className="flex items-center justify-between text-xs uppercase tracking-wide text-slate-500">
+                            <span>{course.level}</span>
+                            <span className="flex items-center gap-1 text-slate-600 dark:text-slate-300">
+                              <Star className="h-4 w-4 text-yellow-400" /> {course.rating}
                             </span>
-                          ))}
-                        </div>
+                          </div>
 
-                        <div className="mt-6 space-y-3">
-                          {course.completed ? (
-                            <div>
-                              <div className="flex items-center justify-between text-sm text-green-600 dark:text-green-400">
-                                <span className="inline-flex items-center gap-1 font-semibold">
-                                  <CheckCircle size={16} /> Concluído
-                                </span>
-                                <span>100%</span>
-                              </div>
-                              <div className="mt-2 h-2 rounded-full bg-slate-200 dark:bg-slate-800">
-                                <div className="h-full rounded-full bg-green-500" style={{ width: '100%' }} />
-                              </div>
-                            </div>
-                          ) : course.progress > 0 ? (
-                            <div>
-                              <div className="flex items-center justify-between text-sm text-slate-500">
-                                <span className="font-semibold text-primary-600 dark:text-primary-400">Em andamento</span>
-                                <span>{course.progress}%</span>
-                              </div>
-                              <div className="mt-2 h-2 rounded-full bg-slate-200 dark:bg-slate-800">
-                                <div className="h-full rounded-full bg-primary-500 transition-all" style={{ width: `${course.progress}%` }} />
-                              </div>
-                            </div>
-                          ) : null}
+                          <h3 className="mt-3 text-xl font-semibold text-slate-900 dark:text-white">{course.title}</h3>
+                          <p className="mt-2 text-sm text-slate-600 dark:text-slate-300 line-clamp-3">{course.description}</p>
 
-                          <motion.button
-                            whileHover={{ scale: 1.01 }}
-                            whileTap={{ scale: 0.99 }}
-                            onClick={() => setSelectedCourseId(course.id)}
-                            className="w-full rounded-xl border border-slate-200 bg-slate-900 px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800"
-                          >
-                            {course.completed ? 'Revisar conteúdo' : course.progress > 0 ? 'Retomar curso' : 'Começar agora'}
-                          </motion.button>
+                          <div className="mt-4 flex flex-wrap gap-4 text-sm text-slate-500 dark:text-slate-400">
+                            <span className="inline-flex items-center gap-1">
+                              <BookOpen size={16} /> {course.lessonsCount} aulas
+                            </span>
+                            <span className="inline-flex items-center gap-1">
+                              <Clock size={16} /> {course.duration}
+                            </span>
+                            <span className="inline-flex items-center gap-1">
+                              <Users size={16} /> {course.students}
+                            </span>
+                          </div>
+
+                          <div className="mt-4 flex flex-wrap gap-2">
+                            {course.tags.map((tag: string) => (
+                              <span key={tag} className="rounded-full bg-slate-100 dark:bg-slate-800 px-3 py-1 text-xs font-medium text-slate-600 dark:text-slate-300">
+                                {tag}
+                              </span>
+                            ))}
+                          </div>
+
+                          <div className="mt-6 space-y-3">
+                            {course.completed ? (
+                              <div>
+                                <div className="flex items-center justify-between text-sm text-green-600 dark:text-green-400">
+                                  <span className="inline-flex items-center gap-1 font-semibold">
+                                    <CheckCircle size={16} /> Concluído
+                                  </span>
+                                  <span>100%</span>
+                                </div>
+                                <div className="mt-2 h-2 rounded-full bg-slate-200 dark:bg-slate-800">
+                                  <div className="h-full rounded-full bg-green-500" style={{ width: '100%' }} />
+                                </div>
+                              </div>
+                            ) : course.progress > 0 ? (
+                              <div>
+                                <div className="flex items-center justify-between text-sm text-slate-500">
+                                  <span className="font-semibold text-primary-600 dark:text-primary-400">Em andamento</span>
+                                  <span>{course.progress}%</span>
+                                </div>
+                                <div className="mt-2 h-2 rounded-full bg-slate-200 dark:bg-slate-800">
+                                  <div className="h-full rounded-full bg-primary-500 transition-all" style={{ width: `${course.progress}%` }} />
+                                </div>
+                              </div>
+                            ) : null}
+
+                            <motion.button
+                              whileHover={{ scale: 1.01 }}
+                              whileTap={{ scale: 0.99 }}
+                              onClick={() => setSelectedCourseId(course.id)}
+                              className="w-full rounded-xl border border-slate-200 bg-slate-900 px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800"
+                            >
+                              {course.completed ? 'Revisar conteúdo' : course.progress > 0 ? 'Retomar curso' : 'Começar agora'}
+                            </motion.button>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </motion.div>
-                ))}
+                    </motion.div>
+                  );
+                })}
               </div>
             )}
           </div>
