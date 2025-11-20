@@ -1,7 +1,3 @@
-**
- * Checkout Form Component with Stripe Elements
- */
-
 import { useState, FormEvent } from 'react';
 import { useStripe, useElements, PaymentElement } from '@stripe/react-stripe-js';
 import { motion } from 'framer-motion';
