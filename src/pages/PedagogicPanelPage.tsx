@@ -27,6 +27,7 @@ interface CourseFormState {
 }
 
 const PedagogicPanelPage = () => {
+  // Force refresh
   const {
     courses,
     addCourse,
