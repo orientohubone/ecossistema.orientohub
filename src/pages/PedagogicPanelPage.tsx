@@ -130,6 +130,7 @@ const PedagogicPanelPage = () => {
         duration: '0h 0min',
         completed: false,
         progress: 0,
+        iconName: 'BookOpen',
         instructor: 'Founder', // Default
         tags: [],
         modules: []
