@@ -16,13 +16,14 @@ import {
   Search,
   X
 } from 'lucide-react';
-import { academyCategories, defaultCourses, type Course } from '../data/academyCourses';
+import { academyCategories, type Course } from '../data/academyCourses';
 import { useAuthStore } from '../stores/authStore';
+import { useCourseStore } from '../stores/courseStore';
 import { isFounderUser, DEFAULT_FOUNDER_SECRET } from '../utils/founderAccess';
 import { supabase } from '../config/supabase';
 
 const OrientoAcademyPage = () => {
-  const courses = defaultCourses;
+  const courses = useCourseStore((state) => state.courses);
   const navigate = useNavigate();
   const { user } = useAuthStore();
   const [activeCategory, setActiveCategory] = useState('all');
@@ -380,7 +381,7 @@ const OrientoAcademyPage = () => {
 
                         <div className="mt-4 flex flex-wrap gap-4 text-sm text-slate-500 dark:text-slate-400">
                           <span className="inline-flex items-center gap-1">
-                            <BookOpen size={16} /> {course.lessons} aulas
+                            <BookOpen size={16} /> {course.lessonsCount} aulas
                           </span>
                           <span className="inline-flex items-center gap-1">
                             <Clock size={16} /> {course.duration}
@@ -476,81 +477,6 @@ const OrientoAcademyPage = () => {
                     className="rounded-full border border-slate-200 dark:border-slate-800 p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-900"
                     aria-label="Fechar modal"
                   >
-                    <X size={18} />
-                  </button>
-                </div>
-
-                <div className="p-6 space-y-6">
-                  <p className="text-lg text-slate-600 dark:text-slate-300">{selectedCourse.description}</p>
-
-                  {youtubeEmbedUrl && (
-                    <div className="aspect-video overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-800">
-                      <iframe
-                        src={youtubeEmbedUrl}
-                        title={selectedCourse.title}
-                        className="h-full w-full"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen
-                      />
-                    </div>
-                  )}
-
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    {[
-                      { icon: <BookOpen className="h-5 w-5 text-primary-500" />, label: 'Aulas', value: selectedCourse.lessons },
-                      { icon: <Clock className="h-5 w-5 text-primary-500" />, label: 'Duração', value: selectedCourse.duration },
-                      { icon: <Users className="h-5 w-5 text-primary-500" />, label: 'Alunos', value: selectedCourse.students },
-                      { icon: <Trophy className="h-5 w-5 text-primary-500" />, label: 'Nível', value: selectedCourse.level }
-                    ].map((stat, idx) => (
-                      <div key={stat.label + idx} className="rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-900/60 p-4">
-                        <div className="mb-2">{stat.icon}</div>
-                        <div className="text-2xl font-bold text-slate-900 dark:text-white">{stat.value}</div>
-                        <div className="text-sm text-slate-600 dark:text-slate-400">{stat.label}</div>
-                      </div>
-                    ))}
-                  </div>
-
-                  <div>
-                    <h3 className="text-xl font-semibold">O que você vai aprender</h3>
-                    <ul className="mt-3 space-y-2 text-slate-600 dark:text-slate-300">
-                      {[`Metodologias aplicáveis`, `Frameworks validados`, `Cases reais`, `Certificação Orientohub`].map(item => (
-                        <li key={item} className="flex items-start gap-2">
-                          <CheckCircle className="mt-0.5 h-5 w-5 text-green-500" />
-                          <span>{item}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  <div>
-                    <h3 className="text-xl font-semibold">Materiais</h3>
-                    {selectedCourse.materials?.length ? (
-                      <div className="mt-3 space-y-3">
-                        {selectedCourse.materials.map(material => (
-                          <a
-                            key={material.id}
-                            href={material.url}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="flex items-center justify-between rounded-xl border border-slate-200 dark:border-slate-800 px-4 py-3 text-sm text-primary-600 dark:text-primary-400 hover:bg-slate-50 dark:hover:bg-slate-900"
-                          >
-                            <span>{material.label}</span>
-                            <ChevronRight size={16} />
-                          </a>
-                        ))}
-                      </div>
-                    ) : (
-                      <p className="mt-3 text-sm text-slate-500">Nenhum material complementar cadastrado.</p>
-                    )}
-                  </div>
-
-                  <div>
-                    <h3 className="text-xl font-semibold">Instrutor</h3>
-                    <div className="mt-3 flex items-center gap-4 rounded-xl border border-slate-200 dark:border-slate-800 p-4">
-                      <div className="h-14 w-14 rounded-full bg-primary-500 text-black text-xl font-bold flex items-center justify-center">
-                        {selectedCourse.instructor[0]}
-                      </div>
-                      <div>
                         <p className="font-semibold">{selectedCourse.instructor}</p>
                         <p className="text-sm text-slate-500">Founder & Mentor</p>
                       </div>
@@ -566,11 +492,11 @@ const OrientoAcademyPage = () => {
                     <Play size={20} />
                   </motion.button>
                 </div>
-              </motion.div>
-            </motion.div>
+    </motion.div >
+            </motion.div >
           )}
-        </AnimatePresence>
-      </div>
+        </AnimatePresence >
+      </div >
     </>
   );
 };
