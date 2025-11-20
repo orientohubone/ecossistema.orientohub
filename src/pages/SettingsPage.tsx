@@ -2,12 +2,12 @@ import { useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
-import { 
-  User, 
-  Bell, 
-  Lock, 
-  Globe, 
-  Moon, 
+import {
+  User,
+  Bell,
+  Lock,
+  Globe,
+  Moon,
   Sun,
   Crown,
   CreditCard,
@@ -72,19 +72,61 @@ const SettingsPage = () => {
   async function handleAvatarChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file || !user) return;
+
+    // Validação básica
+    if (file.size > 5 * 1024 * 1024) {
+      alert('A imagem deve ter no máximo 5MB.');
+      return;
+    }
+
+    if (!file.type.startsWith('image/')) {
+      alert('O arquivo deve ser uma imagem.');
+      return;
+    }
+
     setIsUploadingAvatar(true);
     try {
-      const fileExt = file.name.split('.').pop();
-      const fileName = `${user.id}_${Date.now()}.${fileExt}`;
-      const { error: uploadError } = await supabase.storage.from('avatars').upload(fileName, file, { upsert: true });
-      if (uploadError) throw uploadError;
-      const { data: publicUrlData } = await supabase.storage.from('avatars').getPublicUrl(fileName);
+      const fileExt = file.name.split('.').pop()?.toLowerCase() || 'jpg';
+      const fileName = `${user.id}-${Date.now()}.${fileExt}`;
+
+      console.log('Iniciando upload do avatar:', fileName);
+
+      const { error: uploadError } = await supabase.storage
+        .from('avatars')
+        .upload(fileName, file, {
+          upsert: true,
+          contentType: file.type
+        });
+
+      if (uploadError) {
+        console.error('Erro no upload do Storage:', uploadError);
+        throw new Error(`Erro no upload: ${uploadError.message}`);
+      }
+
+      const { data: publicUrlData } = supabase.storage
+        .from('avatars')
+        .getPublicUrl(fileName);
+
       const avatarUrl = publicUrlData?.publicUrl;
-      if (!avatarUrl) throw new Error('Erro ao obter URL do avatar');
-      await supabase.auth.updateUser({ data: { avatar_url: avatarUrl } });
+
+      if (!avatarUrl) throw new Error('Não foi possível gerar a URL pública da imagem.');
+
+      console.log('Avatar URL gerada:', avatarUrl);
+
+      const { error: updateError } = await supabase.auth.updateUser({
+        data: { avatar_url: avatarUrl }
+      });
+
+      if (updateError) {
+        console.error('Erro ao atualizar perfil do usuário:', updateError);
+        throw new Error(`Erro ao atualizar perfil: ${updateError.message}`);
+      }
+
+      // Recarregar para atualizar a UI
       window.location.reload();
-    } catch (err) {
-      alert('Erro ao atualizar avatar. Tente novamente.');
+    } catch (err: any) {
+      console.error('Erro completo:', err);
+      alert(err.message || 'Ocorreu um erro ao atualizar o avatar.');
     } finally {
       setIsUploadingAvatar(false);
     }
@@ -174,7 +216,7 @@ const SettingsPage = () => {
   const toggleDarkMode = () => {
     const newDarkMode = !darkMode;
     setDarkMode(newDarkMode);
-    
+
     if (newDarkMode) {
       document.documentElement.classList.add('dark');
       localStorage.setItem('theme', 'dark');
@@ -187,7 +229,7 @@ const SettingsPage = () => {
   const handleSave = async (message: string) => {
     setIsLoading(true);
     setErrorMessage('');
-    
+
     // Simular salvamento
     setTimeout(() => {
       setIsLoading(false);
@@ -275,11 +317,10 @@ const SettingsPage = () => {
                       <button
                         key={tab.id}
                         onClick={() => setActiveTab(tab.id)}
-                        className={`w-full flex items-center justify-between px-4 py-3 text-sm font-medium rounded-xl transition-all ${
-                          activeTab === tab.id
+                        className={`w-full flex items-center justify-between px-4 py-3 text-sm font-medium rounded-xl transition-all ${activeTab === tab.id
                             ? 'bg-primary-500 text-white shadow-lg shadow-primary-500/30'
                             : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
-                        }`}
+                          }`}
                       >
                         <div className="flex items-center gap-3">
                           <Icon className="w-5 h-5" />
@@ -364,11 +405,10 @@ const SettingsPage = () => {
                         <h3 className="font-bold text-lg">{user?.user_metadata?.name || user?.email?.split('@')[0]}</h3>
                         <p className="text-gray-600 dark:text-gray-400">{user?.email}</p>
                         <div className="flex items-center gap-2 mt-2">
-                          <span className={`px-3 py-1 rounded-full text-xs font-bold ${
-                            currentPlan === 'free' ? 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300' :
-                            currentPlan === 'pro' ? 'bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300' :
-                            'bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300'
-                          }`}>
+                          <span className={`px-3 py-1 rounded-full text-xs font-bold ${currentPlan === 'free' ? 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300' :
+                              currentPlan === 'pro' ? 'bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300' :
+                                'bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300'
+                            }`}>
                             <Crown className="w-3 h-3 inline mr-1" />
                             Plano {plans.find(p => p.id === currentPlan)?.name}
                           </span>
@@ -585,13 +625,12 @@ const SettingsPage = () => {
                       {plans.map((plan) => (
                         <div
                           key={plan.id}
-                          className={`relative p-6 rounded-2xl border-2 transition-all ${
-                            plan.current
+                          className={`relative p-6 rounded-2xl border-2 transition-all ${plan.current
                               ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20'
                               : plan.popular
-                              ? 'border-primary-300 dark:border-primary-700 bg-white dark:bg-gray-800 shadow-xl'
-                              : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800'
-                          }`}
+                                ? 'border-primary-300 dark:border-primary-700 bg-white dark:bg-gray-800 shadow-xl'
+                                : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800'
+                            }`}
                         >
                           {plan.popular && (
                             <div className="absolute -top-3 left-1/2 -translate-x-1/2">
@@ -636,13 +675,12 @@ const SettingsPage = () => {
 
                           <button
                             disabled={plan.current}
-                            className={`w-full py-3 rounded-xl font-bold transition-all ${
-                              plan.current
+                            className={`w-full py-3 rounded-xl font-bold transition-all ${plan.current
                                 ? 'bg-gray-200 dark:bg-gray-700 text-gray-500 cursor-not-allowed'
                                 : plan.popular
-                                ? 'bg-primary-500 hover:bg-primary-600 text-black'
-                                : 'border-2 border-gray-300 dark:border-gray-600 hover:border-primary-500'
-                            }`}
+                                  ? 'bg-primary-500 hover:bg-primary-600 text-black'
+                                  : 'border-2 border-gray-300 dark:border-gray-600 hover:border-primary-500'
+                              }`}
                           >
                             {plan.current ? 'Plano Atual' : 'Selecionar Plano'}
                           </button>
@@ -666,23 +704,23 @@ const SettingsPage = () => {
 
                     <div className="space-y-6">
                       {[
-                        { 
-                          id: 'email', 
-                          title: 'E-mail', 
+                        {
+                          id: 'email',
+                          title: 'E-mail',
                           description: 'Receba atualizações importantes por e-mail',
-                          icon: Mail 
+                          icon: Mail
                         },
-                        { 
-                          id: 'push', 
-                          title: 'Push Notifications', 
+                        {
+                          id: 'push',
+                          title: 'Push Notifications',
                           description: 'Notificações no navegador ou app',
-                          icon: Bell 
+                          icon: Bell
                         },
-                        { 
-                          id: 'sms', 
-                          title: 'SMS', 
+                        {
+                          id: 'sms',
+                          title: 'SMS',
                           description: 'Alertas urgentes via SMS',
-                          icon: Smartphone 
+                          icon: Smartphone
                         }
                       ].map((channel) => {
                         const Icon = channel.icon;
@@ -926,11 +964,10 @@ const SettingsPage = () => {
                                 </p>
                               </div>
                             </div>
-                            <button className={`px-4 py-2 rounded-lg font-medium transition-all ${
-                              integration.connected
+                            <button className={`px-4 py-2 rounded-lg font-medium transition-all ${integration.connected
                                 ? 'bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 hover:bg-red-200'
                                 : 'bg-primary-500 hover:bg-primary-600 text-black'
-                            }`}>
+                              }`}>
                               {integration.connected ? 'Desconectar' : 'Conectar'}
                             </button>
                           </div>
