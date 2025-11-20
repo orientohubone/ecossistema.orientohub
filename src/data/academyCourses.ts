@@ -1,10 +1,28 @@
 import type { LucideIcon } from 'lucide-react';
 import { BookOpen, Target, TrendingUp, Users, Trophy } from 'lucide-react';
 
-export interface CourseMaterial {
+export interface Attachment {
   id: string;
-  label: string;
+  name: string;
   url: string;
+  type: 'pdf' | 'doc' | 'link' | 'other';
+}
+
+export interface Lesson {
+  id: string;
+  title: string;
+  description?: string;
+  videoId?: string;
+  videoUrl?: string;
+  duration?: string;
+  attachments?: Attachment[];
+  isFree?: boolean;
+}
+
+export interface Module {
+  id: string;
+  title: string;
+  lessons: Lesson[];
 }
 
 export interface Course {
@@ -16,7 +34,8 @@ export interface Course {
   rating: number;
   reviews: number;
   students: number;
-  lessons: number;
+  // Derived from modules/lessons in real app, but kept for UI simplicity in mock
+  lessonsCount: number;
   duration: string;
   completed: boolean;
   progress: number;
@@ -25,8 +44,7 @@ export interface Course {
   category: string;
   tags: string[];
   isPremium: boolean;
-  youtubeUrl?: string;
-  materials?: CourseMaterial[];
+  modules: Module[];
 }
 
 export interface AcademyCategory {
@@ -53,19 +71,55 @@ export const defaultCourses: Course[] = [
     rating: 4.8,
     reviews: 120,
     students: 850,
-    lessons: 12,
+    lessonsCount: 12,
     duration: '4h 30min',
     completed: false,
     progress: 0,
-    thumbnail: '/course-validation.jpg',
+    thumbnail: 'https://placehold.co/800x400/0f172a/e2e8f0?text=Validação+de+Ideias',
     instructor: 'João Silva',
     category: 'validation',
     tags: ['Lean Startup', 'MVP', 'Entrevistas'],
     isPremium: false,
-    youtubeUrl: 'https://www.youtube.com/watch?v=123',
-    materials: [
-      { id: 'm11', label: 'Checklist de Validação', url: 'https://orientohub.notion.site/checklist' },
-      { id: 'm12', label: 'Template de Entrevista', url: 'https://drive.google.com/template' }
+    modules: [
+      {
+        id: 'm1',
+        title: 'Introdução à Validação',
+        lessons: [
+          {
+            id: 'l1',
+            title: 'O que é validação?',
+            description: 'Conceitos fundamentais sobre validação de startups.',
+            videoUrl: 'https://www.youtube.com/watch?v=123',
+            duration: '15:00',
+            isFree: true,
+            attachments: [
+              { id: 'a1', name: 'Checklist de Validação', url: 'https://orientohub.notion.site/checklist', type: 'link' }
+            ]
+          },
+          {
+            id: 'l2',
+            title: 'Tipos de MVP',
+            description: 'Entenda os diferentes tipos de Produto Mínimo Viável.',
+            videoUrl: 'https://www.youtube.com/watch?v=124',
+            duration: '20:00'
+          }
+        ]
+      },
+      {
+        id: 'm2',
+        title: 'Entrevistas com Usuários',
+        lessons: [
+          {
+            id: 'l3',
+            title: 'Como roteirizar entrevistas',
+            videoUrl: 'https://www.youtube.com/watch?v=125',
+            duration: '25:00',
+            attachments: [
+              { id: 'a2', name: 'Template de Entrevista', url: 'https://drive.google.com/template', type: 'doc' }
+            ]
+          }
+        ]
+      }
     ]
   },
   {
@@ -77,18 +131,31 @@ export const defaultCourses: Course[] = [
     rating: 4.9,
     reviews: 98,
     students: 650,
-    lessons: 15,
+    lessonsCount: 15,
     duration: '6h 15min',
     completed: true,
     progress: 100,
-    thumbnail: '/course-growth.jpg',
+    thumbnail: 'https://placehold.co/800x400/0f172a/e2e8f0?text=Growth+Hacking',
     instructor: 'Maria Santos',
     category: 'growth',
     tags: ['Marketing', 'Métricas', 'Automação'],
     isPremium: true,
-    youtubeUrl: 'https://www.youtube.com/watch?v=456',
-    materials: [
-      { id: 'm21', label: 'Planilha North Star Metrics', url: 'https://orientohub.com/materials/north-star.xlsx' }
+    modules: [
+      {
+        id: 'm1',
+        title: 'Fundamentos de Growth',
+        lessons: [
+          {
+            id: 'l1',
+            title: 'O funil pirata (AARRR)',
+            videoUrl: 'https://www.youtube.com/watch?v=456',
+            duration: '30:00',
+            attachments: [
+              { id: 'a1', name: 'Planilha North Star Metrics', url: 'https://orientohub.com/materials/north-star.xlsx', type: 'other' }
+            ]
+          }
+        ]
+      }
     ]
   },
   {
@@ -100,16 +167,16 @@ export const defaultCourses: Course[] = [
     rating: 4.7,
     reviews: 76,
     students: 420,
-    lessons: 10,
+    lessonsCount: 10,
     duration: '5h 20min',
     completed: false,
     progress: 30,
-    thumbnail: '/course-leadership.jpg',
+    thumbnail: 'https://placehold.co/800x400/0f172a/e2e8f0?text=Liderança',
     instructor: 'Pedro Costa',
     category: 'leadership',
     tags: ['Gestão', 'Cultura', 'Team Building'],
     isPremium: true,
-    youtubeUrl: 'https://www.youtube.com/watch?v=789'
+    modules: []
   },
   {
     id: 4,
@@ -120,15 +187,15 @@ export const defaultCourses: Course[] = [
     rating: 4.9,
     reviews: 54,
     students: 380,
-    lessons: 8,
+    lessonsCount: 8,
     duration: '4h 45min',
     completed: false,
     progress: 0,
-    thumbnail: '/course-investment.jpg',
+    thumbnail: 'https://placehold.co/800x400/0f172a/e2e8f0?text=Investimento',
     instructor: 'Ana Rodrigues',
     category: 'finance',
     tags: ['Pitch', 'Valuation', 'Term Sheet'],
     isPremium: true,
-    youtubeUrl: 'https://www.youtube.com/watch?v=101112'
+    modules: []
   }
 ];
