@@ -8,8 +8,7 @@
 [class*="Footer"],
 .__PrivateStripeElement+div,
 [class*="PoweredBy"],
-[class*="p-PoweredBy"],
-div[class*="stripe"] {
+[class*="p-PoweredBy"] {
   display: none !important;
 }
 
@@ -19,16 +18,11 @@ div[class*="stripe"] {
 }
 
 /* Ocultar widget flutuante do Stripe no canto inferior direito */
-iframe[name*="stripe"],
-iframe[src*="stripe.com"],
+iframe[name*="stripe-controller"],
+iframe[title*="Stripe"],
 .__PrivateStripeElement-overlay {
   display: none !important;
   visibility: hidden !important;
   opacity: 0 !important;
   pointer-events: none !important;
 }
-
-/* Garantir que apenas o PaymentElement seja visível */
-.payment-element iframe {
-  display: block !important;
-
