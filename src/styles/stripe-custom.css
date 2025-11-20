@@ -29,5 +29,6 @@ iframe[src*="stripe.com"],
 }
 
 /* Garantir que apenas o PaymentElement seja visível */
-#payment-element iframe {
+.payment-element iframe {
   display: block !important;
+
