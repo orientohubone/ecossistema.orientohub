@@ -280,7 +280,41 @@ const CheckoutPage = () => {
                     )}
 
                     {!isLoadingPaymentIntent && clientSecret && stripePromise && (
-                      <Elements stripe={stripePromise} options={{ clientSecret }}>
+                      <Elements
+                        stripe={stripePromise}
+                        options={{
+                          clientSecret,
+                          appearance: {
+                            theme: 'stripe',
+                            variables: {
+                              colorPrimary: '#FFD700',
+                              colorBackground: document.documentElement.classList.contains('dark') ? '#1f2937' : '#ffffff',
+                              colorText: document.documentElement.classList.contains('dark') ? '#f3f4f6' : '#1f2937',
+                              colorDanger: '#ef4444',
+                              fontFamily: 'system-ui, sans-serif',
+                              spacingUnit: '4px',
+                              borderRadius: '12px',
+                            },
+                            rules: {
+                              '.Input': {
+                                backgroundColor: document.documentElement.classList.contains('dark') ? '#111827' : '#f9fafb',
+                                border: `2px solid ${document.documentElement.classList.contains('dark') ? '#374151' : '#e5e7eb'}`,
+                                color: document.documentElement.classList.contains('dark') ? '#f3f4f6' : '#1f2937',
+                              },
+                              '.Input:focus': {
+                                borderColor: '#FFD700',
+                                boxShadow: '0 0 0 1px #FFD700',
+                              },
+                              '.Label': {
+                                color: document.documentElement.classList.contains('dark') ? '#9ca3af' : '#6b7280',
+                                fontWeight: '500',
+                              },
+                            },
+                          },
+                          // Ocultar branding "Powered by Stripe"
+                          loader: 'never',
+                        }}
+                      >
                         <CheckoutForm amount={displayPrice} plan={selectedPlan} billing={billingPeriod} />
                       </Elements>
                     )}
