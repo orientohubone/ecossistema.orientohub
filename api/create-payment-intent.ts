@@ -8,11 +8,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import Stripe from 'stripe';
 
-// Inicializar Stripe
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-    apiVersion: '2024-11-20.acacia',
-});
-
 // Mapeamento de planos
 const PLAN_PRICES = {
     pro: {
@@ -29,6 +24,21 @@ export default async function handler(
     req: VercelRequest,
     res: VercelResponse
 ) {
+    // Inicializar Stripe dentro do handler
+    const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
+
+    if (!stripeSecretKey) {
+        console.error('❌ STRIPE_SECRET_KEY não configurada');
+        return res.status(500).json({
+            error: 'Configuration error',
+            message: 'Stripe não está configurado. Configure STRIPE_SECRET_KEY no Vercel.'
+        });
+    }
+
+    const stripe = new Stripe(stripeSecretKey, {
+        apiVersion: '2024-11-20.acacia',
+    });
+
     // CORS headers
     res.setHeader('Access-Control-Allow-Credentials', 'true');
     res.setHeader('Access-Control-Allow-Origin', '*');
