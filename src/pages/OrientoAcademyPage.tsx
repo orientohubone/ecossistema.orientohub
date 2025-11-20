@@ -359,10 +359,16 @@ const OrientoAcademyPage = () => {
                     className="flex h-full"
                   >
                     <div className="flex flex-col rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/60 shadow-sm transition hover:-translate-y-1 hover:shadow-md w-full">
-                      <div className="relative h-40 overflow-hidden rounded-t-2xl border-b border-slate-100 dark:border-slate-800">
-                        <img src={course.thumbnail} alt={course.title} className="h-full w-full object-cover" loading="lazy" />
+                      <div className="relative h-40 overflow-hidden rounded-t-2xl border-b border-slate-100 dark:border-slate-800 bg-slate-100 dark:bg-slate-900 flex items-center justify-center group-hover:bg-slate-200 dark:group-hover:bg-slate-800 transition-colors">
+                        {course.thumbnail ? (
+                          <img src={course.thumbnail} alt={course.title} className="h-full w-full object-cover" loading="lazy" />
+                        ) : (
+                          <div className="flex flex-col items-center gap-3 text-slate-400 dark:text-slate-500">
+                            <course.icon size={48} strokeWidth={1.5} />
+                          </div>
+                        )}
                         {course.isPremium && (
-                          <div className="absolute top-4 right-4 inline-flex items-center gap-1 rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-800">
+                          <div className="absolute top-4 right-4 inline-flex items-center gap-1 rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-800 shadow-sm">
                             <Lock size={14} /> Premium
                           </div>
                         )}
