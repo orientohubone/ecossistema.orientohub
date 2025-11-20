@@ -84,7 +84,7 @@ const PedagogicPanelPage = () => {
         thumbnail: editingCourse.thumbnail,
       });
       // Expand first module by default
-      if (editingCourse.modules.length > 0) {
+      if (editingCourse.modules?.length > 0) {
         setExpandedModules({ [editingCourse.modules[0].id]: true });
       }
     }
@@ -388,14 +388,14 @@ const PedagogicPanelPage = () => {
                 </div>
 
                 <div className="space-y-4">
-                  {editingCourse?.modules.length === 0 && (
+                  {(!editingCourse?.modules || editingCourse.modules.length === 0) && (
                     <div className="text-center py-12 border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-xl">
                       <Layers className="mx-auto h-10 w-10 text-slate-300" />
                       <p className="mt-2 text-slate-500">Nenhum módulo criado ainda.</p>
                     </div>
                   )}
 
-                  {editingCourse?.modules.map((module, index) => (
+                  {editingCourse?.modules?.map((module, index) => (
                     <div key={module.id} className="rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden">
                       {/* Module Header */}
                       <div className="bg-slate-50 dark:bg-slate-900/50 p-4 flex items-center gap-3">
