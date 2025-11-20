@@ -46,7 +46,7 @@ export const CheckoutForm = ({ amount, plan, billing }: CheckoutFormProps) => {
 
     return (
         <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="min-h-[400px]">
+            <div className="min-h-[500px] overflow-visible">
                 <PaymentElement />
             </div>
 
