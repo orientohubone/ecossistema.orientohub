@@ -40,7 +40,7 @@ export interface Course {
   completed: boolean;
   progress: number;
   thumbnail?: string;
-  icon: LucideIcon;
+  iconName: string;
   instructor: string;
   category: string;
   tags: string[];
@@ -53,6 +53,20 @@ export interface AcademyCategory {
   name: string;
   icon: LucideIcon;
 }
+
+export const getCourseIcon = (iconName: string): LucideIcon => {
+  const icons: Record<string, LucideIcon> = {
+    'Lightbulb': Lightbulb,
+    'Rocket': Rocket,
+    'Users': Users,
+    'PieChart': PieChart,
+    'BookOpen': BookOpen,
+    'Target': Target,
+    'TrendingUp': TrendingUp,
+    'Trophy': Trophy
+  };
+  return icons[iconName] || BookOpen;
+};
 
 export const academyCategories: AcademyCategory[] = [
   { id: 'all', name: 'Todos', icon: BookOpen },
@@ -76,7 +90,7 @@ export const defaultCourses: Course[] = [
     duration: '4h 30min',
     completed: false,
     progress: 0,
-    icon: Lightbulb,
+    iconName: 'Lightbulb',
     instructor: 'João Silva',
     category: 'validation',
     tags: ['Lean Startup', 'MVP', 'Entrevistas'],
@@ -136,7 +150,7 @@ export const defaultCourses: Course[] = [
     duration: '6h 15min',
     completed: true,
     progress: 100,
-    icon: Rocket,
+    iconName: 'Rocket',
     instructor: 'Maria Santos',
     category: 'growth',
     tags: ['Marketing', 'Métricas', 'Automação'],
@@ -172,7 +186,7 @@ export const defaultCourses: Course[] = [
     duration: '5h 20min',
     completed: false,
     progress: 30,
-    icon: Users,
+    iconName: 'Users',
     instructor: 'Pedro Costa',
     category: 'leadership',
     tags: ['Gestão', 'Cultura', 'Team Building'],
@@ -192,7 +206,7 @@ export const defaultCourses: Course[] = [
     duration: '4h 45min',
     completed: false,
     progress: 0,
-    icon: PieChart,
+    iconName: 'PieChart',
     instructor: 'Ana Rodrigues',
     category: 'finance',
     tags: ['Pitch', 'Valuation', 'Term Sheet'],
