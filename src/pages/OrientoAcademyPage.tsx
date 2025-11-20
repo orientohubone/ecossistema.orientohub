@@ -86,7 +86,7 @@ const OrientoAcademyPage = () => {
     },
   ];
 
-  const youtubeEmbedUrl = getYoutubeEmbedUrl(selectedCourse?.youtubeUrl);
+  const youtubeEmbedUrl = getYoutubeEmbedUrl(selectedCourse?.modules?.[0]?.lessons?.[0]?.videoUrl);
 
   const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
