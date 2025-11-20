@@ -12,6 +12,8 @@
   "dependencies": {
     "@headlessui/react": "^1.7.18",
     "@radix-ui/react-tooltip": "^1.2.8",
+    "@stripe/react-stripe-js": "^5.4.0",
+    "@stripe/stripe-js": "^8.5.2",
     "@supabase/supabase-js": "^2.39.7",
     "date-fns": "^4.1.0",
     "framer-motion": "^11.0.8",
@@ -27,7 +29,7 @@
     "react-i18next": "^14.0.5",
     "react-router-dom": "^6.22.2",
     "recharts": "^3.3.0",
-    "stripe": "^14.18.0",
+    "stripe": "^14.25.0",
     "zustand": "^4.5.1"
   },
   "devDependencies": {
