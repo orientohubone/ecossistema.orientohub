@@ -456,9 +456,10 @@ const OrientoAcademyPage = () => {
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9 }}
-                className="bg-white dark:bg-slate-950 rounded-3xl max-w-3xl w-full max-h-[92vh] overflow-y-auto border border-slate-200 dark:border-slate-800"
+                className="bg-white dark:bg-slate-950 rounded-3xl max-w-3xl w-full max-h-[92vh] overflow-y-auto border border-slate-200 dark:border-slate-800 flex flex-col"
               >
-                <div className="sticky top-0 flex items-start justify-between border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 p-6">
+                {/* Header */}
+                <div className="sticky top-0 z-10 flex items-start justify-between border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 p-6">
                   <div>
                     <p className="text-xs uppercase tracking-[0.25em] text-primary-500">Curso</p>
                     <h2 className="mt-2 text-3xl font-bold">{selectedCourse.title}</h2>
@@ -477,22 +478,96 @@ const OrientoAcademyPage = () => {
                     className="rounded-full border border-slate-200 dark:border-slate-800 p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-900"
                     aria-label="Fechar modal"
                   >
-                        <p className="font-semibold">{selectedCourse.instructor}</p>
-                        <p className="text-sm text-slate-500">Founder & Mentor</p>
-                      </div>
+                    <X size={20} />
+                  </button>
+                </div>
+
+                {/* Body */}
+                <div className="p-6 space-y-8">
+                  {/* Video Preview */}
+                  {youtubeEmbedUrl && (
+                    <div className="aspect-video w-full overflow-hidden rounded-2xl bg-slate-100 dark:bg-slate-900">
+                      <iframe
+                        src={youtubeEmbedUrl}
+                        title="Course Preview"
+                        className="h-full w-full"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                      />
+                    </div>
+                  )}
+
+                  {/* Description */}
+                  <div>
+                    <h3 className="text-lg font-bold mb-3">Sobre o curso</h3>
+                    <p className="text-slate-600 dark:text-slate-300 leading-relaxed">
+                      {selectedCourse.description}
+                    </p>
+                  </div>
+
+                  {/* Instructor */}
+                  <div className="flex items-center gap-4 p-4 rounded-2xl bg-slate-50 dark:bg-slate-900/50 border border-slate-100 dark:border-slate-800">
+                    <div className="h-12 w-12 rounded-full bg-primary-100 flex items-center justify-center text-primary-700 font-bold text-xl">
+                      {selectedCourse.instructor.charAt(0)}
+                    </div>
+                    <div>
+                      <p className="font-semibold">{selectedCourse.instructor}</p>
+                      <p className="text-sm text-slate-500">Founder & Mentor</p>
                     </div>
                   </div>
 
+                  {/* Curriculum */}
+                  <div>
+                    <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
+                      <BookOpen size={20} className="text-primary-500" />
+                      Conteúdo Programático
+                    </h3>
+                    <div className="space-y-3">
+                      {selectedCourse.modules?.map((module) => (
+                        <div key={module.id} className="border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden">
+                          <div className="bg-slate-50 dark:bg-slate-900/50 px-4 py-3 font-semibold text-sm flex justify-between items-center">
+                            <span>{module.title}</span>
+                            <span className="text-xs text-slate-500">{module.lessons.length} aulas</span>
+                          </div>
+                          <div className="divide-y divide-slate-100 dark:divide-slate-800">
+                            {module.lessons.map((lesson) => (
+                              <div key={lesson.id} className="px-4 py-3 text-sm flex items-center justify-between hover:bg-slate-50 dark:hover:bg-slate-900/30 transition">
+                                <div className="flex items-center gap-3">
+                                  <Play size={14} className="text-slate-400" />
+                                  <span className={lesson.isFree ? "text-slate-900 dark:text-slate-200" : "text-slate-500"}>
+                                    {lesson.title}
+                                  </span>
+                                  {lesson.isFree && (
+                                    <span className="text-[10px] font-bold uppercase tracking-wider text-green-600 bg-green-100 px-2 py-0.5 rounded-full">
+                                      Grátis
+                                    </span>
+                                  )}
+                                </div>
+                                <span className="text-xs text-slate-400">{lesson.duration}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                      {(!selectedCourse.modules || selectedCourse.modules.length === 0) && (
+                        <p className="text-center text-slate-500 py-4 italic">Conteúdo em breve.</p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Footer */}
+                <div className="sticky bottom-0 p-6 bg-white dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800">
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className="w-full rounded-xl bg-primary-500 px-6 py-4 text-lg font-semibold text-black shadow-lg shadow-primary-500/30 transition hover:bg-primary-400"
+                    className="w-full rounded-xl bg-primary-500 px-6 py-4 text-lg font-semibold text-black shadow-lg shadow-primary-500/30 transition hover:bg-primary-400 flex items-center justify-center gap-2"
                   >
                     Iniciar Curso Agora
                     <Play size={20} />
                   </motion.button>
                 </div>
-    </motion.div >
+              </motion.div>
             </motion.div >
           )}
         </AnimatePresence >
