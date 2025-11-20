@@ -1,0 +1,16 @@
+/* Ocultar branding "Powered by Stripe" */
+.__PrivateStripeElement iframe {
+  height: 100% !important;
+}
+
+/* Ocultar footer do Stripe Elements */
+.p-Footer,
+[class*="Footer"],
+.__PrivateStripeElement + div {
+  display: none !important;
+}
+
+/* Ajustar altura do container para remover espaço do footer */
+.StripeElement {
+  padding-bottom: 0 !important;
+}
