@@ -1,5 +1,5 @@
 import type { LucideIcon } from 'lucide-react';
-import { BookOpen, Target, TrendingUp, Users, Trophy } from 'lucide-react';
+import { BookOpen, Target, TrendingUp, Users, Trophy, Lightbulb, Rocket, PieChart } from 'lucide-react';
 
 export interface Attachment {
   id: string;
@@ -39,7 +39,8 @@ export interface Course {
   duration: string;
   completed: boolean;
   progress: number;
-  thumbnail: string;
+  thumbnail?: string;
+  icon: LucideIcon;
   instructor: string;
   category: string;
   tags: string[];
@@ -75,7 +76,7 @@ export const defaultCourses: Course[] = [
     duration: '4h 30min',
     completed: false,
     progress: 0,
-    thumbnail: 'https://placehold.co/800x400/0f172a/e2e8f0?text=Validação+de+Ideias',
+    icon: Lightbulb,
     instructor: 'João Silva',
     category: 'validation',
     tags: ['Lean Startup', 'MVP', 'Entrevistas'],
@@ -135,7 +136,7 @@ export const defaultCourses: Course[] = [
     duration: '6h 15min',
     completed: true,
     progress: 100,
-    thumbnail: 'https://placehold.co/800x400/0f172a/e2e8f0?text=Growth+Hacking',
+    icon: Rocket,
     instructor: 'Maria Santos',
     category: 'growth',
     tags: ['Marketing', 'Métricas', 'Automação'],
@@ -171,7 +172,7 @@ export const defaultCourses: Course[] = [
     duration: '5h 20min',
     completed: false,
     progress: 30,
-    thumbnail: 'https://placehold.co/800x400/0f172a/e2e8f0?text=Liderança',
+    icon: Users,
     instructor: 'Pedro Costa',
     category: 'leadership',
     tags: ['Gestão', 'Cultura', 'Team Building'],
@@ -191,7 +192,7 @@ export const defaultCourses: Course[] = [
     duration: '4h 45min',
     completed: false,
     progress: 0,
-    thumbnail: 'https://placehold.co/800x400/0f172a/e2e8f0?text=Investimento',
+    icon: PieChart,
     instructor: 'Ana Rodrigues',
     category: 'finance',
     tags: ['Pitch', 'Valuation', 'Term Sheet'],
