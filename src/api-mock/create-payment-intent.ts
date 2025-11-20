@@ -23,12 +23,14 @@ export async function mockCreatePaymentIntent(data: MockPaymentIntentRequest) {
         throw new Error('Erro simulado de rede');
     }
 
-    // Gerar clientSecret fake
-    const mockClientSecret = `pi_mock_${Date.now()}_secret_${Math.random().toString(36).substring(7)}`;
-    const mockPaymentIntentId = `pi_mock_${Date.now()}`;
+    // Gerar clientSecret no formato válido do Stripe: pi_{id}_secret_{secret}
+    const mockId = `1mock${Date.now()}${Math.random().toString(36).substring(2, 9)}`;
+    const mockSecret = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+    const mockClientSecret = `pi_${mockId}_secret_${mockSecret}`;
+    const mockPaymentIntentId = `pi_${mockId}`;
 
     console.log('✅ [MOCK] PaymentIntent criado:', {
-        clientSecret: mockClientSecret,
+        clientSecret: mockClientSecret.substring(0, 30) + '...',
         paymentIntentId: mockPaymentIntentId,
     });
 
