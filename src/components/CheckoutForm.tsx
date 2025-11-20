@@ -1,4 +1,4 @@
-/**
+**
  * Checkout Form Component with Stripe Elements
  */
 
@@ -50,7 +50,7 @@ export const CheckoutForm = ({ amount, plan, billing }: CheckoutFormProps) => {
 
     return (
         <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="min-h-[300px]">
+            <div className="min-h-[400px]">
                 <PaymentElement />
             </div>
 
