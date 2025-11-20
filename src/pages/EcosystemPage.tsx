@@ -523,7 +523,7 @@ const EcosystemPage = () => {
             />
           </div>
 
-          <motion.div
+          {/* <motion.div
             className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -536,7 +536,7 @@ const EcosystemPage = () => {
             <StatCard number="95%" label="Taxa de Sucesso" />
           </motion.div>
         </div>
-      </section>
+      </section>*}
 
       {/* Final CTA Section */}
       <section className="relative py-32 bg-gradient-to-br from-black via-gray-900 to-black overflow-hidden">
