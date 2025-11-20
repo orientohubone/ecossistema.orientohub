@@ -1,11 +1,8 @@
 /**
  * Checkout Form Component with Stripe Elements
- * 
- * Este componente usa Stripe Elements para processar pagamentos de forma segura.
- * Deve ser usado dentro de um Elements Provider.
  */
 
-import { useState, useEffect, FormEvent } from 'react';
+import { useState, FormEvent } from 'react';
 import { useStripe, useElements, PaymentElement } from '@stripe/react-stripe-js';
 import { motion } from 'framer-motion';
 import { Lock, ChevronRight, Shield, AlertCircle } from 'lucide-react';
@@ -14,29 +11,19 @@ interface CheckoutFormProps {
     amount: number;
     plan: string;
     billing: string;
-    onSuccess?: () => void;
 }
 
-export const CheckoutForm = ({ amount, plan, billing, onSuccess }: CheckoutFormProps) => {
+export const CheckoutForm = ({ amount, plan, billing }: CheckoutFormProps) => {
     const stripe = useStripe();
     const elements = useElements();
 
     const [isProcessing, setIsProcessing] = useState(false);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
-    const [isReady, setIsReady] = useState(false);
-
-    // Verificar se Stripe Elements está pronto
-    useEffect(() => {
-        if (stripe && elements) {
-            setIsReady(true);
-        }
-    }, [stripe, elements]);
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
 
         if (!stripe || !elements) {
-            setErrorMessage('Stripe não está carregado. Tente novamente.');
             return;
         }
 
@@ -44,7 +31,6 @@ export const CheckoutForm = ({ amount, plan, billing, onSuccess }: CheckoutFormP
         setErrorMessage(null);
 
         try {
-            // Confirmar pagamento
             const { error } = await stripe.confirmPayment({
                 elements,
                 confirmParams: {
@@ -53,40 +39,21 @@ export const CheckoutForm = ({ amount, plan, billing, onSuccess }: CheckoutFormP
             });
 
             if (error) {
-                // Erro durante confirmação
                 setErrorMessage(error.message || 'Erro ao processar pagamento');
-                setIsProcessing(false);
-            } else {
-                // Pagamento bem-sucedido (usuário será redirecionado)
-                if (onSuccess) {
-                    onSuccess();
-                }
             }
         } catch (err: any) {
-            console.error('Erro ao processar pagamento:', err);
             setErrorMessage('Erro inesperado. Tente novamente.');
+        } finally {
             setIsProcessing(false);
         }
     };
 
     return (
         <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Payment Element do Stripe */}
-            <div className="min-h-[200px]">
-                <PaymentElement
-                    options={{
-                        layout: 'tabs',
-                        defaultValues: {
-                            billingDetails: {
-                                email: '',
-                            },
-                        },
-                    }}
-                    onReady={() => setIsReady(true)}
-                />
+            <div className="min-h-[300px]">
+                <PaymentElement />
             </div>
 
-            {/* Error Message */}
             {errorMessage && (
                 <motion.div
                     initial={{ opacity: 0, y: -10 }}
@@ -105,13 +72,12 @@ export const CheckoutForm = ({ amount, plan, billing, onSuccess }: CheckoutFormP
                 </motion.div>
             )}
 
-            {/* Submit Button */}
             <motion.button
                 type="submit"
-                disabled={!isReady || isProcessing || !stripe}
-                whileHover={{ scale: isReady && !isProcessing ? 1.01 : 1 }}
-                whileTap={{ scale: isReady && !isProcessing ? 0.99 : 1 }}
-                className="w-full flex items-center justify-center gap-3 px-8 py-5 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-black font-bold text-lg rounded-xl shadow-lg shadow-primary-500/30 hover:shadow-xl hover:shadow-primary-500/50 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-lg"
+                disabled={isProcessing || !stripe}
+                whileHover={{ scale: !isProcessing ? 1.01 : 1 }}
+                whileTap={{ scale: !isProcessing ? 0.99 : 1 }}
+                className="w-full flex items-center justify-center gap-3 px-8 py-5 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-black font-bold text-lg rounded-xl shadow-lg shadow-primary-500/30 hover:shadow-xl hover:shadow-primary-500/50 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
                 {isProcessing ? (
                     <>
@@ -130,10 +96,9 @@ export const CheckoutForm = ({ amount, plan, billing, onSuccess }: CheckoutFormP
                 )}
             </motion.button>
 
-            {/* Security Notice */}
             <div className="text-center text-sm text-gray-500 dark:text-gray-400 flex items-center justify-center gap-2">
                 <Shield className="w-4 h-4 text-green-500" />
-                Pagamento processado de forma segura e criptografada pelo Stripe
+                Pagamento processado de forma segura pelo Stripe
             </div>
         </form>
     );
