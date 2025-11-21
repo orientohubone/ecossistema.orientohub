@@ -188,59 +188,46 @@ const SidebarLink = ({ item, pathname, collapsed = false, onNavigate }: { item: 
   const isAcademy = item.id === 'academy';
   const isFounderDashboard = item.id === 'founder';
 
-  // Custom premium effect for Dashboard Founder
+  // Dashboard Founder - estilo simples com badge
   if (isFounderDashboard) {
     return (
-      <div className={`relative my-1 group ${collapsed ? 'flex justify-center' : ''}`}>
-        <div
-          className={`absolute inset-0 z-0 rounded-xl pointer-events-none transition-all duration-700
-            ${active ? 'opacity-100 scale-105' : 'opacity-80 group-hover:opacity-100 group-hover:scale-105'}
-          `}
-        >
-          {/* Golden border effect for Founder */}
-          <div className="absolute inset-0 rounded-xl blur-[2px]" style={{
-            background: 'linear-gradient(135deg, #FFD700 0%, #FFA500 50%, #FFD700 100%)',
-            filter: 'brightness(1.2)',
-            opacity: 0.8
-          }} />
-        </div>
-        <Link
-          to={item.href}
-          onClick={onNavigate}
-          className={`relative z-10 group flex items-center gap-3 px-3 py-2 text-sm font-bold rounded-xl transition-all duration-300
-            border-2 border-yellow-400/80 dark:border-yellow-500/60
-            focus:outline-none focus:ring-2 focus:ring-yellow-400/90
-            ${active
-              ? 'bg-primary-100 dark:bg-primary-900/50 text-primary-900 dark:text-primary-100 shadow-lg ring-2 ring-yellow-400/80'
-              : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 shadow-md hover:shadow-lg'}
-          `}
-          aria-current={active ? 'page' : undefined}
-        >
-          {collapsed ? (
-            <Tooltip.Root delayDuration={100}>
-              <Tooltip.Trigger asChild>
-                <span className={`flex items-center justify-center w-6 h-6 rounded ${active ? 'text-primary-500' : 'text-yellow-500 group-hover:text-yellow-600'}`}>{item.icon}</span>
-              </Tooltip.Trigger>
-              <Tooltip.Portal>
-                <Tooltip.Content
-                  side="right"
-                  sideOffset={10}
-                  className="z-50 px-3 py-2 text-sm font-medium rounded-lg bg-gray-900 text-white border border-yellow-400 shadow-xl"
-                >
-                  {item.name} <span className="ml-2 text-xs bg-yellow-400 text-black px-1.5 py-0.5 rounded">FOUNDER</span>
-                  <Tooltip.Arrow className="fill-yellow-400" />
-                </Tooltip.Content>
-              </Tooltip.Portal>
-            </Tooltip.Root>
-          ) : (
-            <>
-              <span className={`flex items-center justify-center w-6 h-6 rounded ${active ? 'text-primary-500' : 'text-yellow-500 group-hover:text-yellow-600'}`}>{item.icon}</span>
-              <span className="truncate flex-1">{item.name}</span>
-              <span className="text-[10px] bg-yellow-400/20 text-yellow-600 dark:text-yellow-400 px-1.5 py-0.5 rounded font-bold border border-yellow-400/30">FOUNDER</span>
-            </>
-          )}
-        </Link>
-      </div>
+      <Link
+        to={item.href}
+        onClick={onNavigate}
+        className={`group flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-md transition-colors
+          ${active ? 'bg-primary-100 dark:bg-primary-900/50 text-primary-900 dark:text-primary-100' :
+            'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'}
+        `}
+        aria-current={active ? 'page' : undefined}
+      >
+        {collapsed ? (
+          <Tooltip.Root delayDuration={100}>
+            <Tooltip.Trigger asChild>
+              <span className={`flex items-center justify-center w-6 h-6 rounded ${active ? 'text-primary-500' : 'text-gray-500 group-hover:text-gray-700 dark:group-hover:text-gray-300'}`}>{item.icon}</span>
+            </Tooltip.Trigger>
+            <Tooltip.Portal>
+              <Tooltip.Content
+                side="right"
+                sideOffset={10}
+                className="z-50 px-3 py-2 text-sm font-medium rounded-lg bg-gray-900 text-white border border-primary-500 shadow-xl animate-fadein"
+                style={{
+                  boxShadow: '0 8px 32px 0 rgba(31, 41, 55, 0.25), 0 1.5px 4px 0 rgba(0,0,0,0.10)',
+                  transition: 'opacity 0.18s cubic-bezier(0.4,0,0.2,1)'
+                }}
+              >
+                {item.name} <span className="ml-2 text-xs bg-primary-500 text-black px-1.5 py-0.5 rounded">FOUNDER</span>
+                <Tooltip.Arrow className="fill-primary-500" />
+              </Tooltip.Content>
+            </Tooltip.Portal>
+          </Tooltip.Root>
+        ) : (
+          <>
+            <span className={`flex items-center justify-center w-6 h-6 rounded ${active ? 'text-primary-500' : 'text-gray-500 group-hover:text-gray-700 dark:group-hover:text-gray-300'}`}>{item.icon}</span>
+            <span className="truncate flex-1">{item.name}</span>
+            <span className="text-[10px] bg-primary-500/20 text-primary-700 dark:text-primary-400 px-1.5 py-0.5 rounded font-bold border border-primary-500/30">FOUNDER</span>
+          </>
+        )}
+      </Link>
     );
   }
 
