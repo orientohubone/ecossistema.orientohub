@@ -178,8 +178,8 @@ const SidebarLink = ({ item, pathname, collapsed = false, onNavigate }: { item: 
 
   // Verificar se é founder para Dashboard Founder
   if (item.isFounder) {
-    const isFounder = user?.email === 'fersouluramal@gmail.com' ||
-      user?.email === 'fernandoluizsouzaramalho@gmail.com' ||
+    const isFounder = user?.email === 'founder@orientohub.com' ||
+      user?.email === 'fernandopires@orientohub.com' ||
       user?.user_metadata?.role === 'founder';
     if (!isFounder) return null;
   }
@@ -211,15 +211,15 @@ const SidebarLink = ({ item, pathname, collapsed = false, onNavigate }: { item: 
             border-2 border-yellow-400/80 dark:border-yellow-500/60
             focus:outline-none focus:ring-2 focus:ring-yellow-400/90
             ${active
-              ? 'bg-gradient-to-r from-yellow-400 to-yellow-500 text-black shadow-lg ring-2 ring-yellow-400/80'
-              : 'bg-gradient-to-r from-yellow-400/90 to-yellow-500/90 text-black shadow-md hover:shadow-lg hover:from-yellow-400 hover:to-yellow-500'}
+              ? 'bg-primary-100 dark:bg-primary-900/50 text-primary-900 dark:text-primary-100 shadow-lg ring-2 ring-yellow-400/80'
+              : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 shadow-md hover:shadow-lg'}
           `}
           aria-current={active ? 'page' : undefined}
         >
           {collapsed ? (
             <Tooltip.Root delayDuration={100}>
               <Tooltip.Trigger asChild>
-                <span className="flex items-center justify-center w-6 h-6 rounded text-black">{item.icon}</span>
+                <span className={`flex items-center justify-center w-6 h-6 rounded ${active ? 'text-primary-500' : 'text-yellow-500 group-hover:text-yellow-600'}`}>{item.icon}</span>
               </Tooltip.Trigger>
               <Tooltip.Portal>
                 <Tooltip.Content
@@ -234,9 +234,9 @@ const SidebarLink = ({ item, pathname, collapsed = false, onNavigate }: { item: 
             </Tooltip.Root>
           ) : (
             <>
-              <span className="flex items-center justify-center w-6 h-6 rounded text-black">{item.icon}</span>
+              <span className={`flex items-center justify-center w-6 h-6 rounded ${active ? 'text-primary-500' : 'text-yellow-500 group-hover:text-yellow-600'}`}>{item.icon}</span>
               <span className="truncate flex-1">{item.name}</span>
-              <span className="text-[10px] bg-black/20 text-black px-1.5 py-0.5 rounded font-bold">FOUNDER</span>
+              <span className="text-[10px] bg-yellow-400/20 text-yellow-600 dark:text-yellow-400 px-1.5 py-0.5 rounded font-bold border border-yellow-400/30">FOUNDER</span>
             </>
           )}
         </Link>
