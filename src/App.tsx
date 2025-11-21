@@ -40,11 +40,13 @@ import PrivacyPage from './pages/PrivacyPage';
 import CookiesPage from './pages/CookiesPage';
 import NotFoundPage from './pages/NotFoundPage';
 import CalendarPage from './pages/CalendarPage';
+import FounderDashboardPage from './pages/FounderDashboardPage';
 
 // Auth
 import { useAuthStore } from './stores/authStore';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import FounderRoute from './components/auth/FounderRoute';
+import FounderDashboardRoute from './components/auth/FounderDashboardRoute';
 
 function App() {
   const { i18n } = useTranslation();
@@ -57,7 +59,7 @@ function App() {
       await initAuth();
       setIsLoading(false);
     };
-    
+
     init();
   }, [initAuth]);
 
@@ -73,7 +75,7 @@ function App() {
     <AnimatePresence mode="wait">
       <Routes>
         {/* Public routes */}
-        <Route path="/" element={<MainLayout />}> 
+        <Route path="/" element={<MainLayout />}>
           <Route index element={<HomePage />} />
           <Route path="/contato" element={<ContactPage />} />
           <Route path="sobre" element={<AboutPage />} />
@@ -93,7 +95,7 @@ function App() {
           <Route path="privacidade" element={<PrivacyPage />} />
           <Route path="cookies" element={<CookiesPage />} />
         </Route>
-        
+
         {/* Protected routes */}
         <Route path="/dashboard" element={
           <ProtectedRoute>
@@ -117,10 +119,18 @@ function App() {
           />
           <Route path="solutions" element={<SolutionsPage />} />
           <Route path="community" element={<CommunityPage />} />
+          <Route
+            path="founder"
+            element={
+              <FounderDashboardRoute>
+                <FounderDashboardPage />
+              </FounderDashboardRoute>
+            }
+          />
           <Route path="settings" element={<SettingsPage />} />
           <Route path="calendario" element={<CalendarPage />} />
         </Route>
-        
+
         {/* 404 */}
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
