@@ -11,8 +11,8 @@ const FounderDashboardRoute = ({ children }: FounderDashboardRouteProps) => {
     // Verificar se é founder
     // TODO: Adicionar campo 'role' no perfil do usuário no Supabase
     // Por enquanto, verificar por email específico
-    const isFounder = user?.email === 'founder@orientohub.com' ||
-        user?.email === 'fernandopires@orientohub.com' ||
+    const isFounder = user?.email === 'fersouluramal@gmail.com' ||
+        user?.email === 'fernandoluizsouzaramalho@gmail.com' ||
         user?.user_metadata?.role === 'founder';
 
     if (!isFounder) {
@@ -23,3 +23,4 @@ const FounderDashboardRoute = ({ children }: FounderDashboardRouteProps) => {
 };
 
 export default FounderDashboardRoute;
+
