@@ -48,6 +48,7 @@ const DashboardLayout = () => {
     { id: 'frameworks', name: t('dashboard.frameworks'), icon: <FileText size={18} />, href: '/dashboard/frameworks' },
     { id: 'projects', name: t('projects.title'), icon: <Lightbulb size={18} />, href: '/dashboard/projects' },
     { id: 'academy', name: 'Oriento Academy', icon: <GraduationCap size={18} />, href: '/dashboard/academy', protected: true },
+    { id: 'founder', name: 'Dashboard Founder', icon: <Crown size={18} />, href: '/dashboard/founder', protected: true, isFounder: true },
     { id: 'solutions', name: 'Soluções', icon: <Link2 size={18} />, href: '/dashboard/solutions' },
     { id: 'community', name: 'Comunidade', icon: <Users size={18} />, href: '/dashboard/community' },
     { id: 'settings', name: t('common.settings'), icon: <Settings size={18} />, href: '/dashboard/settings' }
@@ -174,8 +175,74 @@ const SidebarLink = ({ item, pathname, collapsed = false, onNavigate }: { item: 
   // Protege rota se item.protected e não houver user
   const { user } = useAuthStore();
   if (item.protected && !user) return null;
+
+  // Verificar se é founder para Dashboard Founder
+  if (item.isFounder) {
+    const isFounder = user?.email === 'founder@orientohub.com' ||
+      user?.email === 'fernandopires@orientohub.com' ||
+      user?.user_metadata?.role === 'founder';
+    if (!isFounder) return null;
+  }
+
   const active = pathname === item.href;
   const isAcademy = item.id === 'academy';
+  const isFounderDashboard = item.id === 'founder';
+
+  // Custom premium effect for Dashboard Founder
+  if (isFounderDashboard) {
+    return (
+      <div className={`relative my-1 group ${collapsed ? 'flex justify-center' : ''}`}>
+        <div
+          className={`absolute inset-0 z-0 rounded-xl pointer-events-none transition-all duration-700
+            ${active ? 'opacity-100 scale-105' : 'opacity-80 group-hover:opacity-100 group-hover:scale-105'}
+          `}
+        >
+          {/* Golden border effect for Founder */}
+          <div className="absolute inset-0 rounded-xl blur-[2px]" style={{
+            background: 'linear-gradient(135deg, #FFD700 0%, #FFA500 50%, #FFD700 100%)',
+            filter: 'brightness(1.2)',
+            opacity: 0.8
+          }} />
+        </div>
+        <Link
+          to={item.href}
+          onClick={onNavigate}
+          className={`relative z-10 group flex items-center gap-3 px-3 py-2 text-sm font-bold rounded-xl transition-all duration-300
+            border-2 border-yellow-400/80 dark:border-yellow-500/60
+            focus:outline-none focus:ring-2 focus:ring-yellow-400/90
+            ${active
+              ? 'bg-gradient-to-r from-yellow-400 to-yellow-500 text-black shadow-lg ring-2 ring-yellow-400/80'
+              : 'bg-gradient-to-r from-yellow-400/90 to-yellow-500/90 text-black shadow-md hover:shadow-lg hover:from-yellow-400 hover:to-yellow-500'}
+          `}
+          aria-current={active ? 'page' : undefined}
+        >
+          {collapsed ? (
+            <Tooltip.Root delayDuration={100}>
+              <Tooltip.Trigger asChild>
+                <span className="flex items-center justify-center w-6 h-6 rounded text-black">{item.icon}</span>
+              </Tooltip.Trigger>
+              <Tooltip.Portal>
+                <Tooltip.Content
+                  side="right"
+                  sideOffset={10}
+                  className="z-50 px-3 py-2 text-sm font-medium rounded-lg bg-gray-900 text-white border border-yellow-400 shadow-xl"
+                >
+                  {item.name} <span className="ml-2 text-xs bg-yellow-400 text-black px-1.5 py-0.5 rounded">FOUNDER</span>
+                  <Tooltip.Arrow className="fill-yellow-400" />
+                </Tooltip.Content>
+              </Tooltip.Portal>
+            </Tooltip.Root>
+          ) : (
+            <>
+              <span className="flex items-center justify-center w-6 h-6 rounded text-black">{item.icon}</span>
+              <span className="truncate flex-1">{item.name}</span>
+              <span className="text-[10px] bg-black/20 text-black px-1.5 py-0.5 rounded font-bold">FOUNDER</span>
+            </>
+          )}
+        </Link>
+      </div>
+    );
+  }
 
   // Custom premium effect for Oriento Academy
   if (isAcademy) {
@@ -213,23 +280,23 @@ const SidebarLink = ({ item, pathname, collapsed = false, onNavigate }: { item: 
           style={
             isDark
               ? {
-                  background: '#FFD600',
-                  color: '#18181b',
-                  boxShadow: active
-                    ? '0 0 0 3px #FFD60099, 0 2px 8px 0 #FFD60033'
-                    : '0 0 0 2px #FFD60022, 0 1.5px 4px 0 #FFD60022'
-                }
+                background: '#FFD600',
+                color: '#18181b',
+                boxShadow: active
+                  ? '0 0 0 3px #FFD60099, 0 2px 8px 0 #FFD60033'
+                  : '0 0 0 2px #FFD60022, 0 1.5px 4px 0 #FFD60022'
+              }
               : {
-                  background: active
-                    ? 'linear-gradient(90deg, #fffbe6 0%, #ffe7fa 40%, #f9e7ff 70%, #fffbe6 100%)'
-                    : 'linear-gradient(90deg, #fffbe6 0%, #f9e7ff 40%, #e6e6fa 70%, #fffbe6 100%)',
-                  backgroundSize: '200% 200%',
-                  animation: active ? 'academyGlow 2.5s ease-in-out infinite alternate' : 'academyGlow 4s ease-in-out infinite alternate',
-                  color: '#7a5600',
-                  boxShadow: active
-                    ? '0 0 0 3px #FFD60055, 0 2px 8px 0 #FFD60033'
-                    : '0 0 0 2px #FFD60022, 0 1.5px 4px 0 #FFD60022'
-                }
+                background: active
+                  ? 'linear-gradient(90deg, #fffbe6 0%, #ffe7fa 40%, #f9e7ff 70%, #fffbe6 100%)'
+                  : 'linear-gradient(90deg, #fffbe6 0%, #f9e7ff 40%, #e6e6fa 70%, #fffbe6 100%)',
+                backgroundSize: '200% 200%',
+                animation: active ? 'academyGlow 2.5s ease-in-out infinite alternate' : 'academyGlow 4s ease-in-out infinite alternate',
+                color: '#7a5600',
+                boxShadow: active
+                  ? '0 0 0 3px #FFD60055, 0 2px 8px 0 #FFD60033'
+                  : '0 0 0 2px #FFD60022, 0 1.5px 4px 0 #FFD60022'
+              }
           }
         >
           {collapsed ? (
