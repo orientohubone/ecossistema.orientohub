@@ -178,8 +178,8 @@ const SidebarLink = ({ item, pathname, collapsed = false, onNavigate }: { item: 
 
   // Verificar se é founder para Dashboard Founder
   if (item.isFounder) {
-    const isFounder = user?.email === 'founder@orientohub.com' ||
-      user?.email === 'fernandopires@orientohub.com' ||
+    const isFounder = user?.email === 'fersouluramal@gmail.com' ||
+      user?.email === 'fernandoluizsouzaramalho@gmail.com' ||
       user?.user_metadata?.role === 'founder';
     if (!isFounder) return null;
   }
