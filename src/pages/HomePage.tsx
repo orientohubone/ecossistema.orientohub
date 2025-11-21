@@ -175,14 +175,10 @@ const HomePage = () => {
                 <motion.div
                   key={index}
                   className="group relative p-6 rounded-2xl border border-primary-500/20 bg-gray-900/50 backdrop-blur-sm hover:bg-primary-500/10 hover:border-primary-500/40 transition-all duration-300 hover:shadow-lg hover:shadow-primary-500/10"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.3, margin: "0px 0px -100px 0px" }}
-                  transition={{
-                    duration: 0.6,
-                    delay: feature.delay,
-                    ease: [0.25, 0.1, 0.25, 1]
-                  }}
+                  initial={{ y: 15 }}
+                  whileInView={{ y: 0 }}
+                  viewport={{ once: true, amount: 0.3 }}
+                  transition={{ duration: 0.4, delay: feature.delay * 0.3, ease: "easeOut" }}
                   whileHover={{ y: -5 }}
                 >
                   <div className="w-12 h-12 rounded-xl bg-primary-500/20 flex items-center justify-center mb-4 group-hover:bg-primary-500/30 transition-colors">
@@ -411,14 +407,10 @@ const FeatureCard = ({ icon, title, description, delay }: FeatureCardProps) => {
   return (
     <motion.div
       className="group bg-gradient-to-br from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 p-6 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-primary-500 dark:hover:border-primary-500 transition-all duration-300 hover:shadow-xl"
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.3, margin: "0px 0px -50px 0px" }}
-      transition={{
-        duration: 0.6,
-        delay,
-        ease: [0.25, 0.1, 0.25, 1]
-      }}
+      initial={{ y: 15 }}
+      whileInView={{ y: 0 }}
+      viewport={{ once: true, amount: 0.3 }}
+      transition={{ duration: 0.4, delay: delay * 0.3, ease: "easeOut" }}
       whileHover={{ y: -5 }}
     >
       <div className="text-primary-500 mb-4 group-hover:scale-110 transition-transform duration-300">
