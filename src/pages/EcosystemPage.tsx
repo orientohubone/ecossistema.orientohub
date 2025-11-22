@@ -932,7 +932,7 @@ const JourneyStep = ({ number, title, description, highlights, delay }: JourneyS
             isFlipped ? 'opacity-0' : 'opacity-100'
           }`}
         >
-          {/* Glow Border Effect */}
+          {/* Glow Border Effect - APENAS NA FRENTE */}
           <div className="absolute inset-0 pointer-events-none rounded-xl">
             <div className="absolute inset-0 border border-yellow-400/30 bg-gradient-to-br from-yellow-300/10 via-transparent to-amber-400/15 rounded-xl" />
             <MovingBorderLight duration={4000} rx={12} ry={12} />
@@ -988,10 +988,9 @@ const JourneyStep = ({ number, title, description, highlights, delay }: JourneyS
             !isFlipped ? 'opacity-0' : 'opacity-100'
           }`}
         >
-          {/* Glow Border Effect - SEM mix-blend-mode para evitar sombra */}
+          {/* Borda simples SEM luz animada - para evitar sombra */}
           <div className="absolute inset-0 pointer-events-none rounded-xl">
-            <div className="absolute inset-0 border border-yellow-400/30 bg-gradient-to-br from-yellow-300/10 via-transparent to-amber-400/15 rounded-xl" />
-            <MovingBorderLight duration={4000} rx={12} ry={12} isBackFace />
+            <div className="absolute inset-0 border-2 border-yellow-400/40 bg-gradient-to-br from-yellow-300/5 via-transparent to-amber-400/10 rounded-xl shadow-[0_0_20px_rgba(255,214,94,0.3)]" />
           </div>
 
           {/* Inner content with padding for border */}
@@ -1072,8 +1071,8 @@ const JourneyStep = ({ number, title, description, highlights, delay }: JourneyS
   );
 };
 
-// Componente MovingBorderLight - CORRIGIDO para não virar sombra
-const MovingBorderLight = ({ duration = 2000, rx = 0, ry = 0, isBackFace = false }: { duration?: number; rx?: number | string; ry?: number | string; isBackFace?: boolean }) => {
+// Componente MovingBorderLight - usado APENAS na frente do card
+const MovingBorderLight = ({ duration = 2000, rx = 0, ry = 0 }: { duration?: number; rx?: number | string; ry?: number | string }) => {
   const pathRef = useRef<SVGRectElement | null>(null);
   const progress = useMotionValue(0);
 
@@ -1116,7 +1115,6 @@ const MovingBorderLight = ({ duration = 2000, rx = 0, ry = 0, isBackFace = false
           left: 0,
           transform,
           filter: 'drop-shadow(0 0 20px rgba(255, 214, 94, 0.8))',
-          // Removido mix-blend-mode para evitar sombra no verso
           pointerEvents: 'none'
         }}
         aria-hidden
