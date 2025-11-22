@@ -150,7 +150,8 @@ const EcosystemPage = () => {
             className="text-center mb-16"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
           >
             <div className="inline-flex items-center gap-2 bg-primary-500/10 border border-primary-500/30 px-4 py-2 rounded-full mb-6">
               <Compass className="w-5 h-5 text-primary-500" />
@@ -210,7 +211,8 @@ const EcosystemPage = () => {
             className="text-center mb-16"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
           >
             <div className="inline-flex items-center gap-2 bg-blue-500/10 border border-blue-500/30 px-4 py-2 rounded-full mb-6">
               <Network className="w-5 h-5 text-blue-500" />
@@ -262,7 +264,8 @@ const EcosystemPage = () => {
             className="text-center mb-16"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
           >
             <div className="inline-flex items-center gap-2 bg-green-500/10 border border-green-500/30 px-4 py-2 rounded-full mb-6">
               <Rocket className="w-5 h-5 text-green-500" />
@@ -337,8 +340,8 @@ const EcosystemPage = () => {
             className="mt-12 text-center"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.6 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.5, delay: 0.6, ease: "easeOut" }}
           >
             <div className="inline-flex items-center gap-3 bg-primary-500/10 border border-primary-500/30 px-6 py-3 rounded-full">
               <CircleDot className="w-5 h-5 text-primary-500" />
@@ -351,79 +354,80 @@ const EcosystemPage = () => {
       </section>
 
       {/* Camada 3 - Verticais */}
-<section id="verticais" className="py-24 bg-gradient-to-b from-gray-50 to-white dark:from-gray-800 dark:to-gray-900">
-  <div className="container-custom">
-    <motion.div
-      className="text-center mb-16"
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-    >
-      <div className="inline-flex items-center gap-2 bg-purple-500/10 border border-purple-500/30 px-4 py-2 rounded-full mb-6">
-        <TrendingUp className="w-5 h-5 text-purple-500" />
-        <span className="text-purple-500 font-semibold text-sm">CAMADA 3</span>
-      </div>
-      <h2 className="text-4xl md:text-5xl font-bold mb-6">Verticais de Expansão</h2>
-      <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-        Produtos e iniciativas de fortalecimento da comunidade e monetização de conhecimento.
-      </p>
-    </motion.div>
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-      <VerticalCard
-        logo="/orientocast-logo.png"
-        title="Oriento Podcast"
-        emoji="🎙️"
-        description="Podcast com founders e parceiros para difundir ideias do ecossistema"
-        features={["Episódios semanais", "Convidados especiais", "Insights exclusivos"]}
-        status="active"
-        delay={0.1}
-        actions={[
-          {
-            href: 'https://open.spotify.com/show/SEU_LINK_SPOTIFY',
-            label: 'Ouça no Spotify',
-            icon: (
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="12" fill="#1DB954"/><path d="M17.25 16.13a.75.75 0 0 1-1.03.23c-2.82-1.73-6.38-2.12-10.59-1.15a.75.75 0 1 1-.33-1.46c4.56-1.04 8.48-.6 11.6 1.23a.75.75 0 0 1 .23 1.15zm1.48-2.7a.94.94 0 0 1-1.29.29c-3.23-2-8.16-2.59-11.98-1.4a.94.94 0 1 1-.54-1.8c4.23-1.28 9.57-.64 13.2 1.6.44.27.57.85.29 1.31zm.13-2.81C15.1 8.2 8.9 8.01 6.13 8.8a1.13 1.13 0 1 1-.65-2.18c3.23-.97 10.13-.75 13.77 2.01a1.13 1.13 0 0 1-1.24 1.89z" fill="#fff"/></svg>
-            )
-          },
-          {
-            href: 'https://youtube.com/SEU_LINK_YOUTUBE',
-            label: 'Assista no YouTube',
-            icon: (
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><rect width="24" height="24" rx="12" fill="#FF0000"/><path d="M10 15.5V8.5L16 12L10 15.5Z" fill="#fff"/></svg>
-            )
-          }
-        ]}
-      />
-      <VerticalCard
-        logo="/oriento-academy-logo.png"
-        title="Oriento Academy"
-        emoji="🎓"
-        description="Plataforma de cursos e certificações orientadas a inovação e negócios"
-        features={["Cursos práticos", "Certificações", "Mentoria ao vivo"]}
-        status="active"
-        delay={0.2}
-        actions={[
-          {
-            href: '/academy',
-            label: 'Conheça a Oriento Academy',
-            icon: (
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><rect width="24" height="24" rx="12" fill="#FFD600"/><path d="M12 7l7 4-7 4-7-4 7-4zm0 8c-2.21 0-4.2-.9-5.6-2.36l1.45-1.45C8.68 12.37 10.26 13 12 13s3.32-.63 4.15-1.81l1.45 1.45C16.2 14.1 14.21 15 12 15z" fill="#18181b"/></svg>
-            )
-          }
-        ]}
-      />
-      <VerticalCard
-        logo="/oriento-ventures-logo.png"
-        title="Oriento Ventures"
-        emoji="💼"
-        description="Fundo interno de investimento anjo e equity compartilhado"
-        features={["Investimento anjo", "Equity compartilhado", "Due diligence"]}
-        status="coming-soon"
-        delay={0.3}
-      />
-    </div>
-  </div>
-</section>
+      <section id="verticais" className="py-24 bg-gradient-to-b from-gray-50 to-white dark:from-gray-800 dark:to-gray-900">
+        <div className="container-custom">
+          <motion.div
+            className="text-center mb-16"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+          >
+            <div className="inline-flex items-center gap-2 bg-purple-500/10 border border-purple-500/30 px-4 py-2 rounded-full mb-6">
+              <TrendingUp className="w-5 h-5 text-purple-500" />
+              <span className="text-purple-500 font-semibold text-sm">CAMADA 3</span>
+            </div>
+            <h2 className="text-4xl md:text-5xl font-bold mb-6">Verticais de Expansão</h2>
+            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+              Produtos e iniciativas de fortalecimento da comunidade e monetização de conhecimento.
+            </p>
+          </motion.div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            <VerticalCard
+              logo="/orientocast-logo.png"
+              title="Oriento Podcast"
+              emoji="🎙️"
+              description="Podcast com founders e parceiros para difundir ideias do ecossistema"
+              features={["Episódios semanais", "Convidados especiais", "Insights exclusivos"]}
+              status="active"
+              delay={0.1}
+              actions={[
+                {
+                  href: 'https://open.spotify.com/show/SEU_LINK_SPOTIFY',
+                  label: 'Ouça no Spotify',
+                  icon: (
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="12" fill="#1DB954"/><path d="M17.25 16.13a.75.75 0 0 1-1.03.23c-2.82-1.73-6.38-2.12-10.59-1.15a.75.75 0 1 1-.33-1.46c4.56-1.04 8.48-.6 11.6 1.23a.75.75 0 0 1 .23 1.15zm1.48-2.7a.94.94 0 0 1-1.29.29c-3.23-2-8.16-2.59-11.98-1.4a.94.94 0 1 1-.54-1.8c4.23-1.28 9.57-.64 13.2 1.6.44.27.57.85.29 1.31zm.13-2.81C15.1 8.2 8.9 8.01 6.13 8.8a1.13 1.13 0 1 1-.65-2.18c3.23-.97 10.13-.75 13.77 2.01a1.13 1.13 0 0 1-1.24 1.89z" fill="#fff"/></svg>
+                  )
+                },
+                {
+                  href: 'https://youtube.com/SEU_LINK_YOUTUBE',
+                  label: 'Assista no YouTube',
+                  icon: (
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><rect width="24" height="24" rx="12" fill="#FF0000"/><path d="M10 15.5V8.5L16 12L10 15.5Z" fill="#fff"/></svg>
+                  )
+                }
+              ]}
+            />
+            <VerticalCard
+              logo="/oriento-academy-logo.png"
+              title="Oriento Academy"
+              emoji="🎓"
+              description="Plataforma de cursos e certificações orientadas a inovação e negócios"
+              features={["Cursos práticos", "Certificações", "Mentoria ao vivo"]}
+              status="active"
+              delay={0.2}
+              actions={[
+                {
+                  href: '/academy',
+                  label: 'Conheça a Oriento Academy',
+                  icon: (
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><rect width="24" height="24" rx="12" fill="#FFD600"/><path d="M12 7l7 4-7 4-7-4 7-4zm0 8c-2.21 0-4.2-.9-5.6-2.36l1.45-1.45C8.68 12.37 10.26 13 12 13s3.32-.63 4.15-1.81l1.45 1.45C16.2 14.1 14.21 15 12 15z" fill="#18181b"/></svg>
+                  )
+                }
+              ]}
+            />
+            <VerticalCard
+              logo="/oriento-ventures-logo.png"
+              title="Oriento Ventures"
+              emoji="💼"
+              description="Fundo interno de investimento anjo e equity compartilhado"
+              features={["Investimento anjo", "Equity compartilhado", "Due diligence"]}
+              status="coming-soon"
+              delay={0.3}
+            />
+          </div>
+        </div>
+      </section>
 
       {/* Business Model Section */}
       <section className="py-24 bg-gradient-to-br from-black via-gray-900 to-black text-white relative overflow-hidden">
@@ -439,7 +443,8 @@ const EcosystemPage = () => {
             className="text-center mb-16"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
           >
             <div className="inline-flex items-center gap-2 bg-primary-500/20 border-2 border-primary-500/40 px-4 py-2 rounded-full mb-6">
               <Building2 className="w-5 h-5 text-primary-500" />
@@ -481,65 +486,66 @@ const EcosystemPage = () => {
       </section>
 
       {/* Founder Journey Timeline */}
-<section className="py-24 bg-white dark:bg-gray-900">
-  <div className="container-custom">
-    <motion.div
-      className="text-center mb-16"
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-    >
-      <h2 className="text-4xl md:text-5xl font-bold mb-6">Jornada do Founder</h2>
-      <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-        Da validação da ideia até o crescimento escalável. Acompanhamos você em cada etapa.
-      </p>
-    </motion.div>
-    
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
-      <JourneyStep
-        number={1}
-        title="Validação & Entrada"
-        description="Valide sua ideia com metodologias comprovadas, receba mentoria de founders que já trilharam esse caminho e conecte-se com uma comunidade ativa de empreendedores"
-        highlights={["Análise de mercado", "Mentoria 1:1", "Network inicial"]}
-        delay={0.1}
-      />
-      <JourneyStep
-        number={2}
-        title="Desenvolvimento & MVP"
-        description="Acesse frameworks exclusivos para acelerar o desenvolvimento, construa seu MVP com suporte técnico e realize as primeiras validações com clientes reais"
-        highlights={["Frameworks prontos", "Suporte técnico", "Feedback de mercado"]}
-        delay={0.2}
-      />
-      <JourneyStep
-        number={3}
-        title="Tração & Crescimento"
-        description="Implemente estratégias de growth hacking, conecte-se com investidores alinhados à sua visão e estruture seu time para escalar"
-        highlights={["Growth hacking", "Investor matching", "Formação de time"]}
-        delay={0.3}
-      />
-      <JourneyStep
-        number={4}
-        title="Escala & Investimento"
-        description="Prepare e execute rodadas de investimento, expanda para novos mercados com estratégia sólida e consolide sua posição como líder do setor"
-        highlights={["Due diligence", "Expansão estratégica", "Consolidação"]}
-        delay={0.4}
-      />
-    </div>
-    
-    <motion.div
-      className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto"
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay: 0.6 }}
-    >
-      <StatCard number="50+" label="Startups Aceleradas" />
-      <StatCard number="R$ 15M+" label="Investimento Captado" />
-      <StatCard number="200+" label="Founders na Comunidade" />
-      <StatCard number="95%" label="Taxa de Sucesso" />
-    </motion.div>
-  </div>
-</section>
+      <section className="py-24 bg-white dark:bg-gray-900">
+        <div className="container-custom">
+          <motion.div
+            className="text-center mb-16"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+          >
+            <h2 className="text-4xl md:text-5xl font-bold mb-6">Jornada do Founder</h2>
+            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+              Da validação da ideia até o crescimento escalável. Acompanhamos você em cada etapa.
+            </p>
+          </motion.div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+            <JourneyStep
+              number={1}
+              title="Validação & Entrada"
+              description="Valide sua ideia com metodologias comprovadas, receba mentoria de founders que já trilharam esse caminho e conecte-se com uma comunidade ativa de empreendedores"
+              highlights={["Análise de mercado", "Mentoria 1:1", "Network inicial"]}
+              delay={0.1}
+            />
+            <JourneyStep
+              number={2}
+              title="Desenvolvimento & MVP"
+              description="Acesse frameworks exclusivos para acelerar o desenvolvimento, construa seu MVP com suporte técnico e realize as primeiras validações com clientes reais"
+              highlights={["Frameworks prontos", "Suporte técnico", "Feedback de mercado"]}
+              delay={0.2}
+            />
+            <JourneyStep
+              number={3}
+              title="Tração & Crescimento"
+              description="Implemente estratégias de growth hacking, conecte-se com investidores alinhados à sua visão e estruture seu time para escalar"
+              highlights={["Growth hacking", "Investor matching", "Formação de time"]}
+              delay={0.3}
+            />
+            <JourneyStep
+              number={4}
+              title="Escala & Investimento"
+              description="Prepare e execute rodadas de investimento, expanda para novos mercados com estratégia sólida e consolide sua posição como líder do setor"
+              highlights={["Due diligence", "Expansão estratégica", "Consolidação"]}
+              delay={0.4}
+            />
+          </div>
+          
+          <motion.div
+            className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.5, delay: 0.6, ease: "easeOut" }}
+          >
+            <StatCard number="50+" label="Startups Aceleradas" />
+            <StatCard number="R$ 15M+" label="Investimento Captado" />
+            <StatCard number="200+" label="Founders na Comunidade" />
+            <StatCard number="95%" label="Taxa de Sucesso" />
+          </motion.div>
+        </div>
+      </section>
 
       {/* Final CTA Section */}
       <section className="relative py-32 bg-gradient-to-br from-black via-gray-900 to-black overflow-hidden">
@@ -562,7 +568,8 @@ const EcosystemPage = () => {
             className="text-center mb-16"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
           >
             <div className="inline-flex items-center gap-2 bg-primary-500/20 border-2 border-primary-500/40 px-5 py-2 rounded-full mb-8 backdrop-blur-sm">
               <Sparkles className="w-4 h-4 text-primary-500" />
@@ -633,8 +640,8 @@ const FeatureCard = ({ icon, title, description, delay }: FeatureCardProps) => {
       className="group bg-gradient-to-br from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 p-6 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-primary-500 dark:hover:border-primary-500 transition-all duration-300 hover:shadow-xl"
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay }}
+      viewport={{ once: true, margin: "-100px" }}
+      transition={{ duration: 0.5, delay, ease: "easeOut" }}
       whileHover={{ y: -5 }}
     >
       <div className="text-primary-500 mb-4 group-hover:scale-110 transition-transform duration-300">
@@ -660,8 +667,8 @@ const PlatformCard = ({ icon, title, description, features, delay }: PlatformCar
       className="bg-white dark:bg-gray-800 p-8 rounded-2xl border-2 border-blue-500/20 hover:border-blue-500 transition-all duration-300 hover:shadow-xl hover:shadow-blue-500/10"
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay }}
+      viewport={{ once: true, margin: "-100px" }}
+      transition={{ duration: 0.5, delay, ease: "easeOut" }}
       whileHover={{ y: -8 }}
     >
       <div className="text-blue-500 mb-4">
@@ -699,8 +706,8 @@ const MVPCard = ({ name, description, focus, icon, color, delay, link, status = 
       className="group relative min-h-[520px] rounded-2xl overflow-hidden"
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay }}
+      viewport={{ once: true, margin: "-100px" }}
+      transition={{ duration: 0.5, delay, ease: "easeOut" }}
       whileHover={{ y: -8 }}
     >
       {/* Main Card Container */}
@@ -791,7 +798,7 @@ const MVPCard = ({ name, description, focus, icon, color, delay, link, status = 
 };
 
 interface VerticalCardProps {
-  logo?: string;  // Adicionado
+  logo?: string;
   icon?: React.ReactNode;
   title: string;
   emoji: string;
@@ -806,8 +813,8 @@ const VerticalCard = ({ logo, icon, title, emoji, description, features, status,
     className="group relative"
     initial={{ opacity: 0, y: 20 }}
     whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true }}
-    transition={{ delay }}
+    viewport={{ once: true, margin: "-100px" }}
+    transition={{ duration: 0.5, delay, ease: "easeOut" }}
   >
     <div className="absolute -inset-0.5 bg-gradient-to-r from-primary-500 to-purple-600 rounded-2xl blur opacity-0 group-hover:opacity-100 transition duration-500" />
     <div className="relative h-full bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-8 hover:shadow-2xl transition-all duration-300">
@@ -889,8 +896,8 @@ const BusinessModelCard = ({ icon, title, description, delay }: BusinessModelCar
       className="bg-white/5 backdrop-blur-sm p-6 rounded-xl border border-white/10 hover:border-primary-500/50 transition-all duration-300 hover:bg-white/10"
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay }}
+      viewport={{ once: true, margin: "-100px" }}
+      transition={{ duration: 0.5, delay, ease: "easeOut" }}
       whileHover={{ y: -5 }}
     >
       <div className="text-4xl mb-4">{icon}</div>
@@ -1160,8 +1167,8 @@ const CTACard = ({ title, description, features, ctaText, ctaLink, icon: Icon, d
       }`}
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay }}
+      viewport={{ once: true, margin: "-100px" }}
+      transition={{ duration: 0.5, delay, ease: "easeOut" }}
       whileHover={{ y: -8, scale: featured ? 1.05 : 1.02 }}
     >
       {/* Icon */}
