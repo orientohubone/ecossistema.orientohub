@@ -911,7 +911,7 @@ const JourneyStep = ({ number, title, description, highlights, delay }: JourneyS
 
   return (
     <motion.div
-      className="relative h-[420px] w-full [perspective:2000px]"
+      className="relative h-[360px] w-full [perspective:2000px]"
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
@@ -926,27 +926,24 @@ const JourneyStep = ({ number, title, description, highlights, delay }: JourneyS
       >
         {/* Front of card */}
         <div
-          className={`absolute inset-0 h-full w-full [transform:rotateY(0deg)] [backface-visibility:hidden] overflow-hidden rounded-2xl bg-gradient-to-br from-white via-slate-50 to-slate-100 dark:from-gray-900 dark:via-gray-900/95 dark:to-gray-800 border border-gray-200 dark:border-gray-800 shadow-lg dark:shadow-xl transition-all duration-700 group hover:shadow-2xl ${
+          className={`absolute inset-0 h-full w-full [transform:rotateY(0deg)] [backface-visibility:hidden] overflow-hidden rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 shadow-lg transition-all duration-700 group hover:shadow-xl ${
             isFlipped ? 'opacity-0' : 'opacity-100'
           }`}
         >
-          {/* Background gradient effect */}
-          <div className="absolute inset-0 bg-gradient-to-br from-primary-500/5 via-transparent to-purple-500/5 dark:from-primary-500/10 dark:to-purple-500/10" />
-
-          {/* Glow effect */}
-          <div className="absolute -inset-0.5 bg-gradient-to-r from-primary-500 to-purple-600 rounded-2xl blur opacity-0 group-hover:opacity-20 transition duration-500 -z-10" />
+          {/* Subtle background */}
+          <div className="absolute inset-0 bg-gradient-to-br from-gray-50 to-white dark:from-gray-900 dark:to-gray-800" />
 
           {/* Animated progress bars */}
-          <div className="absolute inset-0 flex items-center justify-center pt-16">
-            <div className="relative flex h-[100px] w-[80%] flex-col items-center justify-center gap-2">
-              {[...Array(4)].map((_, i) => (
+          <div className="absolute inset-0 flex items-center justify-center pt-12">
+            <div className="relative flex h-[80px] w-[70%] flex-col items-center justify-center gap-2">
+              {[...Array(3)].map((_, i) => (
                 <div
                   key={i}
-                  className="h-2.5 w-full rounded-sm bg-gradient-to-r from-primary-500/20 via-primary-500/30 to-primary-500/20 animate-[slideIn_2s_ease-in-out_infinite] opacity-0"
+                  className="h-2 w-full rounded-sm bg-gradient-to-r from-primary-500/20 via-primary-500/40 to-primary-500/20 animate-[slideIn_2s_ease-in-out_infinite] opacity-0"
                   style={{
-                    width: `${60 + Math.random() * 40}%`,
-                    animationDelay: `${i * 0.3}s`,
-                    marginLeft: `${Math.random() * 20}%`,
+                    width: `${60 + Math.random() * 30}%`,
+                    animationDelay: `${i * 0.4}s`,
+                    marginLeft: `${Math.random() * 15}%`,
                   }}
                 />
               ))}
@@ -954,65 +951,62 @@ const JourneyStep = ({ number, title, description, highlights, delay }: JourneyS
           </div>
 
           {/* Bottom content */}
-          <div className="absolute right-0 bottom-0 left-0 p-6">
-            <div className="space-y-3">
-              <div className="flex items-center gap-3">
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary-500 to-purple-600 shadow-lg">
-                  <span className="text-2xl font-black text-white">{number}</span>
+          <div className="absolute right-0 bottom-0 left-0 p-5">
+            <div className="space-y-2.5">
+              <div className="flex items-center gap-2.5">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-primary-500 to-primary-600 shadow-md">
+                  <span className="text-xl font-black text-white">{number}</span>
                 </div>
-                <h3 className="text-2xl font-bold text-gray-900 dark:text-white transition-all duration-500 ease-out group-hover:translate-y-[-2px] group-hover:text-primary-500 dark:group-hover:text-primary-400">
+                <h3 className="text-xl font-bold text-gray-900 dark:text-white transition-all duration-300 group-hover:text-primary-500">
                   {title}
                 </h3>
               </div>
-              <p className="line-clamp-2 text-sm text-gray-600 dark:text-gray-300 transition-all delay-[50ms] duration-500 ease-out group-hover:translate-y-[-2px]">
+              <p className="line-clamp-2 text-xs text-gray-600 dark:text-gray-400">
                 {description}
               </p>
             </div>
           </div>
-
-          {/* Decorative corner */}
-          <div className="absolute bottom-0 right-0 w-32 h-32 bg-gradient-to-tl from-primary-500/10 to-transparent rounded-tl-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
         </div>
 
         {/* Back of card */}
         <div
-          className={`absolute inset-0 h-full w-full [transform:rotateY(180deg)] [backface-visibility:hidden] rounded-2xl p-6 bg-gradient-to-br from-white via-slate-50 to-slate-100 dark:from-gray-900 dark:via-gray-900/95 dark:to-gray-800 border border-gray-200 dark:border-gray-800 shadow-lg dark:shadow-xl flex flex-col transition-all duration-700 group hover:shadow-2xl ${
+          className={`absolute inset-0 h-full w-full [transform:rotateY(180deg)] [backface-visibility:hidden] rounded-xl p-5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 shadow-lg flex flex-col transition-all duration-700 group hover:shadow-xl ${
             !isFlipped ? 'opacity-0' : 'opacity-100'
           }`}
         >
-          {/* Background gradient */}
-          <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-primary-500/5 via-transparent to-purple-500/5 dark:from-primary-500/10 dark:to-purple-500/10" />
+          {/* Subtle background */}
+          <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-gray-50 to-white dark:from-gray-900 dark:to-gray-800" />
 
-          <div className="relative z-10 flex-1 space-y-4">
+          <div className="relative z-10 flex-1 space-y-3">
             {/* Header */}
-            <div className="flex items-center gap-3 mb-2">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-primary-500 to-purple-600 shadow-lg">
-                <span className="text-lg font-black text-white">{number}</span>
+            <div className="flex items-center gap-2.5 mb-1">
+              <div className="flex h-8 w-8 items-center justify-center rounded-md bg-gradient-to-br from-primary-500 to-primary-600 shadow-md">
+                <span className="text-sm font-black text-white">{number}</span>
               </div>
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+              <h3 className="text-lg font-bold text-gray-900 dark:text-white">
                 {title}
               </h3>
             </div>
 
             {/* Description */}
-            <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+            <p className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">
               {description}
             </p>
 
             {/* Highlights */}
-            <div className="space-y-2.5">
+            <div className="space-y-2">
               {highlights.map((highlight, index) => (
                 <div
                   key={index}
-                  className="flex items-center gap-3 text-sm text-gray-700 dark:text-gray-300 transition-all duration-500"
+                  className="flex items-center gap-2.5 text-xs text-gray-700 dark:text-gray-300 transition-all duration-500"
                   style={{
                     transform: isFlipped ? 'translateX(0)' : 'translateX(-10px)',
                     opacity: isFlipped ? 1 : 0,
                     transitionDelay: `${index * 100 + 200}ms`,
                   }}
                 >
-                  <div className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-md bg-primary-500/10 dark:bg-primary-500/20">
-                    <span className="w-1.5 h-1.5 bg-primary-500 rounded-full" />
+                  <div className="flex h-4 w-4 flex-shrink-0 items-center justify-center rounded bg-primary-500/10">
+                    <span className="w-1 h-1 bg-primary-500 rounded-full" />
                   </div>
                   <span className="font-medium">{highlight}</span>
                 </div>
@@ -1021,15 +1015,12 @@ const JourneyStep = ({ number, title, description, highlights, delay }: JourneyS
           </div>
 
           {/* Footer */}
-          <div className="relative z-10 mt-auto border-t border-gray-200 dark:border-gray-800 pt-4">
-            <div className="group/start relative flex items-center justify-between rounded-lg p-2.5 transition-all duration-300 bg-gradient-to-r from-gray-100 via-gray-100 to-gray-100 dark:from-gray-800 dark:via-gray-800 dark:to-gray-800 hover:from-primary-500/10 hover:via-primary-500/5 hover:to-transparent dark:hover:from-primary-500/20 dark:hover:via-primary-500/10 dark:hover:to-transparent hover:scale-[1.02] hover:cursor-pointer border border-transparent hover:border-primary-500/20">
-              <span className="text-sm font-semibold text-gray-900 dark:text-white group-hover/start:text-primary-500 transition-colors duration-300">
+          <div className="relative z-10 mt-auto border-t border-gray-200 dark:border-gray-700 pt-3">
+            <div className="group/start relative flex items-center justify-between rounded-lg p-2 transition-all duration-300 bg-gray-100 dark:bg-gray-800 hover:bg-primary-50 dark:hover:bg-primary-900/20 hover:scale-[1.02] hover:cursor-pointer">
+              <span className="text-xs font-semibold text-gray-900 dark:text-white group-hover/start:text-primary-500 transition-colors duration-300">
                 Saiba Mais
               </span>
-              <div className="group/icon relative">
-                <div className="absolute inset-[-6px] rounded-lg transition-all duration-300 bg-gradient-to-br from-primary-500/20 via-primary-500/10 to-transparent scale-90 opacity-0 group-hover/start:scale-100 group-hover/start:opacity-100" />
-                <ArrowRight className="relative z-10 h-4 w-4 text-primary-500 transition-all duration-300 group-hover/start:translate-x-1 group-hover/start:scale-110" />
-              </div>
+              <ArrowRight className="h-3.5 w-3.5 text-primary-500 transition-all duration-300 group-hover/start:translate-x-1" />
             </div>
           </div>
         </div>
