@@ -914,10 +914,10 @@ const JourneyStep = ({ number, title, description, highlights, delay }: JourneyS
   return (
     <motion.div
       className="relative h-[360px] w-full [perspective:2000px]"
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 10 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 0.5, delay, ease: "easeOut" }}
       onMouseEnter={() => setIsFlipped(true)}
       onMouseLeave={() => setIsFlipped(false)}
     >
@@ -935,9 +935,7 @@ const JourneyStep = ({ number, title, description, highlights, delay }: JourneyS
           {/* Glow Border Effect */}
           <div className="absolute inset-0 pointer-events-none rounded-xl">
             <div className="absolute inset-0 border border-yellow-400/30 bg-gradient-to-br from-yellow-300/10 via-transparent to-amber-400/15 rounded-xl" />
-            <MovingBorder duration={4000} rx={12} ry={12}>
-              <div className="h-24 w-24 opacity-70 bg-[radial-gradient(circle,rgba(255,209,92,0.9)_0%,rgba(255,209,92,0)_65%)] blur-xl" />
-            </MovingBorder>
+            <MovingBorderLight duration={4000} rx={12} ry={12} />
           </div>
 
           {/* Inner content with padding for border */}
@@ -990,12 +988,10 @@ const JourneyStep = ({ number, title, description, highlights, delay }: JourneyS
             !isFlipped ? 'opacity-0' : 'opacity-100'
           }`}
         >
-          {/* Glow Border Effect */}
+          {/* Glow Border Effect - SEM mix-blend-mode para evitar sombra */}
           <div className="absolute inset-0 pointer-events-none rounded-xl">
             <div className="absolute inset-0 border border-yellow-400/30 bg-gradient-to-br from-yellow-300/10 via-transparent to-amber-400/15 rounded-xl" />
-            <MovingBorder duration={4000} rx={12} ry={12}>
-              <div className="h-24 w-24 opacity-70 bg-[radial-gradient(circle,rgba(255,209,92,0.9)_0%,rgba(255,209,92,0)_65%)] blur-xl" />
-            </MovingBorder>
+            <MovingBorderLight duration={4000} rx={12} ry={12} isBackFace />
           </div>
 
           {/* Inner content with padding for border */}
@@ -1076,8 +1072,8 @@ const JourneyStep = ({ number, title, description, highlights, delay }: JourneyS
   );
 };
 
-// Componente MovingBorder (adicione antes do JourneyStep)
-const MovingBorder = ({ children, duration = 2000, rx = 0, ry = 0 }: { children: React.ReactNode; duration?: number; rx?: number | string; ry?: number | string }) => {
+// Componente MovingBorderLight - CORRIGIDO para não virar sombra
+const MovingBorderLight = ({ duration = 2000, rx = 0, ry = 0, isBackFace = false }: { duration?: number; rx?: number | string; ry?: number | string; isBackFace?: boolean }) => {
   const pathRef = useRef<SVGRectElement | null>(null);
   const progress = useMotionValue(0);
 
@@ -1119,13 +1115,13 @@ const MovingBorder = ({ children, duration = 2000, rx = 0, ry = 0 }: { children:
           top: 0,
           left: 0,
           transform,
-          filter: 'drop-shadow(0 0 25px rgba(255, 214, 94, 0.7))',
-          mixBlendMode: 'screen',
+          filter: 'drop-shadow(0 0 20px rgba(255, 214, 94, 0.8))',
+          // Removido mix-blend-mode para evitar sombra no verso
           pointerEvents: 'none'
         }}
         aria-hidden
       >
-        {children}
+        <div className="h-20 w-20 opacity-80 bg-[radial-gradient(circle,rgba(255,209,92,1)_0%,rgba(255,209,92,0)_70%)] blur-lg" />
       </motion.div>
     </>
   );
