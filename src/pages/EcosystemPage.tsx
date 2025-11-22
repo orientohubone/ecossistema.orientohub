@@ -1,4 +1,6 @@
-import { useState } from 'react';
+import { useRef } from 'react';
+import { useAnimationFrame, useMotionTemplate, useMotionValue, useTransform } from 'framer-motion';
+import { useState,useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
@@ -926,101 +928,129 @@ const JourneyStep = ({ number, title, description, highlights, delay }: JourneyS
       >
         {/* Front of card */}
         <div
-          className={`absolute inset-0 h-full w-full [transform:rotateY(0deg)] [backface-visibility:hidden] overflow-hidden rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 shadow-lg transition-all duration-700 group hover:shadow-xl ${
+          className={`absolute inset-0 h-full w-full [transform:rotateY(0deg)] [backface-visibility:hidden] overflow-hidden rounded-xl transition-all duration-700 ${
             isFlipped ? 'opacity-0' : 'opacity-100'
           }`}
         >
-          {/* Subtle background */}
-          <div className="absolute inset-0 bg-gradient-to-br from-gray-50 to-white dark:from-gray-900 dark:to-gray-800" />
-
-          {/* Animated progress bars */}
-          <div className="absolute inset-0 flex items-center justify-center pt-12">
-            <div className="relative flex h-[80px] w-[70%] flex-col items-center justify-center gap-2">
-              {[...Array(3)].map((_, i) => (
-                <div
-                  key={i}
-                  className="h-2 w-full rounded-sm bg-gradient-to-r from-primary-500/20 via-primary-500/40 to-primary-500/20 animate-[slideIn_2s_ease-in-out_infinite] opacity-0"
-                  style={{
-                    width: `${60 + Math.random() * 30}%`,
-                    animationDelay: `${i * 0.4}s`,
-                    marginLeft: `${Math.random() * 15}%`,
-                  }}
-                />
-              ))}
-            </div>
+          {/* Glow Border Effect */}
+          <div className="absolute inset-0 pointer-events-none rounded-xl">
+            <div className="absolute inset-0 border border-yellow-400/30 bg-gradient-to-br from-yellow-300/10 via-transparent to-amber-400/15 rounded-xl" />
+            <MovingBorder duration={4000} rx={12} ry={12}>
+              <div className="h-24 w-24 opacity-70 bg-[radial-gradient(circle,rgba(255,209,92,0.9)_0%,rgba(255,209,92,0)_65%)] blur-xl" />
+            </MovingBorder>
           </div>
 
-          {/* Bottom content */}
-          <div className="absolute right-0 bottom-0 left-0 p-5">
-            <div className="space-y-2.5">
-              <div className="flex items-center gap-2.5">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-primary-500 to-primary-600 shadow-md">
-                  <span className="text-xl font-black text-white">{number}</span>
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white transition-all duration-300 group-hover:text-primary-500">
-                  {title}
-                </h3>
+          {/* Inner content with padding for border */}
+          <div className="absolute inset-[2px] rounded-xl bg-white dark:bg-gray-900 shadow-lg" />
+
+          {/* Content */}
+          <div className="relative m-[2px] rounded-xl h-full">
+            {/* Subtle background */}
+            <div className="absolute inset-0 bg-gradient-to-br from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 rounded-xl" />
+
+            {/* Animated progress bars */}
+            <div className="absolute inset-0 flex items-center justify-center pt-12">
+              <div className="relative flex h-[80px] w-[70%] flex-col items-center justify-center gap-2">
+                {[...Array(3)].map((_, i) => (
+                  <div
+                    key={i}
+                    className="h-2 w-full rounded-sm bg-gradient-to-r from-primary-500/20 via-primary-500/40 to-primary-500/20 animate-[slideIn_2s_ease-in-out_infinite] opacity-0"
+                    style={{
+                      width: `${60 + Math.random() * 30}%`,
+                      animationDelay: `${i * 0.4}s`,
+                      marginLeft: `${Math.random() * 15}%`,
+                    }}
+                  />
+                ))}
               </div>
-              <p className="line-clamp-2 text-xs text-gray-600 dark:text-gray-400">
-                {description}
-              </p>
+            </div>
+
+            {/* Bottom content */}
+            <div className="absolute right-0 bottom-0 left-0 p-5">
+              <div className="space-y-2.5">
+                <div className="flex items-center gap-2.5">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-primary-500 to-primary-600 shadow-md">
+                    <span className="text-xl font-black text-white">{number}</span>
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-white transition-all duration-300 hover:text-primary-500">
+                    {title}
+                  </h3>
+                </div>
+                <p className="line-clamp-2 text-xs text-gray-600 dark:text-gray-400">
+                  {description}
+                </p>
+              </div>
             </div>
           </div>
         </div>
 
         {/* Back of card */}
         <div
-          className={`absolute inset-0 h-full w-full [transform:rotateY(180deg)] [backface-visibility:hidden] rounded-xl p-5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 shadow-lg flex flex-col transition-all duration-700 group hover:shadow-xl ${
+          className={`absolute inset-0 h-full w-full [transform:rotateY(180deg)] [backface-visibility:hidden] rounded-xl transition-all duration-700 ${
             !isFlipped ? 'opacity-0' : 'opacity-100'
           }`}
         >
-          {/* Subtle background */}
-          <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-gray-50 to-white dark:from-gray-900 dark:to-gray-800" />
-
-          <div className="relative z-10 flex-1 space-y-3">
-            {/* Header */}
-            <div className="flex items-center gap-2.5 mb-1">
-              <div className="flex h-8 w-8 items-center justify-center rounded-md bg-gradient-to-br from-primary-500 to-primary-600 shadow-md">
-                <span className="text-sm font-black text-white">{number}</span>
-              </div>
-              <h3 className="text-lg font-bold text-gray-900 dark:text-white">
-                {title}
-              </h3>
-            </div>
-
-            {/* Description */}
-            <p className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">
-              {description}
-            </p>
-
-            {/* Highlights */}
-            <div className="space-y-2">
-              {highlights.map((highlight, index) => (
-                <div
-                  key={index}
-                  className="flex items-center gap-2.5 text-xs text-gray-700 dark:text-gray-300 transition-all duration-500"
-                  style={{
-                    transform: isFlipped ? 'translateX(0)' : 'translateX(-10px)',
-                    opacity: isFlipped ? 1 : 0,
-                    transitionDelay: `${index * 100 + 200}ms`,
-                  }}
-                >
-                  <div className="flex h-4 w-4 flex-shrink-0 items-center justify-center rounded bg-primary-500/10">
-                    <span className="w-1 h-1 bg-primary-500 rounded-full" />
-                  </div>
-                  <span className="font-medium">{highlight}</span>
-                </div>
-              ))}
-            </div>
+          {/* Glow Border Effect */}
+          <div className="absolute inset-0 pointer-events-none rounded-xl">
+            <div className="absolute inset-0 border border-yellow-400/30 bg-gradient-to-br from-yellow-300/10 via-transparent to-amber-400/15 rounded-xl" />
+            <MovingBorder duration={4000} rx={12} ry={12}>
+              <div className="h-24 w-24 opacity-70 bg-[radial-gradient(circle,rgba(255,209,92,0.9)_0%,rgba(255,209,92,0)_65%)] blur-xl" />
+            </MovingBorder>
           </div>
 
-          {/* Footer */}
-          <div className="relative z-10 mt-auto border-t border-gray-200 dark:border-gray-700 pt-3">
-            <div className="group/start relative flex items-center justify-between rounded-lg p-2 transition-all duration-300 bg-gray-100 dark:bg-gray-800 hover:bg-primary-50 dark:hover:bg-primary-900/20 hover:scale-[1.02] hover:cursor-pointer">
-              <span className="text-xs font-semibold text-gray-900 dark:text-white group-hover/start:text-primary-500 transition-colors duration-300">
-                Saiba Mais
-              </span>
-              <ArrowRight className="h-3.5 w-3.5 text-primary-500 transition-all duration-300 group-hover/start:translate-x-1" />
+          {/* Inner content with padding for border */}
+          <div className="absolute inset-[2px] rounded-xl bg-white dark:bg-gray-900 shadow-lg" />
+
+          {/* Content */}
+          <div className="relative m-[2px] rounded-xl h-full p-5 flex flex-col">
+            {/* Subtle background */}
+            <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-gray-50 to-white dark:from-gray-900 dark:to-gray-800" />
+
+            <div className="relative z-10 flex-1 space-y-3">
+              {/* Header */}
+              <div className="flex items-center gap-2.5 mb-1">
+                <div className="flex h-8 w-8 items-center justify-center rounded-md bg-gradient-to-br from-primary-500 to-primary-600 shadow-md">
+                  <span className="text-sm font-black text-white">{number}</span>
+                </div>
+                <h3 className="text-lg font-bold text-gray-900 dark:text-white">
+                  {title}
+                </h3>
+              </div>
+
+              {/* Description */}
+              <p className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">
+                {description}
+              </p>
+
+              {/* Highlights */}
+              <div className="space-y-2">
+                {highlights.map((highlight, index) => (
+                  <div
+                    key={index}
+                    className="flex items-center gap-2.5 text-xs text-gray-700 dark:text-gray-300 transition-all duration-500"
+                    style={{
+                      transform: isFlipped ? 'translateX(0)' : 'translateX(-10px)',
+                      opacity: isFlipped ? 1 : 0,
+                      transitionDelay: `${index * 100 + 200}ms`,
+                    }}
+                  >
+                    <div className="flex h-4 w-4 flex-shrink-0 items-center justify-center rounded bg-primary-500/10">
+                      <span className="w-1 h-1 bg-primary-500 rounded-full" />
+                    </div>
+                    <span className="font-medium">{highlight}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Footer */}
+            <div className="relative z-10 mt-auto border-t border-gray-200 dark:border-gray-700 pt-3">
+              <div className="group/start relative flex items-center justify-between rounded-lg p-2 transition-all duration-300 bg-gray-100 dark:bg-gray-800 hover:bg-primary-50 dark:hover:bg-primary-900/20 hover:scale-[1.02] hover:cursor-pointer">
+                <span className="text-xs font-semibold text-gray-900 dark:text-white group-hover/start:text-primary-500 transition-colors duration-300">
+                  Saiba Mais
+                </span>
+                <ArrowRight className="h-3.5 w-3.5 text-primary-500 transition-all duration-300 group-hover/start:translate-x-1" />
+              </div>
             </div>
           </div>
         </div>
@@ -1043,6 +1073,61 @@ const JourneyStep = ({ number, title, description, highlights, delay }: JourneyS
         }
       `}</style>
     </motion.div>
+  );
+};
+
+// Componente MovingBorder (adicione antes do JourneyStep)
+const MovingBorder = ({ children, duration = 2000, rx = 0, ry = 0 }: { children: React.ReactNode; duration?: number; rx?: number | string; ry?: number | string }) => {
+  const pathRef = useRef<SVGRectElement | null>(null);
+  const progress = useMotionValue(0);
+
+  useAnimationFrame((time: number) => {
+    if (!pathRef.current) return;
+    const length = pathRef.current.getTotalLength();
+    if (!length) return;
+    const pxPerMillisecond = length / duration;
+    progress.set((time * pxPerMillisecond) % length);
+  });
+
+  const x = useTransform(progress, (val: number) => {
+    if (!pathRef.current) return 0;
+    return pathRef.current.getPointAtLength(val).x;
+  });
+
+  const y = useTransform(progress, (val: number) => {
+    if (!pathRef.current) return 0;
+    return pathRef.current.getPointAtLength(val).y;
+  });
+
+  const transform = useMotionTemplate`translateX(${x}px) translateY(${y}px) translateX(-50%) translateY(-50%)`;
+
+  return (
+    <>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        preserveAspectRatio="none"
+        className="absolute inset-0 h-full w-full"
+        width="100%"
+        height="100%"
+        aria-hidden
+      >
+        <rect fill="none" width="100%" height="100%" rx={rx} ry={ry} ref={pathRef} />
+      </svg>
+      <motion.div
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          transform,
+          filter: 'drop-shadow(0 0 25px rgba(255, 214, 94, 0.7))',
+          mixBlendMode: 'screen',
+          pointerEvents: 'none'
+        }}
+        aria-hidden
+      >
+        {children}
+      </motion.div>
+    </>
   );
 };
 
