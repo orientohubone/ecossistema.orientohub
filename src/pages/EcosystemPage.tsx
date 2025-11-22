@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
@@ -708,8 +709,8 @@ const MVPCard = ({ name, description, focus, icon, color, delay, link, status = 
             {/* Status Badge */}
             <div className="absolute top-4 right-4">
               <div className={`px-3 py-1 rounded-full text-xs font-bold ${status === 'active' ? 'bg-green-500 text-white' :
-                  status === 'beta' ? 'bg-primary-500 text-black' :
-                    'bg-gray-800 text-white'
+                status === 'beta' ? 'bg-primary-500 text-black' :
+                  'bg-gray-800 text-white'
                 }`}>
                 {status === 'active' ? '✓ Ativo' : status === 'beta' ? '⚡ Beta' : '🔜 Em Breve'}
               </div>
@@ -1082,8 +1083,8 @@ const CTACard = ({ title, description, features, ctaText, ctaLink, icon: Icon, d
   return (
     <motion.div
       className={`group relative bg-gradient-to-br from-gray-900 to-black p-8 rounded-2xl border-2 transition-all duration-300 hover:shadow-2xl ${featured
-          ? 'border-primary-500 shadow-xl shadow-primary-500/20 scale-105'
-          : 'border-gray-700 hover:border-primary-500 hover:shadow-primary-500/10'
+        ? 'border-primary-500 shadow-xl shadow-primary-500/20 scale-105'
+        : 'border-gray-700 hover:border-primary-500 hover:shadow-primary-500/10'
         }`}
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -1120,8 +1121,8 @@ const CTACard = ({ title, description, features, ctaText, ctaLink, icon: Icon, d
       <a
         href={ctaLink}
         className={`block w-full text-center px-6 py-4 rounded-xl font-bold transition-all duration-300 ${featured
-            ? 'bg-primary-500 hover:bg-primary-600 text-black shadow-lg shadow-primary-500/30'
-            : 'bg-white/5 hover:bg-primary-500 text-white hover:text-black border-2 border-primary-500/30 hover:border-primary-500'
+          ? 'bg-primary-500 hover:bg-primary-600 text-black shadow-lg shadow-primary-500/30'
+          : 'bg-white/5 hover:bg-primary-500 text-white hover:text-black border-2 border-primary-500/30 hover:border-primary-500'
           }`}
       >
         {ctaText}
