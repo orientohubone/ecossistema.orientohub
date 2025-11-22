@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import {
   Settings,
   Rocket,
@@ -18,8 +18,6 @@ import {
   Zap,
   Network,
   Code,
-  Code2,
-  Copy,
   Database,
   BookOpen,
   Briefcase,
@@ -33,11 +31,105 @@ import {
   Heart,
   Play,
   CheckCircle,
-  Clock
+  Clock,
+  ChevronLeft,
+  ChevronRight
 } from 'lucide-react';
 
 const EcosystemPage = () => {
   const { t } = useTranslation();
+  const [currentMVPIndex, setCurrentMVPIndex] = useState(0);
+  const [isAutoScrolling, setIsAutoScrolling] = useState(true);
+  const carouselRef = useRef<HTMLDivElement>(null);
+
+  const mvps = [
+    {
+      name: "Humansys + BrainSys",
+      description: "Plataforma de RH inteligente com algoritmo ontológico para gestão de pessoas e cultura organizacional.",
+      focus: "Gestão de Pessoas",
+      icon: <Brain className="w-12 h-12 text-white" />,
+      color: "from-blue-500 to-cyan-500",
+      link: "https://humansys.com.br",
+      status: "active" as const,
+      metrics: [
+        { label: 'Empresas', value: '50+' },
+        { label: 'Usuários', value: '2k+' }
+      ]
+    },
+    {
+      name: "Simples Metrics",
+      description: "Plataforma de marketing analítico focada em performance e growth para startups e negócios digitais.",
+      focus: "Growth & Analytics",
+      icon: <BarChart3 className="w-12 h-12 text-white" />,
+      color: "from-green-500 to-emerald-500",
+      link: "https://simplesmetrics.com.br",
+      status: "active" as const,
+      metrics: [
+        { label: 'Métricas', value: '100+' },
+        { label: 'Integrações', value: '20+' }
+      ]
+    },
+    {
+      name: "Vo.ai",
+      description: "Plataforma de convergência vocacional com testes de perfil e inteligência artificial para autoconhecimento.",
+      focus: "Educação & IA",
+      icon: <Compass className="w-12 h-12 text-white" />,
+      color: "from-purple-500 to-pink-500",
+      link: "https://vo.ai",
+      status: "beta" as const,
+      metrics: [
+        { label: 'Testes', value: '15k+' },
+        { label: 'Precisão', value: '94%' }
+      ]
+    },
+    {
+      name: "Vibe Coding",
+      description: "Stack de tecnologia com IA aplicada ao desenvolvimento, automação de código e produtividade para devs.",
+      focus: "Tech & Automação",
+      icon: <Code className="w-12 h-12 text-white" />,
+      color: "from-orange-500 to-red-500",
+      link: "https://vibecodingstack.netlify.app/",
+      status: "active" as const,
+      metrics: [
+        { label: 'Ferramentas', value: '30+' },
+        { label: 'Economia', value: '60%' }
+      ]
+    },
+    {
+      name: "Forgether",
+      description: "Plataforma gamificada que transforma estudo em experiência. Ganhe XP, conquiste badges e domine o mercado tech.",
+      focus: "EdTech & Gamificação",
+      icon: <Award className="w-12 h-12 text-white" />,
+      color: "from-yellow-500 to-amber-500",
+      link: "https://forgether.vercel.app/",
+      status: "active" as const,
+      metrics: [
+        { label: 'Gamificação', value: '100%' },
+        { label: 'Engajamento', value: 'Alto' }
+      ]
+    }
+  ];
+
+  // Auto-scroll functionality
+  useEffect(() => {
+    if (!isAutoScrolling) return;
+
+    const interval = setInterval(() => {
+      setCurrentMVPIndex((prev) => (prev + 1) % mvps.length);
+    }, 5000); // Change slide every 5 seconds
+
+    return () => clearInterval(interval);
+  }, [isAutoScrolling, mvps.length]);
+
+  const handlePrevMVP = () => {
+    setIsAutoScrolling(false);
+    setCurrentMVPIndex((prev) => (prev - 1 + mvps.length) % mvps.length);
+  };
+
+  const handleNextMVP = () => {
+    setIsAutoScrolling(false);
+    setCurrentMVPIndex((prev) => (prev + 1) % mvps.length);
+  };
 
   return (
     <>
@@ -274,77 +366,88 @@ const EcosystemPage = () => {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <MVPCard
-              name="Humansys + BrainSys"
-              description="Plataforma de RH inteligente com algoritmo ontológico para gestão de pessoas e cultura organizacional."
-              focus="Gestão de Pessoas"
-              icon={<Brain className="w-12 h-12 text-white" />}
-              color="from-blue-500 to-cyan-500"
-              delay={0.1}
-              link="https://humansys.com.br"
-              status="active"
-              metrics={[
-                { label: 'Empresas', value: '50+' },
-                { label: 'Usuários', value: '2k+' }
-              ]}
-            />
-            <MVPCard
-              name="Simples Metrics"
-              description="Plataforma de marketing analítico focada em performance e growth para startups e negócios digitais."
-              focus="Growth & Analytics"
-              icon={<BarChart3 className="w-12 h-12 text-white" />}
-              color="from-green-500 to-emerald-500"
-              delay={0.2}
-              link="https://simplesmetrics.com.br"
-              status="active"
-              metrics={[
-                { label: 'Métricas', value: '100+' },
-                { label: 'Integrações', value: '20+' }
-              ]}
-            />
-            <MVPCard
-              name="Vo.ai"
-              description="Plataforma de convergência vocacional com testes de perfil e inteligência artificial para autoconhecimento."
-              focus="Educação & IA"
-              icon={<Compass className="w-12 h-12 text-white" />}
-              color="from-purple-500 to-pink-500"
-              delay={0.3}
-              link="https://vo.ai"
-              status="beta"
-              metrics={[
-                { label: 'Testes', value: '15k+' },
-                { label: 'Precisão', value: '94%' }
-              ]}
-            />
-            <MVPCard
-              name="Vibe Coding"
-              description="Stack de tecnologia com IA aplicada ao desenvolvimento, automação de código e produtividade para devs."
-              focus="Tech & Automação"
-              icon={<Code className="w-12 h-12 text-white" />}
-              color="from-orange-500 to-red-500"
-              delay={0.4}
-              link="https://vibecodingstack.netlify.app/"
-              status="active"
-              metrics={[
-                { label: 'Ferramentas', value: '30+' },
-                { label: 'Economia', value: '60%' }
-              ]}
-            />
-            <MVPCard
-              name="Forgether"
-              description="Plataforma gamificada que transforma estudo em experiência. Ganhe XP, conquiste badges e domine o mercado tech."
-              focus="EdTech & Gamificação"
-              icon={<Award className="w-12 h-12 text-white" />}
-              color="from-yellow-500 to-amber-500"
-              delay={0.5}
-              link="https://forgether.vercel.app/"
-              status="active"
-              metrics={[
-                { label: 'Gamificação', value: '100%' },
-                { label: 'Engajamento', value: 'Alto' }
-              ]}
-            />
+          {/* Carousel Container */}
+          <div className="relative max-w-5xl mx-auto">
+            {/* Navigation Arrows */}
+            <button
+              onClick={handlePrevMVP}
+              className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 lg:-translate-x-12 z-10 bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110 border-2 border-gray-200 dark:border-gray-700"
+              aria-label="MVP anterior"
+            >
+              <ChevronLeft className="w-6 h-6 text-gray-700 dark:text-gray-300" />
+            </button>
+
+            <button
+              onClick={handleNextMVP}
+              className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 lg:translate-x-12 z-10 bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110 border-2 border-gray-200 dark:border-gray-700"
+              aria-label="Próximo MVP"
+            >
+              <ChevronRight className="w-6 h-6 text-gray-700 dark:text-gray-300" />
+            </button>
+
+            {/* Carousel Track */}
+            <div className="overflow-hidden" ref={carouselRef}>
+              <motion.div
+                className="flex"
+                animate={{
+                  x: `-${currentMVPIndex * 100}%`
+                }}
+                transition={{
+                  type: "spring",
+                  stiffness: 300,
+                  damping: 30
+                }}
+              >
+                {mvps.map((mvp, index) => (
+                  <div
+                    key={index}
+                    className="w-full flex-shrink-0 px-4"
+                    onMouseEnter={() => setIsAutoScrolling(false)}
+                    onMouseLeave={() => setIsAutoScrolling(true)}
+                  >
+                    <MVPCard
+                      name={mvp.name}
+                      description={mvp.description}
+                      focus={mvp.focus}
+                      icon={mvp.icon}
+                      color={mvp.color}
+                      delay={0}
+                      link={mvp.link}
+                      status={mvp.status}
+                      metrics={mvp.metrics}
+                    />
+                  </div>
+                ))}
+              </motion.div>
+            </div>
+
+            {/* Carousel Indicators */}
+            <div className="flex justify-center gap-2 mt-8">
+              {mvps.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => {
+                    setIsAutoScrolling(false);
+                    setCurrentMVPIndex(index);
+                  }}
+                  className={`h-2 rounded-full transition-all duration-300 ${index === currentMVPIndex
+                      ? 'w-8 bg-primary-500'
+                      : 'w-2 bg-gray-300 dark:bg-gray-600 hover:bg-gray-400 dark:hover:bg-gray-500'
+                    }`}
+                  aria-label={`Ir para MVP ${index + 1}`}
+                />
+              ))}
+            </div>
+
+            {/* Auto-scroll indicator */}
+            <div className="text-center mt-4">
+              <button
+                onClick={() => setIsAutoScrolling(!isAutoScrolling)}
+                className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
+              >
+                {isAutoScrolling ? '⏸️ Pausar rotação automática' : '▶️ Retomar rotação automática'}
+              </button>
+            </div>
           </div>
 
           <motion.div
@@ -509,37 +612,33 @@ const EcosystemPage = () => {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
-            <CardFlip
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+            <JourneyStep
+              number={1}
               title="Validação & Entrada"
-              subtitle="Comece sua jornada"
               description="Valide sua ideia com metodologias comprovadas, receba mentoria de founders que já trilharam esse caminho e conecte-se com uma comunidade ativa de empreendedores"
-              features={["Análise de mercado", "Mentoria 1:1", "Network inicial", "Validação de ideia"]}
-              color="#3b82f6"
+              highlights={["Análise de mercado", "Mentoria 1:1", "Network inicial"]}
               delay={0.1}
             />
-            <CardFlip
+            <JourneyStep
+              number={2}
               title="Desenvolvimento & MVP"
-              subtitle="Construa seu produto"
               description="Acesse frameworks exclusivos para acelerar o desenvolvimento, construa seu MVP com suporte técnico e realize as primeiras validações com clientes reais"
-              features={["Frameworks prontos", "Suporte técnico", "Feedback de mercado", "Prototipagem rápida"]}
-              color="#10b981"
+              highlights={["Frameworks prontos", "Suporte técnico", "Feedback de mercado"]}
               delay={0.2}
             />
-            <CardFlip
+            <JourneyStep
+              number={3}
               title="Tração & Crescimento"
-              subtitle="Escale seu negócio"
               description="Implemente estratégias de growth hacking, conecte-se com investidores alinhados à sua visão e estruture seu time para escalar"
-              features={["Growth hacking", "Investor matching", "Formação de time", "Estratégias de crescimento"]}
-              color="#f59e0b"
+              highlights={["Growth hacking", "Investor matching", "Formação de time"]}
               delay={0.3}
             />
-            <CardFlip
+            <JourneyStep
+              number={4}
               title="Escala & Investimento"
-              subtitle="Consolide sua posição"
               description="Prepare e execute rodadas de investimento, expanda para novos mercados com estratégia sólida e consolide sua posição como líder do setor"
-              features={["Due diligence", "Expansão estratégica", "Consolidação", "Captação de recursos"]}
-              color="#8b5cf6"
+              highlights={["Due diligence", "Expansão estratégica", "Consolidação"]}
               delay={0.4}
             />
           </div>
@@ -917,251 +1016,63 @@ const BusinessModelCard = ({ icon, title, description, delay }: BusinessModelCar
   );
 };
 
-// Helper function for className concatenation
-const cn = (...classes: (string | boolean | undefined)[]) => {
-  return classes.filter(Boolean).join(' ');
-};
-
-interface CardFlipProps {
-  title?: string;
-  subtitle?: string;
-  description?: string;
-  features?: string[];
-  color?: string;
+interface JourneyStepProps {
+  number: number;
+  title: string;
+  description: string;
+  highlights: string[];
   delay: number;
 }
 
-const CardFlip = ({
-  title = 'Build MVPs Fast',
-  subtitle = 'Launch your idea in record time',
-  description = 'Copy, paste, customize—and launch your MVP faster than ever with our developer-first component library.',
-  features = [
-    'Copy & Paste Ready',
-    'Developer-First',
-    'MVP Optimized',
-    'Zero Setup Required',
-  ],
-  color = '#ff2e88',
-  delay
-}: CardFlipProps) => {
-  const [isFlipped, setIsFlipped] = useState(false);
+const JourneyStep = ({ number, title, description, highlights, delay }: JourneyStepProps) => (
+  <motion.div
+    className="group relative"
+    initial={{ opacity: 0, y: 20 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+    transition={{ delay }}
+  >
+    <div className="absolute -inset-0.5 bg-gradient-to-r from-primary-500 to-purple-600 rounded-2xl blur opacity-0 group-hover:opacity-100 transition duration-500" />
+    <div className="relative h-full bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 overflow-hidden transition-all duration-300 hover:shadow-2xl hover:border-primary-500/50 dark:hover:border-primary-500/50">
+      {/* Gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-br from-primary-500/5 via-transparent to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-  return (
-    <div
-      style={{
-        ['--primary' as any]: color ?? '#2563eb',
-      }}
-      className="group relative h-[360px] w-full max-w-[300px] mx-auto [perspective:2000px]"
-      onMouseEnter={() => setIsFlipped(true)}
-      onMouseLeave={() => setIsFlipped(false)}
-    >
-      <div
-        className={cn(
-          'relative h-full w-full',
-          '[transform-style:preserve-3d]',
-          'transition-all duration-700',
-          isFlipped
-            ? '[transform:rotateY(180deg)]'
-            : '[transform:rotateY(0deg)]',
-        )}
-      >
-        {/* Front of card */}
-        <div
-          className={cn(
-            'absolute inset-0 h-full w-full',
-            '[transform:rotateY(0deg)] [backface-visibility:hidden]',
-            'overflow-hidden rounded-2xl',
-            'bg-gradient-to-br from-white via-slate-50 to-slate-100',
-            'dark:from-zinc-900 dark:via-zinc-900/95 dark:to-zinc-800',
-            'border border-slate-200 dark:border-zinc-800/50',
-            'shadow-lg dark:shadow-xl',
-            'transition-all duration-700',
-            'group-hover:shadow-xl dark:group-hover:shadow-2xl',
-            'group-hover:border-primary/20 dark:group-hover:border-primary/30',
-            isFlipped ? 'opacity-0' : 'opacity-100',
-          )}
-        >
-          {/* Background gradient effect */}
-          <div className="from-primary/5 dark:from-primary/10 absolute inset-0 bg-gradient-to-br via-transparent to-blue-500/5 dark:to-blue-500/10" />
-
-          {/* Animated code blocks */}
-          <div className="absolute inset-0 flex items-center justify-center pt-20">
-            <div className="relative flex h-[100px] w-[200px] flex-col items-center justify-center gap-2">
-              {/* Code blocks animation */}
-              {[...Array(6)].map((_, i) => (
-                <div
-                  key={i}
-                  className={cn(
-                    'h-3 w-full rounded-sm',
-                    'from-primary/20 via-primary/30 to-primary/20 bg-gradient-to-r',
-                    'animate-[slideIn_2s_ease-in-out_infinite]',
-                    'opacity-0',
-                  )}
-                  style={{
-                    width: `${60 + Math.random() * 40}%`,
-                    animationDelay: `${i * 0.2}s`,
-                    marginLeft: `${Math.random() * 20}%`,
-                  }}
-                />
-              ))}
-
-              {/* Central rocket icon */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div
-                  className={cn(
-                    'h-12 w-12 rounded-xl',
-                    'from-primary via-primary/90 to-primary/80 bg-gradient-to-br',
-                    'flex items-center justify-center',
-                    'shadow-primary/25 shadow-lg',
-                    'animate-pulse',
-                    'transition-all duration-500 group-hover:scale-110 group-hover:rotate-12',
-                  )}
-                >
-                  <Rocket className="h-6 w-6 text-white" />
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Bottom content */}
-          <div className="absolute right-0 bottom-0 left-0 p-5">
-            <div className="flex items-center justify-between gap-3">
-              <div className="space-y-1.5">
-                <h3 className="text-lg leading-snug font-semibold tracking-tight text-zinc-900 transition-all duration-500 ease-out group-hover:translate-y-[-4px] dark:text-white">
-                  {title}
-                </h3>
-                <p className="line-clamp-2 text-sm tracking-tight text-zinc-600 transition-all delay-[50ms] duration-500 ease-out group-hover:translate-y-[-4px] dark:text-zinc-300">
-                  {subtitle}
-                </p>
-              </div>
-              <div className="group/icon relative">
-                <div
-                  className={cn(
-                    'absolute inset-[-8px] rounded-lg transition-opacity duration-300',
-                    'from-primary/20 via-primary/10 bg-gradient-to-br to-transparent',
-                    'opacity-0 group-hover/icon:opacity-100',
-                  )}
-                />
-                <Zap className="text-primary relative z-10 h-5 w-5 transition-all duration-300 group-hover/icon:scale-110 group-hover/icon:rotate-12" />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Back of card */}
-        <div
-          className={cn(
-            'absolute inset-0 h-full w-full',
-            '[transform:rotateY(180deg)] [backface-visibility:hidden]',
-            'rounded-2xl p-5',
-            'bg-gradient-to-br from-white via-slate-50 to-slate-100',
-            'dark:from-zinc-900 dark:via-zinc-900/95 dark:to-zinc-800',
-            'border border-slate-200 dark:border-zinc-800',
-            'shadow-lg dark:shadow-xl',
-            'flex flex-col',
-            'transition-all duration-700',
-            'group-hover:shadow-xl dark:group-hover:shadow-2xl',
-            'group-hover:border-primary/20 dark:group-hover:border-primary/30',
-            !isFlipped ? 'opacity-0' : 'opacity-100',
-          )}
-        >
-          {/* Background gradient */}
-          <div className="from-primary/5 dark:from-primary/10 absolute inset-0 rounded-2xl bg-gradient-to-br via-transparent to-blue-500/5 dark:to-blue-500/10" />
-
-          <div className="relative z-10 flex-1 space-y-5">
-            <div className="space-y-2">
-              <div className="mb-2 flex items-center gap-2">
-                <div className="from-primary via-primary/90 to-primary/80 flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br">
-                  <Code2 className="h-4 w-4 text-white" />
-                </div>
-                <h3 className="text-lg leading-snug font-semibold tracking-tight text-zinc-900 transition-all duration-500 ease-out group-hover:translate-y-[-2px] dark:text-white">
-                  {title}
-                </h3>
-              </div>
-              <p className="line-clamp-2 text-sm tracking-tight text-zinc-600 transition-all duration-500 ease-out group-hover:translate-y-[-2px] dark:text-zinc-400">
-                {description}
-              </p>
-            </div>
-
-            <div className="space-y-2.5">
-              {features.map((feature, index) => {
-                const icons = [Copy, Code2, Rocket, Zap];
-                const IconComponent = icons[index % icons.length];
-
-                return (
-                  <div
-                    key={feature}
-                    className="flex items-center gap-3 text-sm text-zinc-700 transition-all duration-500 dark:text-zinc-300"
-                    style={{
-                      transform: isFlipped
-                        ? 'translateX(0)'
-                        : 'translateX(-10px)',
-                      opacity: isFlipped ? 1 : 0,
-                      transitionDelay: `${index * 100 + 200}ms`,
-                    }}
-                  >
-                    <div className="bg-primary/10 dark:bg-primary/20 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-md">
-                      <IconComponent className="text-primary h-3 w-3" />
-                    </div>
-                    <span className="font-medium">{feature}</span>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-          <div className="relative z-10 mt-auto border-t border-slate-200 pt-4 dark:border-zinc-800">
-            <div
-              className={cn(
-                'group/start relative',
-                'flex items-center justify-between',
-                'rounded-lg p-2.5',
-                'transition-all duration-300',
-                'bg-gradient-to-r from-slate-100 via-slate-100 to-slate-100',
-                'dark:from-zinc-800 dark:via-zinc-800 dark:to-zinc-800',
-                'hover:from-primary/10 hover:via-primary/5 hover:to-transparent',
-                'dark:hover:from-primary/20 dark:hover:via-primary/10 dark:hover:to-transparent',
-                'hover:scale-[1.02] hover:cursor-pointer',
-                'hover:border-primary/20 border border-transparent',
-              )}
-            >
-              <span className="group-hover/start:text-primary text-sm font-semibold text-zinc-900 transition-colors duration-300 dark:text-white">
-                Start Building
-              </span>
-              <div className="group/icon relative">
-                <div
-                  className={cn(
-                    'absolute inset-[-6px] rounded-lg transition-all duration-300',
-                    'from-primary/20 via-primary/10 bg-gradient-to-br to-transparent',
-                    'scale-90 opacity-0 group-hover/start:scale-100 group-hover/start:opacity-100',
-                  )}
-                />
-                <ArrowRight className="text-primary relative z-10 h-4 w-4 transition-all duration-300 group-hover/start:translate-x-1 group-hover/start:scale-110" />
-              </div>
-            </div>
-          </div>
+      {/* Number badge */}
+      <div className="absolute -top-4 -left-4 w-24 h-24">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary-500 to-purple-600 rounded-full blur-xl opacity-50 group-hover:opacity-100 transition-opacity" />
+        <div className="relative w-full h-full bg-gradient-to-br from-primary-500 to-purple-600 rounded-full flex items-center justify-center shadow-2xl transform group-hover:scale-110 group-hover:rotate-12 transition-all duration-500">
+          <span className="text-3xl font-black text-white">{number}</span>
         </div>
       </div>
 
-      <style>{`
-        @keyframes slideIn {
-          0% {
-            transform: translateX(-100px);
-            opacity: 0;
-          }
-          50% {
-            transform: translateX(0);
-            opacity: 0.8;
-          }
-          100% {
-            transform: translateX(100px);
-            opacity: 0;
-          }
-        }
-      `}</style>
+      {/* Content */}
+      <div className="relative p-8 pt-12">
+        <h3 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white group-hover:text-primary-500 dark:group-hover:text-primary-400 transition-colors duration-300">
+          {title}
+        </h3>
+
+        <p className="text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
+          {description}
+        </p>
+
+        <div className="flex flex-wrap gap-2">
+          {highlights.map((highlight, index) => (
+            <span
+              key={index}
+              className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-primary-50 to-purple-50 dark:from-primary-900/20 dark:to-purple-900/20 text-primary-600 dark:text-primary-400 text-sm font-semibold rounded-full border border-primary-200 dark:border-primary-800 transform group-hover:scale-105 transition-transform"
+            >
+              <span className="w-1.5 h-1.5 bg-primary-500 rounded-full mr-2" />
+              {highlight}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* Decorative corner */}
+      <div className="absolute bottom-0 right-0 w-32 h-32 bg-gradient-to-tl from-primary-500/10 to-transparent rounded-tl-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
     </div>
-  );
-};
+  </motion.div>
+);
 
 interface StatCardProps {
   number: string;
