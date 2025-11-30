@@ -334,6 +334,20 @@ const EcosystemPage = () => {
                 { label: 'Economia', value: '60%' }
               ]}
             />
+            <MVPCard
+              name="Forgether"
+              description="Forgether é a plataforma gamificada que transforma estudo em experiência. Ganhe XP, conquiste badges e domine o mercado tech."
+              focus="Educação Tecnológica"
+              icon={<GraduationCap className="w-12 h-12 text-white" />}
+              color="from-emerald-500 to-teal-500"
+              delay={0.5}
+              link="https://forgether.vercel.app/"
+              status="beta"
+              metrics={[
+                { label: 'Usuários', value: '1k+' },
+                { label: 'Engajamento', value: '85%' }
+              ]}
+            />
           </div>
 
           <motion.div
