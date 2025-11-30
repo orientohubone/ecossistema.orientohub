@@ -36,6 +36,82 @@ import {
   Clock
 } from 'lucide-react';
 
+// Carrossel com paginação para MVPs
+const MVPCarouselPaginated = ({ children }: { children: React.ReactNode }) => {
+  const [currentPage, setCurrentPage] = useState(0);
+  const childrenArray = React.Children.toArray(children);
+  const itemsPerPage = 4;
+  const totalPages = Math.ceil(childrenArray.length / itemsPerPage);
+
+  const nextPage = () => {
+    setCurrentPage((prev) => Math.min(prev + 1, totalPages - 1));
+  };
+
+  const prevPage = () => {
+    setCurrentPage((prev) => Math.max(prev - 1, 0));
+  };
+
+  const startIndex = currentPage * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentItems = childrenArray.slice(startIndex, endIndex);
+
+  return (
+    <div className="relative">
+      {/* Grid de Cards */}
+      <motion.div
+        key={currentPage}
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
+        initial={{ opacity: 0, x: 20 }}
+        animate={{ opacity: 1, x: 0 }}
+        exit={{ opacity: 0, x: -20 }}
+        transition={{ duration: 0.3 }}
+      >
+        {currentItems}
+      </motion.div>
+
+      {/* Botão Anterior */}
+      {currentPage > 0 && (
+        <button
+          onClick={prevPage}
+          className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-16 bg-white dark:bg-gray-800 p-4 rounded-full shadow-xl hover:shadow-2xl hover:scale-110 transition-all z-10 border-2 border-primary-500/30 hover:border-primary-500 group"
+          aria-label="Página anterior"
+        >
+          <ArrowRight className="w-6 h-6 rotate-180 text-primary-500 group-hover:text-primary-600" />
+        </button>
+      )}
+
+      {/* Botão Próximo */}
+      {currentPage < totalPages - 1 && (
+        <button
+          onClick={nextPage}
+          className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-16 bg-white dark:bg-gray-800 p-4 rounded-full shadow-xl hover:shadow-2xl hover:scale-110 transition-all z-10 border-2 border-primary-500/30 hover:border-primary-500 group"
+          aria-label="Próxima página"
+        >
+          <ArrowRight className="w-6 h-6 text-primary-500 group-hover:text-primary-600" />
+        </button>
+      )}
+
+      {/* Indicadores de Página */}
+      {totalPages > 1 && (
+        <div className="flex justify-center gap-2 mt-12">
+          {Array.from({ length: totalPages }).map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentPage(index)}
+              className={`h-2 rounded-full transition-all ${
+                index === currentPage
+                  ? 'bg-primary-500 w-8'
+                  : 'bg-gray-300 dark:bg-gray-600 w-2 hover:bg-primary-400'
+              }`}
+              aria-label={`Ir para página ${index + 1}`}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
 const EcosystemPage = () => {
   const { t } = useTranslation();
 
@@ -277,7 +353,7 @@ const EcosystemPage = () => {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <MVPCarouselPaginated>
             <MVPCard
               name="Humansys + BrainSys"
               description="Plataforma de RH inteligente com algoritmo ontológico para gestão de pessoas e cultura organizacional."
@@ -348,7 +424,7 @@ const EcosystemPage = () => {
                 { label: 'Engajamento', value: '85%' }
               ]}
             />
-          </div>
+          </MVPCarouselPaginated>
 
           <motion.div
             className="mt-12 text-center"
