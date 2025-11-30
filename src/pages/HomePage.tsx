@@ -98,7 +98,7 @@ const HomePage = () => {
 
             {/* Description */}
             <motion.p
-              className="text-xl sm:text-2xl text-gray-300 text-center max-w-3xl mx-auto mb-10 leading-relaxed"
+              className="text-xl sm:text-2xl text-gray-300 text-center max-w-3xl mx-auto mb-7 leading-relaxed"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
