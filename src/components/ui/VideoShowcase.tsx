@@ -16,7 +16,7 @@ const VideoShowcase = ({ image, videoUrl, alt, playerOffsetX = '0px', playerOffs
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="w-full flex flex-col items-center justify-center py-20">
+    <div className="w-full flex flex-col items-center justify-center py-10">
       <div className="relative group max-w-5xl mx-auto w-full">
         {/* Depth glow backdrop */}
         <div className="absolute -inset-10 -z-10">
@@ -141,3 +141,4 @@ const VideoShowcase = ({ image, videoUrl, alt, playerOffsetX = '0px', playerOffs
 };
 
 export default VideoShowcase;
+
