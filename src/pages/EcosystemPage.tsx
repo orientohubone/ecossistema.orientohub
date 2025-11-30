@@ -1,6 +1,5 @@
-import { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { useAnimationFrame, useMotionTemplate, useMotionValue, useTransform } from 'framer-motion';
-import { useState} from 'react';
 import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
