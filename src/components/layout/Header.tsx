@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Menu, X, Globe, Moon, Sun } from 'lucide-react';
+import { Menu, X, Globe, Moon, Sun, Sparkles } from 'lucide-react';
 import { useAuthStore } from '../../stores/authStore';
 
 const Header = () => {
@@ -67,7 +67,19 @@ const Header = () => {
   ];
 
   return (
-    <header className={`sticky top-0 z-50 transition-all duration-200 ${scrolled ? 'bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm shadow-sm' : 'bg-transparent'}`}>
+    <>
+      {/* Launch Banner */}
+      <div className="bg-gradient-to-r from-primary-500 to-primary-600 text-black py-2 px-4">
+        <div className="container-custom">
+          <div className="flex items-center justify-center gap-2 text-sm font-medium">
+            <Sparkles className="w-4 h-4 animate-pulse" />
+            <span>Plataforma Pronta! Lançamento Oficial em Breve</span>
+            <Sparkles className="w-4 h-4 animate-pulse" />
+          </div>
+        </div>
+      </div>
+      
+      <header className={`sticky top-0 z-50 transition-all duration-200 ${scrolled ? 'bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm shadow-sm' : 'bg-transparent'}`}>
       <div className="container-custom">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -282,6 +294,7 @@ const Header = () => {
         </div>
       </div>
     </header>
+    </>
   );
 };
 
