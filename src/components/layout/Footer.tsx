@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Github, Twitter, Linkedin, Instagram, Mail, MapPin, Phone, Rocket, Sparkles, ArrowRight, Heart, ArrowUp } from 'lucide-react';
+import { Github, Linkedin, Instagram, Mail, MapPin, Phone, Rocket, Sparkles, ArrowRight, Heart, ArrowUp } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const Footer = () => {
@@ -20,9 +20,8 @@ const Footer = () => {
   };
   
   const socialLinks = [
-    { icon: Twitter, href: '#', label: 'Twitter', color: 'hover:text-blue-400' },
     { icon: Linkedin, href: '#', label: 'LinkedIn', color: 'hover:text-blue-600' },
-    { icon: Instagram, href: '#', label: 'Instagram', color: 'hover:text-pink-500' },
+    { icon: Instagram, href: 'https://instagram.com/orientohub', label: 'Instagram', color: 'hover:text-pink-500' },
     { icon: Github, href: '#', label: 'GitHub', color: 'hover:text-gray-400' },
   ];
 
