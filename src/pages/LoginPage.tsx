@@ -3,12 +3,12 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
-import { 
-  AlertTriangle, 
-  RefreshCw, 
-  Mail, 
-  Lock, 
-  Eye, 
+import {
+  AlertTriangle,
+  RefreshCw,
+  Mail,
+  Lock,
+  Eye,
   EyeOff,
   Sparkles,
   CheckCircle2,
@@ -22,19 +22,19 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { login, isLoading, error, connectionStatus, resendConfirmationEmail, initAuth } = useAuthStore();
-  
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const [resendSuccess, setResendSuccess] = useState(false);
-  
+
   const from = location.state?.from?.pathname || '/dashboard';
-  
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setResendSuccess(false);
-    
+
     try {
       await login(email, password);
       navigate(from, { replace: true });
@@ -58,14 +58,14 @@ const LoginPage = () => {
 
   const isEmailNotConfirmed = error?.includes('Email not confirmed');
   const isConnectionError = connectionStatus === 'disconnected' || error?.includes('servidor') || error?.includes('Servidor');
-  
+
   return (
     <>
       <Helmet>
         <title>Login - Orientohub</title>
         <meta name="description" content="Faça login na plataforma Orientohub e acelere sua startup" />
       </Helmet>
-      
+
       <div className="min-h-screen w-full overflow-hidden bg-gradient-to-br from-black via-gray-900 to-black relative flex items-center justify-center">
         {/* Animated background */}
         <div className="absolute inset-0 overflow-hidden">
@@ -91,12 +91,12 @@ const LoginPage = () => {
               transition={{ duration: 0.8 }}
             >
               <Link to="/" className="inline-block mb-8">
-               <img 
-               src="/orientohub.png" 
-               alt="Orientohub" 
-               className="h-10 w-auto"
-         />
-        </Link>
+                <img
+                  src="/orientohub.png"
+                  alt="Orientohub"
+                  className="h-10 w-auto"
+                />
+              </Link>
 
               <h1 className="text-5xl md:text-6xl font-bold text-white mb-6 leading-tight">
                 Bem-vindo de{' '}
@@ -109,47 +109,31 @@ const LoginPage = () => {
                 Acesse sua conta e continue transformando sua ideia em um negócio de sucesso.
               </p>
 
-              {/* Features */}
-              <div className="space-y-4">
-                {[
-                  'Acesso a frameworks exclusivos',
-                  'Comunidade ativa de founders',
-                  'Mentorias e networking',
-                  'Gamificação e conquistas'
-                ].map((feature, index) => (
-                  <motion.div
-                    key={index}
-                    className="flex items-center gap-3"
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.3 + index * 0.1 }}
-                  >
-                    <div className="w-6 h-6 bg-primary-500/20 rounded-full flex items-center justify-center">
-                      <CheckCircle2 className="w-4 h-4 text-primary-500" />
-                    </div>
-                    <span className="text-gray-300">{feature}</span>
-                  </motion.div>
-                ))}
-              </div>
+              {/* Launch Message */}
+              <div className="relative p-8 rounded-2xl bg-gradient-to-br from-primary-500/10 to-primary-600/5 backdrop-blur-sm border-2 border-primary-500/30 overflow-hidden">
+                {/* Animated background glow */}
+                <div className="absolute inset-0 bg-gradient-to-r from-primary-500/0 via-primary-500/10 to-primary-500/0 animate-pulse" />
 
-              {/* Stats */}
-              <div className="grid grid-cols-3 gap-6 mt-12">
-                {[
-                  { value: '500+', label: 'Startups' },
-                  { value: '1000+', label: 'Founders' },
-                  { value: '95%', label: 'Satisfação' }
-                ].map((stat, index) => (
-                  <motion.div
-                    key={index}
-                    className="text-center p-4 bg-white/5 rounded-xl border border-primary-500/20 backdrop-blur-sm"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.6 + index * 0.1 }}
-                  >
-                    <div className="text-2xl font-bold text-primary-500">{stat.value}</div>
-                    <div className="text-sm text-gray-400">{stat.label}</div>
-                  </motion.div>
-                ))}
+                <div className="relative z-10 space-y-4">
+                  <div className="inline-flex items-center gap-2 bg-primary-500/20 px-4 py-2 rounded-full mb-2">
+                    <Sparkles className="w-5 h-5 text-primary-500 animate-pulse" />
+                    <span className="text-primary-500 font-bold text-sm">PLATAFORMA PRONTA</span>
+                  </div>
+
+                  <h3 className="text-2xl md:text-3xl font-bold text-white leading-tight">
+                    Lançamento Oficial em Breve
+                  </h3>
+
+                  <p className="text-lg text-gray-300 leading-relaxed">
+                    Nossa plataforma está completa e pronta para transformar sua jornada empreendedora.
+                    Em breve, faremos o lançamento oficial com acesso total a todos os recursos.
+                  </p>
+
+                  <div className="flex items-center gap-3 pt-2">
+                    <CheckCircle2 className="w-5 h-5 text-primary-500 flex-shrink-0" />
+                    <span className="text-gray-300">Aguarde nosso anúncio oficial</span>
+                  </div>
+                </div>
               </div>
             </motion.div>
 
@@ -164,12 +148,12 @@ const LoginPage = () => {
                 {/* Mobile Logo */}
                 <div className="lg:hidden text-center mb-8">
                   <Link to="/" className="inline-block mb-8">
-                  <img 
-                  src="/orientohub.png" 
-                  alt="Orientohub" 
-                  className="h-10 w-auto"
-            />
-             </Link>
+                    <img
+                      src="/orientohub.png"
+                      alt="Orientohub"
+                      className="h-10 w-auto"
+                    />
+                  </Link>
                 </div>
 
                 {/* Header */}
@@ -224,7 +208,7 @@ const LoginPage = () => {
                     animate={{ opacity: 1, y: 0 }}
                   >
                     <p className="text-sm text-red-400">{error}</p>
-                    
+
                     {isEmailNotConfirmed && (
                       <div className="mt-3 pt-3 border-t border-red-500/20">
                         <button
