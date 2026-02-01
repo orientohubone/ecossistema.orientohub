@@ -40,6 +40,7 @@ import PrivacyPage from './pages/PrivacyPage';
 import CookiesPage from './pages/CookiesPage';
 import NotFoundPage from './pages/NotFoundPage';
 import CalendarPage from './pages/CalendarPage';
+import TasksPage from './pages/TasksPage';
 import FounderDashboardPage from './pages/FounderDashboardPage';
 
 // Auth
@@ -107,6 +108,7 @@ function App() {
           <Route path="frameworks" element={<FrameworksPage />} />
           <Route path="frameworks/:id/game" element={<FrameworkGamePage />} />
           <Route path="projects" element={<ProjectsPage />} />
+          <Route path="tarefas" element={<TasksPage />} />
           <Route path="jornada" element={<JourneyPage />} />
           <Route path="academy" element={<OrientoAcademyPage />} />
           <Route

@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import * as Tooltip from '@radix-ui/react-tooltip';
 import { Link, useLocation, useNavigate, Outlet } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -22,7 +22,9 @@ import {
   RefreshCw,
   Save,
   Check,
-  GraduationCap
+  GraduationCap,
+  Moon,
+  Sun
 } from 'lucide-react';
 import { useAuthStore } from '../stores/authStore';
 
@@ -33,9 +35,35 @@ const DashboardLayout = () => {
   const { user, logout } = useAuthStore();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
+  const [darkMode, setDarkMode] = useState(
+    localStorage.getItem('theme') === 'dark' || 
+    (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)
+  );
 
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
   const toggleCollapse = () => setCollapsed(!collapsed);
+
+  const toggleDarkMode = () => {
+    const newDarkMode = !darkMode;
+    setDarkMode(newDarkMode);
+    
+    if (newDarkMode) {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
+  };
+
+  useEffect(() => {
+    // Initialize dark mode
+    if (darkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [darkMode]);
 
   const handleLogout = async () => {
     await logout();
@@ -71,7 +99,11 @@ const DashboardLayout = () => {
                   <SidebarHeader user={user} />
                   <SearchBox />
                   <nav className="space-y-1">{navItems.map(item => <SidebarLink key={item.id} item={item} pathname={location.pathname} onNavigate={() => setSidebarOpen(false)} />)}</nav>
-                  <div className="mt-auto space-y-3"><PlanCTA compact /><LogoutButton onLogout={handleLogout} /></div>
+                  <div className="mt-auto space-y-3">
+                <DarkModeToggle />
+                <PlanCTA compact />
+                <LogoutButton onLogout={handleLogout} />
+              </div>
                 </div>
               </motion.div>
             </motion.aside>
@@ -100,7 +132,10 @@ const DashboardLayout = () => {
             <SearchBox collapsed={collapsed} />
             <nav className="flex-1 space-y-1 mt-2">{navItems.map(item => <SidebarLink key={item.id} item={item} pathname={location.pathname} collapsed={collapsed} />)}</nav>
             <div className="mt-4"><PlanCTA compact={collapsed} /></div>
-            <div className="mt-auto"><LogoutButton onLogout={handleLogout} compact={collapsed} /></div>
+            <div className="mt-auto">
+              <DarkModeToggle collapsed={collapsed} />
+              <LogoutButton onLogout={handleLogout} compact={collapsed} />
+            </div>
           </div>
         </aside>
 
@@ -148,9 +183,23 @@ const DashboardLayout = () => {
 const SidebarHeader = ({ user, collapsed = false }: { user?: any; collapsed?: boolean }) => {
   return (
     <div className={`flex items-center gap-3 ${collapsed ? 'justify-center' : ''}`}>
-      <div className={`h-10 w-10 rounded-full bg-primary-500 flex items-center justify-center text-black font-bold`}>
-        {user?.email?.charAt(0)?.toUpperCase() || 'U'}
+      <div className={`h-10 w-10 rounded-full overflow-hidden flex items-center justify-center text-black font-bold border-2 border-gray-200 dark:border-gray-600`}>
+      {user?.user_metadata?.avatar_url ? (
+        <img
+          src={user.user_metadata.avatar_url}
+          alt="Avatar"
+          className="w-full h-full object-cover"
+          onError={(e) => {
+            // Fallback para iniciais se a imagem falhar
+            e.currentTarget.style.display = 'none';
+            e.currentTarget.nextElementSibling?.classList.remove('hidden');
+          }}
+        />
+      ) : null}
+      <div className={`w-full h-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center ${user?.user_metadata?.avatar_url ? 'hidden' : ''}`}>
+        {user?.user_metadata?.name?.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2) || user?.email?.charAt(0)?.toUpperCase() || 'U'}
       </div>
+    </div>
       {!collapsed && (
         <div className="flex-1">
           <p className="text-sm font-medium text-gray-900 dark:text-white">{user?.user_metadata?.name || user?.email?.split('@')[0]}</p>
@@ -382,6 +431,74 @@ const PlanCTA = ({ compact = false }: { compact?: boolean }) => {
   );
 };
 
+const DarkModeToggle = ({ collapsed = false }: { collapsed?: boolean }) => {
+  const [darkMode, setDarkMode] = useState(
+    localStorage.getItem('theme') === 'dark' || 
+    (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)
+  );
+
+  const toggleDarkMode = () => {
+    const newDarkMode = !darkMode;
+    setDarkMode(newDarkMode);
+    
+    if (newDarkMode) {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
+  };
+
+  useEffect(() => {
+    if (darkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [darkMode]);
+
+  if (collapsed) {
+    return (
+      <Tooltip.Root delayDuration={100}>
+        <Tooltip.Trigger asChild>
+          <button
+            onClick={toggleDarkMode}
+            className="flex items-center justify-center w-10 h-10 rounded-lg text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+            title="Alternar tema"
+          >
+            {darkMode ? <Sun size={18} /> : <Moon size={18} />}
+          </button>
+        </Tooltip.Trigger>
+        <Tooltip.Portal>
+          <Tooltip.Content
+            side="right"
+            className="bg-gray-900 text-white px-2 py-1 rounded text-sm"
+            sideOffset={5}
+          >
+            Alternar tema
+          </Tooltip.Content>
+        </Tooltip.Portal>
+      </Tooltip.Root>
+    );
+  }
+
+  return (
+    <button
+      onClick={toggleDarkMode}
+      className="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors w-full"
+    >
+      <span className="flex items-center justify-center w-5 h-5">
+        {darkMode ? <Sun size={18} /> : <Moon size={18} />}
+      </span>
+      <span>Tema</span>
+      <span className="text-xs text-gray-500 dark:text-gray-400 ml-auto">
+        {darkMode ? 'Escuro' : 'Claro'}
+      </span>
+    </button>
+  );
+};
+
 const LogoutButton = ({ onLogout, compact = false }: { onLogout: () => void; compact?: boolean }) => {
   if (compact) return (<button onClick={onLogout} className="w-full p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"><LogOut size={18} /></button>);
   return (
@@ -395,7 +512,23 @@ const LogoutButton = ({ onLogout, compact = false }: { onLogout: () => void; com
 const UserMenu = ({ user }: { user?: any }) => {
   return (
     <div className="flex items-center gap-3">
-      <div className="h-8 w-8 rounded-full bg-primary-500 flex items-center justify-center text-black font-medium">{user?.email?.charAt(0)?.toUpperCase() || 'U'}</div>
+      <div className="h-8 w-8 rounded-full overflow-hidden flex items-center justify-center text-black font-medium border border-gray-200 dark:border-gray-600">
+      {user?.user_metadata?.avatar_url ? (
+        <img
+          src={user.user_metadata.avatar_url}
+          alt="Avatar"
+          className="w-full h-full object-cover"
+          onError={(e) => {
+            // Fallback para iniciais se a imagem falhar
+            e.currentTarget.style.display = 'none';
+            e.currentTarget.nextElementSibling?.classList.remove('hidden');
+          }}
+        />
+      ) : null}
+      <div className={`w-full h-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center text-xs ${user?.user_metadata?.avatar_url ? 'hidden' : ''}`}>
+        {user?.user_metadata?.name?.split(' ').map((n: string) => n[0]).join('').toUpperCase().slice(0, 2) || user?.email?.charAt(0)?.toUpperCase() || 'U'}
+      </div>
+    </div>
       <div className="hidden sm:flex flex-col text-sm">
         <span className="text-gray-700 dark:text-gray-200">{user?.user_metadata?.name || user?.email?.split('@')[0]}</span>
         <span className="text-xs text-gray-500 dark:text-gray-400">{user?.email}</span>

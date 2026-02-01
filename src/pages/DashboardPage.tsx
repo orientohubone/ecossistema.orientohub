@@ -1,16 +1,12 @@
-import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
-import { useAuthStore } from '../stores/authStore';
+import { dashboardService, type DashboardData } from '../services/dashboardService';
 import { 
-  BarChart2, 
   CheckSquare, 
   FileText, 
   Target, 
-  Award, 
   Zap,
-  TrendingUp,
   Rocket,
   Users,
   Calendar,
@@ -20,50 +16,92 @@ import {
   Flame,
   ChevronRight,
   Play,
-  BookOpen,
-  MessageSquare,
   Bell,
-  Settings,
   Sparkles,
-  ArrowRight,
-  Brain,
-  Lightbulb,
   Crown,
-  Gift,
-  Activity
+  Activity,
+  TrendingUp,
+  Award,
+  Lightbulb
 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 
 const DashboardPage = () => {
   const navigate = useNavigate();
-  const { t } = useTranslation();
-  const { user } = useAuthStore();
   const [selectedPhase, setSelectedPhase] = useState('validation');
+  const [dashboardData, setDashboardData] = useState<DashboardData | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   
-  // Mock data for dashboard
-  const userData = {
-    name:
-      user?.user_metadata?.name?.trim() ||
-      user?.user_metadata?.full_name?.trim() ||
-      user?.email?.split('@')[0] ||
-      'Founder',
-    avatar: user?.avatar || '',
-    level: 12,
-    currentXP: 2850,
-    nextLevelXP: 3500,
-    streak: 7,
-    totalPoints: 12450,
-    rank: 'Gold',
-    phase: 'validation'
+  // Carregar dados do dashboard
+  useEffect(() => {
+    const loadDashboardData = async () => {
+      try {
+        setIsLoading(true);
+        setError(null);
+        const data = await dashboardService.getDashboardData();
+        setDashboardData(data);
+        setSelectedPhase(data.userProfile.phase);
+      } catch (err: any) {
+        console.error('Error loading dashboard data:', err);
+        setError(err.message || 'Não foi possível carregar os dados do dashboard');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    loadDashboardData();
+  }, []);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-primary-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-gray-600 dark:text-gray-400">Carregando dashboard...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !dashboardData) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-red-600 dark:text-red-400 mb-4">{error || 'Dados não disponíveis'}</p>
+          <button 
+            onClick={() => window.location.reload()}
+            className="px-4 py-2 bg-primary-500 text-black rounded-lg hover:bg-primary-600 transition-colors"
+          >
+            Tentar novamente
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // Funções para saudação personalizada
+  const getGreeting = () => {
+    const hour = new Date().getHours();
+    if (hour < 12) return 'Bom dia';
+    if (hour < 18) return 'Boa tarde';
+    return 'Boa noite';
   };
 
+  const getMotivationalMessage = (level: number) => {
+    if (level <= 3) return '🌟 Sua jornada está começando! Cada passo conta!';
+    if (level <= 6) return '🚀 Você está construindo momentum! Continue assim!';
+    if (level <= 9) return '🔥 Seu progresso é impressionante! Não pare agora!';
+    return '⭐ Você é uma inspiração! Continue brilhando!';
+  };
+
+  const userData = dashboardData.userProfile;
   const xpPercentage = (userData.currentXP / userData.nextLevelXP) * 100;
-  
   const quickStats = [
     {
       icon: Trophy,
       label: 'Conquistas',
-      value: '24/50',
+      value: `${dashboardData.stats.achievements.completed}/${dashboardData.stats.achievements.total}`,
       color: 'from-yellow-400 to-yellow-600',
       bgColor: 'bg-yellow-500/10',
       change: '+3 esta semana'
@@ -71,199 +109,91 @@ const DashboardPage = () => {
     {
       icon: Flame,
       label: 'Sequência',
-      value: `${userData.streak} dias`,
+      value: `${dashboardData.stats.streak} dias`,
       color: 'from-orange-400 to-red-600',
       bgColor: 'bg-orange-500/10',
-      change: 'Recorde pessoal!'
+      change: dashboardData.stats.streak >= 5 ? 'Recorde pessoal!' : 'Continue assim!'
     },
     {
       icon: Target,
       label: 'Metas Concluídas',
-      value: '18/25',
+      value: `${dashboardData.stats.completedGoals.completed}/${dashboardData.stats.completedGoals.total}`,
       color: 'from-blue-400 to-blue-600',
       bgColor: 'bg-blue-500/10',
-      change: '72% completo'
+      change: `${Math.round((dashboardData.stats.completedGoals.completed / dashboardData.stats.completedGoals.total) * 100)}% completo`
     },
     {
       icon: Users,
       label: 'Networking',
-      value: '43',
+      value: dashboardData.stats.networking.toString(),
       color: 'from-purple-400 to-purple-600',
       bgColor: 'bg-purple-500/10',
       change: '+5 conexões'
     }
   ];
 
-  const recentTasks = [
-    { 
-      id: 1, 
-      title: 'Completar Business Model Canvas', 
-      completed: true,
-      xp: 150,
-      category: 'Framework',
-      priority: 'high'
-    },
-    { 
-      id: 2, 
-      title: 'Entrevistar 5 clientes potenciais', 
-      completed: true,
-      xp: 200,
-      category: 'Validação',
-      priority: 'high'
-    },
-    { 
-      id: 3, 
-      title: 'Criar proposta de valor', 
-      completed: false,
-      xp: 100,
-      category: 'Framework',
-      priority: 'medium',
-      progress: 60
-    },
-    { 
-      id: 4, 
-      title: 'Definir métricas principais (KPIs)', 
-      completed: false,
-      xp: 120,
-      category: 'Estratégia',
-      priority: 'medium',
-      progress: 30
-    },
-    { 
-      id: 5, 
-      title: 'Mapear jornada do cliente', 
-      completed: false,
-      xp: 180,
-      category: 'Framework',
-      priority: 'low',
-      progress: 0
-    }
-  ];
+  // Mapeamento de strings para componentes de ícone
+  const iconMap: { [key: string]: any } = {
+    'Trophy': Trophy,
+    'Flame': Flame,
+    'Target': Target,
+    'Users': Users,
+    'Award': Award,
+    'Rocket': Rocket,
+    'Lightbulb': Lightbulb,
+    'TrendingUp': TrendingUp,
+    'Activity': Activity
+  };
 
-  const frameworks = [
-    { 
-      id: 1, 
-      name: 'Business Model Canvas', 
-      progress: 85,
-      icon: '🎯',
-      status: 'Quase lá!',
-      lastUpdate: 'Há 2 horas'
-    },
-    { 
-      id: 2, 
-      name: 'Mapa de Empatia', 
-      progress: 100,
-      icon: '💭',
-      status: 'Completo',
-      lastUpdate: 'Ontem',
-      badge: 'new'
-    },
-    { 
-      id: 3, 
-      name: 'Jornada do Cliente', 
-      progress: 45,
-      icon: '🗺️',
-      status: 'Em andamento',
-      lastUpdate: 'Há 1 dia'
-    },
-    { 
-      id: 4, 
-      name: 'Proposta de Valor', 
-      progress: 30,
-      icon: '💎',
-      status: 'Iniciado',
-      lastUpdate: 'Há 3 dias'
+  // Função para lidar com clique em tarefas
+  const handleTaskClick = async (task: any) => {
+    if (!task.completed) {
+      try {
+        // Navegar para a página do projeto se tiver project_id
+        if (task.project_id) {
+          navigate(`/projetos/${task.project_id}`);
+        } else {
+          // Se não tiver projeto, navegar para página de tarefas
+          navigate('/tarefas');
+        }
+      } catch (error) {
+        console.error('Error navigating to task:', error);
+      }
     }
-  ];
+  };
 
-  const upcomingEvents = [
-    {
-      id: 1,
-      title: 'Mentoria com João Silva',
-      type: 'Mentoria',
-      date: 'Hoje, 15:00',
-      duration: '45 min',
-      avatar: 'https://ui-avatars.com/api/?name=João+Silva&background=FFD700&color=000'
-    },
-    {
-      id: 2,
-      title: 'Workshop: Validação de Problemas',
-      type: 'Workshop',
-      date: 'Amanhã, 10:00',
-      duration: '2h',
-      avatar: 'https://ui-avatars.com/api/?name=Workshop&background=6366F1&color=fff'
-    },
-    {
-      id: 3,
-      title: 'Networking com Investidores',
-      type: 'Evento',
-      date: '15 Fev, 18:00',
-      duration: '3h',
-      avatar: 'https://ui-avatars.com/api/?name=Networking&background=10B981&color=fff'
+  // Função para lidar com clique em frameworks
+  const handleFrameworkClick = (framework: any) => {
+    if (framework.project_id) {
+      navigate(`/projetos/${framework.project_id}`);
+    } else {
+      navigate('/frameworks');
     }
-  ];
+  };
 
-  const recentActivity = [
-    {
-      id: 1,
-      action: 'Completou',
-      target: 'Business Model Canvas',
-      xp: 150,
-      time: 'Há 2 horas',
-      icon: Award
-    },
-    {
-      id: 2,
-      action: 'Desbloqueou conquista',
-      target: 'Validador de Ideias',
-      xp: 50,
-      time: 'Há 5 horas',
-      icon: Trophy
-    },
-    {
-      id: 3,
-      action: 'Conectou com',
-      target: 'Maria Santos (Investidora)',
-      xp: 25,
-      time: 'Ontem',
-      icon: Users
+  // Função para lidar com recomendações
+  const handleRecommendationClick = (recommendation: any) => {
+    switch (recommendation.action) {
+      case 'Criar projeto':
+        navigate('/projetos/novo');
+        break;
+      case 'Começar agora':
+        navigate('/dashboard/frameworks');
+        break;
+      case 'Ver progresso':
+        navigate('/perfil');
+        break;
+      default:
+        navigate('/dashboard');
     }
-  ];
+  };
 
-  const recommendations = [
-    {
-      id: 1,
-      title: 'Complete sua validação de problema',
-      description: 'Você está a 2 entrevistas de desbloquear o próximo nível',
-      action: 'Começar agora',
-      icon: Target,
-      color: 'primary'
-    },
-    {
-      id: 2,
-      title: 'Participe do workshop de hoje',
-      description: 'Aprenda técnicas avançadas de validação com especialistas',
-      action: 'Ver detalhes',
-      icon: Lightbulb,
-      color: 'blue'
-    },
-    {
-      id: 3,
-      title: 'Conecte-se com outros founders',
-      description: '15 founders na sua área estão online agora',
-      action: 'Explorar',
-      icon: Users,
-      color: 'purple'
-    }
-  ];
-
-  const phases = [
-    { id: 'ideation', name: 'Ideação', icon: Lightbulb, active: false, completed: true },
-    { id: 'validation', name: 'Validação', icon: Target, active: true, completed: false },
-    { id: 'mvp', name: 'MVP', icon: Rocket, active: false, completed: false },
-    { id: 'traction', name: 'Tração', icon: TrendingUp, active: false, completed: false },
-    { id: 'growth', name: 'Crescimento', icon: Activity, active: false, completed: false }
-  ];
+  const recentTasks = dashboardData.tasks;
+  const frameworks = dashboardData.frameworks;
+  const upcomingEvents = dashboardData.events;
+  const recentActivity = dashboardData.activity;
+  const recommendations = dashboardData.recommendations;
+  const phases = dashboardData.phases;
 
   return (
     <>
@@ -287,55 +217,85 @@ const DashboardPage = () => {
 
             <div className="relative z-10 flex items-center justify-between">
               <div className="flex items-center gap-6">
-                <div className="relative">
-                  <img
-                    src={userData.avatar || `https://ui-avatars.com/api/?name=${userData.name}&size=80&background=FFD700&color=000&bold=true`}
-                    alt={userData.name}
-                    className="w-20 h-20 rounded-full border-4 border-primary-500 shadow-xl"
-                  />
-                  <div className="absolute -bottom-2 -right-2 bg-primary-500 text-black w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm shadow-lg">
+                <div className="relative group">
+                  {/* Avatar com efeito de hover e fallback melhorado */}
+                  <div className="relative overflow-hidden rounded-full border-4 border-primary-500 shadow-xl transition-all duration-300 group-hover:scale-105 group-hover:border-primary-400">
+                    {userData.avatar ? (
+                      <img
+                        src={userData.avatar}
+                        alt={userData.name}
+                        className="w-20 h-20 object-cover"
+                        onError={(e) => {
+                          // Fallback para avatar gerado se a imagem falhar
+                          e.currentTarget.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(userData.name)}&size=80&background=FFD700&color=000&bold=true&format=png`;
+                        }}
+                      />
+                    ) : (
+                      <div className="w-20 h-20 bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center">
+                        <span className="text-2xl font-bold text-white">
+                          {userData.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                  
+                  {/* Badge de nível com animação */}
+                  <div className="absolute -bottom-2 -right-2 bg-gradient-to-r from-primary-500 to-primary-600 text-black w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm shadow-lg border-2 border-gray-900 transition-all duration-300 group-hover:scale-110">
                     {userData.level}
                   </div>
+                  
+                  {/* Efeito de brilho no hover */}
+                  <div className="absolute inset-0 rounded-full bg-primary-500/20 scale-0 group-hover:scale-100 transition-transform duration-300 -z-10" />
                 </div>
 
-                <div>
-                  <h1 className="text-3xl font-bold text-white mb-2">
-                    Bem-vindo de volta, <span className="text-primary-500">{userData.name}</span>! 🚀
-                  </h1>
-                  <p className="text-gray-300 text-lg">
-                    Continue sua jornada empreendedora. Você está indo muito bem!
-                  </p>
+                <div className="space-y-3">
+                  {/* Saudação personalizada com base no horário */}
+                  <div>
+                    <h1 className="text-3xl font-bold text-white mb-1">
+                      {getGreeting()}, <span className="text-primary-400">{userData.name}</span>! 🚀
+                    </h1>
+                    <p className="text-gray-300 text-lg">
+                      {getMotivationalMessage(userData.level)}
+                    </p>
+                  </div>
 
-                  {/* XP Bar */}
-                  <div className="mt-4 max-w-md">
+                  {/* XP Bar melhorada */}
+                  <div className="max-w-md">
                     <div className="flex items-center justify-between text-sm text-gray-400 mb-2">
                       <span className="flex items-center gap-2">
                         <Star className="w-4 h-4 text-primary-500" />
-                        Nível {userData.level}
+                        <span className="text-white font-medium">Nível {userData.level}</span>
                       </span>
-                      <span>{userData.currentXP} / {userData.nextLevelXP} XP</span>
+                      <span className="text-primary-400 font-medium">{userData.currentXP} / {userData.nextLevelXP} XP</span>
                     </div>
-                    <div className="h-3 bg-gray-700 rounded-full overflow-hidden">
+                    <div className="h-3 bg-gray-700 rounded-full overflow-hidden relative">
                       <motion.div
-                        className="h-full bg-gradient-to-r from-primary-400 to-primary-600 rounded-full"
                         initial={{ width: 0 }}
                         animate={{ width: `${xpPercentage}%` }}
-                        transition={{ duration: 1, delay: 0.5 }}
-                      />
+                        transition={{ duration: 1.5, ease: "easeOut" }}
+                        className="h-full bg-gradient-to-r from-primary-500 to-primary-400 rounded-full relative"
+                      >
+                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-pulse" />
+                      </motion.div>
                     </div>
                     <p className="text-xs text-gray-400 mt-1">
-                      Faltam {userData.nextLevelXP - userData.currentXP} XP para o próximo nível
+                      🎯 Faltam {userData.nextLevelXP - userData.currentXP} XP para o próximo nível
                     </p>
                   </div>
                 </div>
               </div>
 
-              {/* Rank Badge */}
+              {/* Rank Card melhorado */}
               <div className="hidden lg:block">
-                <div className="bg-gradient-to-br from-yellow-400 to-yellow-600 p-6 rounded-2xl text-center shadow-2xl">
-                  <Crown className="w-12 h-12 text-black mx-auto mb-2" />
-                  <p className="text-black font-bold text-lg">Rank {userData.rank}</p>
-                  <p className="text-black/80 text-sm">Top 10%</p>
+                <div className="relative group">
+                  <div className="absolute inset-0 bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-2xl blur-lg opacity-50 group-hover:opacity-70 transition-opacity" />
+                  <div className="relative bg-gradient-to-br from-yellow-400 to-yellow-600 p-6 rounded-2xl text-center shadow-2xl border border-yellow-300/20 transition-all duration-300 group-hover:scale-105">
+                    <div className="relative">
+                      <Crown className="w-12 h-12 text-black mx-auto mb-2 animate-pulse" />
+                      <p className="text-black font-bold text-lg">Rank {userData.rank}</p>
+                      <p className="text-black/80 text-sm">Top 10%</p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -355,7 +315,13 @@ const DashboardPage = () => {
                 >
                   <div className="flex items-start justify-between mb-4">
                     <div className={`w-12 h-12 ${stat.bgColor} rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform`}>
-                      <Icon className={`w-6 h-6 bg-gradient-to-br ${stat.color} bg-clip-text text-transparent`} style={{ WebkitTextFillColor: 'transparent', backgroundClip: 'text' }} />
+                      <Icon className={`w-6 h-6 ${
+                        stat.bgColor.includes('orange') ? 'text-orange-600' :
+                        stat.bgColor.includes('yellow') ? 'text-yellow-600' :
+                        stat.bgColor.includes('blue') ? 'text-blue-600' :
+                        stat.bgColor.includes('purple') ? 'text-purple-600' :
+                        'text-white'
+                      }`} />
                     </div>
                   </div>
                   <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">
@@ -393,7 +359,7 @@ const DashboardPage = () => {
             <div className="relative">
               <div className="flex items-center justify-between">
                 {phases.map((phase, index) => {
-                  const Icon = phase.icon;
+                  const Icon = iconMap[phase.icon] || Lightbulb; // Fallback para Lightbulb
                   return (
                     <div key={phase.id} className="flex flex-col items-center flex-1 relative">
                       {/* Connector Line */}
@@ -412,7 +378,7 @@ const DashboardPage = () => {
                           : 'bg-gray-200 dark:bg-gray-700 border-gray-300 dark:border-gray-600'
                       }`}>
                         <Icon className={`w-6 h-6 ${
-                          phase.active || phase.completed ? 'text-white' : 'text-gray-500'
+                          phase.active || phase.completed ? 'text-white' : 'text-gray-700 dark:text-gray-500'
                         }`} />
                       </div>
 
@@ -514,7 +480,7 @@ const DashboardPage = () => {
                             {!task.completed && (
                               <button
                                 className="px-4 py-2 bg-primary-500 hover:bg-primary-600 text-black text-sm font-medium rounded-lg opacity-0 group-hover:opacity-100 transition-opacity"
-                                onClick={() => alert(`Inicie a tarefa: ${task.title}`)}
+                                onClick={() => handleTaskClick(task)}
                               >
                                 Começar
                               </button>
@@ -544,7 +510,7 @@ const DashboardPage = () => {
 
                 <button
                   className="mt-4 w-full py-3 border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-xl text-gray-600 dark:text-gray-400 hover:border-primary-500 hover:text-primary-500 transition-all duration-300 font-medium"
-                  onClick={() => navigate('/tarefas')}
+                  onClick={() => navigate('/dashboard/tarefas')}
                 >
                   + Ver todas as tarefas
                 </button>
@@ -564,7 +530,7 @@ const DashboardPage = () => {
                   </h2>
                   <button
                     className="text-primary-500 hover:text-primary-600 font-medium text-sm flex items-center gap-1"
-                    onClick={() => navigate('/frameworks')}
+                    onClick={() => navigate('/dashboard/frameworks')}
                   >
                     Ver todos
                     <ChevronRight className="w-4 h-4" />
@@ -572,7 +538,9 @@ const DashboardPage = () => {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {frameworks.map((framework, index) => (
+                  {frameworks.map((framework, index) => {
+                    const FrameworkIcon = iconMap[framework.icon] || Target;
+                    return (
                     <motion.div
                       key={framework.id}
                       initial={{ opacity: 0, scale: 0.9 }}
@@ -582,7 +550,9 @@ const DashboardPage = () => {
                     >
                       <div className="flex items-start justify-between mb-3">
                         <div className="flex items-center gap-3">
-                          <span className="text-3xl">{framework.icon}</span>
+                          <div className="text-3xl">
+                            <FrameworkIcon />
+                          </div>
                           <div>
                             <h3 className="font-bold text-gray-900 dark:text-white group-hover:text-primary-500 transition-colors">
                               {framework.name}
@@ -592,7 +562,7 @@ const DashboardPage = () => {
                             </p>
                           </div>
                         </div>
-                        {framework.badge === 'new' && (
+                        {(framework as any).badge === 'new' && (
                           <span className="px-2 py-1 bg-green-500 text-white text-xs font-bold rounded-full">
                             NOVO
                           </span>
@@ -618,13 +588,14 @@ const DashboardPage = () => {
 
                       <button
                         className="mt-4 w-full py-2 bg-primary-500/10 hover:bg-primary-500 text-primary-600 hover:text-black rounded-lg font-medium transition-all duration-300 flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100"
-                        onClick={() => alert(`Continuar framework: ${framework.name}`)}
+                        onClick={() => handleFrameworkClick(framework)}
                       >
                         <Play className="w-4 h-4" />
                         Continuar
                       </button>
                     </motion.div>
-                  ))}
+                  );
+                })}
                 </div>
               </motion.div>
             </div>
@@ -703,7 +674,7 @@ const DashboardPage = () => {
 
                 <div className="space-y-3">
                   {recommendations.map((rec, index) => {
-                    const Icon = rec.icon;
+                    const Icon = iconMap[rec.icon] || Target; // Fallback para Target
                     return (
                       <motion.div
                         key={rec.id}
@@ -719,9 +690,9 @@ const DashboardPage = () => {
                             'bg-purple-500/10'
                           }`}>
                             <Icon className={`w-5 h-5 ${
-                              rec.color === 'primary' ? 'text-primary-500' :
-                              rec.color === 'blue' ? 'text-blue-500' :
-                              'text-purple-500'
+                              rec.color === 'primary' ? 'text-primary-600 dark:text-primary-500' :
+                              rec.color === 'blue' ? 'text-blue-600 dark:text-blue-500' :
+                              'text-purple-600 dark:text-purple-500'
                             }`} />
                           </div>
                           <div className="flex-1">
@@ -735,7 +706,7 @@ const DashboardPage = () => {
                             rec.color === 'blue' ? 'bg-blue-500 hover:bg-blue-600 text-white' :
                             'bg-purple-500 hover:bg-purple-600 text-white'
                           }`}
-                          onClick={() => alert(`Ação: ${rec.action}`)}
+                          onClick={() => handleRecommendationClick(rec)}
                         >
                           {rec.action}
                         </button>
@@ -759,7 +730,7 @@ const DashboardPage = () => {
 
                 <div className="space-y-4">
                   {recentActivity.map((activity, index) => {
-                    const Icon = activity.icon;
+                    const Icon = iconMap[activity.icon] || Award; // Fallback para Award
                     return (
                       <motion.div
                         key={activity.id}
@@ -769,7 +740,7 @@ const DashboardPage = () => {
                         className="flex items-start gap-3 pb-4 border-b border-gray-200 dark:border-gray-700 last:border-0 last:pb-0"
                       >
                         <div className="w-8 h-8 bg-primary-500/10 rounded-full flex items-center justify-center flex-shrink-0">
-                          <Icon className="w-4 h-4 text-primary-500" />
+                          <Icon className="w-4 h-4 text-primary-600 dark:text-primary-500" />
                         </div>
                         <div className="flex-1">
                           <p className="text-sm">
