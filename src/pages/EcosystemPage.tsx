@@ -223,8 +223,7 @@ const EcosystemPage = () => {
           <motion.div
             className="text-center mb-16"
             initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease: "easeOut" }}
           >
             <div className="inline-flex items-center gap-2 bg-primary-500/10 border border-primary-500/30 px-4 py-2 rounded-full mb-6">
@@ -284,8 +283,7 @@ const EcosystemPage = () => {
           <motion.div
             className="text-center mb-16"
             initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease: "easeOut" }}
           >
             <div className="inline-flex items-center gap-2 bg-blue-500/10 border border-blue-500/30 px-4 py-2 rounded-full mb-6">
@@ -337,8 +335,7 @@ const EcosystemPage = () => {
           <motion.div
             className="text-center mb-16"
             initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease: "easeOut" }}
           >
             <div className="inline-flex items-center gap-2 bg-green-500/10 border border-green-500/30 px-4 py-2 rounded-full mb-6">
@@ -441,8 +438,7 @@ const EcosystemPage = () => {
           <motion.div
             className="mt-12 text-center"
             initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true, margin: "-100px" }}
+            animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.6, ease: "easeOut" }}
           >
             <div className="inline-flex items-center gap-3 bg-primary-500/10 border border-primary-500/30 px-6 py-3 rounded-full">
@@ -461,8 +457,7 @@ const EcosystemPage = () => {
           <motion.div
             className="text-center mb-16"
             initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease: "easeOut" }}
           >
             <div className="inline-flex items-center gap-2 bg-purple-500/10 border border-purple-500/30 px-4 py-2 rounded-full mb-6">
@@ -544,8 +539,7 @@ const EcosystemPage = () => {
           <motion.div
             className="text-center mb-16"
             initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease: "easeOut" }}
           >
             <div className="inline-flex items-center gap-2 bg-primary-500/20 border-2 border-primary-500/40 px-4 py-2 rounded-full mb-6">
@@ -593,8 +587,7 @@ const EcosystemPage = () => {
           <motion.div
             className="text-center mb-16"
             initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease: "easeOut" }}
           >
             <h2 className="text-4xl md:text-5xl font-bold mb-6">Jornada do Founder</h2>
@@ -634,18 +627,6 @@ const EcosystemPage = () => {
             />
           </div>
 
-          <motion.div
-            className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.5, delay: 0.6, ease: "easeOut" }}
-          >
-            <StatCard number="50+" label="Startups Aceleradas" />
-            <StatCard number="R$ 15M+" label="Investimento Captado" />
-            <StatCard number="200+" label="Founders na Comunidade" />
-            <StatCard number="95%" label="Taxa de Sucesso" />
-          </motion.div>
         </div>
       </section>
 
@@ -741,8 +722,7 @@ const FeatureCard = ({ icon, title, description, delay }: FeatureCardProps) => {
     <motion.div
       className="group bg-gradient-to-br from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 p-6 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-primary-500 dark:hover:border-primary-500 transition-all duration-300 hover:shadow-xl"
       initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-100px" }}
+      animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay, ease: "easeOut" }}
       whileHover={{ y: -5 }}
     >
@@ -768,8 +748,7 @@ const PlatformCard = ({ icon, title, description, features, delay }: PlatformCar
     <motion.div
       className="bg-white dark:bg-gray-800 p-8 rounded-2xl border-2 border-blue-500/20 hover:border-blue-500 transition-all duration-300 hover:shadow-xl hover:shadow-blue-500/10"
       initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-100px" }}
+      animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay, ease: "easeOut" }}
       whileHover={{ y: -8 }}
     >
@@ -807,8 +786,7 @@ const MVPCard = ({ name, description, focus, icon, color, delay, link, status = 
     <motion.div
       className="group relative min-h-[520px] rounded-2xl overflow-hidden"
       initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-100px" }}
+      animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay, ease: "easeOut" }}
       whileHover={{ y: -8 }}
     >
@@ -913,8 +891,7 @@ const VerticalCard = ({ logo, icon, title, emoji, description, features, status,
   <motion.div
     className="group relative"
     initial={{ opacity: 0, y: 20 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true, margin: "-100px" }}
+    animate={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.5, delay, ease: "easeOut" }}
   >
     <div className="absolute -inset-0.5 bg-gradient-to-r from-primary-500 to-purple-600 rounded-2xl blur opacity-0 group-hover:opacity-100 transition duration-500" />
@@ -996,8 +973,7 @@ const BusinessModelCard = ({ icon, title, description, delay }: BusinessModelCar
     <motion.div
       className="bg-white/5 backdrop-blur-sm p-6 rounded-xl border border-white/10 hover:border-primary-500/50 transition-all duration-300 hover:bg-white/10"
       initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-100px" }}
+      animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay, ease: "easeOut" }}
       whileHover={{ y: -5 }}
     >
@@ -1023,8 +999,7 @@ const JourneyStep = ({ number, title, description, highlights, delay }: JourneyS
     <motion.div
       className="relative h-[360px] w-full [perspective:2000px]"
       initial={{ opacity: 0, y: 10 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
+      animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay, ease: "easeOut" }}
       onMouseEnter={() => setIsFlipped(true)}
       onMouseLeave={() => setIsFlipped(false)}
@@ -1143,15 +1118,6 @@ const JourneyStep = ({ number, title, description, highlights, delay }: JourneyS
               </div>
             </div>
 
-            {/* Footer */}
-            <div className="relative z-10 mt-auto border-t border-gray-200 dark:border-gray-700 pt-3">
-              <div className="group/start relative flex items-center justify-between rounded-lg p-2 transition-all duration-300 bg-gray-100 dark:bg-gray-800 hover:bg-primary-50 dark:hover:bg-primary-900/20 hover:scale-[1.02] hover:cursor-pointer">
-                <span className="text-xs font-semibold text-gray-900 dark:text-white group-hover/start:text-primary-500 transition-colors duration-300">
-                  Saiba Mais
-                </span>
-                <ArrowRight className="h-3.5 w-3.5 text-primary-500 transition-all duration-300 group-hover/start:translate-x-1" />
-              </div>
-            </div>
           </div>
         </div>
       </div>
@@ -1246,8 +1212,7 @@ const CTACard = ({ title, description, features, ctaText, ctaLink, icon: Icon, d
         : 'border-gray-700 hover:border-primary-500 hover:shadow-primary-500/10'
         }`}
       initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-100px" }}
+      animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay, ease: "easeOut" }}
       whileHover={{ y: -8, scale: featured ? 1.05 : 1.02 }}
     >

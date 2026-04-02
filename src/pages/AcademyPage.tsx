@@ -83,16 +83,6 @@ const AcademyPage = () => {
                 <Sparkles size={18} />
               </Link>
             </motion.div>
-            <motion.div
-              className="flex items-center justify-center gap-4"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6 }}
-            >
-              <div className="h-1 w-20 bg-primary-500 rounded-full" />
-              <Sparkles className="w-6 h-6 text-primary-500" />
-              <div className="h-1 w-20 bg-primary-500 rounded-full" />
-            </motion.div>
           </div>
         </div>
       </section>
