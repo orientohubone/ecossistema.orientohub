@@ -6,20 +6,28 @@ import { AnimatePresence } from 'framer-motion';
 import MainLayout from './layouts/MainLayout';
 import DashboardLayout from './layouts/DashboardLayout';
 
-// Pages
-const HomePage = lazy(() => import('./pages/HomePage'));
-const ContactPage = lazy(() => import('./pages/ContactPage'));
-const ManifestoPage = lazy(() => import('./pages/ManifestoPage'));
-const GlossaryPage = lazy(() => import('./pages/GlossaryPage'));
-const AboutPage = lazy(() => import('./pages/AboutPage'));
-const EcosystemPage = lazy(() => import('./pages/EcosystemPage'));
-const AcademyPage = lazy(() => import('./pages/AcademyPage'));
-const PricingPage = lazy(() => import('./pages/PricingPage'));
-const CheckoutPage = lazy(() => import('./pages/CheckoutPage'));
-const CheckoutSuccessPage = lazy(() => import('./pages/CheckoutSuccessPage'));
-const LoginPage = lazy(() => import('./pages/LoginPage'));
-const SignupPage = lazy(() => import('./pages/SignupPage'));
-const AcademyLoginPage = lazy(() => import('./pages/AcademyLoginPage'));
+// Public Pages
+import HomePage from './pages/HomePage';
+import ContactPage from './pages/ContactPage';
+import ManifestoPage from './pages/ManifestoPage';
+import GlossaryPage from './pages/GlossaryPage';
+import AboutPage from './pages/AboutPage';
+import EcosystemPage from './pages/EcosystemPage';
+import AcademyPage from './pages/AcademyPage';
+import PricingPage from './pages/PricingPage';
+import CheckoutPage from './pages/CheckoutPage';
+import CheckoutSuccessPage from './pages/CheckoutSuccessPage';
+import LoginPage from './pages/LoginPage';
+import SignupPage from './pages/SignupPage';
+import AcademyLoginPage from './pages/AcademyLoginPage';
+import BlogPage from './pages/BlogPage';
+import BlogPostPage from './pages/BlogPostPage';
+import TermsPage from './pages/TermsPage';
+import PrivacyPage from './pages/PrivacyPage';
+import CookiesPage from './pages/CookiesPage';
+import NotFoundPage from './pages/NotFoundPage';
+
+// Protected Pages
 const DashboardPage = lazy(() => import('./pages/DashboardPage'));
 const OrientoAcademyPage = lazy(() => import('./pages/OrientoAcademyPage'));
 const PedagogicPanelPage = lazy(() => import('./pages/PedagogicPanelPage'));
@@ -31,12 +39,6 @@ const JourneyPage = lazy(() => import('./pages/JourneyPage'));
 const SolutionsPage = lazy(() => import('./pages/SolutionsPage'));
 const CommunityPage = lazy(() => import('./pages/CommunityPage'));
 const SettingsPage = lazy(() => import('./pages/SettingsPage'));
-const BlogPage = lazy(() => import('./pages/BlogPage'));
-const BlogPostPage = lazy(() => import('./pages/BlogPostPage'));
-const TermsPage = lazy(() => import('./pages/TermsPage'));
-const PrivacyPage = lazy(() => import('./pages/PrivacyPage'));
-const CookiesPage = lazy(() => import('./pages/CookiesPage'));
-const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 const CalendarPage = lazy(() => import('./pages/CalendarPage'));
 const TasksPage = lazy(() => import('./pages/TasksPage'));
 const FounderDashboardPage = lazy(() => import('./pages/FounderDashboardPage'));
@@ -48,14 +50,10 @@ import FounderRoute from './components/auth/FounderRoute';
 import FounderDashboardRoute from './components/auth/FounderDashboardRoute';
 import ProtectedRouteSkeleton from './components/auth/ProtectedRouteSkeleton';
 
-const PublicRouteFallback = () => (
+const PublicLoadingFallback = () => (
   <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
-    <div className="route-skeleton-block h-12 w-12 rounded-full" />
+    <div className="h-10 w-10 rounded-full border-2 border-primary-500/30 border-t-primary-500 animate-spin" />
   </div>
-);
-
-const withPublicSuspense = (element: React.ReactNode) => (
-  <Suspense fallback={<PublicRouteFallback />}>{element}</Suspense>
 );
 
 const withProtectedSuspense = (element: React.ReactNode) => (
@@ -80,7 +78,7 @@ function App() {
     return location.pathname.startsWith('/dashboard') ? (
       <ProtectedRouteSkeleton />
     ) : (
-      <PublicRouteFallback />
+      <PublicLoadingFallback />
     );
   }
 
@@ -88,24 +86,24 @@ function App() {
     <AnimatePresence mode="wait">
       <Routes>
         <Route path="/" element={<MainLayout />}>
-          <Route index element={withPublicSuspense(<HomePage />)} />
-          <Route path="/contato" element={withPublicSuspense(<ContactPage />)} />
-          <Route path="sobre" element={withPublicSuspense(<AboutPage />)} />
-          <Route path="manifesto" element={withPublicSuspense(<ManifestoPage />)} />
-          <Route path="glossario" element={withPublicSuspense(<GlossaryPage />)} />
-          <Route path="ecossistema" element={withPublicSuspense(<EcosystemPage />)} />
-          <Route path="/academy" element={withPublicSuspense(<AcademyPage />)} />
-          <Route path="/academy/login" element={withPublicSuspense(<AcademyLoginPage />)} />
-          <Route path="planos" element={withPublicSuspense(<PricingPage />)} />
-          <Route path="checkout" element={withPublicSuspense(<CheckoutPage />)} />
-          <Route path="checkout/success" element={withPublicSuspense(<CheckoutSuccessPage />)} />
-          <Route path="entrar" element={withPublicSuspense(<LoginPage />)} />
-          <Route path="cadastro" element={withPublicSuspense(<SignupPage />)} />
-          <Route path="blog" element={withPublicSuspense(<BlogPage />)} />
-          <Route path="blog/:slug" element={withPublicSuspense(<BlogPostPage />)} />
-          <Route path="termos" element={withPublicSuspense(<TermsPage />)} />
-          <Route path="privacidade" element={withPublicSuspense(<PrivacyPage />)} />
-          <Route path="cookies" element={withPublicSuspense(<CookiesPage />)} />
+          <Route index element={<HomePage />} />
+          <Route path="/contato" element={<ContactPage />} />
+          <Route path="sobre" element={<AboutPage />} />
+          <Route path="manifesto" element={<ManifestoPage />} />
+          <Route path="glossario" element={<GlossaryPage />} />
+          <Route path="ecossistema" element={<EcosystemPage />} />
+          <Route path="/academy" element={<AcademyPage />} />
+          <Route path="/academy/login" element={<AcademyLoginPage />} />
+          <Route path="planos" element={<PricingPage />} />
+          <Route path="checkout" element={<CheckoutPage />} />
+          <Route path="checkout/success" element={<CheckoutSuccessPage />} />
+          <Route path="entrar" element={<LoginPage />} />
+          <Route path="cadastro" element={<SignupPage />} />
+          <Route path="blog" element={<BlogPage />} />
+          <Route path="blog/:slug" element={<BlogPostPage />} />
+          <Route path="termos" element={<TermsPage />} />
+          <Route path="privacidade" element={<PrivacyPage />} />
+          <Route path="cookies" element={<CookiesPage />} />
         </Route>
 
         <Route
@@ -146,7 +144,7 @@ function App() {
           <Route path="calendario" element={withProtectedSuspense(<CalendarPage />)} />
         </Route>
 
-        <Route path="*" element={withPublicSuspense(<NotFoundPage />)} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </AnimatePresence>
   );
