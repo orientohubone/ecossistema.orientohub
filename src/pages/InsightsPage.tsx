@@ -16,6 +16,8 @@ import {
   Zap
 } from 'lucide-react';
 import { insightsService, type InsightData } from '../services/insightsService';
+import DashboardPageSkeleton from '../components/ui/DashboardPageSkeleton';
+import { getCachedValue, getOrLoadCachedValue } from '../lib/memoryCache';
 
 // Mapeamento de ícones para métricas
 const iconMap: { [key: string]: any } = {
@@ -29,16 +31,23 @@ const iconMap: { [key: string]: any } = {
 
 const InsightsPage = () => {
   const { t } = useTranslation();
-  const [insightsData, setInsightsData] = useState<InsightData | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const cachedInsightsData = getCachedValue<InsightData>('insights:data');
+  const [insightsData, setInsightsData] = useState<InsightData | null>(cachedInsightsData);
+  const [isLoading, setIsLoading] = useState(!cachedInsightsData);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const loadInsightsData = async () => {
       try {
-        setIsLoading(true);
+        if (!cachedInsightsData) {
+          setIsLoading(true);
+        }
         setError(null);
-        const data = await insightsService.getInsightsData();
+        const data = await getOrLoadCachedValue(
+          'insights:data',
+          30000,
+          () => insightsService.getInsightsData()
+        );
         setInsightsData(data);
       } catch (err: any) {
         console.error('Error loading insights data:', err);
@@ -52,14 +61,7 @@ const InsightsPage = () => {
   }, []);
 
   if (isLoading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-16 h-16 border-4 border-primary-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-600 dark:text-gray-400">Carregando insights...</p>
-        </div>
-      </div>
-    );
+    return <DashboardPageSkeleton cards={3} columns={1} />;
   }
 
   if (error || !insightsData) {

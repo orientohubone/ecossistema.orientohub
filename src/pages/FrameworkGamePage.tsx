@@ -19,6 +19,7 @@ import {
   CheckCircle2,
   Gamepad
 } from 'lucide-react';
+import DashboardPageSkeleton from '../components/ui/DashboardPageSkeleton';
 
 interface GameStep {
   id: number;
@@ -233,11 +234,7 @@ const FrameworkGamePage = () => {
   };
 
   if (!framework) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-500"></div>
-      </div>
-    );
+    return <DashboardPageSkeleton cards={3} columns={2} />;
   }
 
   return (

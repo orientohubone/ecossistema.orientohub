@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { supabase, testSupabaseConnection } from '../config/supabase';
 import type { User } from '@supabase/supabase-js';
+import { invalidateCache } from '../lib/memoryCache';
 
 interface AuthState {
   user: User | null;
@@ -78,6 +79,7 @@ export const useAuthStore = create<AuthState>((set) => ({
             error: null,
           });
         } else if (event === 'SIGNED_OUT') {
+          invalidateCache();
           set({ 
             user: null,
             isAuthenticated: false,
@@ -181,6 +183,7 @@ export const useAuthStore = create<AuthState>((set) => ({
       const { error } = await supabase.auth.signOut();
       
       if (error) throw error;
+      invalidateCache();
       
       set({ isLoading: false });
     } catch (error: any) {

@@ -2,6 +2,7 @@ import { ReactNode, useMemo } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAuthStore } from '../../stores/authStore';
 import { isFounderUser } from '../../utils/founderAccess';
+import ProtectedRouteSkeleton from './ProtectedRouteSkeleton';
 
 interface FounderRouteProps {
   children: ReactNode;
@@ -20,11 +21,7 @@ const FounderRoute = ({ children }: FounderRouteProps) => {
   }, [user]);
 
   if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="h-12 w-12 animate-spin rounded-full border-b-2 border-t-2 border-primary-500" />
-      </div>
-    );
+    return <ProtectedRouteSkeleton />;
   }
 
   if (!isAuthenticated || !user) {

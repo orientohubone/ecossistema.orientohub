@@ -6,6 +6,7 @@ import { DashboardHeader } from '../components/founder/DashboardHeader';
 import { KPICards } from '../components/founder/metrics/KPICards';
 import { useFounderData } from '../hooks/useFounderData';
 import { Company } from '../types/founder';
+import DashboardPageSkeleton from '../components/ui/DashboardPageSkeleton';
 
 const FounderDashboardPage = () => {
     const [activeTab, setActiveTab] = useState('overview');
@@ -43,14 +44,7 @@ const FounderDashboardPage = () => {
     };
 
     if (isLoading) {
-        return (
-            <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 dark:from-black dark:via-gray-900 dark:to-black">
-                <div className="text-center">
-                    <Crown className="h-12 w-12 text-primary-500 animate-pulse mx-auto mb-4" />
-                    <p className="text-gray-600 dark:text-gray-400">Carregando Dashboard Founder...</p>
-                </div>
-            </div>
-        );
+        return <DashboardPageSkeleton cards={5} columns={2} />;
     }
 
     if (error || !analytics) {

@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
 import { dashboardService, type DashboardData } from '../services/dashboardService';
+import DashboardPageSkeleton from '../components/ui/DashboardPageSkeleton';
+import { getCachedValue, getOrLoadCachedValue } from '../lib/memoryCache';
 import { 
   CheckSquare, 
   FileText, 
@@ -28,18 +30,25 @@ import { Link, useNavigate } from 'react-router-dom';
 
 const DashboardPage = () => {
   const navigate = useNavigate();
+  const cachedDashboardData = getCachedValue<DashboardData>('dashboard:data');
   const [selectedPhase, setSelectedPhase] = useState('validation');
-  const [dashboardData, setDashboardData] = useState<DashboardData | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [dashboardData, setDashboardData] = useState<DashboardData | null>(cachedDashboardData);
+  const [isLoading, setIsLoading] = useState(!cachedDashboardData);
   const [error, setError] = useState<string | null>(null);
   
   // Carregar dados do dashboard
   useEffect(() => {
     const loadDashboardData = async () => {
       try {
-        setIsLoading(true);
+        if (!cachedDashboardData) {
+          setIsLoading(true);
+        }
         setError(null);
-        const data = await dashboardService.getDashboardData();
+        const data = await getOrLoadCachedValue(
+          'dashboard:data',
+          30000,
+          () => dashboardService.getDashboardData()
+        );
         setDashboardData(data);
         setSelectedPhase(data.userProfile.phase);
       } catch (err: any) {
@@ -54,14 +63,7 @@ const DashboardPage = () => {
   }, []);
 
   if (isLoading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-16 h-16 border-4 border-primary-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-600 dark:text-gray-400">Carregando dashboard...</p>
-        </div>
-      </div>
-    );
+    return <DashboardPageSkeleton hero cards={4} columns={2} />;
   }
 
   if (error || !dashboardData) {

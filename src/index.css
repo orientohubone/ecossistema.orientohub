@@ -46,6 +46,57 @@
     @apply absolute inset-0 bg-card-border bg-[length:200%_100%] animate-border-flow;
     z-index: -1;
   }
+
+  .route-skeleton-shell {
+    animation: route-skeleton-reveal 180ms ease-out;
+  }
+
+  .route-skeleton-block {
+    position: relative;
+    overflow: hidden;
+    @apply bg-gray-200/80 dark:bg-gray-700/80;
+  }
+
+  .route-skeleton-block::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.42) 45%,
+      transparent 100%
+    );
+    animation: route-skeleton-shimmer 1.1s ease-out infinite;
+  }
+
+  .dark .route-skeleton-block::after {
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.14) 45%,
+      transparent 100%
+    );
+  }
+}
+
+@keyframes route-skeleton-shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes route-skeleton-reveal {
+  from {
+    opacity: 0;
+    transform: scale(0.992);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 /* ============================================

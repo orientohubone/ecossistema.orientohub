@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OrientoHub — Venture Builder SaaS B2B</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,700;1,9..144,300&family=DM+Mono:wght@300;400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #090909;
+    --bg2: #111111;
+    --surface: #161616;
+    --border: #222222;
+    --text: #e8e2d9;
+    --text-muted: #6b6560;
+    --text-dim: #3a3733;
+    --accent: #c9a84c;
+    --accent-dim: #6b5a2a;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem 4rem;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.4s, background 0.4s;
+  }
+  nav.scrolled {
+    border-color: var(--border);
+    background: rgba(9,9,9,0.92);
+    backdrop-filter: blur(12px);
+  }
+  .nav-logo {
+    font-family: 'Fraunces', serif;
+    font-size: 1.1rem;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    color: var(--text);
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--accent); }
+  .nav-cta {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    text-decoration: none;
+    border: 1px solid var(--accent-dim);
+    padding: 0.5rem 1.2rem;
+    transition: background 0.2s, color 0.2s;
+  }
+  .nav-cta:hover {
+    background: var(--accent);
+    color: var(--bg);
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 8rem 4rem 6rem;
+    gap: 4rem;
+    position: relative;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: radial-gradient(ellipse 60% 50% at 80% 40%, rgba(201,168,76,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.2s forwards;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    width: 2rem;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  .hero-title {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(3rem, 5vw, 4.8rem);
+    font-weight: 300;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.35s forwards;
+  }
+  .hero-title em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .hero-body {
+    font-size: 1.05rem;
+    color: var(--text-muted);
+    max-width: 460px;
+    line-height: 1.75;
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.5s forwards;
+  }
+
+  .hero-actions {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.65s forwards;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: var(--bg);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 1rem 2rem;
+    display: inline-block;
+    transition: opacity 0.2s, transform 0.2s;
+  }
+  .btn-primary:hover { opacity: 0.85; transform: translateY(-1px); }
+
+  .btn-ghost {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: color 0.2s;
+  }
+  .btn-ghost:hover { color: var(--text); }
+  .btn-ghost::after { content: '→'; }
+
+  /* Hero right — model card */
+  .hero-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 2.5rem;
+    position: relative;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.5s forwards;
+  }
+  .hero-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+  }
+  .card-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+  }
+  .card-model {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .model-row {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 1rem;
+  }
+  .model-side {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+  .model-side-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .model-side-value {
+    font-family: 'Fraunces', serif;
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--text);
+  }
+  .model-exchange {
+    color: var(--accent);
+    font-family: 'DM Mono', monospace;
+    font-size: 1.2rem;
+    text-align: center;
+  }
+  .model-divider {
+    height: 1px;
+    background: var(--border);
+  }
+  .equity-badge {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 0.5rem;
+  }
+  .equity-number {
+    font-family: 'Fraunces', serif;
+    font-size: 3.5rem;
+    font-weight: 300;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .equity-desc {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    max-width: 160px;
+    text-align: right;
+    line-height: 1.5;
+  }
+
+  /* ── SECTION BASE ── */
+  section {
+    padding: 6rem 4rem;
+    border-top: 1px solid var(--border);
+  }
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 3rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .section-label::before {
+    content: '';
+    width: 1.5rem;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  /* ── MODEL SECTION ── */
+  .model-section {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 6rem;
+    align-items: start;
+  }
+  .model-title {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(2rem, 3vw, 2.8rem);
+    font-weight: 300;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+  }
+  .model-title em {
+    font-style: italic;
+    color: var(--accent);
+  }
+  .model-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+  }
+  .model-cell {
+    background: var(--bg);
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+  }
+  .model-cell:hover { background: var(--surface); }
+  .model-cell-icon {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    display: block;
+  }
+  .model-cell-title {
+    font-family: 'Fraunces', serif;
+    font-size: 1.1rem;
+    font-weight: 400;
+    margin-bottom: 0.5rem;
+  }
+  .model-cell-desc {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  /* ── ENTRIES SECTION ── */
+  .entries-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+  .entry-card {
+    border: 1px solid var(--border);
+    padding: 2.5rem;
+    position: relative;
+    transition: border-color 0.3s;
+  }
+  .entry-card:hover { border-color: var(--accent-dim); }
+  .entry-number {
+    font-family: 'Fraunces', serif;
+    font-size: 4rem;
+    font-weight: 300;
+    color: var(--text-dim);
+    line-height: 1;
+    margin-bottom: 1.5rem;
+  }
+  .entry-title {
+    font-family: 'Fraunces', serif;
+    font-size: 1.3rem;
+    font-weight: 400;
+    margin-bottom: 1rem;
+    color: var(--text);
+  }
+  .entry-desc {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+  }
+  .entry-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid var(--accent-dim);
+    padding: 0.3rem 0.7rem;
+    display: inline-block;
+  }
+
+  /* ── CRITERIA ── */
+  .criteria-section {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 6rem;
+    align-items: start;
+  }
+  .criteria-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .criteria-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+    padding: 1.5rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .criteria-item:first-child { border-top: 1px solid var(--border); }
+  .criteria-check {
+    color: var(--accent);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.8rem;
+    padding-top: 0.2rem;
+    flex-shrink: 0;
+  }
+  .criteria-text {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+  .criteria-text strong {
+    color: var(--text);
+    font-weight: 400;
+  }
+
+  /* ── CTA ── */
+  .cta-section {
+    text-align: center;
+    padding: 8rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-section::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: radial-gradient(ellipse 60% 60% at 50% 50%, rgba(201,168,76,0.05) 0%, transparent 70%);
+  }
+  .cta-title {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(2.5rem, 4vw, 4rem);
+    font-weight: 300;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.5rem;
+    position: relative;
+  }
+  .cta-title em { font-style: italic; color: var(--accent); }
+  .cta-sub {
+    font-size: 1rem;
+    color: var(--text-muted);
+    margin-bottom: 3rem;
+    position: relative;
+  }
+  .cta-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    position: relative;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .footer-logo {
+    font-family: 'Fraunces', serif;
+    font-size: 0.95rem;
+    color: var(--text-muted);
+  }
+  .footer-logo span { color: var(--accent); }
+  .footer-note {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    color: var(--text-dim);
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s, transform 0.7s;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    nav { padding: 1.25rem 2rem; }
+    .hero { grid-template-columns: 1fr; padding: 7rem 2rem 4rem; gap: 3rem; }
+    section { padding: 4rem 2rem; }
+    .model-section,
+    .criteria-section { grid-template-columns: 1fr; gap: 3rem; }
+    .model-grid { grid-template-columns: 1fr; }
+    .entries-grid { grid-template-columns: 1fr; }
+    .cta-section { padding: 5rem 2rem; }
+    footer { padding: 1.5rem 2rem; flex-direction: column; gap: 1rem; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="nav-logo">Oriento<span>Hub</span></a>
+  <a href="#contato" class="nav-cta">Quero participar</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <p class="hero-eyebrow">Venture Builder · SaaS B2B</p>
+    <h1 class="hero-title">
+      Não somos<br>
+      uma aceleradora.<br>
+      Somos o seu<br>
+      <em>co-founder</em><br>
+      de execução.
+    </h1>
+    <p class="hero-body">
+      Entramos como sócios operacionais em SaaS B2B early-stage. Aportamos marca, produto e go-to-market. Você aporta a visão e o comprometimento. Formalizado em equity — não em fee.
+    </p>
+    <div class="hero-actions">
+      <a href="#entradas" class="btn-primary">Como funciona</a>
+      <a href="#criterios" class="btn-ghost">Ver critérios</a>
+    </div>
+  </div>
+
+  <div class="hero-card">
+    <p class="card-label">O modelo em uma linha</p>
+    <div class="card-model">
+      <div class="model-row">
+        <div class="model-side">
+          <span class="model-side-label">Você aporta</span>
+          <span class="model-side-value">Visão + Comprometimento</span>
+        </div>
+        <div class="model-exchange">⇄</div>
+        <div class="model-side">
+          <span class="model-side-label">Nós aportamos</span>
+          <span class="model-side-value">Marca · Produto · GTM</span>
+        </div>
+      </div>
+      <div class="model-divider"></div>
+      <div class="equity-badge">
+        <div>
+          <span class="equity-number">20%</span>
+        </div>
+        <p class="equity-desc">equity em troca de execução completa desde o zero</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- O QUE APORTAMOS -->
+<section>
+  <p class="section-label reveal">O que aportamos</p>
+  <div class="model-section">
+    <div>
+      <h2 class="model-title reveal">
+        Execução <em>completa</em><br>
+        sem custo de caixa.
+      </h2>
+    </div>
+    <div class="model-grid reveal">
+      <div class="model-cell">
+        <span class="model-cell-icon">◈</span>
+        <h3 class="model-cell-title">Marca & Identidade</h3>
+        <p class="model-cell-desc">Naming, posicionamento, identidade visual e verbal. A empresa começa com uma marca que tem ponto de vista.</p>
+      </div>
+      <div class="model-cell">
+        <span class="model-cell-icon">◎</span>
+        <h3 class="model-cell-title">Estratégia de Produto</h3>
+        <p class="model-cell-desc">ICP, proposta de valor, roadmap de validação e priorização de funcionalidades com lógica de negócio.</p>
+      </div>
+      <div class="model-cell">
+        <span class="model-cell-icon">◐</span>
+        <h3 class="model-cell-title">Go-to-Market</h3>
+        <p class="model-cell-desc">Funil de aquisição, canais, mensagem por segmento e estrutura de demanda. Marketing que gera pipeline.</p>
+      </div>
+      <div class="model-cell">
+        <span class="model-cell-icon">◉</span>
+        <h3 class="model-cell-title">MVPs Próprios</h3>
+        <p class="model-cell-desc">Temos soluções e MVPs iniciados para founders que queiram entrar num projeto já estruturado.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ENTRADAS -->
+<section id="entradas">
+  <p class="section-label reveal">Como entrar</p>
+  <div class="entries-grid">
+    <div class="entry-card reveal">
+      <div class="entry-number">01</div>
+      <h3 class="entry-title">Você traz a solução</h3>
+      <p class="entry-desc">Tem uma ideia validada em SaaS B2B e precisa do lado de execução que falta? Entramos como co-founders operacionais. Você constrói o produto. Nós construímos a empresa ao redor dele.</p>
+      <span class="entry-tag">Founder + Execução OrientoHub</span>
+    </div>
+    <div class="entry-card reveal">
+      <div class="entry-number">02</div>
+      <h3 class="entry-title">Nós trazemos a solução</h3>
+      <p class="entry-desc">Temos MVPs e soluções B2B já estruturadas buscando o co-founder certo — alguém com domínio do problema, rede no segmento e comprometimento real para levar o projeto ao mercado.</p>
+      <span class="entry-tag">MVP OrientoHub + Founder de negócio</span>
+    </div>
+  </div>
+</section>
+
+<!-- CRITÉRIOS -->
+<section id="criterios">
+  <p class="section-label reveal">Critérios de entrada</p>
+  <div class="criteria-section">
+    <div>
+      <h2 class="model-title reveal">
+        Selecionamos<br>
+        por <em>fit</em>,<br>
+        não por hype.
+      </h2>
+    </div>
+    <div class="criteria-list reveal">
+      <div class="criteria-item">
+        <span class="criteria-check">01</span>
+        <p class="criteria-text"><strong>Foco em SaaS B2B.</strong> Não trabalhamos com qualquer verticale. Nosso arsenal de execução foi construído para esse mercado.</p>
+      </div>
+      <div class="criteria-item">
+        <span class="criteria-check">02</span>
+        <p class="criteria-text"><strong>Comprometimento semanal definido.</strong> Equity funciona com dedicação real. Mínimo de horas semanais é acordado antes do início.</p>
+      </div>
+      <div class="criteria-item">
+        <span class="criteria-check">03</span>
+        <p class="criteria-text"><strong>Ideia com lógica de negócio.</strong> Não precisa estar validada, mas precisa ter clareza de problema, perfil de cliente e hipótese de receita.</p>
+      </div>
+      <div class="criteria-item">
+        <span class="criteria-check">04</span>
+        <p class="criteria-text"><strong>Founder como rosto comercial.</strong> Nós construímos. Você vende. A divisão é estrutural, não opcional.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="contato">
+  <h2 class="cta-title reveal">
+    Pronto para construir<br>
+    <em>com equity</em>, não com fee?
+  </h2>
+  <p class="cta-sub reveal">Nos conte sua ideia. Se houver fit, conversamos.</p>
+  <div class="cta-actions reveal">
+    <a href="mailto:contato@orientohub.com.br" class="btn-primary">Entrar em contato</a>
+    <a href="https://linkedin.com" class="btn-ghost">LinkedIn</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-logo">Oriento<span>Hub</span></span>
+  <span class="footer-note">Venture Builder · SaaS B2B · São Paulo</span>
+</footer>
+
+<script>
+  // Nav scroll
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  // Reveal on scroll
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

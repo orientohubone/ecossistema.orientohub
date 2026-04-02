@@ -32,6 +32,7 @@ import KanbanBoard from '../components/projects/KanbanBoard';
 import ExperimentsList from '../components/projects/ExperimentsList';
 import InterviewsList from '../components/projects/InterviewsList';
 import ValidationChecklist from '../components/projects/ValidationChecklist';
+import DashboardPageSkeleton from '../components/ui/DashboardPageSkeleton';
 
 // Imports dos hooks e serviços
 import { useProjects, useProject } from '../hooks/useProjects';
@@ -306,15 +307,7 @@ const ProjectsPage = () => {
   };
 
   if (loading && projects.length === 0) {
-    return (
-      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 flex items-center justify-center">
-        <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-          className="w-16 h-16 border-4 border-primary-500/30 border-t-primary-500 rounded-full"
-        />
-      </div>
-    );
+    return <DashboardPageSkeleton cards={4} columns={2} />;
   }
 
   return (
