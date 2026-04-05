@@ -13,6 +13,7 @@ import {
   Lightbulb,
   User
 } from 'lucide-react';
+import fernandoSelecao6 from '../assets/fernando-selecao6.png';
 
 const AboutPage = () => {
 
@@ -331,15 +332,18 @@ const AboutPage = () => {
                 {/* Image */}
                 <div className="md:col-span-1 flex justify-center">
                   <div className="relative group">
-                    <div className="absolute inset-0 bg-primary-500 rounded-full blur-2xl opacity-40 group-hover:opacity-60 transition-opacity duration-300" />
+                    <div className="absolute inset-0 bg-primary-500/35 rounded-[2rem] blur-2xl opacity-40 group-hover:opacity-60 transition-opacity duration-300" />
                     <img
-                      src="/fernando.jpg"
+                      src={fernandoSelecao6}
                       alt="Fernando Ramalho"
-                      className="relative w-48 h-48 md:w-56 md:h-56 rounded-full object-cover border-4 border-primary-500 shadow-2xl"
+                      className="relative w-56 h-72 md:w-64 md:h-80 rounded-[2rem] object-cover object-top border-4 border-primary-500/80 shadow-2xl"
                     />
                     {/* Badge */}
-                    <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 bg-primary-500 text-black px-4 py-2 rounded-full font-bold text-sm shadow-lg whitespace-nowrap">
-                      CEO & Fundador
+                    <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 overflow-hidden rounded-full border border-primary-300/70 bg-gradient-to-r from-primary-400 via-yellow-300 to-primary-500 px-5 py-2 text-black shadow-[0_10px_30px_rgba(255,215,0,0.35)] whitespace-nowrap">
+                      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.35),transparent_60%)]" />
+                      <span className="relative text-xs font-extrabold uppercase tracking-[0.18em]">
+                        Fundador
+                      </span>
                     </div>
                   </div>
                 </div>

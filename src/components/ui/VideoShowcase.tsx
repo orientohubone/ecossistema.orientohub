@@ -42,7 +42,7 @@ const VideoShowcase = ({ image, videoUrl, alt, playerOffsetX = '0px', playerOffs
             {/* Overlay gradient on hover */}
             <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-3xl" />
 
-            {/* Play button - CENTRALIZADO */}
+            {/*
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
               <motion.button
                 onClick={() => setOpen(true)}
@@ -56,7 +56,6 @@ const VideoShowcase = ({ image, videoUrl, alt, playerOffsetX = '0px', playerOffs
                 }}
                 aria-label="Assistir vídeo"
               >
-                {/* Pulsing ring effect */}
                 <motion.div
                   className="absolute inset-0 rounded-full bg-primary-500/30"
                   animate={{
@@ -70,7 +69,6 @@ const VideoShowcase = ({ image, videoUrl, alt, playerOffsetX = '0px', playerOffs
                   }}
                 />
                 
-                {/* Second pulsing ring */}
                 <motion.div
                   className="absolute inset-0 rounded-full bg-yellow-400/30"
                   animate={{
@@ -88,6 +86,7 @@ const VideoShowcase = ({ image, videoUrl, alt, playerOffsetX = '0px', playerOffs
                 <Play className="w-10 h-10 text-white drop-shadow-lg ml-1" fill="white" />
               </motion.button>
             </div>
+            */}
           </div>
         </div>
       </div>

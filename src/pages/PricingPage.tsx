@@ -62,7 +62,7 @@ const PricingPage = () => {
         'Suporte prioritário',
         'Networking exclusivo',
       ],
-      cta: 'Começar Teste Grátis',
+      cta: 'Contratar Agora',
       href: '/checkout?plan=pro',
       featured: true,
       color: 'from-primary-400 to-primary-600',

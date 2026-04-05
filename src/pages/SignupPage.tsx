@@ -1,9 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
 import { 
+  ArrowLeft,
+  Home,
   Mail, 
   Lock, 
   Eye, 
@@ -30,6 +32,15 @@ const SignupPage = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [acceptTerms, setAcceptTerms] = useState(false);
   const [passwordError, setPasswordError] = useState('');
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const [isScrollIndicatorVisible, setIsScrollIndicatorVisible] = useState(false);
+  const scrollIndicatorTimeoutRef = useRef<number | null>(null);
+
+  const signupBenefits = [
+    'Acesso imediato aos frameworks',
+    'Comunidade de founders',
+    'Sem compromisso, cancele quando quiser',
+  ];
   
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -67,6 +78,41 @@ const SignupPage = () => {
   };
 
   const currentStrength = passwordStrength(password);
+
+  useEffect(() => {
+    document.body.classList.add('auth-scrollbar-hidden');
+    document.documentElement.classList.add('auth-scrollbar-hidden');
+
+    const handleScroll = () => {
+      const scrollTop = window.scrollY;
+      const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const nextProgress = scrollHeight > 0 ? Math.min(scrollTop / scrollHeight, 1) : 0;
+
+      setScrollProgress(nextProgress);
+      setIsScrollIndicatorVisible(scrollTop > 0);
+
+      if (scrollIndicatorTimeoutRef.current) {
+        window.clearTimeout(scrollIndicatorTimeoutRef.current);
+      }
+
+      scrollIndicatorTimeoutRef.current = window.setTimeout(() => {
+        setIsScrollIndicatorVisible(false);
+      }, 700);
+    };
+
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    return () => {
+      document.body.classList.remove('auth-scrollbar-hidden');
+      document.documentElement.classList.remove('auth-scrollbar-hidden');
+      window.removeEventListener('scroll', handleScroll);
+
+      if (scrollIndicatorTimeoutRef.current) {
+        window.clearTimeout(scrollIndicatorTimeoutRef.current);
+      }
+    };
+  }, []);
   
   return (
     <>
@@ -76,6 +122,22 @@ const SignupPage = () => {
       </Helmet>
       
       <div className="min-h-screen w-full overflow-hidden bg-gradient-to-br from-black via-gray-900 to-black relative flex items-center justify-center">
+        <div className="pointer-events-none fixed right-0 top-24 bottom-0 z-40 hidden md:flex items-center">
+          <div className="relative h-full w-[4px] rounded-full bg-transparent">
+            <motion.div
+              className="absolute left-0 w-[4px] rounded-full bg-primary-500 shadow-[0_0_10px_rgba(255,215,0,0.45)]"
+              style={{
+                height: '72px',
+                top: `clamp(0px, calc(${scrollProgress * 100}% - 36px), calc(100% - 72px))`,
+              }}
+              animate={{
+                opacity: isScrollIndicatorVisible ? 0.9 : 0,
+              }}
+              transition={{ duration: 0.22, ease: 'easeOut' }}
+            />
+          </div>
+        </div>
+
         {/* Animated background */}
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary-500/20 rounded-full blur-3xl animate-pulse" />
@@ -90,8 +152,19 @@ const SignupPage = () => {
           }} />
         </div>
 
-        <div className="container-custom relative z-10 py-12 px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center max-w-7xl mx-auto">
+        <div className="container-custom relative z-10 py-6 px-4 lg:py-8">
+          <div className="max-w-7xl mx-auto mb-6">
+            <Link
+              to="/"
+              className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-gray-300 backdrop-blur-sm transition-all hover:border-primary-500/40 hover:bg-primary-500/10 hover:text-white"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              <Home className="w-4 h-4 text-primary-500" />
+              Voltar para home
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,0.8fr)_minmax(560px,640px)] gap-8 items-center max-w-7xl mx-auto">
             {/* Left Side - Branding */}
             <motion.div
               className="hidden lg:block"
@@ -107,26 +180,20 @@ const SignupPage = () => {
             />
           </Link>
 
-              <h1 className="text-5xl md:text-6xl font-bold text-white mb-6 leading-tight">
+              <h1 className="text-4xl xl:text-5xl font-bold text-white mb-5 leading-tight">
                 Comece sua jornada{' '}
                 <span className="bg-gradient-to-r from-primary-400 via-primary-500 to-primary-600 bg-clip-text text-transparent">
                   gratuitamente
                 </span>
               </h1>
 
-              <p className="text-xl text-gray-300 mb-8 leading-relaxed">
-                Junte-se a centenas de founders que estão transformando suas ideias em startups de sucesso.
+              <p className="text-lg text-gray-300 mb-6 leading-relaxed max-w-xl">
+                Crie sua conta e comece agora com os recursos essenciais para tirar sua startup do papel.
               </p>
 
               {/* Benefits */}
-              <div className="space-y-4">
-                {[
-                  'Acesso imediato a frameworks exclusivos',
-                  'Comunidade ativa de empreendedores',
-                  'Mentorias e networking qualificado',
-                  'Recursos de gamificação',
-                  'Sem compromisso, cancele quando quiser'
-                ].map((benefit, index) => (
+              <div className="space-y-3">
+                {signupBenefits.map((benefit, index) => (
                   <motion.div
                     key={index}
                     className="flex items-center gap-3"
@@ -141,46 +208,19 @@ const SignupPage = () => {
                   </motion.div>
                 ))}
               </div>
-
-              {/* Launch Message */}
-              <div className="relative p-8 rounded-2xl bg-gradient-to-br from-primary-500/10 to-primary-600/5 backdrop-blur-sm border-2 border-primary-500/30 overflow-hidden">
-                {/* Animated background glow */}
-                <div className="absolute inset-0 bg-gradient-to-r from-primary-500/0 via-primary-500/10 to-primary-500/0 animate-pulse" />
-
-                <div className="relative z-10 space-y-4">
-                  <div className="inline-flex items-center gap-2 bg-primary-500/20 px-4 py-2 rounded-full mb-2">
-                    <Sparkles className="w-5 h-5 text-primary-500 animate-pulse" />
-                    <span className="text-primary-500 font-bold text-sm">PLATAFORMA PRONTA</span>
-                  </div>
-
-                  <h3 className="text-2xl md:text-3xl font-bold text-white leading-tight">
-                    Lançamento Oficial em Breve
-                  </h3>
-
-                  <p className="text-lg text-gray-300 leading-relaxed">
-                    Nossa plataforma está completa e pronta para transformar sua jornada empreendedora.
-                    Em breve, faremos o lançamento oficial com acesso total a todos os recursos.
-                  </p>
-
-                  <div className="flex items-center gap-3 pt-2">
-                    <CheckCircle2 className="w-5 h-5 text-primary-500 flex-shrink-0" />
-                    <span className="text-gray-300">Aguarde nosso anúncio oficial</span>
-                  </div>
-                </div>
-              </div>
             </motion.div>
 
             {/* Right Side - Signup Form */}
             <motion.div
-              className="w-full max-w-md mx-auto"
+              className="w-full max-w-2xl mx-auto"
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
             >
-              <div className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl p-8 rounded-2xl border-2 border-white/10 shadow-2xl">
+              <div className="bg-black/40 backdrop-blur-xl p-6 sm:p-8 rounded-2xl border-2 border-white/10 shadow-2xl">
                 {/* Mobile Logo */}
-                <div className="lg:hidden text-center mb-8">
-                  <Link to="/" className="inline-block mb-8">
+                <div className="lg:hidden text-center mb-6">
+                  <Link to="/" className="inline-block mb-6">
                   <img 
                   src="/orientohub.png" 
                   alt="Orientohub" 
@@ -190,8 +230,8 @@ const SignupPage = () => {
                 </div>
 
                 {/* Header */}
-                <div className="text-center mb-8">
-                  <div className="inline-flex items-center gap-2 bg-primary-500/20 border-2 border-primary-500/40 px-4 py-2 rounded-full mb-4 backdrop-blur-sm">
+                <div className="text-center mb-6">
+                  <div className="inline-flex items-center gap-2 bg-primary-500/20 border-2 border-primary-500/40 px-4 py-2 rounded-full mb-3 backdrop-blur-sm">
                     <Sparkles className="w-4 h-4 text-primary-500" />
                     <span className="text-primary-500 font-bold text-sm uppercase tracking-wide">
                       Cadastro Gratuito
@@ -201,7 +241,7 @@ const SignupPage = () => {
                     Crie sua conta
                   </h2>
                   <p className="text-gray-400">
-                    E comece a transformar sua ideia em realidade
+                    Acesse a plataforma em poucos passos
                   </p>
                 </div>
 
@@ -220,134 +260,139 @@ const SignupPage = () => {
                 )}
 
                 {/* Signup Form */}
-                <form onSubmit={handleSubmit} className="space-y-5">
-                  {/* Name Field */}
-                  <div>
-                    <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-2">
-                      Nome completo
-                    </label>
-                    <div className="relative">
-                      <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                        <User className="w-5 h-5 text-gray-400" />
-                      </div>
-                      <input
-                        id="name"
-                        name="name"
-                        type="text"
-                        required
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        className="block w-full pl-12 pr-4 py-3.5 bg-white/5 border-2 border-white/10 rounded-xl text-white placeholder-gray-500 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 focus:outline-none transition-all"
-                        placeholder="Seu nome completo"
-                      />
-                    </div>
-                  </div>
-
-                  {/* Email Field */}
-                  <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
-                      E-mail
-                    </label>
-                    <div className="relative">
-                      <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                        <Mail className="w-5 h-5 text-gray-400" />
-                      </div>
-                      <input
-                        id="email"
-                        name="email"
-                        type="email"
-                        autoComplete="email"
-                        required
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        className="block w-full pl-12 pr-4 py-3.5 bg-white/5 border-2 border-white/10 rounded-xl text-white placeholder-gray-500 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 focus:outline-none transition-all"
-                        placeholder="seu@email.com"
-                      />
-                    </div>
-                  </div>
-
-                  {/* Password Field */}
-                  <div>
-                    <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-2">
-                      Senha
-                    </label>
-                    <div className="relative">
-                      <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                        <Lock className="w-5 h-5 text-gray-400" />
-                      </div>
-                      <input
-                        id="password"
-                        name="password"
-                        type={showPassword ? 'text' : 'password'}
-                        autoComplete="new-password"
-                        required
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        className="block w-full pl-12 pr-12 py-3.5 bg-white/5 border-2 border-white/10 rounded-xl text-white placeholder-gray-500 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 focus:outline-none transition-all"
-                        placeholder="Mínimo 6 caracteres"
-                      />
-                      <button
-                        type="button"
-                        onClick={() => setShowPassword(!showPassword)}
-                        className="absolute inset-y-0 right-0 pr-4 flex items-center"
-                      >
-                        {showPassword ? (
-                          <EyeOff className="w-5 h-5 text-gray-400 hover:text-gray-300 transition-colors" />
-                        ) : (
-                          <Eye className="w-5 h-5 text-gray-400 hover:text-gray-300 transition-colors" />
-                        )}
-                      </button>
-                    </div>
-                    {/* Password Strength */}
-                    {password && (
-                      <div className="mt-2">
-                        <div className="flex items-center justify-between text-xs text-gray-400 mb-1">
-                          <span>Força da senha:</span>
-                          <span className={currentStrength.strength === 100 ? 'text-green-400' : currentStrength.strength === 66 ? 'text-yellow-400' : 'text-red-400'}>
-                            {currentStrength.label}
-                          </span>
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {/* Name Field */}
+                    <div>
+                      <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-2">
+                        Nome completo
+                      </label>
+                      <div className="relative">
+                        <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                          <User className="w-5 h-5 text-gray-400" />
                         </div>
-                        <div className="h-2 bg-white/10 rounded-full overflow-hidden">
-                          <div
-                            className={`h-full ${currentStrength.color} transition-all duration-300`}
-                            style={{ width: `${currentStrength.strength}%` }}
-                          />
-                        </div>
+                        <input
+                          id="name"
+                          name="name"
+                          type="text"
+                          required
+                          value={name}
+                          onChange={(e) => setName(e.target.value)}
+                          className="block w-full pl-12 pr-4 py-3.5 bg-white/5 border-2 border-white/10 rounded-xl text-white placeholder-gray-500 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 focus:outline-none transition-all"
+                          placeholder="Seu nome completo"
+                        />
                       </div>
-                    )}
+                    </div>
+
+                    {/* Email Field */}
+                    <div>
+                      <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
+                        E-mail
+                      </label>
+                      <div className="relative">
+                        <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                          <Mail className="w-5 h-5 text-gray-400" />
+                        </div>
+                        <input
+                          id="email"
+                          name="email"
+                          type="email"
+                          autoComplete="email"
+                          required
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          className="block w-full pl-12 pr-4 py-3.5 bg-white/5 border-2 border-white/10 rounded-xl text-white placeholder-gray-500 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 focus:outline-none transition-all"
+                          placeholder="seu@email.com"
+                        />
+                      </div>
+                    </div>
                   </div>
 
-                  {/* Confirm Password Field */}
-                  <div>
-                    <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-300 mb-2">
-                      Confirmar senha
-                    </label>
-                    <div className="relative">
-                      <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                        <Lock className="w-5 h-5 text-gray-400" />
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {/* Password Field */}
+                    <div>
+                      <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-2">
+                        Senha
+                      </label>
+                      <div className="relative">
+                        <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                          <Lock className="w-5 h-5 text-gray-400" />
+                        </div>
+                        <input
+                          id="password"
+                          name="password"
+                          type={showPassword ? 'text' : 'password'}
+                          autoComplete="new-password"
+                          required
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
+                          className="block w-full pl-12 pr-12 py-3.5 bg-white/5 border-2 border-white/10 rounded-xl text-white placeholder-gray-500 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 focus:outline-none transition-all"
+                          placeholder="Mínimo 6 caracteres"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowPassword(!showPassword)}
+                          className="absolute inset-y-0 right-0 pr-4 flex items-center"
+                        >
+                          {showPassword ? (
+                            <EyeOff className="w-5 h-5 text-gray-400 hover:text-gray-300 transition-colors" />
+                          ) : (
+                            <Eye className="w-5 h-5 text-gray-400 hover:text-gray-300 transition-colors" />
+                          )}
+                        </button>
                       </div>
-                      <input
-                        id="confirmPassword"
-                        name="confirmPassword"
-                        type={showConfirmPassword ? 'text' : 'password'}
-                        autoComplete="new-password"
-                        required
-                        value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
-                        className="block w-full pl-12 pr-12 py-3.5 bg-white/5 border-2 border-white/10 rounded-xl text-white placeholder-gray-500 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 focus:outline-none transition-all"
-                        placeholder="Digite a senha novamente"
-                      />
-                      <button
-                        type="button"
-                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                        className="absolute inset-y-0 right-0 pr-4 flex items-center"
-                      >
-                        {showConfirmPassword ? (
-                          <EyeOff className="w-5 h-5 text-gray-400 hover:text-gray-300 transition-colors" />
-                        ) : (
-                          <Eye className="w-5 h-5 text-gray-400 hover:text-gray-300 transition-colors" />
-                        )}
-                      </button>
+
+                      {/* Password Strength */}
+                      {password && (
+                        <div className="mt-2">
+                          <div className="flex items-center justify-between text-xs text-gray-400 mb-1">
+                            <span>Força da senha:</span>
+                            <span className={currentStrength.strength === 100 ? 'text-green-400' : currentStrength.strength === 66 ? 'text-yellow-400' : 'text-red-400'}>
+                              {currentStrength.label}
+                            </span>
+                          </div>
+                          <div className="h-2 bg-white/10 rounded-full overflow-hidden">
+                            <div
+                              className={`h-full ${currentStrength.color} transition-all duration-300`}
+                              style={{ width: `${currentStrength.strength}%` }}
+                            />
+                          </div>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Confirm Password Field */}
+                    <div>
+                      <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-300 mb-2">
+                        Confirmar senha
+                      </label>
+                      <div className="relative">
+                        <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                          <Lock className="w-5 h-5 text-gray-400" />
+                        </div>
+                        <input
+                          id="confirmPassword"
+                          name="confirmPassword"
+                          type={showConfirmPassword ? 'text' : 'password'}
+                          autoComplete="new-password"
+                          required
+                          value={confirmPassword}
+                          onChange={(e) => setConfirmPassword(e.target.value)}
+                          className="block w-full pl-12 pr-12 py-3.5 bg-white/5 border-2 border-white/10 rounded-xl text-white placeholder-gray-500 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 focus:outline-none transition-all"
+                          placeholder="Digite a senha novamente"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                          className="absolute inset-y-0 right-0 pr-4 flex items-center"
+                        >
+                          {showConfirmPassword ? (
+                            <EyeOff className="w-5 h-5 text-gray-400 hover:text-gray-300 transition-colors" />
+                          ) : (
+                            <Eye className="w-5 h-5 text-gray-400 hover:text-gray-300 transition-colors" />
+                          )}
+                        </button>
+                      </div>
                     </div>
                   </div>
 
@@ -398,7 +443,7 @@ const SignupPage = () => {
                 </form>
 
                 {/* Divider */}
-                <div className="relative my-8">
+                <div className="relative my-6">
                   <div className="absolute inset-0 flex items-center">
                     <div className="w-full border-t border-white/10"></div>
                   </div>

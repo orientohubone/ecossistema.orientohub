@@ -3,6 +3,12 @@
 @tailwind utilities;
 
 @layer base {
+  html,
+  body,
+  #root {
+    @apply min-h-full bg-white dark:bg-black;
+  }
+
   body {
     @apply text-gray-900 dark:text-gray-100 antialiased;
   }
@@ -26,7 +32,7 @@
   }
   
   .btn-outline {
-    @apply btn border border-gray-300 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 focus:ring-gray-300 dark:focus:ring-gray-700;
+    @apply btn border border-gray-300 bg-white text-gray-900 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-800 focus:ring-gray-300 dark:focus:ring-gray-700;
   }
   
   .container-custom {
@@ -191,50 +197,103 @@
 }
 
 /* ============================================
-   Global Scrollbar Personalizada - Amarelo Arredondado
+   Global Scrollbar Minimalista
    ============================================ */
 
 /* Para navegadores Webkit (Chrome, Safari, Edge) */
 ::-webkit-scrollbar {
-  width: 12px;
-  height: 12px;
+  width: 5px;
+  height: 5px;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-track {
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.2));
-  border-radius: 10px;
-  margin: 4px;
+  background: transparent;
+  box-shadow: none;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #FFD700, #CCAC00);
-  border-radius: 10px;
-  border: 2px solid rgba(0, 0, 0, 0.1);
-  box-shadow: 0 2px 6px rgba(255, 215, 0, 0.3);
+  background: transparent;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  background-clip: padding-box;
   transition: all 0.3s ease;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #FFEF85, #FFD700);
-  box-shadow: 0 4px 12px rgba(255, 215, 0, 0.5);
-  border-color: rgba(255, 215, 0, 0.3);
+html:hover ::-webkit-scrollbar-thumb {
+  background: rgba(255, 215, 0, 0.7);
+  background-clip: padding-box;
 }
 
-::-webkit-scrollbar-thumb:active {
-  background: linear-gradient(180deg, #CCAC00, #998100);
+html:hover ::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 215, 0, 0.9);
+  background-clip: padding-box;
+}
+
+html:hover ::-webkit-scrollbar-thumb:active {
+  background: #ffd700;
+  background-clip: padding-box;
 }
 
 /* Dark mode scrollbar */
 .dark ::-webkit-scrollbar-track {
-  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.1));
+  background: transparent;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: transparent;
+}
+
+.dark html:hover ::-webkit-scrollbar-thumb,
+html.dark:hover ::-webkit-scrollbar-thumb {
+  background: rgba(255, 215, 0, 0.75);
+  background-clip: padding-box;
+}
+
+.dark html:hover ::-webkit-scrollbar-thumb:hover,
+html.dark:hover ::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 215, 0, 0.92);
+  background-clip: padding-box;
+}
+
+.dark html:hover ::-webkit-scrollbar-thumb:active,
+html.dark:hover ::-webkit-scrollbar-thumb:active {
+  background: #ffd700;
+  background-clip: padding-box;
 }
 
 /* Para Firefox */
 * {
   scrollbar-width: thin;
-  scrollbar-color: #FFD700 rgba(0, 0, 0, 0.1);
+  scrollbar-color: rgba(255, 215, 0, 0.55) transparent;
 }
 
-dark * {
-  scrollbar-color: #FFD700 rgba(255, 255, 255, 0.1);
+.dark * {
+  scrollbar-color: rgba(255, 215, 0, 0.65) transparent;
+}
+
+html.home-scrollbar-hidden,
+body.home-scrollbar-hidden {
+  scrollbar-width: none;
+  scrollbar-color: transparent transparent;
+}
+
+html.home-scrollbar-hidden::-webkit-scrollbar,
+body.home-scrollbar-hidden::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
+html.auth-scrollbar-hidden,
+body.auth-scrollbar-hidden {
+  scrollbar-width: none;
+  scrollbar-color: transparent transparent;
+}
+
+html.auth-scrollbar-hidden::-webkit-scrollbar,
+body.auth-scrollbar-hidden::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
 }

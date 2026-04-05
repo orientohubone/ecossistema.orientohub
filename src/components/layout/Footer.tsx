@@ -1,12 +1,92 @@
+import { memo, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Github, Linkedin, Instagram, Mail, MapPin, Phone, Rocket, Sparkles, ArrowRight, Heart, ArrowUp } from 'lucide-react';
 import { motion } from 'framer-motion';
 
+const BackToTopButton = memo(({ onClick }: { onClick: () => void }) => (
+  <div
+    data-back-to-top-wrapper
+    className="fixed bottom-6 left-1/2 z-50 -translate-x-1/2 pointer-events-none opacity-0 translate-y-4 scale-95 transition-all duration-300 ease-out"
+    aria-hidden="true"
+  >
+    <button
+      type="button"
+      onClick={onClick}
+      className="inline-flex items-center gap-3 rounded-full border border-primary-500/30 bg-black/75 px-5 py-3 text-sm font-semibold text-primary-300 shadow-2xl shadow-black/40 backdrop-blur-md transition-all hover:border-primary-500 hover:bg-black/85 hover:text-primary-200"
+    >
+      <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-primary-500 to-primary-600 shadow-lg shadow-primary-500/30">
+        <ArrowUp className="w-4 h-4 text-black" />
+      </div>
+      Voltar ao topo
+    </button>
+  </div>
+));
+
+BackToTopButton.displayName = 'BackToTopButton';
+
 const Footer = () => {
   const { t } = useTranslation();
+  const lastScrollYRef = useRef(0);
+  const footerRef = useRef<HTMLElement | null>(null);
+  const footerActivatedRef = useRef(false);
+  const backToTopVisibleRef = useRef(false);
+  const backToTopWrapperRef = useRef<HTMLDivElement | null>(null);
   
   const currentYear = new Date().getFullYear();
+
+  useEffect(() => {
+    backToTopWrapperRef.current = document.querySelector('[data-back-to-top-wrapper]');
+    lastScrollYRef.current = window.scrollY;
+
+    const syncBackToTopVisibility = (visible: boolean) => {
+      if (backToTopVisibleRef.current === visible) return;
+
+      backToTopVisibleRef.current = visible;
+
+      const wrapper = backToTopWrapperRef.current;
+      if (!wrapper) return;
+
+      wrapper.setAttribute('aria-hidden', visible ? 'false' : 'true');
+      wrapper.style.pointerEvents = visible ? 'auto' : 'none';
+      wrapper.classList.toggle('opacity-0', !visible);
+      wrapper.classList.toggle('translate-y-4', !visible);
+      wrapper.classList.toggle('scale-95', !visible);
+      wrapper.classList.toggle('opacity-100', visible);
+      wrapper.classList.toggle('translate-y-0', visible);
+      wrapper.classList.toggle('scale-100', visible);
+    };
+
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      const scrollDelta = currentScrollY - lastScrollYRef.current;
+      const isScrollingUp = scrollDelta < -4;
+      const isScrollingDown = scrollDelta > 4;
+      const footerRect = footerRef.current?.getBoundingClientRect();
+      const footerInView = !!footerRect && footerRect.top <= window.innerHeight && footerRect.bottom >= 0;
+
+      if (footerInView && currentScrollY > 120) {
+        footerActivatedRef.current = true;
+        syncBackToTopVisibility(true);
+      } else if (currentScrollY <= 120) {
+        syncBackToTopVisibility(false);
+        footerActivatedRef.current = false;
+      } else if (footerActivatedRef.current && isScrollingUp) {
+        syncBackToTopVisibility(true);
+      } else if (isScrollingDown) {
+        syncBackToTopVisibility(false);
+      }
+
+      lastScrollYRef.current = currentScrollY;
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
   
   const scrollToTop = () => {
     window.scrollTo({
@@ -49,7 +129,7 @@ const Footer = () => {
   ];
   
   return (
-    <footer className="relative bg-gradient-to-br from-black via-gray-900 to-black text-white overflow-hidden">
+    <footer ref={footerRef} className="relative bg-gradient-to-br from-black via-gray-900 to-black text-white overflow-hidden">
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-40 -left-40 w-96 h-96 bg-primary-500/10 rounded-full blur-3xl animate-pulse" />
@@ -63,27 +143,6 @@ const Footer = () => {
           backgroundSize: '40px 40px'
         }} />
       </div>
-
-      {/* Back to Top Button */}
-      <motion.button
-        onClick={scrollToTop}
-        className="absolute top-8 right-8 z-20 group"
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        whileHover={{ y: -5 }}
-        whileTap={{ scale: 0.9 }}
-      >
-        <div className="relative">
-          <div className="absolute inset-0 bg-primary-500/30 rounded-full blur-xl group-hover:blur-2xl transition-all" />
-          <div className="relative w-14 h-14 bg-gradient-to-br from-primary-500 to-primary-600 rounded-full flex items-center justify-center shadow-lg shadow-primary-500/30 group-hover:shadow-xl group-hover:shadow-primary-500/50 transition-all border-2 border-primary-400">
-            <ArrowUp className="w-6 h-6 text-black group-hover:scale-110 transition-transform" />
-          </div>
-        </div>
-        <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 text-xs text-gray-400 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">
-          Voltar ao topo
-        </span>
-      </motion.button>
 
       <div className="relative z-10">
         {/* Newsletter Section */}
@@ -259,7 +318,10 @@ const Footer = () => {
             </div>
           </div>
         </div>
+
       </div>
+
+      <BackToTopButton onClick={scrollToTop} />
     </footer>
   );
 };

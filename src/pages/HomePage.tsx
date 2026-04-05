@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Sparkles, Rocket, Zap, ArrowRight, Play, Users, BarChart2, Award, Target, CheckCircle, TrendingUp, Brain } from 'lucide-react';
 import VideoShowcase from '../components/ui/VideoShowcase';
-import jornadaPrint from '../assets/jornada-print.png';
+import gamificacaoShowcase from '../assets/gamificação-showcase.png';
 
 // Componente de texto rotativo -->>
 
@@ -74,9 +74,19 @@ const HomePage = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <div className="inline-flex items-center justify-center gap-1.0 px-4 py-2 rounded-full border-2 border-primary-500/30 bg-primary-500/10 text-primary-500 backdrop-blur-sm">
-                <Sparkles className="w-4 h-4 flex-shrink-0" />
-                <span className="text-sm font-semibold text-center">O hub para quem constrói o futuro das startups</span>
+              <div className="group relative inline-flex items-center justify-center overflow-hidden rounded-full border border-primary-400/35 bg-white/6 px-5 py-2.5 text-primary-300 shadow-[0_10px_35px_rgba(255,215,0,0.12)] backdrop-blur-md">
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.18),transparent_55%)] opacity-80" />
+                <div className="absolute inset-[1px] rounded-full bg-gradient-to-r from-black/70 via-gray-900/75 to-black/70" />
+                <div className="relative mr-3 flex h-7 w-7 items-center justify-center rounded-full border border-primary-400/30 bg-primary-500/15 shadow-[0_0_18px_rgba(255,215,0,0.2)]">
+                  <Sparkles className="h-3.5 w-3.5 flex-shrink-0 text-primary-400" />
+                </div>
+                <span className="relative text-[11px] font-bold uppercase tracking-[0.22em] text-primary-400/80">
+                  Orientohub
+                </span>
+                <span className="relative mx-3 h-1 w-1 rounded-full bg-primary-500/70" />
+                <span className="relative text-sm font-semibold text-center text-white/92">
+                  O hub para quem constrói o futuro das startups
+                </span>
               </div>
             </motion.div>
 
@@ -109,7 +119,7 @@ const HomePage = () => {
 
             {/* Showcase Jornada Empreendedora */}
             <VideoShowcase
-              image={jornadaPrint}
+              image={gamificacaoShowcase}
               videoUrl="https://www.youtube.com/embed/2Xc9gXyf2G4"
               alt="Jornada Empreendedora Print"
             />
@@ -318,29 +328,36 @@ const HomePage = () => {
 
         <div className="container-custom relative z-10">
           <motion.div
-            className="text-center max-w-4xl mx-auto"
+            className="relative overflow-hidden rounded-[2rem] border border-primary-500/20 bg-white/[0.04] px-6 py-14 text-center shadow-[0_20px_80px_rgba(0,0,0,0.35)] backdrop-blur-md max-w-5xl mx-auto md:px-12"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
           >
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.12),transparent_45%)]" />
+            <div className="absolute -top-16 left-1/2 h-40 w-40 -translate-x-1/2 rounded-full bg-primary-500/10 blur-3xl" />
+
             {/* Badge */}
             <motion.div
-              className="inline-flex items-center gap-2 bg-primary-500/20 border-2 border-primary-500/40 px-5 py-2 rounded-full mb-8 backdrop-blur-sm"
+              className="relative mb-8 inline-flex items-center gap-3 overflow-hidden rounded-full border border-primary-400/35 bg-white/6 px-5 py-2.5 text-primary-300 shadow-[0_10px_35px_rgba(255,215,0,0.12)] backdrop-blur-md"
               initial={{ opacity: 0, scale: 0.8 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ delay: 0.2 }}
             >
-              <Rocket className="w-4 h-4 text-primary-500" />
-              <span className="text-primary-500 font-bold text-sm uppercase tracking-wide">
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.18),transparent_55%)] opacity-80" />
+              <div className="absolute inset-[1px] rounded-full bg-gradient-to-r from-black/70 via-gray-900/75 to-black/70" />
+              <div className="relative flex h-7 w-7 items-center justify-center rounded-full border border-primary-400/30 bg-primary-500/15 shadow-[0_0_18px_rgba(255,215,0,0.2)]">
+                <Rocket className="h-3.5 w-3.5 text-primary-400" />
+              </div>
+              <span className="relative text-primary-500 font-bold text-sm uppercase tracking-[0.2em]">
                 Comece agora
               </span>
             </motion.div>
 
             {/* Title */}
             <motion.h2
-              className="text-4xl md:text-6xl font-bold mb-6 text-white leading-tight"
+              className="relative text-4xl md:text-6xl font-bold mb-6 text-white leading-tight"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -351,7 +368,7 @@ const HomePage = () => {
 
             {/* Subtitle */}
             <motion.p
-              className="text-xl md:text-2xl text-gray-300 mb-12 leading-relaxed max-w-2xl mx-auto"
+              className="relative text-xl md:text-2xl text-gray-300 mb-12 leading-relaxed max-w-2xl mx-auto"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -362,7 +379,7 @@ const HomePage = () => {
 
             {/* CTA Button */}
             <motion.div
-              className="flex flex-col sm:flex-row items-center justify-center gap-4"
+              className="relative flex flex-col sm:flex-row items-center justify-center gap-4"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -380,7 +397,7 @@ const HomePage = () => {
 
             {/* Additional info */}
             <motion.p
-              className="mt-12 text-sm text-gray-400 flex items-center justify-center gap-2"
+              className="relative mt-12 text-sm text-gray-400 flex items-center justify-center gap-2"
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}

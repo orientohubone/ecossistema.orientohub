@@ -1,8 +1,24 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Menu, X, Globe, Moon, Sun, Sparkles } from 'lucide-react';
+import { Menu, X, Globe, Moon, Sun, Sparkles, GraduationCap } from 'lucide-react';
 import { useAuthStore } from '../../stores/authStore';
+
+const applyTheme = (isDark: boolean) => {
+  document.documentElement.classList.add('[&_*]:transition-colors', '[&_*]:duration-200');
+
+  if (isDark) {
+    document.documentElement.classList.add('dark');
+    localStorage.setItem('theme', 'dark');
+  } else {
+    document.documentElement.classList.remove('dark');
+    localStorage.setItem('theme', 'light');
+  }
+
+  window.setTimeout(() => {
+    document.documentElement.classList.remove('[&_*]:transition-colors', '[&_*]:duration-200');
+  }, 220);
+};
 
 const Header = () => {
   const { t, i18n } = useTranslation();
@@ -20,14 +36,6 @@ const Header = () => {
   const toggleDarkMode = () => {
     const newDarkMode = !darkMode;
     setDarkMode(newDarkMode);
-    
-    if (newDarkMode) {
-      document.documentElement.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
-    }
   };
   
   const changeLanguage = (lng: string) => {
@@ -49,11 +57,7 @@ const Header = () => {
 
   useEffect(() => {
     // Initialize dark mode
-    if (darkMode) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
+    applyTheme(darkMode);
   }, [darkMode]);
 
   const navItems = [
@@ -79,7 +83,7 @@ const Header = () => {
         </div>
       </div>
       
-      <header className={`sticky top-0 z-50 transition-all duration-200 ${scrolled ? 'bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm shadow-sm' : 'bg-transparent'}`}>
+      <header className={`sticky top-0 z-50 transition-all duration-200 ${scrolled ? 'bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm shadow-sm' : 'bg-transparent dark:bg-[#14181f]/35'}`}>
       <div className="container-custom">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -107,9 +111,9 @@ const Header = () => {
                 key={item.name}
                 to={item.href}
                 className={`text-sm font-medium transition-colors ${
-                  location.pathname === item.href
+                  location.pathname === item.href && item.href !== '/glossario'
                     ? 'text-primary-500'
-                    : 'text-gray-700 hover:text-primary-500 dark:text-gray-300 dark:hover:text-primary-400'
+                    : 'text-gray-700 hover:text-[#FFD700] dark:text-gray-300 dark:hover:text-[#FFD700]'
                 }`}
               >
                 {item.name}
@@ -117,13 +121,19 @@ const Header = () => {
             ))}
             <Link
               to="/academy"
-              className={`ml-2 px-4 py-2 rounded-lg font-bold shadow-sm border-2 border-primary-500 bg-primary-500/10 text-primary-600 dark:text-primary-400 hover:bg-primary-500/20 hover:text-black transition-all duration-200 ${location.pathname === '/academy' ? 'bg-primary-500 text-black border-primary-500 shadow-lg' : ''}`}
+              className={`group relative ml-2 inline-flex items-center gap-2 overflow-hidden rounded-full border px-5 py-2.5 font-bold transition-all duration-300 ${
+                location.pathname === '/academy'
+                  ? 'border-primary-400 bg-gradient-to-r from-primary-500 via-yellow-400 to-primary-500 text-black shadow-[0_10px_30px_rgba(255,215,0,0.35)]'
+                  : 'border-primary-500/40 bg-gradient-to-r from-primary-500/16 via-yellow-400/10 to-primary-500/16 text-primary-700 dark:text-primary-300 shadow-[0_8px_24px_rgba(255,215,0,0.12)] hover:border-primary-400/70 hover:shadow-[0_12px_32px_rgba(255,215,0,0.18)]'
+              }`}
               style={{
                 letterSpacing: '0.01em',
                 fontSize: '1rem',
               }}
             >
-              Academy
+              <span className="absolute inset-[1px] rounded-full bg-white/78 dark:bg-gray-950/78 transition-colors duration-300 group-hover:bg-white/82 dark:group-hover:bg-gray-950/82" />
+              <GraduationCap className="relative w-4 h-4 text-primary-500 transition-transform duration-300 group-hover:scale-105" />
+              <span className="relative">Academy</span>
             </Link>
           </nav>
           
@@ -210,7 +220,7 @@ const Header = () => {
               className={`block px-3 py-2 rounded-md text-base font-medium ${
                 location.pathname === item.href
                   ? 'text-primary-500 bg-gray-100 dark:bg-gray-700'
-                  : 'text-gray-700 hover:text-primary-500 hover:bg-gray-100 dark:text-gray-300 dark:hover:text-primary-400 dark:hover:bg-gray-700'
+                  : 'text-gray-700 hover:text-[#FFD700] hover:bg-gray-100 dark:text-gray-300 dark:hover:text-[#FFD700] dark:hover:bg-gray-700'
               }`}
               onClick={() => setIsOpen(false)}
             >
@@ -219,7 +229,11 @@ const Header = () => {
           ))}
           <Link
             to="/academy"
-            className={`block mt-2 px-4 py-2 rounded-lg font-bold shadow-sm border-2 border-primary-500 bg-primary-500/10 text-primary-600 dark:text-primary-400 hover:bg-primary-500/20 hover:text-black transition-all duration-200 ${location.pathname === '/academy' ? 'bg-primary-500 text-black border-primary-500 shadow-lg' : ''}`}
+            className={`block mt-2 px-4 py-2 rounded-xl font-bold border transition-all duration-300 ${
+              location.pathname === '/academy'
+                ? 'border-primary-400 bg-gradient-to-r from-primary-500 via-yellow-400 to-primary-500 text-black shadow-[0_10px_24px_rgba(255,215,0,0.28)]'
+                : 'border-primary-500/40 bg-gradient-to-r from-primary-500/16 via-yellow-400/10 to-primary-500/16 text-primary-600 dark:text-primary-300 hover:border-primary-400/70 hover:bg-primary-500/18'
+            }`}
             style={{
               letterSpacing: '0.01em',
               fontSize: '1rem',

@@ -97,14 +97,15 @@ function App() {
           <Route path="planos" element={<PricingPage />} />
           <Route path="checkout" element={<CheckoutPage />} />
           <Route path="checkout/success" element={<CheckoutSuccessPage />} />
-          <Route path="entrar" element={<LoginPage />} />
-          <Route path="cadastro" element={<SignupPage />} />
           <Route path="blog" element={<BlogPage />} />
           <Route path="blog/:slug" element={<BlogPostPage />} />
           <Route path="termos" element={<TermsPage />} />
           <Route path="privacidade" element={<PrivacyPage />} />
           <Route path="cookies" element={<CookiesPage />} />
         </Route>
+
+        <Route path="/entrar" element={<LoginPage />} />
+        <Route path="/cadastro" element={<SignupPage />} />
 
         <Route
           path="/dashboard"

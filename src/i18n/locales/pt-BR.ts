@@ -49,7 +49,7 @@ export default {
       },
       cta: {
         title: 'Pronto para transformar sua ideia em realidade?',
-        subtitle: 'Junte-se a milhares de empreendedores que estão construindo o futuro com o Orientohub',
+        subtitle: 'O Orientohub é uma plataforma gamificada que ajuda founders a estruturar, validar e acelerar startups com método, frameworks e acompanhamento prático.',
         button: 'Comece gratuitamente',
       },
     },

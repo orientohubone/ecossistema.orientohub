@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet-async';
@@ -6,6 +6,8 @@ import { motion } from 'framer-motion';
 import {
   AlertTriangle,
   RefreshCw,
+  ArrowLeft,
+  Home,
   Mail,
   Lock,
   Eye,
@@ -28,6 +30,9 @@ const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const [resendSuccess, setResendSuccess] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const [isScrollIndicatorVisible, setIsScrollIndicatorVisible] = useState(false);
+  const scrollIndicatorTimeoutRef = useRef<number | null>(null);
 
   const from = location.state?.from?.pathname || '/dashboard';
 
@@ -59,6 +64,41 @@ const LoginPage = () => {
   const isEmailNotConfirmed = error?.includes('Email not confirmed');
   const isConnectionError = connectionStatus === 'disconnected' || error?.includes('servidor') || error?.includes('Servidor');
 
+  useEffect(() => {
+    document.body.classList.add('auth-scrollbar-hidden');
+    document.documentElement.classList.add('auth-scrollbar-hidden');
+
+    const handleScroll = () => {
+      const scrollTop = window.scrollY;
+      const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const nextProgress = scrollHeight > 0 ? Math.min(scrollTop / scrollHeight, 1) : 0;
+
+      setScrollProgress(nextProgress);
+      setIsScrollIndicatorVisible(scrollTop > 0);
+
+      if (scrollIndicatorTimeoutRef.current) {
+        window.clearTimeout(scrollIndicatorTimeoutRef.current);
+      }
+
+      scrollIndicatorTimeoutRef.current = window.setTimeout(() => {
+        setIsScrollIndicatorVisible(false);
+      }, 700);
+    };
+
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    return () => {
+      document.body.classList.remove('auth-scrollbar-hidden');
+      document.documentElement.classList.remove('auth-scrollbar-hidden');
+      window.removeEventListener('scroll', handleScroll);
+
+      if (scrollIndicatorTimeoutRef.current) {
+        window.clearTimeout(scrollIndicatorTimeoutRef.current);
+      }
+    };
+  }, []);
+
   return (
     <>
       <Helmet>
@@ -67,6 +107,22 @@ const LoginPage = () => {
       </Helmet>
 
       <div className="min-h-screen w-full overflow-hidden bg-gradient-to-br from-black via-gray-900 to-black relative flex items-center justify-center">
+        <div className="pointer-events-none fixed right-0 top-24 bottom-0 z-40 hidden md:flex items-center">
+          <div className="relative h-full w-[4px] rounded-full bg-transparent">
+            <motion.div
+              className="absolute left-0 w-[4px] rounded-full bg-primary-500 shadow-[0_0_10px_rgba(255,215,0,0.45)]"
+              style={{
+                height: '72px',
+                top: `clamp(0px, calc(${scrollProgress * 100}% - 36px), calc(100% - 72px))`,
+              }}
+              animate={{
+                opacity: isScrollIndicatorVisible ? 0.9 : 0,
+              }}
+              transition={{ duration: 0.22, ease: 'easeOut' }}
+            />
+          </div>
+        </div>
+
         {/* Animated background */}
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary-500/20 rounded-full blur-3xl animate-pulse" />
@@ -82,6 +138,17 @@ const LoginPage = () => {
         </div>
 
         <div className="container-custom relative z-10 py-12 px-4">
+          <div className="max-w-7xl mx-auto mb-6">
+            <Link
+              to="/"
+              className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-gray-300 backdrop-blur-sm transition-all hover:border-primary-500/40 hover:bg-primary-500/10 hover:text-white"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              <Home className="w-4 h-4 text-primary-500" />
+              Voltar para home
+            </Link>
+          </div>
+
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center max-w-7xl mx-auto">
             {/* Left Side - Branding */}
             <motion.div
@@ -144,7 +211,7 @@ const LoginPage = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
             >
-              <div className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl p-8 rounded-2xl border-2 border-white/10 shadow-2xl">
+              <div className="bg-black/40 backdrop-blur-xl p-8 rounded-2xl border-2 border-white/10 shadow-2xl">
                 {/* Mobile Logo */}
                 <div className="lg:hidden text-center mb-8">
                   <Link to="/" className="inline-block mb-8">
