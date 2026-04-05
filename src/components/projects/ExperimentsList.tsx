@@ -30,6 +30,8 @@ const ExperimentsList = ({ experiments, hypotheses, onUpdate }: ExperimentsListP
   const { t } = useTranslation();
   const [showForm, setShowForm] = useState(false);
   const [newExperiment, setNewExperiment] = useState<Partial<Experiment>>({});
+  const fieldClassName = "w-full px-3 py-2.5 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 focus:outline-none transition-colors";
+  const compactFieldClassName = "px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 focus:outline-none transition-colors";
 
   const statusIcons = {
     planned: Clock,
@@ -82,13 +84,13 @@ const ExperimentsList = ({ experiments, hypotheses, onUpdate }: ExperimentsListP
             <input
               type="text"
               placeholder={t('experiments.titlePlaceholder')}
-              className="w-full p-2 border rounded"
+              className={fieldClassName}
               value={newExperiment.title || ''}
               onChange={e => setNewExperiment({ ...newExperiment, title: e.target.value })}
             />
             
             <select
-              className="w-full p-2 border rounded"
+              className={fieldClassName}
               value={newExperiment.hypothesis || ''}
               onChange={e => setNewExperiment({ ...newExperiment, hypothesis: e.target.value })}
             >
@@ -100,7 +102,7 @@ const ExperimentsList = ({ experiments, hypotheses, onUpdate }: ExperimentsListP
 
             <textarea
               placeholder={t('experiments.methodPlaceholder')}
-              className="w-full p-2 border rounded"
+              className={fieldClassName}
               rows={3}
               value={newExperiment.method || ''}
               onChange={e => setNewExperiment({ ...newExperiment, method: e.target.value })}
@@ -108,7 +110,7 @@ const ExperimentsList = ({ experiments, hypotheses, onUpdate }: ExperimentsListP
 
             <input
               type="date"
-              className="w-full p-2 border rounded"
+              className={fieldClassName}
               value={newExperiment.date || ''}
               onChange={e => setNewExperiment({ ...newExperiment, date: e.target.value })}
             />
@@ -158,7 +160,7 @@ const ExperimentsList = ({ experiments, hypotheses, onUpdate }: ExperimentsListP
                   <select
                     value={experiment.status}
                     onChange={(e) => handleUpdateStatus(experiment.id, e.target.value as Experiment['status'])}
-                    className="text-sm border rounded p-1"
+                    className={`${compactFieldClassName} text-sm`}
                   >
                     <option value="planned">{t('experiments.status.planned')}</option>
                     <option value="in_progress">{t('experiments.status.inProgress')}</option>

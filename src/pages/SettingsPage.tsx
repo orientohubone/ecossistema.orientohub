@@ -136,6 +136,7 @@ const SettingsPage = () => {
   const [activeTab, setActiveTab] = useState('profile');
   const [darkMode, setDarkMode] = useState(document.documentElement.classList.contains('dark'));
   const [showPassword, setShowPassword] = useState(false);
+  const fieldClassName = "w-full px-4 py-2.5 border-2 border-gray-200 dark:border-gray-600 rounded-xl focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 focus:outline-none bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500";
   const [isLoading, setIsLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -423,7 +424,7 @@ const SettingsPage = () => {
                           <label className="block text-sm font-medium mb-2">Nome Completo</label>
                           <input
                             type="text"
-                            className="w-full px-4 py-2.5 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:border-primary-500 focus:ring-0 bg-white dark:bg-gray-900"
+                            className={fieldClassName}
                             defaultValue={user?.user_metadata?.name || ''}
                             placeholder="Seu nome"
                           />
@@ -432,7 +433,7 @@ const SettingsPage = () => {
                           <label className="block text-sm font-medium mb-2">Nome de Usuário</label>
                           <input
                             type="text"
-                            className="w-full px-4 py-2.5 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:border-primary-500 focus:ring-0 bg-white dark:bg-gray-900"
+                            className={fieldClassName}
                             placeholder="@username"
                           />
                         </div>
@@ -442,7 +443,7 @@ const SettingsPage = () => {
                         <label className="block text-sm font-medium mb-2">Bio</label>
                         <textarea
                           rows={4}
-                          className="w-full px-4 py-2.5 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:border-primary-500 focus:ring-0 bg-white dark:bg-gray-900 resize-none"
+                          className={`${fieldClassName} resize-none`}
                           placeholder="Conte um pouco sobre você e sua jornada empreendedora..."
                           defaultValue={user?.user_metadata?.bio || ''}
                         />
@@ -453,7 +454,7 @@ const SettingsPage = () => {
                           <label className="block text-sm font-medium mb-2">Empresa/Startup</label>
                           <input
                             type="text"
-                            className="w-full px-4 py-2.5 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:border-primary-500 focus:ring-0 bg-white dark:bg-gray-900"
+                            className={fieldClassName}
                             placeholder="Nome da sua empresa"
                           />
                         </div>
@@ -461,7 +462,7 @@ const SettingsPage = () => {
                           <label className="block text-sm font-medium mb-2">Cargo</label>
                           <input
                             type="text"
-                            className="w-full px-4 py-2.5 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:border-primary-500 focus:ring-0 bg-white dark:bg-gray-900"
+                            className={fieldClassName}
                             placeholder="Ex: Founder, CEO"
                           />
                         </div>
@@ -471,7 +472,7 @@ const SettingsPage = () => {
                         <label className="block text-sm font-medium mb-2">Localização</label>
                         <input
                           type="text"
-                          className="w-full px-4 py-2.5 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:border-primary-500 focus:ring-0 bg-white dark:bg-gray-900"
+                          className={fieldClassName}
                           placeholder="Cidade, Estado"
                         />
                       </div>
@@ -790,7 +791,7 @@ const SettingsPage = () => {
                           <div className="relative">
                             <input
                               type={showPassword ? 'text' : 'password'}
-                              className="w-full px-4 py-2.5 pr-12 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:border-primary-500 focus:ring-0 bg-white dark:bg-gray-900"
+                              className={`${fieldClassName} pr-12`}
                             />
                             <button
                               type="button"
@@ -805,14 +806,14 @@ const SettingsPage = () => {
                           <label className="block text-sm font-medium mb-2">Nova Senha</label>
                           <input
                             type="password"
-                            className="w-full px-4 py-2.5 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:border-primary-500 focus:ring-0 bg-white dark:bg-gray-900"
+                            className={fieldClassName}
                           />
                         </div>
                         <div>
                           <label className="block text-sm font-medium mb-2">Confirmar Nova Senha</label>
                           <input
                             type="password"
-                            className="w-full px-4 py-2.5 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:border-primary-500 focus:ring-0 bg-white dark:bg-gray-900"
+                            className={fieldClassName}
                           />
                         </div>
                         <button
@@ -904,7 +905,7 @@ const SettingsPage = () => {
                     {/* Language */}
                     <div className="p-6 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
                       <h3 className="font-bold mb-4">Idioma</h3>
-                      <select className="w-full px-4 py-2.5 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:border-primary-500 focus:ring-0 bg-white dark:bg-gray-900">
+                      <select className={fieldClassName}>
                         <option value="pt-BR">🇧🇷 Português (Brasil)</option>
                         <option value="en-US">🇺🇸 English (US)</option>
                         <option value="es-ES">🇪🇸 Español</option>
@@ -914,7 +915,7 @@ const SettingsPage = () => {
                     {/* Timezone */}
                     <div className="p-6 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
                       <h3 className="font-bold mb-4">Fuso Horário</h3>
-                      <select className="w-full px-4 py-2.5 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:border-primary-500 focus:ring-0 bg-white dark:bg-gray-900">
+                      <select className={fieldClassName}>
                         <option value="America/Sao_Paulo">América/São Paulo (GMT-3)</option>
                         <option value="America/New_York">América/Nova York (GMT-5)</option>
                         <option value="Europe/London">Europa/Londres (GMT+0)</option>

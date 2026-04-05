@@ -20,6 +20,7 @@ const ValidationChecklist = ({ project, onUpdate }: ValidationChecklistProps) =>
   const { hypotheses, loading, createHypothesis, updateHypothesis, deleteHypothesis, refresh } = useHypotheses(projectId);
   const [newHypothesis, setNewHypothesis] = useState('');
   const [showForm, setShowForm] = useState(false);
+  const fieldClassName = "w-full px-3 py-2.5 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 focus:outline-none transition-colors";
 
   // Sincronizar hipóteses quando mudarem
   useEffect(() => {
@@ -100,7 +101,7 @@ const ValidationChecklist = ({ project, onUpdate }: ValidationChecklistProps) =>
             value={newHypothesis}
             onChange={(e) => setNewHypothesis(e.target.value)}
             placeholder={t('validation.hypothesisPlaceholder')}
-            className="w-full p-2 border rounded mb-4"
+            className={`${fieldClassName} mb-4`}
             rows={3}
           />
           <div className="flex space-x-2">

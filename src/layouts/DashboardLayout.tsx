@@ -92,7 +92,14 @@ const DashboardLayout = () => {
               <div className="absolute inset-0 bg-black/50" onClick={toggleSidebar} />
               <motion.div initial={{ x: -320 }} animate={{ x: 0 }} exit={{ x: -320 }} transition={{ type: 'spring', stiffness: 300 }} className="relative w-72 max-w-xs h-full bg-white dark:bg-gray-800 shadow-2xl">
                 <div className="flex items-center justify-between p-4 border-b dark:border-gray-700">
-                  <div className="flex items-center gap-2"><span className="text-lg font-bold text-primary-500">Orientohub</span></div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-lg font-bold text-primary-500 dark:hidden">Orientohub</span>
+                    <img
+                      src="/orientohub.png"
+                      alt="Orientohub"
+                      className="hidden dark:block h-6 w-auto"
+                    />
+                  </div>
                   <button onClick={toggleSidebar} className="p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700"><X size={20} /></button>
                 </div>
                 <div className="p-4 flex flex-col gap-4 overflow-y-auto h-[calc(100%-64px)]">
@@ -112,15 +119,29 @@ const DashboardLayout = () => {
 
         {/* Desktop Sidebar */}
         <aside className={`hidden lg:flex lg:flex-col ${collapsed ? 'w-20' : 'w-72'} transition-width duration-200 ease-in-out bg-white dark:bg-gray-800 border-r dark:border-gray-700`}>
-          <div className="flex items-center justify-between h-16 px-4 border-b dark:border-gray-700">
-            <Link to="/" className="flex items-center gap-3">
+          <div className={`relative flex items-center h-16 border-b dark:border-gray-700 ${collapsed ? 'justify-start px-2' : 'justify-between px-4'}`}>
+            <Link to="/" className={`flex items-center gap-3 ${collapsed ? 'justify-start w-12 h-12 flex-shrink-0' : ''}`}>
               {collapsed ? (
-                <span className="text-primary-500 text-2xl font-extrabold">O</span>
+                <>
+                  <span className="text-primary-500 text-2xl font-extrabold dark:hidden">O</span>
+                  <img
+                    src="/isotipo-orientohub.png"
+                    alt="Orientohub"
+                    className="hidden dark:block w-12 h-12 object-contain flex-shrink-0"
+                  />
+                </>
               ) : (
-                <span className="text-xl font-bold text-primary-500">Orientohub</span>
+                <>
+                  <span className="text-xl font-bold text-primary-500 dark:hidden">Orientohub</span>
+                  <img
+                    src="/orientohub.png"
+                    alt="Orientohub"
+                    className="hidden dark:block h-6 w-auto"
+                  />
+                </>
               )}
             </Link>
-            <div className="flex items-center gap-2">
+            <div className={`flex items-center gap-2 ${collapsed ? 'absolute right-2' : ''}`}>
               <button onClick={toggleCollapse} title={collapsed ? 'Expandir' : 'Recolher'} className="p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700">
                 {collapsed ? <ChevronDown size={18} /> : <Menu size={18} />}
               </button>
@@ -147,9 +168,9 @@ const DashboardLayout = () => {
               <div className="flex items-center justify-between h-16">
                 <div className="flex items-center gap-3">
                   <button className="lg:hidden p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700" onClick={toggleSidebar}><Menu size={20} /></button>
-                  <div className="hidden md:flex items-center gap-3 bg-gray-100 dark:bg-gray-900 px-3 py-1 rounded-lg">
+                  <div className="hidden md:flex items-center gap-3 bg-gray-100 dark:bg-gray-900 px-3 py-1 rounded-lg border border-transparent dark:border-gray-700">
                     <Search size={16} className="text-gray-500" />
-                    <input type="search" placeholder="Buscar projetos, soluções, insights..." className="bg-transparent text-sm outline-none placeholder-gray-500 dark:placeholder-gray-400" />
+                    <input type="search" placeholder="Buscar projetos, soluções, insights..." className="bg-transparent text-sm outline-none text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400" />
                   </div>
                 </div>
 
@@ -213,9 +234,9 @@ const SidebarHeader = ({ user, collapsed = false }: { user?: any; collapsed?: bo
 const SearchBox = ({ collapsed = false }: { collapsed?: boolean }) => {
   if (collapsed) return null;
   return (
-    <div className="flex items-center gap-2 bg-gray-100 dark:bg-gray-900 p-2 rounded-md">
+    <div className="flex items-center gap-2 bg-gray-100 dark:bg-gray-900 p-2 rounded-md border border-transparent dark:border-gray-700">
       <Search size={16} className="text-gray-500" />
-      <input type="search" placeholder="Buscar..." className="bg-transparent outline-none text-sm placeholder-gray-500 dark:placeholder-gray-400 w-full" />
+      <input type="search" placeholder="Buscar..." className="bg-transparent outline-none text-sm text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 w-full" />
     </div>
   );
 };

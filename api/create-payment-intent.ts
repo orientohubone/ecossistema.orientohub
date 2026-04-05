@@ -35,6 +35,13 @@ export default async function handler(
         });
     }
 
+    if (!stripeSecretKey.startsWith('sk_live_')) {
+        return res.status(503).json({
+            error: 'Stripe live mode required',
+            message: 'Checkout disponível apenas em produção com chave Stripe live.'
+        });
+    }
+
     const stripe = new Stripe(stripeSecretKey, {
         apiVersion: '2024-11-20.acacia',
     });

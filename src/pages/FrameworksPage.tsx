@@ -742,7 +742,7 @@ const FrameworksPage = () => {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Buscar frameworks..."
-                  className="w-full pl-10 pr-4 py-2.5 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:border-primary-500 focus:ring-0 bg-white dark:bg-gray-900"
+                  className="w-full pl-10 pr-4 py-2.5 border-2 border-gray-200 dark:border-gray-600 rounded-xl focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 focus:outline-none bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500"
                 />
               </div>
             </div>
@@ -846,7 +846,7 @@ const FrameworksPage = () => {
               type="text"
               value={newFrameworkName}
               onChange={(e) => setNewFrameworkName(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700"
+              className="w-full px-3 py-2.5 border border-gray-300 dark:border-gray-600 rounded-xl shadow-sm focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 focus:outline-none bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500"
               placeholder="Ex: Canvas de Validação"
             />
           </div>
@@ -857,7 +857,7 @@ const FrameworksPage = () => {
               rows={3}
               value={newFrameworkDescription}
               onChange={(e) => setNewFrameworkDescription(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700"
+              className="w-full px-3 py-2.5 border border-gray-300 dark:border-gray-600 rounded-xl shadow-sm focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 focus:outline-none bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500"
               placeholder="Descreva o objetivo e uso do framework..."
             />
           </div>
@@ -867,7 +867,7 @@ const FrameworksPage = () => {
             <select 
               value={newFrameworkType}
               onChange={(e) => setNewFrameworkType(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700"
+              className="w-full px-3 py-2.5 border border-gray-300 dark:border-gray-600 rounded-xl shadow-sm focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 focus:outline-none bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
             >
               <option value="canvas">Canvas</option>
               <option value="map">Mapa</option>

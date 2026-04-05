@@ -22,6 +22,7 @@ const ProjectModal = ({ isOpen, onClose, onSave }: ProjectModalProps) => {
     description: '',
     stage: 'ideation',
   });
+  const fieldClassName = "w-full px-3 py-2.5 border border-gray-300 dark:border-gray-600 rounded-xl shadow-sm focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 focus:outline-none bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500";
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -84,7 +85,7 @@ const ProjectModal = ({ isOpen, onClose, onSave }: ProjectModalProps) => {
                       type="text"
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white"
+                      className={fieldClassName}
                       placeholder="Digite o nome do projeto"
                       required
                     />
@@ -98,7 +99,7 @@ const ProjectModal = ({ isOpen, onClose, onSave }: ProjectModalProps) => {
                       value={formData.description}
                       onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                       rows={3}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white"
+                      className={fieldClassName}
                       placeholder="Descreva brevemente seu projeto"
                       required
                     />
@@ -111,7 +112,7 @@ const ProjectModal = ({ isOpen, onClose, onSave }: ProjectModalProps) => {
                     <select
                       value={formData.stage}
                       onChange={(e) => setFormData({ ...formData, stage: e.target.value as ProjectFormData['stage'] })}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white"
+                      className={fieldClassName}
                     >
                       <option value="ideation">{t('projects.stages.ideation')}</option>
                       <option value="validation">{t('projects.stages.validation')}</option>

@@ -16,6 +16,9 @@ import {
   AlertCircle
 } from 'lucide-react';
 
+const stripePublicKey = import.meta.env.VITE_STRIPE_PUBLIC_KEY || '';
+const isStripeLiveMode = stripePublicKey.startsWith('pk_live_');
+
 const CheckoutPage = () => {
   const location = useLocation();
 
@@ -77,6 +80,12 @@ const CheckoutPage = () => {
   // Criar PaymentIntent
   useEffect(() => {
     const createPaymentIntent = async () => {
+      if (!isStripeLiveMode) {
+        setClientSecret(null);
+        setPaymentError('Checkout disponível apenas em produção com chaves Stripe live.');
+        return;
+      }
+
       if (!formData.name || !formData.email) return;
 
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -97,13 +106,34 @@ const CheckoutPage = () => {
           }),
         });
 
+        const contentType = response.headers.get('content-type') || '';
+        const isJsonResponse = contentType.includes('application/json');
+        const responseBody = isJsonResponse
+          ? await response.json()
+          : await response.text();
+
         if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.message || 'Erro ao criar pagamento');
+          const apiMessage =
+            isJsonResponse && responseBody && typeof responseBody === 'object'
+              ? responseBody.message || responseBody.error
+              : '';
+
+          if (response.status === 404) {
+            throw new Error('API de pagamento não encontrada. Em ambiente local, execute com `vercel dev` em vez de apenas `vite`.');
+          }
+
+          throw new Error(apiMessage || 'Erro ao criar pagamento');
         }
 
-        const data = await response.json();
-        setClientSecret(data.clientSecret);
+        if (!isJsonResponse || !responseBody || typeof responseBody !== 'object') {
+          throw new Error('A API de pagamento respondeu em formato inválido.');
+        }
+
+        if (!responseBody.clientSecret) {
+          throw new Error(responseBody.message || 'A API não retornou clientSecret.');
+        }
+
+        setClientSecret(responseBody.clientSecret);
       } catch (error: any) {
         console.error('❌ Erro ao criar PaymentIntent:', error);
         setPaymentError(error.message || 'Erro ao processar pagamento');
@@ -234,7 +264,7 @@ const CheckoutPage = () => {
                           required
                           value={formData.name}
                           onChange={handleInputChange}
-                          className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-900 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:border-primary-500 focus:outline-none transition-all"
+                          className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-900 border-2 border-gray-200 dark:border-gray-600 rounded-xl focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 focus:outline-none text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 transition-all"
                           placeholder="João Silva"
                         />
                       </div>
@@ -248,7 +278,7 @@ const CheckoutPage = () => {
                           required
                           value={formData.email}
                           onChange={handleInputChange}
-                          className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-900 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:border-primary-500 focus:outline-none transition-all"
+                          className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-900 border-2 border-gray-200 dark:border-gray-600 rounded-xl focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 focus:outline-none text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 transition-all"
                           placeholder="joao@email.com"
                         />
                       </div>

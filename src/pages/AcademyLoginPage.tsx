@@ -116,7 +116,7 @@ const AcademyLoginPage = () => {
                     <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
                     <input
                       type="email"
-                      className="w-full rounded-2xl bg-slate-950/40 border border-white/10 pl-10 pr-4 py-3 text-white focus:border-amber-300 focus:outline-none"
+                      className="w-full rounded-2xl bg-slate-950/40 border border-white/10 pl-10 pr-4 py-3 text-white placeholder:text-slate-500 focus:border-amber-300 focus:ring-2 focus:ring-amber-300/20 focus:outline-none"
                       placeholder="founder@orientohub.com"
                       value={email}
                       onChange={(event) => setEmail(event.target.value)}
@@ -132,7 +132,7 @@ const AcademyLoginPage = () => {
                     <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
                     <input
                       type="password"
-                      className="w-full rounded-2xl bg-slate-950/40 border border-white/10 pl-10 pr-4 py-3 text-white focus:border-amber-300 focus:outline-none"
+                      className="w-full rounded-2xl bg-slate-950/40 border border-white/10 pl-10 pr-4 py-3 text-white placeholder:text-slate-500 focus:border-amber-300 focus:ring-2 focus:ring-amber-300/20 focus:outline-none"
                       placeholder="••••••••"
                       value={password}
                       onChange={(event) => setPassword(event.target.value)}

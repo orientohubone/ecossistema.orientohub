@@ -22,6 +22,8 @@ const InterviewsList = ({ interviews, onUpdate }: InterviewsListProps) => {
   const [showForm, setShowForm] = useState(false);
   const [newInterview, setNewInterview] = useState<Partial<Interview>>({});
   const [currentInsight, setCurrentInsight] = useState('');
+  const fieldClassName = "w-full px-3 py-2.5 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 focus:outline-none transition-colors";
+  const compactFieldClassName = "px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 focus:outline-none transition-colors";
 
   const handleAddInterview = () => {
     if (!newInterview.customerName || !newInterview.date) return;
@@ -101,21 +103,21 @@ const InterviewsList = ({ interviews, onUpdate }: InterviewsListProps) => {
             <input
               type="text"
               placeholder={t('interviews.customerName')}
-              className="w-full p-2 border rounded"
+              className={fieldClassName}
               value={newInterview.customerName || ''}
               onChange={e => setNewInterview({ ...newInterview, customerName: e.target.value })}
             />
 
             <input
               type="date"
-              className="w-full p-2 border rounded"
+              className={fieldClassName}
               value={newInterview.date || ''}
               onChange={e => setNewInterview({ ...newInterview, date: e.target.value })}
             />
 
             <textarea
               placeholder={t('interviews.script')}
-              className="w-full p-2 border rounded"
+              className={fieldClassName}
               rows={4}
               value={newInterview.script || ''}
               onChange={e => setNewInterview({ ...newInterview, script: e.target.value })}
@@ -159,7 +161,7 @@ const InterviewsList = ({ interviews, onUpdate }: InterviewsListProps) => {
                 <select
                   value={interview.status}
                   onChange={(e) => handleUpdateStatus(interview.id, e.target.value as Interview['status'])}
-                  className="text-sm border rounded p-1"
+                  className={`${compactFieldClassName} text-sm`}
                 >
                   <option value="scheduled">{t('interviews.status.scheduled')}</option>
                   <option value="completed">{t('interviews.status.completed')}</option>
@@ -205,7 +207,7 @@ const InterviewsList = ({ interviews, onUpdate }: InterviewsListProps) => {
                       <input
                         type="text"
                         placeholder={t('interviews.newInsight')}
-                        className="flex-1 text-sm p-2 border rounded"
+                        className={`flex-1 text-sm ${compactFieldClassName}`}
                         value={currentInsight}
                         onChange={(e) => setCurrentInsight(e.target.value)}
                         onKeyPress={(e) => {

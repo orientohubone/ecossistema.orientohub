@@ -723,7 +723,7 @@ const SolutionsPage = () => {
 
           {/* Solutions Grid */}
           {solutions.length > 0 && (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-5">
               {solutions.map((solution, index) => (
                 <SolutionCard
                   key={solution.id}
@@ -797,35 +797,35 @@ const SolutionCard = ({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.05 }}
-      className="group bg-white dark:bg-gray-800 rounded-2xl border-2 border-gray-200 dark:border-gray-700 hover:border-primary-500 overflow-hidden transition-all duration-300 hover:shadow-2xl"
+      className="group bg-white dark:bg-gray-800 rounded-2xl border-2 border-gray-200 dark:border-gray-700 hover:border-primary-500 overflow-hidden transition-all duration-300 hover:shadow-xl"
     >
       {/* Header */}
-      <div className="relative h-32 bg-gradient-to-br from-gray-900 via-gray-800 to-black overflow-hidden">
+      <div className="relative h-24 bg-gradient-to-br from-gray-900 via-gray-800 to-black overflow-hidden">
         <div className="absolute inset-0 opacity-20">
           <div className="absolute top-0 right-0 w-64 h-64 bg-primary-500 rounded-full blur-3xl" />
         </div>
         
-        <div className="relative z-10 p-6 flex items-start justify-between">
-          <div className="flex items-center gap-4">
+        <div className="relative z-10 p-4 flex items-start justify-between gap-3">
+          <div className="flex items-center gap-3 min-w-0">
             <img
               src={solution.logo_url}
               alt={solution.name}
-              className="w-16 h-16 rounded-xl border-4 border-white/20 shadow-xl object-cover"
+              className="w-12 h-12 rounded-xl border-2 border-white/20 shadow-xl object-cover flex-shrink-0"
               onError={(e) => {
                 const target = e.target as HTMLImageElement;
                 target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(solution.name)}&background=FFD700&color=000&bold=true`;
               }}
             />
-            <div>
-              <h3 className="text-xl font-bold text-white mb-1">{solution.name}</h3>
+            <div className="min-w-0">
+              <h3 className="text-lg font-bold text-white mb-0.5 line-clamp-1">{solution.name}</h3>
               {solution.founder_name && (
-                <p className="text-sm text-gray-300">por {solution.founder_name}</p>
+                <p className="text-xs text-gray-300 line-clamp-1">por {solution.founder_name}</p>
               )}
             </div>
           </div>
 
           {solution.stage && (
-            <span className={`${getStageColor(solution.stage)} text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg`}>
+            <span className={`${getStageColor(solution.stage)} text-white text-[11px] font-bold px-2.5 py-1 rounded-full shadow-lg whitespace-nowrap`}>
               {solution.stage}
             </span>
           )}
@@ -833,24 +833,24 @@ const SolutionCard = ({
       </div>
 
       {/* Content */}
-      <div className="p-6 space-y-4">
+      <div className="p-4 space-y-3.5">
         {/* GitHub Stats */}
         {hasGithub && solution.github_data && (
           <>
             {/* Health Score */}
-            <div className="flex items-center justify-between p-4 bg-gradient-to-br from-gray-50 to-white dark:from-gray-700/50 dark:to-gray-800/50 rounded-xl">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-white dark:bg-gray-900 rounded-full flex items-center justify-center">
-                  <Activity className={`w-5 h-5 ${getHealthColor(healthScore)}`} />
+            <div className="flex items-center justify-between p-3 bg-gradient-to-br from-gray-50 to-white dark:from-gray-700/50 dark:to-gray-800/50 rounded-xl gap-3">
+              <div className="flex items-center gap-2.5 min-w-0">
+                <div className="w-9 h-9 bg-white dark:bg-gray-900 rounded-full flex items-center justify-center flex-shrink-0">
+                  <Activity className={`w-4 h-4 ${getHealthColor(healthScore)}`} />
                 </div>
-                <div>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">Saúde do Projeto</p>
-                  <p className={`text-lg font-bold ${getHealthColor(healthScore)}`}>
+                <div className="min-w-0">
+                  <p className="text-xs text-gray-600 dark:text-gray-400">Saude do Projeto</p>
+                  <p className={`text-base font-bold ${getHealthColor(healthScore)} line-clamp-1`}>
                     {getHealthLabel(healthScore)} ({healthScore}%)
                   </p>
                 </div>
               </div>
-              <div className="w-16 h-16">
+              <div className="w-12 h-12 flex-shrink-0">
                 <svg className="transform -rotate-90" viewBox="0 0 36 36">
                   <path
                     d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
@@ -872,7 +872,7 @@ const SolutionCard = ({
             </div>
 
             {/* Quick Stats */}
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-3 gap-2.5">
               {[
                 { icon: Star, label: 'Stars', value: solution.github_data.stars, color: 'text-yellow-500' },
                 { icon: GitBranch, label: 'Forks', value: solution.github_data.forks, color: 'text-blue-500' },
@@ -880,10 +880,10 @@ const SolutionCard = ({
               ].map((stat, i) => {
                 const Icon = stat.icon;
                 return (
-                  <div key={i} className="text-center p-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
-                    <Icon className={`w-5 h-5 ${stat.color} mx-auto mb-1`} />
-                    <p className="text-xs text-gray-600 dark:text-gray-400 mb-1">{stat.label}</p>
-                    <p className="text-lg font-bold">{stat.value}</p>
+                  <div key={i} className="text-center p-2.5 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+                    <Icon className={`w-4 h-4 ${stat.color} mx-auto mb-1`} />
+                    <p className="text-[11px] text-gray-600 dark:text-gray-400 mb-1">{stat.label}</p>
+                    <p className="text-base font-bold">{stat.value}</p>
                   </div>
                 );
               })}
@@ -904,11 +904,11 @@ const SolutionCard = ({
                   />
                 ))}
               </div>
-              <div className="flex flex-wrap gap-2 mt-2">
+              <div className="flex flex-wrap gap-1.5 mt-2">
                 {solution.github_data.languages.map((lang, i) => (
                   <span
                     key={i}
-                    className="text-xs px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center gap-1"
+                    className="text-[11px] px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center gap-1"
                   >
                     <div
                       className="w-2 h-2 rounded-full"
@@ -923,7 +923,7 @@ const SolutionCard = ({
             {/* Issues */}
             {solution.github_data.open_issues > 0 && (
               <div className="flex items-center gap-2 p-3 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-xl">
-                <Bug className="w-5 h-5 text-yellow-600 dark:text-yellow-400" />
+                <Bug className="w-4 h-4 text-yellow-600 dark:text-yellow-400" />
                 <div className="flex-1">
                   <p className="text-sm font-medium text-yellow-900 dark:text-yellow-200">
                     {solution.github_data.open_issues} issue{solution.github_data.open_issues > 1 ? 's' : ''} aberta{solution.github_data.open_issues > 1 ? 's' : ''}
@@ -938,10 +938,10 @@ const SolutionCard = ({
         )}
 
         {/* Actions */}
-        <div className="flex gap-2 pt-4 border-t border-gray-200 dark:border-gray-700">
+        <div className="flex gap-2 pt-3 border-t border-gray-200 dark:border-gray-700">
           <button
             onClick={onViewDetails}
-            className="flex-1 px-4 py-2.5 bg-primary-500 hover:bg-primary-600 text-black font-medium rounded-xl transition-all flex items-center justify-center gap-2"
+            className="flex-1 px-3.5 py-2 bg-primary-500 hover:bg-primary-600 text-black text-sm font-medium rounded-xl transition-all flex items-center justify-center gap-2"
           >
             <Eye className="w-4 h-4" />
             Ver Detalhes
@@ -952,17 +952,17 @@ const SolutionCard = ({
               href={solution.solution_url}
               target="_blank"
               rel="noopener noreferrer"
-              className="px-4 py-2.5 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-xl transition-all"
+              className="px-3 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-xl transition-all"
             >
-              <ExternalLink className="w-5 h-5" />
+              <ExternalLink className="w-4 h-4" />
             </a>
           )}
           
           <button
             onClick={onRemove}
-            className="px-4 py-2.5 bg-red-100 dark:bg-red-900/30 hover:bg-red-200 dark:hover:bg-red-900/50 text-red-600 dark:text-red-400 rounded-xl transition-all"
+            className="px-3 py-2 bg-red-100 dark:bg-red-900/30 hover:bg-red-200 dark:hover:bg-red-900/50 text-red-600 dark:text-red-400 rounded-xl transition-all"
           >
-            <Trash2 className="w-5 h-5" />
+            <Trash2 className="w-4 h-4" />
           </button>
         </div>
       </div>
@@ -989,6 +989,7 @@ const AddSolutionModal = ({
   isSyncing 
 }: AddSolutionModalProps) => {
   if (!show) return null;
+  const fieldClassName = "w-full px-4 py-2.5 border-2 border-gray-200 dark:border-gray-600 rounded-xl focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 focus:outline-none bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 transition-all";
 
   return (
     <AnimatePresence>
@@ -1043,7 +1044,7 @@ const AddSolutionModal = ({
                     type="text"
                     value={newSolution.name}
                     onChange={(e) => setNewSolution({ ...newSolution, name: e.target.value })}
-                    className="w-full px-4 py-2.5 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:border-primary-500 focus:ring-0 bg-white dark:bg-gray-900 transition-all"
+                    className={fieldClassName}
                     placeholder="Ex: OrientoHub"
                   />
                 </div>
@@ -1054,7 +1055,7 @@ const AddSolutionModal = ({
                     type="text"
                     value={newSolution.founder_name}
                     onChange={(e) => setNewSolution({ ...newSolution, founder_name: e.target.value })}
-                    className="w-full px-4 py-2.5 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:border-primary-500 focus:ring-0 bg-white dark:bg-gray-900 transition-all"
+                    className={fieldClassName}
                     placeholder="Seu nome"
                   />
                 </div>
@@ -1065,7 +1066,7 @@ const AddSolutionModal = ({
                 <select
                   value={newSolution.stage}
                   onChange={(e) => setNewSolution({ ...newSolution, stage: e.target.value })}
-                  className="w-full px-4 py-2.5 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:border-primary-500 focus:ring-0 bg-white dark:bg-gray-900 transition-all"
+                  className={fieldClassName}
                 >
                   <option value="">Selecione o estágio</option>
                   <option value="Ideação">💡 Ideação</option>
@@ -1083,7 +1084,7 @@ const AddSolutionModal = ({
                   type="text"
                   value={newSolution.logo_url}
                   onChange={(e) => setNewSolution({ ...newSolution, logo_url: e.target.value })}
-                  className="w-full px-4 py-2.5 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:border-primary-500 focus:ring-0 bg-white dark:bg-gray-900 transition-all"
+                  className={fieldClassName}
                   placeholder="https://exemplo.com/logo.png"
                 />
               </div>
@@ -1105,7 +1106,7 @@ const AddSolutionModal = ({
                   type="url"
                   value={newSolution.solution_url}
                   onChange={(e) => setNewSolution({ ...newSolution, solution_url: e.target.value })}
-                  className="w-full px-4 py-2.5 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:border-primary-500 focus:ring-0 bg-white dark:bg-gray-900 transition-all"
+                  className={fieldClassName}
                   placeholder="https://minhasolucao.com"
                 />
               </div>
@@ -1119,7 +1120,7 @@ const AddSolutionModal = ({
                   type="url"
                   value={newSolution.git_url}
                   onChange={(e) => setNewSolution({ ...newSolution, git_url: e.target.value })}
-                  className="w-full px-4 py-2.5 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:border-primary-500 focus:ring-0 bg-white dark:bg-gray-900 transition-all"
+                  className={fieldClassName}
                   placeholder="https://github.com/usuario/repo"
                 />
                 <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
@@ -1137,7 +1138,7 @@ const AddSolutionModal = ({
                     type="url"
                     value={newSolution.ide_url}
                     onChange={(e) => setNewSolution({ ...newSolution, ide_url: e.target.value })}
-                    className="w-full px-4 py-2.5 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:border-primary-500 focus:ring-0 bg-white dark:bg-gray-900 transition-all"
+                    className={fieldClassName}
                     placeholder="https://replit.com/@user/project"
                   />
                 </div>
@@ -1151,7 +1152,7 @@ const AddSolutionModal = ({
                     type="url"
                     value={newSolution.database_url}
                     onChange={(e) => setNewSolution({ ...newSolution, database_url: e.target.value })}
-                    className="w-full px-4 py-2.5 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:border-primary-500 focus:ring-0 bg-white dark:bg-gray-900 transition-all"
+                    className={fieldClassName}
                     placeholder="https://supabase.com/project/xyz"
                   />
                 </div>
@@ -1166,7 +1167,7 @@ const AddSolutionModal = ({
                   type="url"
                   value={newSolution.instagram_url}
                   onChange={(e) => setNewSolution({ ...newSolution, instagram_url: e.target.value })}
-                  className="w-full px-4 py-2.5 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:border-primary-500 focus:ring-0 bg-white dark:bg-gray-900 transition-all"
+                  className={fieldClassName}
                   placeholder="https://instagram.com/usuario"
                 />
               </div>

@@ -38,6 +38,8 @@ const KanbanBoard = ({ tasks, onUpdate }: KanbanBoardProps) => {
     assignee: '',
     priority: 'medium' as const
   });
+  const fieldClassName = "w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 focus:outline-none transition-colors";
+  const compactFieldClassName = "px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 focus:outline-none transition-colors";
 
   const columns = [
     { 
@@ -175,7 +177,7 @@ const KanbanBoard = ({ tasks, onUpdate }: KanbanBoardProps) => {
                   placeholder="Título da tarefa"
                   value={newTask.title}
                   onChange={(e) => setNewTask({ ...newTask, title: e.target.value })}
-                  className="w-full px-3 py-2 bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className={fieldClassName}
                   autoFocus
                 />
                 <textarea
@@ -183,19 +185,19 @@ const KanbanBoard = ({ tasks, onUpdate }: KanbanBoardProps) => {
                   value={newTask.description}
                   onChange={(e) => setNewTask({ ...newTask, description: e.target.value })}
                   rows={2}
-                  className="w-full px-3 py-2 bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                  className={`${fieldClassName} resize-none`}
                 />
                 <div className="flex gap-2">
                   <input
                     type="date"
                     value={newTask.dueDate}
                     onChange={(e) => setNewTask({ ...newTask, dueDate: e.target.value })}
-                    className="flex-1 px-3 py-2 bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg text-sm"
+                    className={`flex-1 text-sm ${compactFieldClassName}`}
                   />
                   <select
                     value={newTask.priority}
                     onChange={(e) => setNewTask({ ...newTask, priority: e.target.value as Task['priority'] })}
-                    className="px-3 py-2 bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg text-sm"
+                    className={`text-sm ${compactFieldClassName}`}
                   >
                     <option value="low">Baixa</option>
                     <option value="medium">Média</option>
@@ -304,25 +306,25 @@ const TaskCard = ({
             type="text"
             value={editForm.title}
             onChange={(e) => setEditForm({ ...editForm, title: e.target.value })}
-            className="w-full px-3 py-2 bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg"
+            className={fieldClassName}
           />
           <textarea
             value={editForm.description}
             onChange={(e) => setEditForm({ ...editForm, description: e.target.value })}
             rows={2}
-            className="w-full px-3 py-2 bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg resize-none"
+            className={`${fieldClassName} resize-none`}
           />
           <div className="flex gap-2">
             <input
               type="date"
               value={editForm.dueDate}
               onChange={(e) => setEditForm({ ...editForm, dueDate: e.target.value })}
-              className="flex-1 px-3 py-2 bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg text-sm"
+              className={`flex-1 text-sm ${compactFieldClassName}`}
             />
             <select
               value={editForm.priority}
               onChange={(e) => setEditForm({ ...editForm, priority: e.target.value as Task['priority'] })}
-              className="px-3 py-2 bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg text-sm"
+              className={`text-sm ${compactFieldClassName}`}
             >
               <option value="low">Baixa</option>
               <option value="medium">Média</option>

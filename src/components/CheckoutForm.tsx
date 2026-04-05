@@ -83,7 +83,7 @@ export const CheckoutForm = ({ amount, plan, billing }: CheckoutFormProps) => {
                                 const value = e.target.value.replace(/\s/g, '').replace(/(\d{4})/g, '$1 ').trim();
                                 setCardData({ ...cardData, number: value });
                             }}
-                            className="w-full px-4 py-3 bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600 rounded-xl focus:border-primary-500 focus:outline-none transition-all"
+                            className="w-full px-4 py-3 bg-white dark:bg-gray-900 border-2 border-gray-300 dark:border-gray-600 rounded-xl focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 focus:outline-none text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 transition-all"
                         />
                     </div>
 
@@ -94,7 +94,7 @@ export const CheckoutForm = ({ amount, plan, billing }: CheckoutFormProps) => {
                             placeholder="NOME COMPLETO"
                             value={cardData.name}
                             onChange={(e) => setCardData({ ...cardData, name: e.target.value.toUpperCase() })}
-                            className="w-full px-4 py-3 bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600 rounded-xl focus:border-primary-500 focus:outline-none transition-all"
+                            className="w-full px-4 py-3 bg-white dark:bg-gray-900 border-2 border-gray-300 dark:border-gray-600 rounded-xl focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 focus:outline-none text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 transition-all"
                         />
                     </div>
 
@@ -112,7 +112,7 @@ export const CheckoutForm = ({ amount, plan, billing }: CheckoutFormProps) => {
                                 }
                                 setCardData({ ...cardData, expiry: value });
                             }}
-                            className="w-full px-4 py-3 bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600 rounded-xl focus:border-primary-500 focus:outline-none transition-all"
+                            className="w-full px-4 py-3 bg-white dark:bg-gray-900 border-2 border-gray-300 dark:border-gray-600 rounded-xl focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 focus:outline-none text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 transition-all"
                         />
                     </div>
 
@@ -124,7 +124,7 @@ export const CheckoutForm = ({ amount, plan, billing }: CheckoutFormProps) => {
                             placeholder="123"
                             value={cardData.cvv}
                             onChange={(e) => setCardData({ ...cardData, cvv: e.target.value.replace(/\D/g, '') })}
-                            className="w-full px-4 py-3 bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600 rounded-xl focus:border-primary-500 focus:outline-none transition-all"
+                            className="w-full px-4 py-3 bg-white dark:bg-gray-900 border-2 border-gray-300 dark:border-gray-600 rounded-xl focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 focus:outline-none text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 transition-all"
                         />
                     </div>
                 </div>

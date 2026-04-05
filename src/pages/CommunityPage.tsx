@@ -290,7 +290,7 @@ const CommunityPage = () => {
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                       placeholder="Buscar discussões..."
-                      className="w-full pl-10 pr-4 py-2.5 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:border-purple-500 focus:ring-0 bg-white dark:bg-gray-900"
+                      className="w-full pl-10 pr-4 py-2.5 border-2 border-gray-200 dark:border-gray-600 rounded-xl focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 focus:outline-none bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500"
                     />
                   </div>
 
@@ -555,6 +555,7 @@ const NewPostModal = ({ show, onClose }: NewPostModalProps) => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [category, setCategory] = useState<Post['category']>('discussion');
+  const fieldClassName = "w-full px-4 py-2.5 border-2 border-gray-200 dark:border-gray-600 rounded-xl focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 focus:outline-none bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500";
 
   if (!show) return null;
 
@@ -597,7 +598,7 @@ const NewPostModal = ({ show, onClose }: NewPostModalProps) => {
               <select
                 value={category}
                 onChange={(e) => setCategory(e.target.value as Post['category'])}
-                className="w-full px-4 py-2.5 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:border-purple-500 focus:ring-0 bg-white dark:bg-gray-900"
+                className={fieldClassName}
               >
                 <option value="discussion">💬 Discussão</option>
                 <option value="question">❓ Pergunta</option>
@@ -612,7 +613,7 @@ const NewPostModal = ({ show, onClose }: NewPostModalProps) => {
                 type="text"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                className="w-full px-4 py-2.5 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:border-purple-500 focus:ring-0 bg-white dark:bg-gray-900"
+                className={fieldClassName}
                 placeholder="Ex: Como validei minha startup em 30 dias"
               />
             </div>
@@ -623,7 +624,7 @@ const NewPostModal = ({ show, onClose }: NewPostModalProps) => {
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
                 rows={6}
-                className="w-full px-4 py-2.5 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:border-purple-500 focus:ring-0 bg-white dark:bg-gray-900"
+                className={fieldClassName}
                 placeholder="Compartilhe sua experiência, pergunta ou conquista..."
               />
             </div>

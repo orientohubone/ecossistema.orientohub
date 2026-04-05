@@ -119,6 +119,7 @@ function App() {
           <Route path="frameworks" element={withProtectedSuspense(<FrameworksPage />)} />
           <Route path="frameworks/:id/game" element={withProtectedSuspense(<FrameworkGamePage />)} />
           <Route path="projects" element={withProtectedSuspense(<ProjectsPage />)} />
+          <Route path="projects/:projectId" element={withProtectedSuspense(<ProjectsPage />)} />
           <Route path="tarefas" element={withProtectedSuspense(<TasksPage />)} />
           <Route path="jornada" element={withProtectedSuspense(<JourneyPage />)} />
           <Route path="academy" element={withProtectedSuspense(<OrientoAcademyPage />)} />

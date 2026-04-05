@@ -250,7 +250,7 @@ const LoginPage = () => {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         disabled={connectionStatus === 'disconnected'}
-                        className="block w-full pl-12 pr-4 py-3.5 bg-white/5 border-2 border-white/10 rounded-xl text-white placeholder-gray-500 focus:border-primary-500 focus:ring-0 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="block w-full pl-12 pr-4 py-3.5 bg-white/5 border-2 border-white/10 rounded-xl text-white placeholder-gray-500 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 focus:outline-none transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                         placeholder="seu@email.com"
                       />
                     </div>
@@ -274,7 +274,7 @@ const LoginPage = () => {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         disabled={connectionStatus === 'disconnected'}
-                        className="block w-full pl-12 pr-12 py-3.5 bg-white/5 border-2 border-white/10 rounded-xl text-white placeholder-gray-500 focus:border-primary-500 focus:ring-0 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="block w-full pl-12 pr-12 py-3.5 bg-white/5 border-2 border-white/10 rounded-xl text-white placeholder-gray-500 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 focus:outline-none transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                         placeholder="••••••••"
                       />
                       <button

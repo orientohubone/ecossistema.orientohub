@@ -625,7 +625,7 @@ export default function CalendarPage() {
                     </label>
                     <input
                       type="text"
-                      className="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:border-primary-500 dark:focus:border-primary-500 focus:outline-none transition-colors"
+                      className="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 focus:outline-none transition-colors"
                       placeholder="Ex: Reunião de planejamento"
                       value={newEvent.name}
                       onChange={e => setNewEvent({ ...newEvent, name: e.target.value })}
@@ -638,7 +638,7 @@ export default function CalendarPage() {
                     </label>
                     <input
                       type="time"
-                      className="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:border-primary-500 dark:focus:border-primary-500 focus:outline-none transition-colors"
+                      className="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 focus:outline-none transition-colors"
                       value={newEvent.time}
                       onChange={e => setNewEvent({ ...newEvent, time: e.target.value })}
                     />
@@ -649,7 +649,7 @@ export default function CalendarPage() {
                       Tipo
                     </label>
                     <select
-                      className="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:border-primary-500 dark:focus:border-primary-500 focus:outline-none transition-colors"
+                      className="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 focus:outline-none transition-colors"
                       value={newEvent.type}
                       onChange={e => setNewEvent({ ...newEvent, type: e.target.value as EventType['type'] })}
                     >
@@ -666,7 +666,7 @@ export default function CalendarPage() {
                     </label>
                     <input
                       type="text"
-                      className="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:border-primary-500 dark:focus:border-primary-500 focus:outline-none transition-colors"
+                      className="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 focus:outline-none transition-colors"
                       placeholder="Ex: Google Meet, Zoom, Sala 101"
                       value={newEvent.location}
                       onChange={e => setNewEvent({ ...newEvent, location: e.target.value })}

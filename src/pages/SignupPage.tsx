@@ -237,7 +237,7 @@ const SignupPage = () => {
                         required
                         value={name}
                         onChange={(e) => setName(e.target.value)}
-                        className="block w-full pl-12 pr-4 py-3.5 bg-white/5 border-2 border-white/10 rounded-xl text-white placeholder-gray-500 focus:border-primary-500 focus:ring-0 transition-all"
+                        className="block w-full pl-12 pr-4 py-3.5 bg-white/5 border-2 border-white/10 rounded-xl text-white placeholder-gray-500 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 focus:outline-none transition-all"
                         placeholder="Seu nome completo"
                       />
                     </div>
@@ -260,7 +260,7 @@ const SignupPage = () => {
                         required
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        className="block w-full pl-12 pr-4 py-3.5 bg-white/5 border-2 border-white/10 rounded-xl text-white placeholder-gray-500 focus:border-primary-500 focus:ring-0 transition-all"
+                        className="block w-full pl-12 pr-4 py-3.5 bg-white/5 border-2 border-white/10 rounded-xl text-white placeholder-gray-500 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 focus:outline-none transition-all"
                         placeholder="seu@email.com"
                       />
                     </div>
@@ -283,7 +283,7 @@ const SignupPage = () => {
                         required
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        className="block w-full pl-12 pr-12 py-3.5 bg-white/5 border-2 border-white/10 rounded-xl text-white placeholder-gray-500 focus:border-primary-500 focus:ring-0 transition-all"
+                        className="block w-full pl-12 pr-12 py-3.5 bg-white/5 border-2 border-white/10 rounded-xl text-white placeholder-gray-500 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 focus:outline-none transition-all"
                         placeholder="Mínimo 6 caracteres"
                       />
                       <button
@@ -334,7 +334,7 @@ const SignupPage = () => {
                         required
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
-                        className="block w-full pl-12 pr-12 py-3.5 bg-white/5 border-2 border-white/10 rounded-xl text-white placeholder-gray-500 focus:border-primary-500 focus:ring-0 transition-all"
+                        className="block w-full pl-12 pr-12 py-3.5 bg-white/5 border-2 border-white/10 rounded-xl text-white placeholder-gray-500 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 focus:outline-none transition-all"
                         placeholder="Digite a senha novamente"
                       />
                       <button
