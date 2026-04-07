@@ -1,411 +1,360 @@
-import { useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
+import { motion } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { Sparkles, Rocket, Zap, ArrowRight, Play, Users, BarChart2, Award, Target, CheckCircle, TrendingUp, Brain } from 'lucide-react';
-import VideoShowcase from '../components/ui/VideoShowcase';
-import gamificacaoShowcase from '../assets/gamificação-showcase.png';
+import { ArrowRight, Sparkles, Layers, Users, Target, Lightbulb, ExternalLink } from 'lucide-react';
+import SectionDivider from '../components/SectionDivider';
+import type { ComponentType } from 'react';
 
-// Componente de texto rotativo -->>
+type IconType = ComponentType<{
+  className?: string;
+}>;
 
-const RotatingText = () => {
-  const words = ['metodologia', 'inovação', 'tecnologia', 'agilidade'];
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isAnimating, setIsAnimating] = useState(false);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setIsAnimating(true);
-      setTimeout(() => {
-        setCurrentIndex((prev) => (prev + 1) % words.length);
-        setIsAnimating(false);
-      }, 500);
-    }, 3000);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  return (
-    <span
-      className={`inline-block bg-gradient-to-r from-primary-400 via-primary-500 to-primary-600 bg-clip-text text-transparent transition-all duration-500 ${isAnimating ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'
-        }`}
-      style={{ paddingBottom: '0.15em', lineHeight: '1.2' }}
-    >
-      com {words[currentIndex]}
-    </span>
-  );
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+      delayChildren: 0.1,
+    },
+  },
 };
 
-const HomePage = () => {
-  const { t } = useTranslation();
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.8, ease: 'easeOut' },
+  },
+};
 
+type EcosystemLayer = {
+  number: string;
+  title: string;
+  description: string;
+  icon: IconType;
+  color: string;
+  href?: string;
+  ctaLabel?: string;
+};
+
+type QuickAction = {
+  title: string;
+  description: string;
+  link: string;
+  icon: IconType;
+};
+
+type SectionHeaderProps = {
+  icon: IconType;
+  label: string;
+  title: string;
+  description?: string;
+  titleClassName: string;
+  descriptionClassName?: string;
+  containerClassName?: string;
+};
+
+// Shared page background texture used by the hero and all sections.
+const heroBackgroundStyle = {
+  backgroundImage: 'radial-gradient(circle at 2px 2px, #FFD700 1px, transparent 0)',
+  backgroundSize: '40px 40px',
+  pointerEvents: 'none' as const,
+};
+
+const ecosystemLayers: EcosystemLayer[] = [
+  {
+    number: '01',
+    title: 'Núcleo',
+    description: 'Uma marca que respira criação de soluções empresariais e inovadoras',
+    icon: Target,
+    color: 'from-amber-500 to-orange-600',
+  },
+  {
+    number: '02',
+    title: 'Plataforma',
+    description: 'Ferramentas integrativas para executar seus projetos de forma ágil',
+    icon: Lightbulb,
+    color: 'from-teal-500 to-cyan-600',
+    href: '/plataforma',
+    ctaLabel: 'Abrir',
+  },
+  {
+    number: '03',
+    title: 'MVPs',
+    description: 'Soluções em ideação dentro do ecossistema',
+    icon: Users,
+    color: 'from-blue-500 to-indigo-600',
+    href: '/ecossistema#mvps',
+    ctaLabel: 'Explorar',
+  },
+  {
+    number: '04',
+    title: 'Verticais',
+    description: 'Iniciativas para fomentar a inovação, educação e empreendedorismo',
+    icon: Layers,
+    color: 'from-purple-500 to-pink-600',
+    href: '/ecossistema#verticais',
+    ctaLabel: 'Explorar',
+  },
+];
+
+const quickActions: QuickAction[] = [
+  {
+    title: 'Explorar o Ecossistema',
+    description: 'Conheça todas as camadas, ferramentas e recursos disponíveis',
+    link: '/ecossistema',
+    icon: Layers,
+  },
+  {
+    title: 'Entrar em Contato',
+    description: 'Fale com nosso time para tirar dúvidas e agendar uma demo',
+    link: '/contato',
+    icon: Users,
+  },
+  {
+    title: 'Acessar Projetos',
+    description: 'Veja cases de sucesso e histórias de empreendedores',
+    link: '/projetos',
+    icon: Target,
+  },
+];
+
+const HomePage = () => {
   return (
     <>
       <Helmet>
-        <title>Orientohub - {t('home.hero.title')}</title>
-        <meta name="description" content={t('home.hero.subtitle')} />
+        <title>OrientoHub - O hub para quem constrói o futuro das startups</title>
+        <meta name="description" content="Construa sua startup com metodologia, inovação, tecnologia e diversão. OrientoHub é a plataforma completa para empreendedores." />
       </Helmet>
 
-      {/* Hero Section */}
-      <section className="relative min-h-screen w-full overflow-hidden bg-gradient-to-br from-black via-gray-900 to-black">
-        {/* Animated background elements */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute -top-1/2 -left-1/4 w-96 h-96 bg-primary-500/20 rounded-full blur-3xl animate-pulse" />
-          <div className="absolute top-1/3 -right-1/4 w-[500px] h-[500px] bg-primary-400/10 rounded-full blur-3xl animate-pulse [animation-delay:700ms]" />
-          <div className="absolute bottom-0 left-1/3 w-96 h-96 bg-primary-300/20 rounded-full blur-3xl animate-pulse [animation-delay:1000ms]" />
-        </div>
+      {/* Shared background that spans the whole page */}
+      <div className="fixed inset-0 bg-gradient-to-br from-black via-gray-900 to-black -z-50" />
+      <div className="fixed inset-0 opacity-20 -z-50" style={heroBackgroundStyle} />
 
-        {/* Grid pattern overlay */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute inset-0" style={{
-            backgroundImage: 'radial-gradient(circle at 2px 2px, #FFD700 1px, transparent 0)',
-            backgroundSize: '40px 40px'
-          }} />
-        </div>
-
-        {/* Content */}
-        <div className="relative z-10 container-custom pt-32 pb-24">
-          <div className="max-w-5xl mx-auto">
-            {/* Badge */}
+      {/* Hero */}
+      <section className="relative min-h-screen w-full flex items-center">
+        <div className="relative z-10 container-custom pt-4 sm:pt-6 pb-0 flex items-center min-h-screen">
+          <motion.div
+            className="w-full max-w-4xl mx-auto -mt-8 sm:-mt-10 lg:-mt-12"
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+          >
             <motion.div
               className="flex justify-center mb-8"
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
+              variants={itemVariants}
             >
-              <div className="group relative inline-flex items-center justify-center overflow-hidden rounded-full border border-primary-400/35 bg-white/6 px-5 py-2.5 text-primary-300 shadow-[0_10px_35px_rgba(255,215,0,0.12)] backdrop-blur-md">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.18),transparent_55%)] opacity-80" />
-                <div className="absolute inset-[1px] rounded-full bg-gradient-to-r from-black/70 via-gray-900/75 to-black/70" />
-                <div className="relative mr-3 flex h-7 w-7 items-center justify-center rounded-full border border-primary-400/30 bg-primary-500/15 shadow-[0_0_18px_rgba(255,215,0,0.2)]">
-                  <Sparkles className="h-3.5 w-3.5 flex-shrink-0 text-primary-400" />
-                </div>
-                <span className="relative text-[11px] font-bold uppercase tracking-[0.22em] text-primary-400/80">
-                  Orientohub
-                </span>
-                <span className="relative mx-3 h-1 w-1 rounded-full bg-primary-500/70" />
-                <span className="relative text-sm font-semibold text-center text-white/92">
-                  O hub para quem constrói o futuro das startups
-                </span>
-              </div>
+              <HeroBadge />
             </motion.div>
 
-            {/* Main heading */}
             <motion.h1
-              className="text-5xl sm:text-6xl lg:text-7xl font-bold text-center mb-6 tracking-tight"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
+              className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold text-center mb-8 tracking-tight leading-tight flex flex-col items-center"
+              variants={itemVariants}
             >
-              <span className="block text-white mb-2">
-                Construa sua startup
+              <span className="text-white block whitespace-nowrap">
+                Orientação e Conexão
               </span>
-              <RotatingText />
-              <span className="block text-white mt-2">
-                e diversão
+              <span className="text-white block">
+                <span className="text-[#FFD700] font-bold mr-3">=</span>
+                Aceleração.
               </span>
             </motion.h1>
 
-            {/* Description */}
             <motion.p
-              className="text-xl sm:text-2xl text-gray-300 text-center max-w-3xl mx-auto mb-7 leading-relaxed"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
+              className="text-xl sm:text-2xl text-gray-300 text-center max-w-3xl mx-auto mb-12 leading-relaxed"
+              variants={itemVariants}
             >
-              Plataforma imersiva e gamificada para construção de startups.
-              Ideal para aceleradoras, incubadoras, fundadores e aspirantes.
+              Um hub de ideias, produtos e estratégia conectados em quatro camadas — do núcleo institucional aos MVPs em construção.
             </motion.p>
 
-            {/* Showcase Jornada Empreendedora */}
-            <VideoShowcase
-              image={gamificacaoShowcase}
-              videoUrl="https://www.youtube.com/embed/2Xc9gXyf2G4"
-              alt="Jornada Empreendedora Print"
-            />
-
-            {/* CTA Buttons */}
             <motion.div
               className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.6 }}
+              variants={itemVariants}
             >
-              <a
-                href="/cadastro"
+              <Link
+                to="/plataforma"
                 className="group inline-flex items-center gap-2 px-8 py-4 bg-primary-500 hover:bg-primary-600 text-black font-bold text-lg rounded-lg shadow-lg shadow-primary-500/25 hover:shadow-xl hover:shadow-primary-500/30 transition-all duration-300"
               >
-                <Rocket className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                Comece sua jornada
+                Explorar o ecossistema
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </a>
+              </Link>
 
               <Link
                 to="/contato"
                 className="group inline-flex items-center gap-2 px-8 py-4 border-2 border-primary-500/50 hover:border-primary-500 hover:bg-primary-500/10 text-primary-500 font-bold text-lg rounded-lg backdrop-blur-sm transition-all"
               >
-                <Play className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                Saiba mais
+                Fale Conosco
               </Link>
             </motion.div>
-
-            {/* Subtext */}
-            <motion.p
-              className="text-center text-sm text-gray-400 flex items-center justify-center gap-2"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.8 }}
-            >
-              <Zap className="w-4 h-4 text-primary-500" />
-              Comece gratuitamente, sem cartão de crédito
-            </motion.p>
-
-            {/* Feature cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-20 max-w-4xl mx-auto">
-              {[
-                {
-                  icon: Sparkles,
-                  title: 'Gamificada',
-                  description: 'Aprenda construindo de forma divertida e engajante',
-                  delay: 0.1
-                },
-                {
-                  icon: Rocket,
-                  title: 'Metodologia',
-                  description: 'Frameworks validados por aceleradoras de sucesso',
-                  delay: 0.2
-                },
-                {
-                  icon: Zap,
-                  title: 'Imersiva',
-                  description: 'Experiência prática desde o primeiro dia',
-                  delay: 0.3
-                }
-              ].map((feature, index) => (
-                <motion.div
-                  key={index}
-                  className="group relative p-6 rounded-2xl border border-primary-500/20 bg-gray-900/50 backdrop-blur-sm hover:bg-primary-500/10 hover:border-primary-500/40 transition-all duration-300 hover:shadow-lg hover:shadow-primary-500/10"
-                  initial={{ y: 15 }}
-                  whileInView={{ y: 0 }}
-                  viewport={{ once: true, amount: 0.3 }}
-                  transition={{ duration: 0.4, delay: feature.delay * 0.3, ease: "easeOut" }}
-                  whileHover={{ y: -5 }}
-                >
-                  <div className="w-12 h-12 rounded-xl bg-primary-500/20 flex items-center justify-center mb-4 group-hover:bg-primary-500/30 transition-colors">
-                    <feature.icon className="w-6 h-6 text-primary-500" />
-                  </div>
-                  <h3 className="text-lg font-semibold mb-2 text-white">
-                    {feature.title}
-                  </h3>
-                  <p className="text-sm text-gray-400">
-                    {feature.description}
-                  </p>
-                </motion.div>
-              ))}
-            </div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="py-20 bg-white dark:bg-gray-900">
-        <div className="container-custom">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-            >
-              <h2 className="text-3xl md:text-4xl font-bold mb-6">{t('home.features.title')}</h2>
-              <p className="text-xl text-gray-600 dark:text-gray-300">{t('home.features.subtitle')}</p>
-            </motion.div>
-          </div>
+      <SectionDivider liftIntoHero />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <FeatureCard
-              icon={<Users className="w-8 h-8" />}
-              title="Ecossistema Colaborativo"
-              description="Conecte-se com mentores, investidores e outros fundadores para acelerar sua jornada."
-              delay={0.1}
-            />
-            <FeatureCard
-              icon={<BarChart2 className="w-8 h-8" />}
-              title="Frameworks Validados"
-              description="Utilize ferramentas como Business Model Canvas, Mapa de Empatia e Jornada do Cliente."
-              delay={0.2}
-            />
-            <FeatureCard
-              icon={<Zap className="w-8 h-8" />}
-              title="Gamificação Engajadora"
-              description="Ganhe pontos, desbloqueie conquistas e acompanhe seu progresso de forma divertida."
-              delay={0.3}
-            />
-            <FeatureCard
-              icon={<Award className="w-8 h-8" />}
-              title="Metodologia Comprovada"
-              description="Siga um processo estruturado baseado nas melhores práticas de empreendedorismo."
-              delay={0.4}
-            />
-            <FeatureCard
-              icon={<Target className="w-8 h-8" />}
-              title="Objetivos Claros"
-              description="Defina metas específicas e acompanhe seu progresso em cada fase do desenvolvimento."
-              delay={0.5}
-            />
-            <FeatureCard
-              icon={<CheckCircle className="w-8 h-8" />}
-              title="Templates Prontos"
-              description="Economize tempo com modelos pré-formatados para pitch decks, planos de negócios e mais."
-              delay={0.6}
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* Testimonials Section */}
-      {/*
-<section className="py-24 bg-gradient-to-b from-white via-gray-50 to-white dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 relative overflow-hidden">
-  <div className="absolute inset-0 opacity-5">
-    <div className="absolute top-20 left-10 w-72 h-72 bg-primary-500 rounded-full blur-3xl" />
-    <div className="absolute bottom-20 right-10 w-96 h-96 bg-primary-400 rounded-full blur-3xl" />
-  </div>
-  <div className="container-custom relative z-10">
-    <motion.div
-      className="text-center max-w-3xl mx-auto mb-16"
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-    >
-      <div className="inline-flex items-center gap-2 bg-primary-500/10 border border-primary-500/30 px-4 py-2 rounded-full mb-6">
-        <Sparkles className="w-4 h-4 text-primary-500" />
-        <span className="text-primary-500 font-semibold text-sm">DEPOIMENTOS</span>
-      </div>
-      <h2 className="text-4xl md:text-5xl font-bold mb-6">{t('home.testimonials.title')}</h2>
-      <p className="text-xl text-gray-600 dark:text-gray-300">{t('home.testimonials.subtitle')}</p>
-    </motion.div>
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-      <TestimonialCard 
-        quote="O Orientohub transformou completamente a forma como desenvolvemos nossa startup. A metodologia gamificada manteve toda a equipe engajada."
-        author="Ana Silva"
-        role="CEO, TechStart"
-        image="https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-        delay={0.1}
-      />
-      <TestimonialCard 
-        quote="Como mentor de startups, o Orientohub se tornou minha ferramenta essencial. Consigo acompanhar o progresso de todos os meus mentorados de forma eficiente."
-        author="Carlos Mendes"
-        role="Mentor, Startup Brasil"
-        image="https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-        delay={0.2}
-      />
-      <TestimonialCard 
-        quote="Nossa aceleradora adotou o Orientohub e vimos um aumento de 40% na taxa de sucesso das startups do nosso portfólio. Simplesmente incrível!"
-        author="Juliana Costa"
-        role="Diretora, Acelera Ventures"
-        image="https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-        delay={0.3}
-      />
-    </div>
-  </div>
-</section>
-*/}
-
-      {/* CTA Section */}
-      <section className="relative py-32 bg-gradient-to-br from-black via-gray-900 to-black overflow-hidden">
-        {/* Animated background elements */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary-500/20 rounded-full blur-3xl animate-pulse" />
-          <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-primary-400/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1000ms' }} />
-        </div>
-
-        {/* Grid pattern overlay */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute inset-0" style={{
-            backgroundImage: 'radial-gradient(circle at 2px 2px, #FFD700 1px, transparent 0)',
-            backgroundSize: '40px 40px'
-          }} />
-        </div>
-
+      {/* Ecosystem overview */}
+      <section className="relative pt-8 pb-8 overflow-hidden">
         <div className="container-custom relative z-10">
+          <div className="mb-14">
+            <SectionHeader
+              icon={Layers}
+              label="02 — Ecossistema"
+              title="As 4 Camadas do Ecossistema OrientoHub"
+              description="Uma arquitetura pensada para apoiar empreendedores em cada etapa da jornada"
+              titleClassName="text-4xl md:text-5xl font-bold mb-6 text-gray-900 dark:text-white"
+              descriptionClassName="text-xl text-gray-600 dark:text-gray-300"
+            />
+          </div>
+
           <motion.div
-            className="relative overflow-hidden rounded-[2rem] border border-primary-500/20 bg-white/[0.04] px-6 py-14 text-center shadow-[0_20px_80px_rgba(0,0,0,0.35)] backdrop-blur-md max-w-5xl mx-auto md:px-12"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.1 }}
           >
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.12),transparent_45%)]" />
-            <div className="absolute -top-16 left-1/2 h-40 w-40 -translate-x-1/2 rounded-full bg-primary-500/10 blur-3xl" />
+            {ecosystemLayers.map((layer) => (
+              <EcosystemCard key={layer.number} layer={layer} />
+            ))}
+          </motion.div>
+        </div>
+      </section>
 
-            {/* Badge */}
-            <motion.div
-              className="relative mb-8 inline-flex items-center gap-3 overflow-hidden rounded-full border border-primary-400/35 bg-white/6 px-5 py-2.5 text-primary-300 shadow-[0_10px_35px_rgba(255,215,0,0.12)] backdrop-blur-md"
-              initial={{ opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.2 }}
-            >
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.18),transparent_55%)] opacity-80" />
-              <div className="absolute inset-[1px] rounded-full bg-gradient-to-r from-black/70 via-gray-900/75 to-black/70" />
-              <div className="relative flex h-7 w-7 items-center justify-center rounded-full border border-primary-400/30 bg-primary-500/15 shadow-[0_0_18px_rgba(255,215,0,0.2)]">
-                <Rocket className="h-3.5 w-3.5 text-primary-400" />
-              </div>
-              <span className="relative text-primary-500 font-bold text-sm uppercase tracking-[0.2em]">
-                Comece agora
-              </span>
-            </motion.div>
+      <SectionDivider />
 
-            {/* Title */}
-            <motion.h2
-              className="relative text-4xl md:text-6xl font-bold mb-6 text-white leading-tight"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.3 }}
-            >
-              {t('home.cta.title')}
-            </motion.h2>
+      {/* Founder story */}
+      <section className="relative pt-2 pb-8 overflow-hidden">
+        <div className="container-custom relative z-10">
+          <SectionHeader
+            icon={Sparkles}
+            label="03 — O Founder"
+            title="Criado por quem vive o ecossistema"
+            titleClassName="text-4xl md:text-5xl font-bold mb-6 text-white"
+          />
 
-            {/* Subtitle */}
-            <motion.p
-              className="relative text-xl md:text-2xl text-gray-300 mb-12 leading-relaxed max-w-2xl mx-auto"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.4 }}
-            >
-              {t('home.cta.subtitle')}
-            </motion.p>
-
-            {/* CTA Button */}
-            <motion.div
-              className="relative flex flex-col sm:flex-row items-center justify-center gap-4"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.5 }}
-            >
-              <Link
-                to="/cadastro"
-                className="group inline-flex items-center gap-3 px-10 py-5 bg-primary-500 hover:bg-primary-600 text-black font-bold text-xl rounded-xl shadow-2xl shadow-primary-500/30 hover:shadow-primary-500/50 hover:scale-105 transition-all duration-300"
+          <motion.div
+            className="max-w-2xl mx-auto bg-white/5 border border-white/10 rounded-2xl p-8 md:p-12 text-center shadow-xl backdrop-blur-sm hover:bg-white/10 transition-all"
+            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+            whileInView={{ opacity: 1, scale: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.6 }}
+          >
+            <h3 className="text-2xl md:text-3xl font-bold mb-4 text-white">
+              Fernando Ramalho
+            </h3>
+            <p className="text-lg text-gray-300 mb-8 leading-relaxed">
+              Empreendedor, inovador e construtor de ecossistemas. Fernando dedica sua vida a preparar a próxima geração de founders através de metodologias práticas, mentorias intensas e um compromisso genuíno com o sucesso de cada startup que passa pelo OrientoHub.
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <a
+                href="https://fernandoramalhobuilder.com.br"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group inline-flex items-center gap-2 px-6 py-3 bg-primary-500 hover:bg-primary-600 text-black font-bold rounded-lg transition-all"
               >
-                <Sparkles className="w-6 h-6 group-hover:rotate-12 transition-transform" />
-                {t('home.cta.button')}
-                <ArrowRight className="w-6 h-6 group-hover:translate-x-2 transition-transform" />
-              </Link>
-            </motion.div>
+                Conheça Fernando
+                <ExternalLink className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </a>
 
-            {/* Additional info */}
-            <motion.p
-              className="relative mt-12 text-sm text-gray-400 flex items-center justify-center gap-2"
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.8 }}
+              <Link
+                to="/sobre"
+                className="group inline-flex items-center gap-2 px-6 py-3 border-2 border-primary-500/50 hover:border-primary-500 hover:bg-primary-500/10 text-primary-500 font-bold rounded-lg backdrop-blur-sm transition-all"
+              >
+                Saiba mais
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </Link>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      <SectionDivider />
+
+      {/* Manifesto */}
+      <section className="relative pt-4 pb-10 overflow-hidden">
+        <div className="container-custom relative z-10">
+          <SectionHeader
+            icon={Sparkles}
+            label="04 — Manifesto"
+            title="Pense. Crie. Acelere."
+            titleClassName="text-5xl md:text-7xl font-bold mb-8 text-white leading-tight"
+            containerClassName="max-w-4xl mx-auto"
+          />
+
+          <motion.p
+            className="text-xl md:text-2xl text-gray-300 leading-relaxed mb-6 max-w-2xl mx-auto text-center"
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ delay: 0.2, duration: 0.6 }}
+          >
+            Método, ambição e execução conectados para transformar ideias em negócios de impacto.
+          </motion.p>
+
+          <motion.div
+            className="flex flex-col sm:flex-row items-center justify-center gap-4"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ delay: 0.3 }}
+          >
+            <Link
+              to="/manifesto"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-primary-500 hover:bg-primary-600 text-black font-bold rounded-lg transition-all"
             >
-              <Zap className="w-4 h-4 text-primary-500" />
-              Grátis para começar • Sem cartão de crédito • Cancele quando quiser
-            </motion.p>
+              Leia o Manifesto Completo
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </motion.div>
+        </div>
+      </section>
+
+      <SectionDivider />
+
+      {/* Final actions */}
+      <section className="relative pt-2 pb-8 overflow-hidden">
+        <div className="container-custom relative z-10">
+          <div className="mb-14">
+            <SectionHeader
+              icon={Sparkles}
+              label="05 — Próximos Passos"
+              title="Sua jornada começa aqui"
+              description="Escolha como você quer explorar o OrientoHub e começar a transformar suas ideias em realidade"
+              titleClassName="text-4xl md:text-5xl font-bold mb-6 text-white"
+              descriptionClassName="text-xl text-gray-300"
+            />
+          </div>
+
+          <motion.div
+            className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto mb-8"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.1 }}
+          >
+            {quickActions.map((action) => (
+              <QuickActionCard key={action.link} action={action} />
+            ))}
+          </motion.div>
+
+          <motion.div
+            className="text-center"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ delay: 0.3 }}
+          >
+            <p className="text-gray-400 mb-6">Pronto para começar sua transformação?</p>
+            <Link
+              to="/plataforma"
+              className="group inline-flex items-center gap-3 px-10 py-5 bg-primary-500 hover:bg-primary-600 text-black font-bold text-lg rounded-xl shadow-2xl shadow-primary-500/30 hover:shadow-primary-500/50 hover:scale-105 transition-all duration-300"
+            >
+              <Sparkles className="w-6 h-6 group-hover:rotate-12 transition-transform" />
+              Comece Grátis
+              <ArrowRight className="w-6 h-6 group-hover:translate-x-2 transition-transform" />
+            </Link>
           </motion.div>
         </div>
       </section>
@@ -413,79 +362,104 @@ const HomePage = () => {
   );
 };
 
-interface FeatureCardProps {
-  icon: React.ReactNode;
-  title: string;
-  description: string;
-  delay: number;
-}
+export default HomePage;
 
-const FeatureCard = ({ icon, title, description, delay }: FeatureCardProps) => {
+const SectionHeader = ({
+  icon: Icon,
+  label,
+  title,
+  description,
+  titleClassName,
+  descriptionClassName = 'text-xl text-gray-600 dark:text-gray-300',
+  containerClassName = 'max-w-3xl mx-auto',
+}: SectionHeaderProps) => {
   return (
     <motion.div
-      className="group bg-gradient-to-br from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 p-6 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-primary-500 dark:hover:border-primary-500 transition-all duration-300 hover:shadow-xl"
-      initial={{ y: 15 }}
-      whileInView={{ y: 0 }}
-      viewport={{ once: true, amount: 0.3 }}
-      transition={{ duration: 0.4, delay: delay * 0.3, ease: "easeOut" }}
-      whileHover={{ y: -5 }}
-    >
-      <div className="text-primary-500 mb-4 group-hover:scale-110 transition-transform duration-300">
-        {icon}
-      </div>
-      <h3 className="text-lg font-bold mb-2">{title}</h3>
-      <p className="text-gray-600 dark:text-gray-400 text-sm">{description}</p>
-    </motion.div>
-  );
-};
-
-interface TestimonialCardProps {
-  quote: string;
-  author: string;
-  role: string;
-  image: string;
-  delay: number;
-}
-
-const TestimonialCard = ({ quote, author, role, image, delay }: TestimonialCardProps) => {
-  return (
-    <motion.div
-      className="group relative bg-white dark:bg-gray-800 p-8 rounded-2xl border-2 border-gray-200 dark:border-gray-700 hover:border-primary-500 dark:hover:border-primary-500 transition-all duration-300 hover:shadow-2xl hover:shadow-primary-500/10"
+      className={`text-center ${containerClassName}`}
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay }}
-      whileHover={{ y: -8 }}
+      viewport={{ once: true, amount: 0.3 }}
+      transition={{ duration: 0.6 }}
     >
-      {/* Quote icon */}
-      <div className="absolute -top-4 -left-4 w-12 h-12 bg-primary-500 rounded-full flex items-center justify-center shadow-lg">
-        <svg className="w-6 h-6 text-black" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
-        </svg>
+      <div className="inline-flex items-center gap-2 bg-primary-500/10 border border-primary-500/30 px-4 py-2 rounded-full mb-6">
+        <Icon className="w-4 h-4 text-[#FFD700]" />
+        <span className="text-[#FFD700] font-semibold text-sm uppercase tracking-wider">
+          {label}
+        </span>
       </div>
+      <h2 className={titleClassName}>{title}</h2>
+      {description ? <p className={descriptionClassName}>{description}</p> : null}
+    </motion.div>
+  );
+};
 
-      {/* Quote text */}
-      <p className="text-gray-700 dark:text-gray-300 mb-6 leading-relaxed italic text-lg">
-        "{quote}"
-      </p>
+const HeroBadge = () => {
+  return (
+    <div className="group relative inline-flex items-center justify-center overflow-hidden rounded-full border border-primary-400/35 bg-white/6 px-5 py-2.5 text-primary-300 shadow-[0_10px_35px_rgba(255,215,0,0.12)] backdrop-blur-md">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,215,0,0.18),transparent_55%)] opacity-95" />
+      <div className="absolute inset-[1px] rounded-full bg-gradient-to-r from-black/70 via-gray-900/75 to-black/70" />
+      <div className="relative mr-3 flex h-7 w-7 items-center justify-center rounded-full border border-[#FFD700]/35 bg-[#FFD700]/18 shadow-[0_0_18px_rgba(255,215,0,0.35)]">
+        <Sparkles className="h-3.5 w-3.5 flex-shrink-0 text-[#FFD700]" />
+      </div>
+      <span className="relative text-[11px] font-bold uppercase tracking-[0.22em] text-[#FFD700]">
+        OrientoHub
+      </span>
+    </div>
+  );
+};
 
-      {/* Author info */}
-      <div className="flex items-center gap-4 mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
-        <div className="relative">
-          <div className="absolute inset-0 bg-primary-500 rounded-full blur-md opacity-30 group-hover:opacity-50 transition-opacity" />
-          <img
-            src={image}
-            alt={author}
-            className="relative w-14 h-14 rounded-full object-cover border-2 border-primary-500"
-          />
+const EcosystemCard = ({ layer }: { layer: EcosystemLayer }) => {
+  const Icon = layer.icon;
+
+  return (
+    <motion.div
+      className="group relative overflow-hidden rounded-2xl border border-gray-200/80 dark:border-gray-700 bg-white/90 dark:bg-gray-900/85 p-8 shadow-[0_18px_50px_rgba(0,0,0,0.08)] backdrop-blur-md hover:border-primary-500 dark:hover:border-primary-500 transition-all duration-300 cursor-pointer"
+      variants={itemVariants}
+      whileHover={{ scale: 1.01 }}
+    >
+      {/* Soft hover wash */}
+      <div className={`absolute inset-0 opacity-0 group-hover:opacity-10 bg-gradient-to-br ${layer.color} transition-opacity duration-300`} />
+
+      <div className="relative z-10 flex h-full flex-col">
+        <div className="flex items-center justify-between mb-4">
+          <span className="text-4xl font-bold text-[#FFD700]/55">{layer.number}</span>
+          <Icon className="w-8 h-8 text-[#FFD700] group-hover:scale-110 transition-transform" />
         </div>
-        <div>
-          <h4 className="font-bold text-gray-900 dark:text-white">{author}</h4>
-          <p className="text-sm text-primary-500 font-medium">{role}</p>
-        </div>
+        <h3 className="text-2xl font-bold mb-3 text-gray-900 dark:text-white">
+          {layer.title}
+        </h3>
+        <p className="text-gray-600 dark:text-gray-400 mb-6 leading-relaxed">
+          {layer.description}
+        </p>
+        {layer.ctaLabel ? (
+          <Link
+            to={layer.href ?? '/ecossistema'}
+            className="mt-auto inline-flex items-center gap-2 text-[#FFD700] font-semibold transition-colors"
+          >
+            {layer.ctaLabel} <ArrowRight className="w-4 h-4" />
+          </Link>
+        ) : null}
       </div>
     </motion.div>
   );
 };
 
-export default HomePage;
+const QuickActionCard = ({ action }: { action: QuickAction }) => {
+  const Icon = action.icon;
+
+  return (
+    <motion.div className="group relative" variants={itemVariants}>
+      <Link
+        to={action.link}
+        className="block h-full p-8 rounded-2xl border border-primary-500/30 bg-white/90 dark:bg-gray-900/85 shadow-[0_18px_50px_rgba(0,0,0,0.08)] backdrop-blur-md hover:bg-white/[0.98] dark:hover:bg-gray-900 transition-all duration-300 hover:border-primary-500"
+      >
+        <Icon className="w-8 h-8 text-[#FFD700] mb-4 group-hover:scale-110 transition-transform" />
+        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">{action.title}</h3>
+        <p className="text-gray-600 dark:text-gray-400 mb-6 leading-relaxed">{action.description}</p>
+        <span className="inline-flex items-center gap-2 text-[#FFD700] font-semibold group-hover:gap-3 transition-all">
+          Ir agora <ArrowRight className="w-4 h-4" />
+        </span>
+      </Link>
+    </motion.div>
+  );
+};

@@ -8,6 +8,7 @@ import DashboardLayout from './layouts/DashboardLayout';
 
 // Public Pages
 import HomePage from './pages/HomePage';
+import PlatformaPage from './pages/PlatformaPage';
 import ContactPage from './pages/ContactPage';
 import ManifestoPage from './pages/ManifestoPage';
 import GlossaryPage from './pages/GlossaryPage';
@@ -87,6 +88,7 @@ function App() {
       <Routes>
         <Route path="/" element={<MainLayout />}>
           <Route index element={<HomePage />} />
+          <Route path="/plataforma" element={<PlatformaPage />} />
           <Route path="/contato" element={<ContactPage />} />
           <Route path="sobre" element={<AboutPage />} />
           <Route path="manifesto" element={<ManifestoPage />} />

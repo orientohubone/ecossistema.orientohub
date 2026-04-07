@@ -22,6 +22,7 @@ import {
   Database,
   BookOpen,
   Briefcase,
+  HandCoins,
   ArrowRight,
   CheckCircle2,
   CircleDot,
@@ -32,7 +33,8 @@ import {
   Heart,
   Play,
   CheckCircle,
-  Clock
+  Clock,
+  Repeat
 } from 'lucide-react';
 
 // Carrossel com paginação para MVPs
@@ -554,25 +556,25 @@ const EcosystemPage = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
             <BusinessModelCard
-              icon="💰"
+              icon={HandCoins}
               title="Coparticipação Societária"
               description="20% de participação em startups aceleradas"
               delay={0.1}
             />
             <BusinessModelCard
-              icon="🎓"
+              icon={GraduationCap}
               title="Oriento Academy"
               description="Monetização via cursos e serviços B2B"
               delay={0.2}
             />
             <BusinessModelCard
-              icon="🎙️"
+              icon={Mic}
               title="Branding via OrientoCast"
               description="Parcerias e patrocínios estratégicos"
               delay={0.3}
             />
             <BusinessModelCard
-              icon="🧠"
+              icon={Repeat}
               title="Receita Recorrente"
               description="Membership de founders na plataforma"
               delay={0.4}
@@ -913,17 +915,10 @@ const VerticalCard = ({ logo, icon, title, emoji, description, features, status,
 
       {/* Status badge */}
       <div className="mb-4">
-        {status === 'active' ? (
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 text-xs font-semibold rounded-full">
-            <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />
-            Ativo
-          </span>
-        ) : (
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400 text-xs font-semibold rounded-full">
-            <Clock className="w-3 h-3" />
-            Em Breve
-          </span>
-        )}
+        <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400 text-xs font-semibold rounded-full">
+          <Clock className="w-3 h-3" />
+          Em Breve
+        </span>
       </div>
 
       <h3 className="text-2xl font-bold mb-3 text-gray-900 dark:text-white group-hover:text-primary-500 transition-colors">
@@ -962,13 +957,15 @@ const VerticalCard = ({ logo, icon, title, emoji, description, features, status,
 );
 
 interface BusinessModelCardProps {
-  icon: string;
+  icon: React.ElementType;
   title: string;
   description: string;
   delay: number;
 }
 
 const BusinessModelCard = ({ icon, title, description, delay }: BusinessModelCardProps) => {
+  const Icon = icon;
+
   return (
     <motion.div
       className="bg-white/5 backdrop-blur-sm p-6 rounded-xl border border-white/10 hover:border-primary-500/50 transition-all duration-300 hover:bg-white/10"
@@ -977,7 +974,9 @@ const BusinessModelCard = ({ icon, title, description, delay }: BusinessModelCar
       transition={{ duration: 0.5, delay, ease: "easeOut" }}
       whileHover={{ y: -5 }}
     >
-      <div className="text-4xl mb-4">{icon}</div>
+      <div className="mb-4">
+        <Icon className="w-10 h-10 text-primary-500" />
+      </div>
       <h3 className="text-lg font-bold mb-2 text-white">{title}</h3>
       <p className="text-gray-300 text-sm">{description}</p>
     </motion.div>

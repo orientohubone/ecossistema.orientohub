@@ -4,9 +4,12 @@
 
 @layer base {
   html,
-  body,
+  body {
+    @apply min-h-full;
+  }
+
   #root {
-    @apply min-h-full bg-white dark:bg-black;
+    @apply min-h-full;
   }
 
   body {
