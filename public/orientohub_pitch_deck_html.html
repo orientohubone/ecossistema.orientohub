@@ -1,0 +1,388 @@
+﻿
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;min-height:100%;background:#0A0A0A;color:#fff;overflow:hidden;scroll-behavior:smooth;scrollbar-color:rgba(245,217,10,.65) rgba(255,255,255,.06)}
+body{font-family:'Trebuchet MS',sans-serif;font-size:18px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.deck{background:#0A0A0A;color:#fff;width:100%;height:100vh;min-height:100dvh;font-family:inherit;display:flex;flex-direction:column;overflow:hidden}
+.slide{display:none;flex:1;min-height:0;padding:clamp(34px,4.5vw,72px) clamp(28px,5vw,88px) clamp(180px,12vh,260px);background:#0A0A0A;position:relative;overflow:auto}
+.slide.active{display:flex;flex-direction:column}
+body::-webkit-scrollbar,.slide::-webkit-scrollbar{width:10px;height:10px}
+body::-webkit-scrollbar-track,.slide::-webkit-scrollbar-track{background:rgba(255,255,255,.06);border-radius:999px}
+body::-webkit-scrollbar-thumb,.slide::-webkit-scrollbar-thumb{background:linear-gradient(180deg,rgba(245,217,10,.9),rgba(255,230,102,.75));border-radius:999px;border:2px solid rgba(10,10,10,.75)}
+body::-webkit-scrollbar-thumb:hover,.slide::-webkit-scrollbar-thumb:hover{background:linear-gradient(180deg,rgba(255,230,102,1),rgba(245,217,10,1))}
+.eyebrow{font-size:clamp(12px,1vw,15px);font-weight:700;letter-spacing:2.8px;color:#F5D90A;margin-bottom:14px;text-transform:uppercase}
+.headline{font-size:clamp(40px,4vw,64px);font-weight:700;line-height:1.06;color:#fff;margin-bottom:14px}
+.sub{font-size:clamp(14px,1.05vw,18px);color:#8a8a8a;line-height:1.7;margin-bottom:18px}
+.badge{display:inline-block;font-size:clamp(10px,0.8vw,12px);font-weight:700;letter-spacing:2.2px;color:#F5D90A;border:1px solid #F5D90A;background:#231b00;border-radius:20px;padding:5px 16px;margin-bottom:18px}
+.tagline{font-size:clamp(24px,2.2vw,32px);font-style:italic;color:#F5D90A;font-family:Georgia,serif;margin-bottom:18px}
+.ring{position:absolute;border-radius:50%;border:1px solid #F5D90A;opacity:.08;pointer-events:none}
+.problem-row{background:#161616;border:0.5px solid #252525;border-radius:10px;padding:16px 18px 16px 24px;margin-bottom:12px;position:relative;overflow:hidden}
+.problem-row::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:#F5D90A}
+.pt{font-size:clamp(15px,1.15vw,19px);font-weight:700;color:#fff;margin-bottom:4px}
+.ps{font-size:clamp(12px,0.95vw,14px);color:#666}
+.cards{display:grid;gap:14px}
+.c3{grid-template-columns:repeat(3,1fr)}
+.c4{grid-template-columns:repeat(4,1fr)}
+.card{background:#161616;border:0.5px solid #252525;border-radius:12px;padding:18px;position:relative;overflow:hidden}
+.ct{height:3px;width:100%;position:absolute;top:0;left:0}
+.cl{font-size:clamp(9px,0.75vw,12px);letter-spacing:1.7px;font-weight:700;text-transform:uppercase;margin:10px 0 6px}
+.cn{font-size:clamp(18px,1.25vw,24px);font-weight:700;margin-bottom:8px}
+.cb{font-size:clamp(12px,0.95vw,15px);color:#777;line-height:1.6}
+.s4-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:22px;max-width:1560px;width:100%;margin-top:18px}
+.s4-card{border:1px solid #252525;border-radius:18px;padding:24px 24px 34px;min-height:280px;display:flex;flex-direction:column;justify-content:flex-start;gap:10px;overflow:hidden;position:relative;box-shadow:0 16px 40px rgba(0,0,0,.22)}
+.s4-card::after{content:'';position:absolute;inset:auto -20% -35% -20%;height:120px;background:radial-gradient(circle,rgba(255,255,255,.08),transparent 62%);pointer-events:none}
+.s4-card .cl{font-size:clamp(11px,0.85vw,14px);margin:8px 0 2px}
+.s4-card .cn{font-size:clamp(20px,1.5vw,28px);margin-bottom:8px}
+.s4-card .cb{font-size:clamp(13px,1vw,16px);max-width:24ch;margin-bottom:6px}
+.s4-core{background:linear-gradient(180deg,rgba(245,217,10,.16),rgba(22,22,22,1) 52%)}
+.s4-core .ct{background:linear-gradient(90deg,#F5D90A,#FFE766)}
+.s4-core .cl,.s4-core .cn{color:#FFF08A}
+.s4-core .cb{color:#d7d7d7}
+.s4-product{background:linear-gradient(180deg,rgba(96,200,255,.16),rgba(22,22,22,1) 52%)}
+.s4-product .ct{background:linear-gradient(90deg,#60C8FF,#9CE3FF)}
+.s4-product .cl,.s4-product .cn{color:#60C8FF}
+.s4-product .cb{color:#d8e2ea}
+.s4-innovation{background:linear-gradient(180deg,rgba(255,159,64,.16),rgba(22,22,22,1) 52%)}
+.s4-innovation .ct{background:linear-gradient(90deg,#FF9F40,#FFC27A)}
+.s4-innovation .cl,.s4-innovation .cn{color:#FFB15A}
+.s4-innovation .cb{color:#e8d8c6}
+.s4-growth{background:linear-gradient(180deg,rgba(185,127,255,.16),rgba(22,22,22,1) 52%)}
+.s4-growth .ct{background:linear-gradient(90deg,#B97FFF,#D7B3FF)}
+.s4-growth .cl,.s4-growth .cn{color:#C79CFF}
+.s4-growth .cb{color:#e2d8f0}
+.slide#s3{padding-top:clamp(24px,3vw,44px);padding-bottom:clamp(150px,10vh,220px)}
+.slide#s3 .headline{font-size:clamp(34px,3.4vw,54px);margin-bottom:10px}
+.slide#s3 .sub{max-width:920px;margin-bottom:12px}
+.s3-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;max-width:1320px;width:100%;margin-top:12px}
+.pillar{border:1px solid #252525;border-radius:18px;padding:24px 24px 34px;min-height:290px;text-align:left;overflow:hidden;position:relative;display:flex;flex-direction:column;justify-content:flex-start;gap:12px;box-shadow:0 16px 40px rgba(0,0,0,.22)}
+.pillar::after{content:'';position:absolute;inset:auto -20% -40% -20%;height:120px;background:radial-gradient(circle,rgba(255,255,255,.08),transparent 60%);pointer-events:none}
+.pt2{height:6px;background:#F5D90A;position:absolute;top:0;left:0;right:0}
+.pl{font-size:clamp(13px,1.05vw,18px);font-weight:700;letter-spacing:2.2px;color:#F5D90A;margin:10px 0 2px;text-transform:uppercase}
+.pb{font-size:clamp(15px,1.2vw,18px);color:#a8a8a8;line-height:1.65;max-width:26ch;margin-bottom:6px}
+.slide#s3 .pillar{min-height:220px;padding:18px 20px 24px;gap:10px}
+.slide#s3 .pl{margin-top:6px;font-size:clamp(12px,0.95vw,16px)}
+.slide#s3 .pb{font-size:clamp(13px,1vw,16px);line-height:1.5;max-width:28ch;margin-bottom:0}
+.pillar--yellow{background:linear-gradient(180deg,rgba(245,217,10,.16),rgba(22,22,22,1) 50%)}
+.pillar--yellow .pt2{background:linear-gradient(90deg,#F5D90A,#FFE766)}
+.pillar--yellow .pl{color:#FFF08A}
+.pillar--yellow .pb{color:#cfcfcf}
+.pillar--blue{background:linear-gradient(180deg,rgba(96,200,255,.16),rgba(22,22,22,1) 50%)}
+.pillar--blue .pt2{background:linear-gradient(90deg,#60C8FF,#9CE3FF)}
+.pillar--blue .pl{color:#60C8FF}
+.pillar--blue .pb{color:#d0d9e2}
+.pillar--orange{background:linear-gradient(180deg,rgba(255,159,64,.16),rgba(22,22,22,1) 50%)}
+.pillar--orange .pt2{background:linear-gradient(90deg,#FF9F40,#FFC27A)}
+.pillar--orange .pl{color:#FFB15A}
+.pillar--orange .pb{color:#ddd1c0}
+.pill{display:inline-block;font-size:clamp(9px,0.75vw,12px);font-weight:700;letter-spacing:1px;padding:5px 10px;border-radius:20px;border:0.5px solid;margin-bottom:10px;text-transform:uppercase}
+.pg{background:#231b00;color:#F5D90A;border-color:#F5D90A}
+.pa{background:#1a1000;color:#F59E0B;border-color:#F59E0B}
+.two{display:grid;grid-template-columns:1.05fr 0.95fr;gap:28px;margin-top:8px}
+.s6-wrap{display:grid;grid-template-columns:1.1fr 0.9fr;gap:24px;align-items:start;max-width:1500px;width:100%;margin-top:10px}
+.slide#s6{padding-top:clamp(24px,3vw,44px);padding-bottom:clamp(120px,8vh,180px)}
+.slide#s6 .headline{font-size:clamp(48px,4.8vw,78px);margin-bottom:10px}
+.slide#s6 .founder-sub{margin-bottom:14px}
+.slide#s6 .dot-row{margin-bottom:10px}
+.cc{background:#161616;border:0.5px solid #252525;border-radius:12px;padding:20px;position:relative;overflow:hidden}
+.cc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:#F5D90A}
+.cct{font-size:clamp(10px,0.8vw,13px);letter-spacing:2px;color:#F5D90A;text-transform:uppercase;text-align:center;margin:10px 0 6px}
+.clab{font-size:clamp(10px,0.75vw,12px);letter-spacing:1px;color:#666;text-transform:uppercase;margin:10px 0 3px}
+.cval{font-size:clamp(13px,1vw,16px);font-weight:700;color:#fff}
+.dot-row{display:flex;align-items:flex-start;margin-bottom:14px;font-size:clamp(13px,1vw,17px);color:#8d8d8d;line-height:1.5}
+.dot-row::before{content:'';display:inline-block;width:10px;height:10px;border-radius:50%;background:#F5D90A;margin:6px 14px 0 0;flex-shrink:0;box-shadow:0 0 0 4px rgba(245,217,10,.08)}
+.founder-sub{font-size:clamp(16px,1.15vw,20px);font-style:italic;color:#F5D90A;font-family:Georgia,serif;margin-bottom:18px}
+.ndots{display:flex;gap:7px;align-items:center}
+.nd{width:7px;height:7px;border-radius:50%;background:#2a2a2a;border:none;cursor:pointer;padding:0;transition:background .15s}
+.nd.on{background:#F5D90A}
+.nc{font-size:11px;color:#444;letter-spacing:1px}
+.cta-inner{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:10px 20px}
+.cta-btn{display:inline-block;background:#F5D90A;color:#0A0A0A;font-weight:700;font-size:15px;padding:16px 34px;border-radius:10px;text-decoration:none;margin-top:18px}
+.deck-controls{position:fixed;left:24px;right:24px;bottom:24px;z-index:50;display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;padding:14px 16px;background:rgba(15,15,15,.9);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.08);border-radius:18px;box-shadow:0 18px 50px rgba(0,0,0,.45)}
+.deck-controls .nbtn{background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,.01));color:#e8e8e8;border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:12px 18px;font-size:14px;min-width:132px}
+.deck-controls .nbtn:hover{border-color:#F5D90A;color:#fff;transform:translateY(-1px)}
+.deck-meta{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-width:0}
+.deck-progress{width:min(420px,100%);height:8px;background:#1e1e1e;border:1px solid #2a2a2a;border-radius:999px;overflow:hidden}
+.deck-progress-bar{height:100%;width:calc(100% / 7);background:linear-gradient(90deg,#F5D90A,#FFE766);border-radius:999px;transition:transform .28s ease,width .28s ease}
+.deck-loading{position:fixed;inset:0;background:radial-gradient(circle at center,rgba(200,241,53,.12),transparent 28%),rgba(10,10,10,.8);display:flex;align-items:center;justify-content:center;z-index:60;opacity:0;pointer-events:none;transition:opacity .2s ease}
+.deck-loading.on{opacity:1;pointer-events:auto}
+.deck-loading-box{display:flex;flex-direction:column;align-items:center;gap:14px;padding:24px 28px;border-radius:18px;background:rgba(15,15,15,.92);border:1px solid rgba(255,255,255,.08);box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.deck-loading-ring{width:54px;height:54px;border-radius:50%;border:3px solid rgba(245,217,10,.18);border-top-color:#F5D90A;animation:spin .8s linear infinite}
+.deck-loading-text{font-size:13px;letter-spacing:1.4px;text-transform:uppercase;color:#d8d8d8}
+@keyframes spin{to{transform:rotate(360deg)}}
+.p5-intentia .ct{background:linear-gradient(90deg,#FF9F40,#FFC27A)!important}
+.p5-intentia .domain{color:#FF9F40}
+.p5-intentia .category{background:#1f1200;color:#FF9F40;border-color:#FF9F40}
+.p5-intentia .status{background:#1f1200;color:#FF9F40;border-color:#FF9F40}
+.p5-humansys .ct{background:linear-gradient(90deg,#22C55E,#7BE495)!important}
+.p5-humansys .domain{color:#22C55E}
+.p5-humansys .category{background:#0a1a0a;color:#22C55E;border-color:#22C55E}
+.p5-humansys .status{background:#0a1a0a;color:#22C55E;border-color:#22C55E}
+.p5-simples .ct{background:linear-gradient(90deg,#60C8FF,#9CE3FF)!important}
+.p5-simples .domain{color:#60C8FF}
+.p5-simples .category{background:#081721;color:#60C8FF;border-color:#60C8FF}
+.p5-simples .status{background:#081721;color:#60C8FF;border-color:#60C8FF}
+.p5-intentia .title,.p5-humansys .title,.p5-simples .title{color:#fff}
+.domain-link,.cval-link,.footer-link{color:inherit;text-decoration:none}
+.domain-link,.footer-link{display:inline-flex;align-items:center;gap:6px}
+.domain-link::after,.footer-link::after{content:'';display:inline-block;width:8px;height:8px;border-top:1.6px solid currentColor;border-right:1.6px solid currentColor;transform:rotate(45deg);margin-top:-1px;opacity:.85}
+.domain-link:hover,.cval-link:hover,.footer-link:hover{text-decoration:underline}
+.domain-link:hover::after,.footer-link:hover::after{opacity:1}
+.p5-brand{display:flex;align-items:center;justify-content:flex-start;margin-bottom:10px}
+.p5-logo{width:98px;height:98px;object-fit:contain;flex:0 0 auto;filter:drop-shadow(0 10px 22px rgba(0,0,0,.38))}
+.p5-logo-humansys{width:120px;height:120px;transform:translateY(-8px)}
+.p5-logo-simples{width:118px;height:118px;transform:translateY(-8px)}
+.p5-simples .p5-brand{margin-top:-6px;margin-bottom:4px}
+.p5-simples .domain{margin-bottom:6px}
+.p5-humansys .p5-brand{margin-top:-6px;margin-bottom:4px}
+.p5-humansys .domain{margin-bottom:6px}
+.s6-contact-cta{margin-top:14px;padding:14px 0 0;border-top:1px solid rgba(255,255,255,.06);display:flex;align-items:center;justify-content:flex-start;gap:14px;flex-wrap:wrap}
+.s6-call-icon{width:30px;height:30px;flex:0 0 auto;display:inline-block}
+.s6-call-label{font-size:clamp(11px,0.8vw,14px);letter-spacing:2px;text-transform:uppercase;color:#F5D90A}
+.s6-call-number{font-size:clamp(24px,2.6vw,46px);line-height:1;font-weight:700;color:#fff;letter-spacing:-1.2px}
+@media (min-width:1600px){
+  .slide{padding:72px 96px 180px}
+  .sub{max-width:680px}
+  .headline{max-width:980px}
+  .badge{padding:6px 18px}
+}
+@media (max-width:1200px){
+  .s4-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .c4{grid-template-columns:repeat(2,1fr)}
+  .c3{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width:900px){
+  .slide{padding:20px 16px 120px}
+  .two{grid-template-columns:1fr}
+  .s4-grid{grid-template-columns:1fr}
+  .c4,.c3{grid-template-columns:1fr}
+  .deck-controls{left:12px;right:12px;bottom:12px;grid-template-columns:1fr;gap:10px;padding:12px}
+  .deck-controls .nbtn{width:100%;min-width:0}
+  .deck-progress{width:100%}
+}
+</style>
+
+<h2 class="sr-only">OrientoHub Pitch Deck</h2>
+<div class="deck">
+
+<div class="slide active" id="s1">
+  <div class="ring" style="width:340px;height:340px;top:-40px;left:50%;transform:translateX(-50%)"></div>
+  <div class="ring" style="width:240px;height:240px;top:10px;left:50%;transform:translateX(-50%)"></div>
+  <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;width:100%">
+    <div class="badge">Ecossistema</div>
+    <img src="public/orientohub-dark.png" alt="OrientoHub" style="width:clamp(300px,30vw,465px);max-width:88%;height:auto;object-fit:contain;margin-bottom:12px;filter:drop-shadow(0 12px 28px rgba(0,0,0,.35));image-rendering:auto">
+    <div class="tagline">Pense. Crie. Acelere.</div>
+    <div class="sub" style="text-align:center;max-width:720px">Um ecossistema de inovação, aceleração e produtos conectados em quatro camadas estratégicas.</div>
+    <div style="font-size:12px;color:#333;margin-top:18px;letter-spacing:.5px">by Fernando Ramalho &nbsp;·&nbsp; <a class="footer-link" href="https://orientohub.com.br" target="_blank" rel="noopener noreferrer">orientohub.com.br</a></div>
+  </div>
+</div>
+
+<div class="slide" id="s2">
+  <div class="eyebrow">O problema</div>
+  <div class="headline">Não faltam ideias.<br>Falta estrutura para executá-las.</div>
+  <div style="margin-top:16px;max-width:1100px">
+    <div class="problem-row"><div class="pt">Founders travam na validação</div><div class="ps">Sem método, sem direção, sem resultado.</div></div>
+    <div class="problem-row"><div class="pt">Negócios crescem sem estrutura</div><div class="ps">Crescimento frágil, sem base sólida.</div></div>
+    <div class="problem-row"><div class="pt">Execução fica no papel</div><div class="ps">Estratégia existe. Quem executa, não.</div></div>
+  </div>
+</div>
+
+<div class="slide" id="s3">
+  <div class="eyebrow">A solução</div>
+  <div class="headline">OrientoHub é a estrutura que<br>transforma visão em execução.</div>
+  <div class="sub" style="max-width:980px">Um ecossistema completo, não uma ferramenta isolada, não uma consultoria pontual. Governança, metodologia, produtos e aceleração no mesmo sistema.</div>
+  <div class="s3-grid">
+    <div class="pillar pillar--yellow">
+      <div class="pt2"></div>
+      <div class="pill pg">01</div>
+      <div class="pl">Orientação</div>
+      <div class="pb">Direção estratégica desde o primeiro dia, com leitura clara de prioridade e próximo passo.</div>
+    </div>
+    <div class="pillar pillar--blue">
+      <div class="pt2"></div>
+      <div class="pill" style="background:#081721;color:#60C8FF;border-color:#60C8FF">02</div>
+      <div class="pl">Conexão</div>
+      <div class="pb">Ecossistema integrado de pessoas e produtos, conectando competências, canais e oportunidades.</div>
+    </div>
+    <div class="pillar pillar--orange">
+      <div class="pt2"></div>
+      <div class="pill pa">03</div>
+      <div class="pl">Aceleração</div>
+      <div class="pb">Método que reduz o caminho até o resultado e transforma execução em rotina escalável.</div>
+    </div>
+  </div>
+</div>
+
+<div class="slide" id="s4">
+  <div class="eyebrow">Arquitetura estratégica</div>
+  <div class="headline">4 camadas. 1 ecossistema.</div>
+  <div class="s4-grid">
+    <div class="s4-card s4-core"><div class="ct"></div><div class="pill pg">01</div><div class="cl">Core</div><div class="cn">Núcleo</div><div class="cb">Uma marca que respira criação de soluções empresariais e inovadoras.</div></div>
+    <div class="s4-card s4-product"><div class="ct"></div><div class="pill" style="background:#081721;color:#60C8FF;border-color:#60C8FF">02</div><div class="cl">Produto</div><div class="cn">Plataforma</div><div class="cb">Ferramentas integrativas para executar seus projetos de forma ágil.</div></div>
+    <div class="s4-card s4-innovation"><div class="ct"></div><div class="pill pa">03</div><div class="cl">Inovação</div><div class="cn">MVPs</div><div class="cb">Produtos em construção: Intentia, Humansys, SimplesMetrics.</div></div>
+    <div class="s4-card s4-growth"><div class="ct"></div><div class="pill" style="background:#150d24;color:#B97FFF;border-color:#B97FFF">04</div><div class="cl">Expansão</div><div class="cn">Verticais</div><div class="cb">Iniciativas para fomentar a inovação, educação e empreendedorismo.</div></div>
+  </div>
+</div>
+
+<div class="slide" id="s5">
+  <div class="eyebrow">Em construção</div>
+  <div class="headline">Os produtos do ecossistema.</div>
+  <div class="cards c3" style="margin-top:18px;max-width:1500px">
+    <div class="card p5-intentia"><div class="ct" style="background:#FF9F40"></div>
+      <div style="margin-top:10px"><div class="p5-brand"><img class="p5-logo" src="public/intentialogo.png" alt="Intentia logo"></div>
+      <div class="domain" style="font-size:10px;margin-bottom:8px"><a class="domain-link" href="https://intentia.com.br" target="_blank" rel="noopener noreferrer">intentia.com.br</a></div>
+      <div class="pill category">Inteligência Estratégica para Marketing B2B</div>
+      <div class="cb">Plataforma de estratégia e análise de mídia. Conecta dados de Google Ads e Meta para entregas proativas, sem esperar o cliente perguntar.</div>
+      <div style="margin-top:10px"><span class="pill status">MVP ativo</span></div></div>
+    </div>
+    <div class="card p5-humansys"><div class="ct" style="background:#22C55E"></div>
+      <div style="margin-top:10px"><div class="p5-brand"><img class="p5-logo p5-logo-humansys" src="public/Humansysbranco.png" alt="Humansys logo"></div>
+      <div class="domain" style="font-size:10px;margin-bottom:8px"><a class="domain-link" href="https://humansys.com.br" target="_blank" rel="noopener noreferrer">humansys.com.br</a></div>
+      <div class="pill category">Gestão de RH com IA</div>
+      <div class="cb">Plataforma de gestão de pessoas com IA. Automação de processos de RH para PMEs que precisam operar com eficiência.</div>
+      <div style="margin-top:10px"><span class="pill status">MVP ativo</span></div></div>
+    </div>
+    <div class="card p5-simples"><div class="ct" style="background:#60C8FF"></div>
+      <div style="margin-top:10px"><div class="p5-brand"><img class="p5-logo p5-logo-simples" src="public/simplesmetrics1.png" alt="SimplesMetrics logo"></div>
+      <div class="domain" style="font-size:10px;margin-bottom:8px"><a class="domain-link" href="https://simplesmetrics.com.br" target="_blank" rel="noopener noreferrer">simplesmetrics.com.br</a></div>
+      <div class="pill category">Analytics simplificado</div>
+      <div class="cb">Métricas claras e acionáveis para quem não tem tempo para dashboards complexos. Dados que viram decisão.</div>
+      <div style="margin-top:10px"><span class="pill status">Em ideação</span></div></div>
+    </div>
+  </div>
+</div>
+
+<div class="slide" id="s6">
+  <div class="eyebrow">Quem está por trás</div>
+  <div class="s6-wrap">
+    <div>
+      <div class="headline" style="font-size:clamp(54px,5.4vw,92px);line-height:0.98;margin-bottom:14px">Fernando<br>Ramalho</div>
+      <div class="founder-sub">Builder · Estrategista · Arquiteto de sistemas de crescimento</div>
+      <div class="dot-row">Inovação estratégica aplicada a produtos digitais</div>
+      <div class="dot-row">Especialista em tráfego pago, IA e product marketing</div>
+      <div class="dot-row">Fundador da OrientoHub Soluções Empresariais</div>
+      <div class="dot-row">Arquiteta sistemas, não apenas campanhas</div>
+    </div>
+    <div class="cc" style="padding:28px 28px 30px;min-height:420px">
+      <div class="cct" style="font-size:clamp(12px,0.95vw,15px);margin:14px 0 10px">Contato</div>
+      <div class="clab" style="margin-top:14px">Site pessoal</div><div class="cval" style="font-size:clamp(15px,1.15vw,20px)"><a class="cval-link" href="https://fernandoramalhobuilder.com.br" target="_blank" rel="noopener noreferrer">fernandoramalhobuilder.com.br</a></div>
+      <div class="clab">OrientoHub</div><div class="cval" style="font-size:clamp(15px,1.15vw,20px)"><a class="cval-link" href="https://orientohub.com.br" target="_blank" rel="noopener noreferrer">orientohub.com.br</a></div>
+      <div class="clab">Email</div><div class="cval" style="font-size:clamp(15px,1.15vw,20px)">fernando@orientohub.com.br</div>
+      <div class="clab">LinkedIn</div><div class="cval" style="font-size:clamp(15px,1.15vw,20px)">/in/fernandoramalhooficial</div>
+      <div class="clab">Instagram</div><div class="cval" style="font-size:clamp(15px,1.15vw,20px)">@orientohub</div>
+      <div class="s6-contact-cta">
+        <svg class="s6-call-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M6.5 4.5h11A2.5 2.5 0 0 1 20 7v6a2.5 2.5 0 0 1-2.5 2.5H13l-4.2 3.2c-.8.6-1.8.1-1.8-.9v-2.3H6.5A2.5 2.5 0 0 1 4 13V7a2.5 2.5 0 0 1 2.5-2.5Z" stroke="#F5D90A" stroke-width="1.7" stroke-linejoin="round"/>
+          <path d="M8 9.25h8M8 12h5.5" stroke="#F5D90A" stroke-width="1.7" stroke-linecap="round"/>
+        </svg>
+        <div>
+          <div class="s6-call-label">Contato direto</div>
+          <a class="cval-link s6-call-number" href="tel:+5514998618547">1499861-8547</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="slide" id="s7">
+  <div class="ring" style="width:300px;height:300px;top:-20px;left:50%;transform:translateX(-50%)"></div>
+  <div class="ring" style="width:200px;height:200px;top:30px;left:50%;transform:translateX(-50%)"></div>
+  <div class="cta-inner">
+    <div class="headline" style="text-align:center;font-size:clamp(38px,4vw,64px)">A conversa não custa nada.</div>
+    <div class="sub" style="text-align:center;max-width:720px;margin-top:12px">Se você tem visão e precisa de quem construa junto, estamos disponíveis para entrar como força de execução.</div>
+    <a href="mailto:fernando@orientohub.com.br" class="cta-btn">fernando@orientohub.com.br</a>
+    <div style="font-size:12px;color:#333;margin-top:18px;letter-spacing:.5px"><a class="footer-link" href="https://orientohub.com.br" target="_blank" rel="noopener noreferrer">orientohub.com.br</a></div>
+  </div>
+</div>
+
+</div>
+
+<div class="deck-controls" aria-label="Controle do deck">
+  <button class="nbtn" type="button" id="prevBtn">← Anterior</button>
+  <div class="deck-meta">
+    <div class="ndots" id="dots" aria-label="Indicador de slides"></div>
+    <div class="deck-progress" aria-hidden="true"><div class="deck-progress-bar" id="progressBar"></div></div>
+    <div class="nc" id="counter">1 / 7</div>
+  </div>
+  <button class="nbtn" type="button" id="nextBtn">Próximo →</button>
+</div>
+
+<div class="deck-loading" id="deckLoading" aria-live="polite" aria-busy="true">
+  <div class="deck-loading-box">
+    <div class="deck-loading-ring"></div>
+    <div class="deck-loading-text">Carregando slide</div>
+  </div>
+</div>
+
+<script>
+let cur=0;
+let transitioning=false;
+const slides=document.querySelectorAll('.slide');
+const dotsEl=document.getElementById('dots');
+const counter=document.getElementById('counter');
+const progressBar=document.getElementById('progressBar');
+const loading=document.getElementById('deckLoading');
+const prevBtn=document.getElementById('prevBtn');
+const nextBtn=document.getElementById('nextBtn');
+const n=slides.length;
+slides.forEach((_,i)=>{
+  const d=document.createElement('button');
+  d.className='nd'+(i===0?' on':'');
+  d.onclick=()=>go(i);
+  d.type='button';
+  d.setAttribute('aria-label','Ir para o slide '+(i+1));
+  dotsEl.appendChild(d);
+});
+function setProgress(i){
+  progressBar.style.width=(100/n)+'%';
+  progressBar.style.transform='translateX('+(i*(100))+'%)';
+}
+function flashLoading(cb){
+  loading.classList.add('on');
+  window.clearTimeout(window.__deckLoadingTimer);
+  window.__deckLoadingTimer=window.setTimeout(()=>{
+    loading.classList.remove('on');
+    if(cb)cb();
+  },180);
+}
+function go(i){
+  if(i===cur||transitioning)return;
+  const next=(i+n)%n;
+  transitioning=true;
+  flashLoading(()=>{
+    slides[cur].classList.remove('active');
+    dotsEl.children[cur].classList.remove('on');
+    cur=next;
+    slides[cur].classList.add('active');
+    dotsEl.children[cur].classList.add('on');
+    counter.textContent=(cur+1)+' / '+n;
+    setProgress(cur);
+    slides[cur].scrollTop=0;
+    transitioning=false;
+  });
+}
+function move(d){go(cur+d);}
+prevBtn.addEventListener('click',()=>move(-1));
+nextBtn.addEventListener('click',()=>move(1));
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight')move(1);
+  if(e.key==='ArrowLeft')move(-1);
+});
+let touchStartX=0;
+let touchStartY=0;
+document.addEventListener('touchstart',e=>{
+  const t=e.touches[0];
+  touchStartX=t.clientX;
+  touchStartY=t.clientY;
+},{passive:true});
+document.addEventListener('touchend',e=>{
+  const t=e.changedTouches[0];
+  const dx=t.clientX-touchStartX;
+  const dy=t.clientY-touchStartY;
+  if(Math.abs(dx)>60 && Math.abs(dx)>Math.abs(dy)){
+    if(dx<0)move(1);
+    else move(-1);
+  }
+},{passive:true});
+setProgress(0);
+</script>
