@@ -10,7 +10,7 @@ const SectionDivider: FC<SectionDividerProps> = ({ delay = 0, liftIntoHero = fal
   return (
     <motion.div
       className={`relative py-6 flex flex-col items-center justify-center ${
-        liftIntoHero ? '-mt-28 sm:-mt-32 md:-mt-36' : 'my-8 sm:my-10 md:my-12'
+        liftIntoHero ? '-mt-12 sm:-mt-16 md:-mt-20 lg:-mt-24' : 'my-8 sm:my-10 md:my-12'
       }`}
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}

@@ -1,7 +1,8 @@
 import { motion } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Sparkles, Layers, Users, Target, Lightbulb, ExternalLink } from 'lucide-react';
+import { ArrowRight, Sparkles, Layers, Users, Target, Lightbulb, ExternalLink, Component, MonitorPlay, Maximize2, X } from 'lucide-react';
 import SectionDivider from '../components/SectionDivider';
 import type { ComponentType } from 'react';
 
@@ -122,6 +123,41 @@ const quickActions: QuickAction[] = [
 ];
 
 const HomePage = () => {
+  const [presentationOpen, setPresentationOpen] = useState(false);
+  const modalContentRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (!presentationOpen) return undefined;
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setPresentationOpen(false);
+      }
+    };
+
+    document.addEventListener('keydown', onKeyDown);
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      document.removeEventListener('keydown', onKeyDown);
+      document.body.style.overflow = '';
+    };
+  }, [presentationOpen]);
+
+  const openFullscreen = async () => {
+    const element = modalContentRef.current;
+    if (!element) return;
+
+    if (document.fullscreenElement) {
+      await document.exitFullscreen();
+      return;
+    }
+
+    if (element.requestFullscreen) {
+      await element.requestFullscreen();
+    }
+  };
+
   return (
     <>
       <Helmet>
@@ -169,6 +205,10 @@ const HomePage = () => {
               Um hub de ideias, produtos e estratégia conectados em quatro camadas — do núcleo institucional aos MVPs em construção.
             </motion.p>
 
+            <div className="lg:hidden mb-8">
+              <SectionDivider liftIntoHero />
+            </div>
+
             <motion.div
               className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8"
               variants={itemVariants}
@@ -181,30 +221,90 @@ const HomePage = () => {
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Link>
 
-              <Link
-                to="/contato"
+              <button
+                type="button"
+                onClick={() => setPresentationOpen(true)}
                 className="group inline-flex items-center gap-2 px-8 py-4 border-2 border-primary-500/50 hover:border-primary-500 hover:bg-primary-500/10 text-primary-500 font-bold text-lg rounded-lg backdrop-blur-sm transition-all"
               >
-                Fale Conosco
-              </Link>
+                Ver apresentação
+                <MonitorPlay className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </button>
             </motion.div>
           </motion.div>
         </div>
       </section>
 
-      <SectionDivider liftIntoHero />
+      <div className="hidden lg:block">
+        <SectionDivider liftIntoHero />
+      </div>
+
+      {presentationOpen && (
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 px-4 py-6 backdrop-blur-md"
+          onClick={() => setPresentationOpen(false)}
+        >
+          <div
+            ref={modalContentRef}
+            className="relative w-[min(98vw,1600px)] h-[min(95vh,980px)] overflow-hidden rounded-[32px] bg-gradient-to-b from-white/10 via-white/5 to-white/10 p-px shadow-[0_30px_120px_rgba(0,0,0,0.65)]"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="flex h-full w-full flex-col overflow-hidden rounded-[31px] bg-[#0b0b0b]">
+              <div className="flex items-center justify-between border-b border-white/10 px-4 py-3 sm:px-5">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary-500/10 text-primary-500">
+                    <MonitorPlay className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <div className="text-sm font-semibold text-white">Apresentação OrientoHub</div>
+                    <div className="text-xs text-gray-400">Visualização do deck em tela central</div>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={openFullscreen}
+                    className="inline-flex items-center gap-2 rounded-lg border border-white/10 px-3 py-2 text-sm font-semibold text-white transition-colors hover:border-primary-500 hover:bg-primary-500/10"
+                  >
+                    <Maximize2 className="h-4 w-4" />
+                    Tela cheia
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setPresentationOpen(false)}
+                    className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-white/10 text-white transition-colors hover:border-primary-500 hover:bg-primary-500/10"
+                    aria-label="Fechar apresentação"
+                  >
+                    <X className="h-5 w-5" />
+                  </button>
+                </div>
+              </div>
+
+              <div className="flex-1 overflow-hidden rounded-b-[31px] bg-black">
+                <iframe
+                  title="Apresentação OrientoHub"
+                  src="/orientohub_pitch_deck_html.html"
+                  className="block h-full w-full bg-black border-0"
+                  allowFullScreen
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Ecosystem overview */}
       <section className="relative pt-8 pb-8 overflow-hidden">
         <div className="container-custom relative z-10">
-          <div className="mb-14">
+          <div className="mb-11">
             <SectionHeader
-              icon={Layers}
-              label="02 — Ecossistema"
+              icon={Component}
+              label="02 | Ecossistema"
               title="As 4 Camadas do Ecossistema OrientoHub"
               description="Uma arquitetura pensada para apoiar empreendedores em cada etapa da jornada"
               titleClassName="text-4xl md:text-5xl font-bold mb-6 text-gray-900 dark:text-white"
               descriptionClassName="text-xl text-gray-600 dark:text-gray-300"
+              containerClassName="max-w-4xl mx-auto"
             />
           </div>
 
