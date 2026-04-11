@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Menu, X, Globe, Moon, Sun, Sparkles, GraduationCap } from 'lucide-react';
+import { Menu, X, Globe, Moon, Sun, Sparkles, GraduationCap, Rocket } from 'lucide-react';
 import { useAuthStore } from '../../stores/authStore';
 
 const applyTheme = (isDark: boolean) => {
@@ -73,12 +73,21 @@ const Header = () => {
   return (
     <>
       {/* Launch Banner */}
-      <div className="bg-gradient-to-r from-primary-500 to-primary-600 text-black py-2 px-4">
+      <div className="bg-gradient-to-r from-primary-500 to-primary-600 px-3 py-2 sm:px-4 sm:py-2.5">
         <div className="container-custom">
-          <div className="flex items-center justify-center gap-2 text-sm font-medium">
-            <Sparkles className="w-4 h-4 animate-pulse" />
-            <span>Plataforma Pronta! Lançamento Oficial em Breve</span>
-            <Sparkles className="w-4 h-4 animate-pulse" />
+          <div className="mx-auto flex max-w-4xl items-center justify-center gap-2 text-center text-[11px] font-semibold leading-tight text-black sm:gap-2.5 sm:text-sm sm:font-medium">
+            <span className="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-black/10">
+              <Rocket className="h-3.5 w-3.5 text-black" />
+            </span>
+            <span className="max-w-[18rem] sm:max-w-none">
+              <span className="sm:hidden">
+                Plataforma Pronta!
+                <br />
+                Lançamento Oficial em Breve
+              </span>
+              <span className="hidden sm:inline">Plataforma Pronta! Lançamento Oficial em Breve</span>
+            </span>
+            <Sparkles className="hidden h-4 w-4 animate-pulse text-black/70 sm:block" />
           </div>
         </div>
       </div>

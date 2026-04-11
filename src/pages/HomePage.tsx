@@ -68,7 +68,7 @@ const ecosystemLayers: EcosystemLayer[] = [
   {
     number: '01',
     title: 'Núcleo',
-    description: 'Uma marca que respira criação de soluções empresariais e inovadoras',
+    description: 'Núcleo representa a raiz de toda marca, sendo marca-mãe, tendo nosso founder como orquestrador do ecossistema e suas soluções e conectando sua marca pessoal como canal de aquisição',
     icon: Target,
     color: 'from-amber-500 to-orange-600',
   },
@@ -124,6 +124,7 @@ const quickActions: QuickAction[] = [
 
 const HomePage = () => {
   const [presentationOpen, setPresentationOpen] = useState(false);
+  const [expandedLayer, setExpandedLayer] = useState<string | null>(null);
   const modalContentRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -170,26 +171,26 @@ const HomePage = () => {
       <div className="fixed inset-0 opacity-20 -z-50" style={heroBackgroundStyle} />
 
       {/* Hero */}
-      <section className="relative min-h-screen w-full flex items-center">
-        <div className="relative z-10 container-custom pt-4 sm:pt-6 pb-0 flex items-center min-h-screen">
+      <section className="relative min-h-[100svh] w-full flex items-center">
+        <div className="relative z-10 container-custom pt-6 sm:pt-8 lg:pt-14 xl:pt-16 pb-0 flex items-center min-h-[100svh]">
           <motion.div
-            className="w-full max-w-4xl mx-auto -mt-8 sm:-mt-10 lg:-mt-12"
+            className="w-full max-w-3xl mx-auto -mt-2 sm:-mt-8 lg:-mt-4 xl:-mt-6 px-1 sm:px-0"
             variants={containerVariants}
             initial="hidden"
             animate="visible"
           >
             <motion.div
-              className="flex justify-center mb-8"
+              className="flex justify-center mb-5 sm:mb-8"
               variants={itemVariants}
             >
               <HeroBadge />
             </motion.div>
 
             <motion.h1
-              className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold text-center mb-8 tracking-tight leading-tight flex flex-col items-center"
+              className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-center mb-5 sm:mb-8 tracking-tight leading-[1.05] flex flex-col items-center"
               variants={itemVariants}
             >
-              <span className="text-white block whitespace-nowrap">
+              <span className="text-white block max-w-[12ch] sm:max-w-none">
                 Orientação e Conexão
               </span>
               <span className="text-white block">
@@ -199,23 +200,19 @@ const HomePage = () => {
             </motion.h1>
 
             <motion.p
-              className="text-xl sm:text-2xl text-gray-300 text-center max-w-3xl mx-auto mb-12 leading-relaxed"
+              className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-300 text-center max-w-2xl mx-auto mb-8 sm:mb-12 leading-relaxed"
               variants={itemVariants}
             >
               Um hub de ideias, produtos e estratégia conectados em quatro camadas — do núcleo institucional aos MVPs em construção.
             </motion.p>
 
-            <div className="lg:hidden mb-8">
-              <SectionDivider liftIntoHero />
-            </div>
-
             <motion.div
-              className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8"
+              className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 sm:gap-4 mb-6 sm:mb-8 w-full"
               variants={itemVariants}
             >
               <Link
                 to="/plataforma"
-                className="group inline-flex items-center gap-2 px-8 py-4 bg-primary-500 hover:bg-primary-600 text-black font-bold text-lg rounded-lg shadow-lg shadow-primary-500/25 hover:shadow-xl hover:shadow-primary-500/30 transition-all duration-300"
+                className="group inline-flex w-full sm:w-auto items-center justify-center gap-2 px-6 sm:px-8 py-3 sm:py-4 bg-primary-500 hover:bg-primary-600 text-black font-bold text-base sm:text-lg rounded-lg shadow-lg shadow-primary-500/25 hover:shadow-xl hover:shadow-primary-500/30 transition-all duration-300"
               >
                 Explorar o ecossistema
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -224,18 +221,22 @@ const HomePage = () => {
               <button
                 type="button"
                 onClick={() => setPresentationOpen(true)}
-                className="group inline-flex items-center gap-2 px-8 py-4 border-2 border-primary-500/50 hover:border-primary-500 hover:bg-primary-500/10 text-primary-500 font-bold text-lg rounded-lg backdrop-blur-sm transition-all"
+                className="group inline-flex w-full sm:w-auto items-center justify-center gap-2 px-6 sm:px-8 py-3 sm:py-4 border-2 border-primary-500/50 hover:border-primary-500 hover:bg-primary-500/10 text-primary-500 font-bold text-base sm:text-lg rounded-lg backdrop-blur-sm transition-all"
               >
                 Ver apresentação
                 <MonitorPlay className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </button>
             </motion.div>
+
+            <div className="lg:hidden mt-6 sm:mt-8">
+              <SectionDivider />
+            </div>
           </motion.div>
         </div>
       </section>
 
-      <div className="hidden lg:block">
-        <SectionDivider liftIntoHero />
+      <div className="hidden lg:block mt-0 xl:-mt-2">
+        <SectionDivider />
       </div>
 
       {presentationOpen && (
@@ -294,7 +295,7 @@ const HomePage = () => {
       )}
 
       {/* Ecosystem overview */}
-      <section className="relative pt-8 pb-8 overflow-hidden">
+      <section className="relative pt-4 xl:pt-2 pb-8 overflow-hidden">
         <div className="container-custom relative z-10">
           <div className="mb-11">
             <SectionHeader
@@ -308,17 +309,52 @@ const HomePage = () => {
             />
           </div>
 
-          <motion.div
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto"
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.1 }}
-          >
-            {ecosystemLayers.map((layer) => (
-              <EcosystemCard key={layer.number} layer={layer} />
-            ))}
-          </motion.div>
+          {expandedLayer === '01' ? (
+            <div className="max-w-6xl mx-auto space-y-5 md:space-y-6">
+              <motion.div
+                className="w-full"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.35 }}
+              >
+                <EcosystemCard
+                  layer={ecosystemLayers[0]}
+                  expanded
+                  onToggleExpand={() => setExpandedLayer(null)}
+                />
+              </motion.div>
+
+              <motion.div
+                className="grid grid-cols-1 lg:grid-cols-3 gap-5 md:gap-6"
+                variants={containerVariants}
+                initial="hidden"
+                animate="visible"
+              >
+                {ecosystemLayers.slice(1).map((layer) => (
+                  <EcosystemCard
+                    key={layer.number}
+                    layer={layer}
+                  />
+                ))}
+              </motion.div>
+            </div>
+          ) : (
+            <motion.div
+              className="grid grid-cols-1 lg:grid-cols-4 gap-5 md:gap-6 max-w-6xl mx-auto items-stretch"
+              variants={containerVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.1 }}
+            >
+              {ecosystemLayers.map((layer) => (
+                <EcosystemCard
+                  key={layer.number}
+                  layer={layer}
+                  onToggleExpand={layer.number === '01' ? () => setExpandedLayer((current) => (current === '01' ? null : '01')) : undefined}
+                />
+              ))}
+            </motion.div>
+          )}
         </div>
       </section>
 
@@ -508,33 +544,119 @@ const HeroBadge = () => {
   );
 };
 
-const EcosystemCard = ({ layer }: { layer: EcosystemLayer }) => {
+const NucleusMark = ({ className = '' }: { className?: string }) => {
+  return (
+    <div className={`relative flex items-center justify-center ${className}`}>
+      <div className="absolute inset-0 rounded-full border border-[#FFD700]/25 bg-[#FFD700]/8" />
+      <div className="absolute inset-[18%] rounded-full border border-[#FFD700]/45" />
+      <div className="absolute inset-[36%] rounded-full bg-[#FFD700] shadow-[0_0_18px_rgba(255,215,0,0.35)]" />
+      <div className="absolute inset-[48%] rounded-full bg-black/90" />
+      <div className="absolute inset-x-[16%] top-1/2 h-px -translate-y-1/2 bg-gradient-to-r from-transparent via-[#FFD700]/70 to-transparent" />
+    </div>
+  );
+};
+
+type EcosystemCardProps = {
+  layer: EcosystemLayer;
+  compact?: boolean;
+  expanded?: boolean;
+  onToggleExpand?: () => void;
+};
+
+const EcosystemCard = ({ layer, compact = false, expanded = false, onToggleExpand }: EcosystemCardProps) => {
   const Icon = layer.icon;
+  const isNucleus = layer.number === '01';
+  const canExpand = isNucleus && Boolean(onToggleExpand);
+  const shellPadding = expanded ? 'p-6 sm:p-8 lg:p-10' : 'p-7 md:p-8';
+  const cardLayout = expanded
+    ? 'grid gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-center'
+    : 'flex h-full flex-col';
 
   return (
     <motion.div
-      className="group relative overflow-hidden rounded-2xl border border-gray-200/80 dark:border-gray-700 bg-white/90 dark:bg-gray-900/85 p-8 shadow-[0_18px_50px_rgba(0,0,0,0.08)] backdrop-blur-md hover:border-primary-500 dark:hover:border-primary-500 transition-all duration-300 cursor-pointer"
+      className={`group relative overflow-hidden rounded-2xl border bg-white/90 dark:bg-gray-900/85 shadow-[0_18px_50px_rgba(0,0,0,0.08)] backdrop-blur-md transition-all duration-300 ${
+        expanded
+          ? 'border-primary-500/60 shadow-[0_28px_80px_rgba(0,0,0,0.16)]'
+          : 'border-gray-200/80 dark:border-gray-700 hover:border-primary-500 dark:hover:border-primary-500'
+      } ${shellPadding} h-full min-h-[320px] ${canExpand || expanded ? 'cursor-pointer' : 'cursor-default'}`}
       variants={itemVariants}
-      whileHover={{ scale: 1.01 }}
+      role={canExpand ? 'button' : undefined}
+      tabIndex={canExpand ? 0 : undefined}
+      aria-expanded={isNucleus ? expanded : undefined}
+      onClick={isNucleus ? onToggleExpand : undefined}
+      onKeyDown={
+        isNucleus
+          ? (event) => {
+              if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                onToggleExpand?.();
+              }
+            }
+          : undefined
+      }
     >
       {/* Soft hover wash */}
       <div className={`absolute inset-0 opacity-0 group-hover:opacity-10 bg-gradient-to-br ${layer.color} transition-opacity duration-300`} />
 
-      <div className="relative z-10 flex h-full flex-col">
-        <div className="flex items-center justify-between mb-4">
-          <span className="text-4xl font-bold text-[#FFD700]/55">{layer.number}</span>
-          <Icon className="w-8 h-8 text-[#FFD700] group-hover:scale-110 transition-transform" />
+      <div className={`relative z-10 h-full ${cardLayout}`}>
+        <div className={expanded ? 'flex flex-col justify-between gap-6' : 'flex h-full flex-col'}>
+          {isNucleus ? (
+            expanded ? (
+              <div className="flex items-start gap-4">
+                <span className="text-4xl md:text-5xl font-bold text-[#FFD700]/55">
+                  {layer.number}
+                </span>
+              </div>
+            ) : (
+              <div className="flex items-center justify-between gap-4 mb-4">
+                <span className="text-4xl font-bold text-[#FFD700]/55">
+                  {layer.number}
+                </span>
+                <Component className="h-8 w-8 shrink-0 text-[#FFD700]" />
+              </div>
+            )
+          ) : (
+            <div className="flex items-center justify-between gap-4 mb-4">
+              <span className={`${expanded ? 'text-4xl md:text-5xl' : compact ? 'text-3xl' : 'text-4xl'} font-bold text-[#FFD700]/55`}>
+                {layer.number}
+              </span>
+              <Icon className={`${compact ? 'w-7 h-7' : 'w-8 h-8'} text-[#FFD700] group-hover:scale-110 transition-transform`} />
+            </div>
+          )}
+
+          <div className={expanded ? 'max-w-2xl' : ''}>
+            <h3 className={`${expanded ? 'text-3xl md:text-4xl' : compact ? 'text-xl' : 'text-2xl'} font-bold mb-3 text-gray-900 dark:text-white`}>
+              {layer.title}
+            </h3>
+            <p className={`${expanded ? 'text-base md:text-lg max-w-2xl' : compact ? 'text-sm md:text-[0.95rem]' : 'text-gray-600 dark:text-gray-400'} mb-6 leading-relaxed`}>
+              {layer.description}
+            </p>
+
+            {expanded ? (
+              <div className="grid gap-3 sm:grid-cols-3">
+                {['Estratégia', 'Marca', 'Direção'].map((item) => (
+                  <div
+                    key={item}
+                    className="rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-gray-200"
+                  >
+                    {item}
+                  </div>
+                ))}
+              </div>
+            ) : null}
+          </div>
         </div>
-        <h3 className="text-2xl font-bold mb-3 text-gray-900 dark:text-white">
-          {layer.title}
-        </h3>
-        <p className="text-gray-600 dark:text-gray-400 mb-6 leading-relaxed">
-          {layer.description}
-        </p>
+
+        {isNucleus && expanded && (
+          <div className="flex items-start justify-center lg:justify-end -mt-36 md:-mt-48 -mr-4 md:-mr-5">
+            <Component className="h-10 w-10 md:h-11 md:w-11 shrink-0 text-[#FFD700]" />
+          </div>
+        )}
+
         {layer.ctaLabel ? (
           <Link
             to={layer.href ?? '/ecossistema'}
-            className="mt-auto inline-flex items-center gap-2 text-[#FFD700] font-semibold transition-colors"
+            className={`inline-flex items-center gap-2 text-[#FFD700] font-semibold transition-colors ${expanded ? 'mt-6' : 'mt-auto'}`}
           >
             {layer.ctaLabel} <ArrowRight className="w-4 h-4" />
           </Link>
