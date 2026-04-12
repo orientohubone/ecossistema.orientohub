@@ -140,8 +140,8 @@ const Header = () => {
                 fontSize: '1rem',
               }}
             >
-              <span className="absolute inset-[1px] rounded-full bg-white/78 dark:bg-gray-950/78 transition-colors duration-300 group-hover:bg-white/82 dark:group-hover:bg-gray-950/82" />
-              <GraduationCap className="relative w-4 h-4 text-primary-500 transition-transform duration-300 group-hover:scale-105" />
+              <span className={`absolute inset-[1px] rounded-full transition-colors duration-300 group-hover:bg-white/82 dark:group-hover:bg-gray-950/82 ${location.pathname === '/academy' ? 'bg-transparent dark:bg-transparent group-hover:bg-transparent dark:group-hover:bg-transparent' : 'bg-white/78 dark:bg-gray-950/78'}`} />
+              <GraduationCap className={`relative w-4 h-4 ${location.pathname === '/academy' ? 'text-black' : 'text-primary-500'} transition-transform duration-300 group-hover:scale-105`} />
               <span className="relative">Academy</span>
             </Link>
           </nav>
