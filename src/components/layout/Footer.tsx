@@ -1,8 +1,9 @@
-import { memo, useEffect, useRef } from 'react';
+import { memo, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Github, Linkedin, Instagram, Mail, MapPin, Phone, Rocket, Sparkles, ArrowRight, Heart, ArrowUp } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { newsletterService } from '../../services/newsletterService';
 
 const BackToTopButton = memo(({ onClick }: { onClick: () => void }) => (
   <div
@@ -34,6 +35,9 @@ const Footer = () => {
   const backToTopWrapperRef = useRef<HTMLDivElement | null>(null);
   
   const currentYear = new Date().getFullYear();
+  const [email, setEmail] = useState('');
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [message, setMessage] = useState('');
 
   useEffect(() => {
     backToTopWrapperRef.current = document.querySelector('[data-back-to-top-wrapper]');
@@ -98,9 +102,32 @@ const Footer = () => {
   const handleLinkClick = () => {
     window.scrollTo(0, 0);
   };
+
+  const handleSubscribe = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email) return;
+
+    setStatus('loading');
+    const result = await newsletterService.subscribe(email);
+
+    if (result.success) {
+      setStatus('success');
+      setMessage('Obrigado por se inscrever! Verifique seu e-mail em breve.');
+      setEmail('');
+    } else {
+      setStatus('error');
+      setMessage(result.error || 'Erro ao se inscrever. Tente novamente.');
+    }
+
+    // Resetar status após 5 segundos
+    setTimeout(() => {
+      setStatus('idle');
+      setMessage('');
+    }, 5000);
+  };
   
   const socialLinks = [
-    { icon: Linkedin, href: '#', label: 'LinkedIn', color: 'hover:text-blue-600' },
+    { icon: Linkedin, href: 'https://www.linkedin.com/in/fernandoramalhooficial/', label: 'LinkedIn', color: 'hover:text-blue-600' },
     { icon: Instagram, href: 'https://instagram.com/orientohub', label: 'Instagram', color: 'hover:text-pink-500' },
     { icon: Github, href: '#', label: 'GitHub', color: 'hover:text-gray-400' },
   ];
@@ -167,24 +194,45 @@ const Footer = () => {
               </h3>
               
               <p className="text-gray-400 text-lg mb-8 max-w-2xl mx-auto">
-                Junte-se a mais de 10.000 founders e receba conteúdo semanal sobre empreendedorismo, validação e crescimento.
+                Receba conteúdo semanal exclusivo sobre empreendedorismo, validação e crescimento diretamente no seu e-mail.
               </p>
 
-              <div className="flex flex-col sm:flex-row gap-4 max-w-xl mx-auto">
-                <input
-                  type="email"
-                  placeholder="Seu melhor e-mail"
-                  className="flex-1 px-6 py-4 bg-gray-800/50 border-2 border-gray-700 rounded-xl text-white placeholder-gray-500 focus:border-primary-500 focus:outline-none transition-all backdrop-blur-sm"
-                />
+              <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-4 max-w-xl mx-auto">
+                <div className="flex-1 relative">
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Seu melhor e-mail"
+                    required
+                    disabled={status === 'loading' || status === 'success'}
+                    className="w-full px-6 py-4 bg-gray-800/50 border-2 border-gray-700 rounded-xl text-white placeholder-gray-500 focus:border-primary-500 focus:outline-none transition-all backdrop-blur-sm disabled:opacity-50"
+                  />
+                  {message && (
+                    <motion.p
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className={`absolute -bottom-6 left-0 text-xs font-semibold ${status === 'error' ? 'text-red-500' : 'text-green-500'}`}
+                    >
+                      {message}
+                    </motion.p>
+                  )}
+                </div>
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="group px-8 py-4 bg-primary-500 hover:bg-primary-600 text-black font-bold rounded-xl transition-all shadow-lg shadow-primary-500/25 hover:shadow-xl hover:shadow-primary-500/40 flex items-center justify-center gap-2"
+                  type="submit"
+                  disabled={status === 'loading' || status === 'success'}
+                  className="group px-8 py-4 bg-primary-500 hover:bg-primary-600 text-black font-bold rounded-xl transition-all shadow-lg shadow-primary-500/25 hover:shadow-xl hover:shadow-primary-500/40 flex items-center justify-center gap-2 disabled:bg-gray-600 disabled:shadow-none"
                 >
-                  Inscrever-se
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  {status === 'loading' ? 'Insccrevendo...' : (
+                    <>
+                      {status === 'success' ? 'Inscrito!' : 'Inscrever-se'}
+                      <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                    </>
+                  )}
                 </motion.button>
-              </div>
+              </form>
             </motion.div>
           </div>
         </div>

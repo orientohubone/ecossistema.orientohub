@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Crown, TrendingUp, Users, DollarSign, Activity, FileText, GitBranch, Download } from 'lucide-react';
+import { Crown, TrendingUp, Users, DollarSign, Activity, FileText, GitBranch, Download, Inbox } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { DashboardHeader } from '../components/founder/DashboardHeader';
 import { KPICards } from '../components/founder/metrics/KPICards';
 import { useFounderData } from '../hooks/useFounderData';
 import { Company } from '../types/founder';
 import DashboardPageSkeleton from '../components/ui/DashboardPageSkeleton';
+import { LeadsManagement } from '../components/founder/LeadsManagement';
 
 const FounderDashboardPage = () => {
     const [activeTab, setActiveTab] = useState('overview');
@@ -17,6 +18,7 @@ const FounderDashboardPage = () => {
         { id: 'revenue', label: 'Receita', icon: DollarSign },
         { id: 'engagement', label: 'Engajamento', icon: TrendingUp },
         { id: 'reports', label: 'Relatórios', icon: FileText },
+        { id: 'leads', label: 'Recebimentos', icon: Inbox },
         { id: 'versions', label: 'Versões', icon: GitBranch },
     ];
 
@@ -289,7 +291,7 @@ const FounderDashboardPage = () => {
                                                     <div className="p-2 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
                                                         <TrendingUp className="w-5 h-5 text-purple-600 dark:text-purple-400" />
                                                     </div>
-                                                    <span className="text-xs bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400 px-2 py-1 rounded">Diário</span>
+                                                    <span className="text-xs bg-purple-100 dark:bg-purple-900/30 text-blue-700 dark:text-blue-400 px-2 py-1 rounded">Diário</span>
                                                 </div>
                                                 <h4 className="font-semibold text-gray-900 dark:text-white mb-1 group-hover:text-primary-500 transition-colors">
                                                     Relatório de Engajamento
@@ -323,6 +325,10 @@ const FounderDashboardPage = () => {
                                         </div>
                                     </div>
                                 </div>
+                            )}
+
+                            {activeTab === 'leads' && (
+                                <LeadsManagement />
                             )}
 
                             {activeTab === 'versions' && (

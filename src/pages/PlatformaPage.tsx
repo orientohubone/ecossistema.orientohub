@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Sparkles, Rocket, Zap, ArrowRight, Play, Users, BarChart2, Award, Target, CheckCircle } from 'lucide-react';
+import { Sparkles, Rocket, Zap, ArrowRight, Play, Users, BarChart2, Award, Target, CheckCircle, MessageCircle } from 'lucide-react';
 import VideoShowcase from '../components/ui/VideoShowcase';
 import gamificacaoShowcase from '../assets/gamificação-showcase.png';
 
@@ -144,8 +144,8 @@ const PlatformaPage = () => {
                 to="/contato"
                 className="group inline-flex items-center gap-2 px-8 py-4 border-2 border-primary-500/50 hover:border-primary-500 hover:bg-primary-500/10 text-primary-500 font-bold text-lg rounded-lg backdrop-blur-sm transition-all"
               >
-                <Play className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                Saiba mais
+                <MessageCircle className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                Entre em contato
               </Link>
             </motion.div>
 

@@ -37,6 +37,7 @@ type EcosystemLayer = {
   shortDescription?: string;
   icon: IconType;
   color: string;
+  brandColor: string;
   href?: string;
   ctaLabel?: string;
 };
@@ -73,6 +74,7 @@ const ecosystemLayers: EcosystemLayer[] = [
     description: 'Núcleo representa a raiz de toda marca, sendo marca-mãe, tendo nosso founder como orquestrador do ecossistema e suas soluções e conectando sua marca pessoal como canal de aquisição.',
     icon: Target,
     color: 'from-amber-500 to-orange-600',
+    brandColor: 'amber',
   },
   {
     number: '02',
@@ -80,7 +82,8 @@ const ecosystemLayers: EcosystemLayer[] = [
     shortDescription: 'Ferramentas integrativas para executar seus projetos de forma ágil',
     description: 'A Plataforma OrientoHub consolida metodologias e ferramentas práticas em um único lugar, permitindo que você conduza sua startup através de toda a Jornada Empreendedora, desde a ideação até a escala.',
     icon: Lightbulb,
-    color: 'from-teal-500 to-cyan-600',
+    color: 'from-blue-500 to-cyan-600',
+    brandColor: 'blue',
     href: '/plataforma',
     ctaLabel: 'Abrir',
   },
@@ -89,8 +92,9 @@ const ecosystemLayers: EcosystemLayer[] = [
     title: 'MVPs',
     shortDescription: 'Soluções em ideação dentro do ecossistema',
     description: 'Um laboratório prático onde aplicamos frameworks de validação em projetos reais. Acompanhe a esteira de produtos que o hub vem testando e escalando no mercado.',
-    icon: Users,
-    color: 'from-blue-500 to-indigo-600',
+    icon: Rocket,
+    color: 'from-green-500 to-emerald-600',
+    brandColor: 'green',
     href: '/ecossistema#mvps',
     ctaLabel: 'Explorar',
   },
@@ -99,8 +103,9 @@ const ecosystemLayers: EcosystemLayer[] = [
     title: 'Verticais',
     shortDescription: 'Iniciativas para fomentar a inovação, educação e empreendedorismo',
     description: 'Nossas verticais de expansão representam produtos e iniciativas focadas no fortalecimento da comunidade e na monetização do conhecimento proprietário do hub.',
-    icon: Layers,
+    icon: TrendingUp,
     color: 'from-purple-500 to-pink-600',
+    brandColor: 'purple',
     href: '/ecossistema#verticais',
     ctaLabel: 'Explorar',
   },
@@ -197,13 +202,13 @@ const HomePage = () => {
             </motion.div>
 
             <motion.h1
-              className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-center mb-6 tracking-tight leading-[1.08] flex flex-col items-center"
+              className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-center mb-6 tracking-tight leading-[1.2] flex flex-col items-center"
               variants={itemVariants}
             >
               <span className="block text-white mb-2">
                 Orientação e Conexão
               </span>
-              <span className="bg-gradient-to-r from-primary-400 via-primary-500 to-primary-600 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-primary-400 via-primary-500 to-primary-600 bg-clip-text text-transparent pb-4">
                 = Aceleração.
               </span>
             </motion.h1>
@@ -232,7 +237,7 @@ const HomePage = () => {
                 onClick={() => setPresentationOpen(true)}
                 className="group inline-flex w-full sm:w-auto items-center justify-center gap-2 px-8 py-4 border-2 border-primary-500/50 hover:border-primary-500 hover:bg-primary-500/10 text-primary-500 font-bold text-lg rounded-xl backdrop-blur-sm transition-all duration-300"
               >
-                Ver apresentação
+                Veja como funciona
                 <MonitorPlay className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </button>
             </motion.div>
@@ -556,18 +561,37 @@ const EcosystemCard = ({ layer, compact = false, expanded = false, onToggleExpan
   const isMVPs = layer.number === '03';
   const isVerticais = layer.number === '04';
   const canExpand = (isNucleus || isPlataforma || isMVPs || isVerticais) && Boolean(onToggleExpand);
-  const shellPadding = expanded ? 'p-6 sm:p-8 lg:p-10' : 'p-7 md:p-8';
+  // Refined mobile paddings: more compact on small screens
+  const shellPadding = expanded ? 'p-5 sm:p-8 lg:p-10' : 'p-5 sm:p-7 md:p-8';
   const is2ColumnLayout = expanded && isNucleus;
   const cardLayout = is2ColumnLayout
-    ? 'grid gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-center'
+    ? 'grid gap-6 lg:gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-center'
     : 'flex h-full flex-col';
+
+  // Dynamic branding based on layer.brandColor
+  const brandColor = layer.brandColor;
+  const colorMap: Record<string, string> = {
+    amber: 'text-amber-500 border-amber-500 text-amber-500/55 bg-amber-500 shadow-amber-500/20',
+    blue: 'text-blue-500 border-blue-500 text-blue-500/55 bg-blue-500 shadow-blue-500/20',
+    green: 'text-green-500 border-green-500 text-green-500/55 bg-green-500 shadow-green-500/20',
+    purple: 'text-purple-500 border-purple-500 text-purple-500/55 bg-purple-500 shadow-purple-500/20',
+  };
+
+  const getStyle = (type: 'text' | 'border' | 'faded' | 'bg' | 'shadow') => {
+    const parts = colorMap[brandColor].split(' ');
+    if (type === 'text') return parts[0];
+    if (type === 'border') return parts[1];
+    if (type === 'faded') return parts[2];
+    if (type === 'bg') return parts[3];
+    return parts[4];
+  };
 
   return (
     <motion.div
-      className={`group relative overflow-hidden rounded-2xl border bg-white/90 dark:bg-gray-900/85 shadow-[0_18px_50px_rgba(0,0,0,0.08)] backdrop-blur-md transition-all duration-300 ${expanded
-          ? 'border-primary-500/60 shadow-[0_28px_80px_rgba(0,0,0,0.16)]'
-          : 'border-gray-200/80 dark:border-gray-700 hover:border-primary-500 dark:hover:border-primary-500'
-        } ${shellPadding} h-full min-h-[320px] ${canExpand || expanded ? 'cursor-pointer' : 'cursor-default'}`}
+      className={`group relative overflow-hidden rounded-2xl border bg-white/90 dark:bg-gray-900/85 shadow-[0_12px_40px_rgba(0,0,0,0.06)] dark:shadow-none backdrop-blur-md transition-all duration-300 ${expanded
+          ? `border-${brandColor}-500/60 shadow-[0_28px_80px_rgba(0,0,0,0.16)]`
+          : `border-gray-200/80 dark:border-gray-700/50 hover:border-${brandColor}-500 dark:hover:border-${brandColor}-500`
+        } ${shellPadding} h-full min-h-[280px] sm:min-h-[320px] ${canExpand || expanded ? 'cursor-pointer' : 'cursor-default'}`}
       variants={itemVariants}
       role={canExpand ? 'button' : undefined}
       tabIndex={canExpand ? 0 : undefined}
@@ -588,40 +612,19 @@ const EcosystemCard = ({ layer, compact = false, expanded = false, onToggleExpan
       <div className={`absolute inset-0 opacity-0 group-hover:opacity-10 bg-gradient-to-br ${layer.color} transition-opacity duration-300`} />
 
       <div className={`relative z-10 h-full ${cardLayout}`}>
-        <div className={expanded ? 'flex flex-col justify-between gap-6' : 'flex h-full flex-col'}>
-          {isNucleus || isPlataforma || isMVPs || isVerticais ? (
-            expanded ? (
-              <div className="flex items-start gap-4">
-                <span className="text-4xl md:text-5xl font-bold text-[#FFD700]/55">
-                  {layer.number}
-                </span>
-              </div>
-            ) : (
-              <div className="flex items-center justify-between gap-4 mb-4">
-                <span className="text-4xl font-bold text-[#FFD700]/55">
-                  {layer.number}
-                </span>
-                {isNucleus ? (
-                  <Component className="h-8 w-8 shrink-0 text-[#FFD700]" />
-                ) : (
-                  <Icon className="h-8 w-8 shrink-0 text-[#FFD700]" />
-                )}
-              </div>
-            )
-          ) : (
-            <div className="flex items-center justify-between gap-4 mb-4">
-              <span className={`${expanded ? 'text-4xl md:text-5xl' : compact ? 'text-3xl' : 'text-4xl'} font-bold text-[#FFD700]/55`}>
-                {layer.number}
-              </span>
-              <Icon className={`${compact ? 'w-7 h-7' : 'w-8 h-8'} text-[#FFD700] group-hover:scale-110 transition-transform`} />
-            </div>
-          )}
+        <div className={expanded ? 'flex flex-col justify-between gap-5' : 'flex h-full flex-col'}>
+          <div className="flex items-center justify-between gap-4 mb-4">
+            <span className={`${expanded ? 'text-3xl sm:text-5xl' : compact ? 'text-2xl' : 'text-3xl sm:text-4xl'} font-bold ${getStyle('faded')}`}>
+              {layer.number}
+            </span>
+            {!expanded && <Icon className={`${compact ? 'w-6 h-6' : 'w-7 h-7 sm:w-8 sm:h-8'} ${getStyle('text')} group-hover:scale-110 transition-transform`} />}
+          </div>
 
           <div className={expanded && isNucleus ? 'max-w-2xl' : expanded ? 'w-full' : ''}>
-            <h3 className={`${expanded ? 'text-3xl md:text-4xl' : compact ? 'text-xl' : 'text-2xl'} font-bold mb-3 text-gray-900 dark:text-white`}>
+            <h3 className={`${expanded ? 'text-2xl sm:text-4xl' : compact ? 'text-lg sm:text-xl' : 'text-xl sm:text-2xl'} font-bold mb-2 sm:mb-3 text-gray-900 dark:text-white leading-tight`}>
               {layer.title}
             </h3>
-            <p className={`${expanded ? 'text-base md:text-lg max-w-2xl' : compact ? 'text-sm md:text-[0.95rem]' : 'text-gray-600 dark:text-gray-400'} mb-6 leading-relaxed`}>
+            <p className={`${expanded ? 'text-sm sm:text-lg max-w-2xl' : compact ? 'text-xs sm:text-[0.95rem]' : 'text-sm sm:text-base text-gray-600 dark:text-gray-400'} mb-5 sm:mb-6 leading-relaxed`}>
               {!expanded && layer.shortDescription ? layer.shortDescription : layer.description}
             </p>
 
@@ -649,8 +652,8 @@ const EcosystemCard = ({ layer, compact = false, expanded = false, onToggleExpan
                 </a>
               </div>
             ) : isPlataforma && expanded ? (
-              <div className="flex flex-col gap-6 mt-4">
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
+              <div className="flex flex-col gap-5 mt-2">
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
                   {[
                     { id: 1, name: 'Ideação', icon: Lightbulb, color: 'from-blue-400 to-blue-600', bgColor: 'bg-blue-500/10' },
                     { id: 2, name: 'Validação', icon: Target, color: 'from-green-400 to-green-600', bgColor: 'bg-green-500/10' },
@@ -662,30 +665,30 @@ const EcosystemCard = ({ layer, compact = false, expanded = false, onToggleExpan
                     return (
                       <div
                         key={phase.name}
-                        className="p-3 sm:p-4 lg:p-3 xl:p-4 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-sm flex flex-col items-center sm:items-start text-center sm:text-left gap-2 sm:gap-3"
+                        className="p-3 rounded-xl border border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-sm flex flex-col items-center sm:items-start text-center sm:text-left gap-2"
                       >
-                        <div className={`w-10 h-10 ${phase.bgColor} rounded-lg flex items-center justify-center`}>
-                          <PhaseIcon className={`w-5 h-5 bg-gradient-to-br ${phase.color} bg-clip-text`} style={{ WebkitTextFillColor: 'transparent' }} />
+                        <div className={`w-8 h-8 sm:w-10 sm:h-10 ${phase.bgColor} rounded-lg flex items-center justify-center`}>
+                          <PhaseIcon className={`w-4 h-4 sm:w-5 sm:h-5 bg-gradient-to-br ${phase.color} bg-clip-text`} style={{ WebkitTextFillColor: 'transparent' }} />
                         </div>
-                        <h4 className="font-bold text-[13px] sm:text-sm tracking-tight text-gray-900 dark:text-white break-words w-full">{phase.name}</h4>
+                        <h4 className="font-bold text-[11px] sm:text-sm tracking-tight text-gray-900 dark:text-white leading-tight">{phase.name}</h4>
                       </div>
                     );
                   })}
                 </div>
                 
-                <div className="p-5 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800/50 dark:to-gray-800/80 rounded-xl border border-gray-200 dark:border-gray-700">
-                  <h4 className="text-gray-900 dark:text-white font-bold mb-2 flex items-center gap-2">
+                <div className="p-4 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800/50 dark:to-gray-800/80 rounded-xl border border-gray-200 dark:border-gray-700">
+                  <h4 className="text-gray-900 dark:text-white font-bold mb-1.5 flex items-center gap-2 text-sm sm:text-base">
                     <Sparkles className="w-4 h-4 text-primary-500" />
-                    Caminho Integrado e Ferramentas Práticas
+                    Caminho Integrado
                   </h4>
-                  <p className="text-gray-600 dark:text-gray-400 text-sm md:text-base leading-relaxed">
-                    Dashboard, recursos de criação de projetos, gestão de tarefas, soluções em fase de desenvolvimento, vincule com o Github e acompanhe toda evolução de forma centralizada e inteligente, frameworks variados para te ajudar em todas as fases da sua startup.
+                  <p className="text-gray-600 dark:text-gray-400 text-xs sm:text-base leading-relaxed">
+                    Acompanhe toda evolução de forma centralizada e inteligente, frameworks variados para te ajudar em todas as fases da sua startup.
                   </p>
                 </div>
               </div>
             ) : isMVPs && expanded ? (
-              <div className="flex flex-col gap-6 mt-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="flex flex-col gap-5 mt-2">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
                   {[
                     { title: "Humansys + BrainSys", type: "Gestão de Pessoas", status: "Ativo", icon: Brain, color: "text-blue-500", border: 'border-blue-500/20' },
                     { title: "Simples Metrics", type: "Growth & Analytics", status: "Ativo", icon: BarChart3, color: "text-emerald-500", border: 'border-emerald-500/20' },
@@ -696,19 +699,19 @@ const EcosystemCard = ({ layer, compact = false, expanded = false, onToggleExpan
                   ].map((mvp, idx) => {
                     const MvpIcon = mvp.icon;
                     return (
-                      <div key={idx} className={`p-5 rounded-2xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-800/80 shadow-sm hover:shadow-md transition-all flex flex-col h-full group`}>
-                        <div className="flex items-start justify-between mb-5">
-                          <div className={`w-12 h-12 rounded-xl flex items-center justify-center bg-gray-50 dark:bg-gray-900/50 border ${mvp.border} group-hover:scale-105 transition-transform`}>
-                            <MvpIcon className={`w-6 h-6 ${mvp.color}`} />
+                      <div key={idx} className={`p-4 sm:p-5 rounded-xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-800/80 shadow-sm hover:shadow-md transition-all flex flex-col h-full group`}>
+                        <div className="flex items-center justify-between mb-3 sm:mb-5">
+                          <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl flex items-center justify-center bg-gray-50 dark:bg-gray-900/50 border ${mvp.border}`}>
+                            <MvpIcon className={`w-5 h-5 sm:w-6 sm:h-6 ${mvp.color}`} />
                           </div>
-                          <span className={`text-[10px] font-bold px-3 py-1.5 rounded-lg uppercase tracking-wider ${mvp.status === 'Beta' ? 'bg-amber-100 dark:bg-amber-500/10 text-amber-700 dark:text-amber-400' : 'bg-primary-50 dark:bg-primary-500/10 text-primary-700 dark:text-primary-400'}`}>
+                          <span className={`text-[9px] sm:text-[10px] font-bold px-2 py-1 rounded-md uppercase tracking-wider ${mvp.status === 'Beta' ? 'bg-amber-100 dark:bg-amber-500/10 text-amber-700 dark:text-amber-400' : 'bg-primary-50 dark:bg-primary-500/10 text-primary-700 dark:text-primary-400'}`}>
                             {mvp.status}
                           </span>
                         </div>
                         
                         <div className="mt-auto">
-                          <h4 className="font-bold text-[15px] xl:text-base text-gray-900 dark:text-white mb-1.5 leading-tight">{mvp.title}</h4>
-                          <span className="text-[13px] font-medium text-gray-500 dark:text-gray-400">
+                          <h4 className="font-bold text-[14px] sm:text-base text-gray-900 dark:text-white mb-0.5 sm:mb-1 leading-tight">{mvp.title}</h4>
+                          <span className="text-[12px] sm:text-[13px] font-medium text-gray-500 dark:text-gray-400">
                             {mvp.type}
                           </span>
                         </div>
@@ -717,47 +720,47 @@ const EcosystemCard = ({ layer, compact = false, expanded = false, onToggleExpan
                   })}
                 </div>
                 
-                <div className="p-5 bg-gradient-to-br from-blue-50 to-blue-100/30 dark:from-blue-900/10 dark:to-transparent rounded-xl border border-blue-100 dark:border-gray-800">
-                  <h4 className="text-gray-900 dark:text-white font-bold mb-2 flex items-center gap-2">
+                <div className="p-4 bg-gradient-to-br from-blue-50 to-blue-100/30 dark:from-blue-900/10 dark:to-transparent rounded-xl border border-blue-100 dark:border-gray-800">
+                  <h4 className="text-gray-900 dark:text-white font-bold mb-1 flex items-center gap-2 text-sm sm:text-base">
                     <Sparkles className="w-4 h-4 text-blue-500" />
                     Laboratório Prático
                   </h4>
-                  <p className="text-gray-600 dark:text-gray-400 text-sm md:text-base leading-relaxed">
-                    Testando hipóteses em tempo real. Cada MVP no ecossistema OrientoHub é desenvolvido seguindo metodologias ágeis com o objetivo de validar mercado de forma rápida e enxuta, e pivotar com inteligência.
+                  <p className="text-gray-500 dark:text-gray-400 text-xs sm:text-sm leading-relaxed">
+                    Testando hipóteses em tempo real para validar mercado de forma rápida e enxuta.
                   </p>
                 </div>
               </div>
             ) : isVerticais && expanded ? (
-              <div className="flex flex-col gap-6 mt-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+              <div className="flex flex-col gap-5 mt-2">
+                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3 sm:gap-4">
                   {[
-                    { title: "Oriento Podcast", desc: "Podcast com founders e parceiros para difundir ideias.", status: "Em Breve", icon: Mic, color: "text-purple-500", border: 'border-purple-500/20' },
-                    { title: "Oriento Academy", desc: "Plataforma de cursos voltados à inovação e negócios.", status: "Em Breve", icon: GraduationCap, color: "text-amber-500", border: 'border-amber-500/20' },
-                    { title: "Oriento Ventures", desc: "Fundo interno de investimento anjo para alavancagem.", status: "Em Breve", icon: Briefcase, color: "text-gray-500", border: 'border-gray-500/20' },
-                    { title: "Oriento Expertise", desc: "Conhecimento aplicado que gera resultado.", subItems: ["Consultoria estratégica", "Mentoria individual", "Aulas e workshops", "Palestras"], status: "Ativo", icon: BookOpen, color: "text-blue-500", border: 'border-blue-500/20' }
+                    { title: "Oriento Podcast", desc: "Podcast com founders e parceiros.", status: "Em Breve", icon: Mic, color: "text-purple-500", border: 'border-purple-500/20' },
+                    { title: "Oriento Academy", desc: "Cursos voltados à inovação.", status: "Em Breve", icon: GraduationCap, color: "text-amber-500", border: 'border-amber-500/20' },
+                    { title: "Oriento Ventures", desc: "Fundo interno de investimento.", status: "Em Breve", icon: Briefcase, color: "text-gray-500", border: 'border-gray-500/20' },
+                    { title: "Oriento Expertise", desc: "Conhecimento que gera resultado.", subItems: ["Consultoria", "Mentoria", "Workshops"], status: "Ativo", icon: BookOpen, color: "text-blue-500", border: 'border-blue-500/20' }
                   ].map((vert, idx) => {
                     const VertIcon = vert.icon;
                     return (
-                      <div key={idx} className={`p-5 rounded-2xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-800/80 shadow-sm hover:shadow-md transition-all flex flex-col h-full group`}>
-                        <div className="flex items-start justify-between mb-5">
-                          <div className={`w-12 h-12 rounded-xl flex items-center justify-center bg-gray-50 dark:bg-gray-900/50 border ${vert.border} group-hover:scale-105 transition-transform`}>
-                            <VertIcon className={`w-6 h-6 ${vert.color}`} />
+                      <div key={idx} className={`p-4 sm:p-5 rounded-xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-800/80 shadow-sm flex flex-col h-full group`}>
+                        <div className="flex items-center justify-between mb-3 sm:mb-5">
+                          <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl flex items-center justify-center bg-gray-50 dark:bg-gray-900/50 border ${vert.border}`}>
+                            <VertIcon className={`w-5 h-5 sm:w-6 sm:h-6 ${vert.color}`} />
                           </div>
-                          <span className={`text-[10px] font-bold px-3 py-1.5 rounded-lg uppercase tracking-wider ${vert.status === 'Em Breve' ? 'bg-gray-100 dark:bg-gray-500/10 text-gray-600 dark:text-gray-400' : 'bg-primary-50 dark:bg-primary-500/10 text-primary-700 dark:text-primary-400'}`}>
+                          <span className={`text-[9px] sm:text-[10px] font-bold px-2 py-1 rounded-md uppercase tracking-wider ${vert.status === 'Em Breve' ? 'bg-gray-100 dark:bg-gray-500/10 text-gray-600 dark:text-gray-400' : 'bg-primary-50 dark:bg-primary-500/10 text-primary-700 dark:text-primary-400'}`}>
                             {vert.status}
                           </span>
                         </div>
                         
                         <div className="mt-auto flex flex-col">
-                          <h4 className="font-bold text-[15px] xl:text-base text-gray-900 dark:text-white mb-1.5 leading-tight">{vert.title}</h4>
-                          <p className="text-[13px] font-medium text-gray-500 dark:text-gray-400 leading-relaxed">
+                          <h4 className="font-bold text-[14px] sm:text-base text-gray-900 dark:text-white mb-1 leading-tight">{vert.title}</h4>
+                          <p className="text-[12px] sm:text-[13px] font-medium text-gray-500 dark:text-gray-400 leading-relaxed mb-3">
                             {vert.desc}
                           </p>
                           
                           {vert.subItems && (
-                            <div className="flex flex-wrap gap-1.5 mt-4">
+                            <div className="flex flex-wrap gap-1.5">
                               {vert.subItems.map((item, itemIdx) => (
-                                <span key={itemIdx} className={`text-[10px] font-semibold px-2 py-1 bg-gray-50 dark:bg-gray-900/50 border ${vert.border} rounded-md text-gray-600 dark:text-gray-300 text-center flex-1 whitespace-nowrap hover:bg-white dark:hover:bg-gray-800 transition-colors`}>
+                                <span key={itemIdx} className={`text-[9px] font-semibold px-2 py-1 bg-gray-50 dark:bg-gray-900/50 border ${vert.border} rounded-md text-gray-600 dark:text-gray-300`}>
                                   {item}
                                 </span>
                               ))}
@@ -773,25 +776,20 @@ const EcosystemCard = ({ layer, compact = false, expanded = false, onToggleExpan
           </div>
         </div>
 
-        {isNucleus && expanded && (
-          <div className="flex items-start justify-center lg:justify-end pointer-events-none -mr-4 md:-mr-5 -mt-56 md:-mt-72 lg:-mt-80">
-            <Component className="h-10 w-10 md:h-11 md:w-11 shrink-0 text-[#FFD700] opacity-80" />
-          </div>
-        )}
-        {(isPlataforma || isMVPs || isVerticais) && expanded && (
-          <div className="absolute top-1 lg:top-2 right-0 pointer-events-none">
-            <Icon className="h-10 w-10 md:h-11 md:w-11 shrink-0 text-[#FFD700] opacity-30 md:opacity-80" />
+        {expanded && (
+          <div className="absolute top-6 right-6 pointer-events-none opacity-10 sm:opacity-20">
+            <Icon className={`h-16 w-16 sm:h-24 sm:w-24 ${getStyle('text')}`} />
           </div>
         )}
 
         {canExpand && !expanded ? (
-          <div className="inline-flex items-center justify-center gap-2 px-6 py-3 mt-auto text-sm font-bold text-black bg-primary-500 hover:bg-primary-600 rounded-xl shadow-lg shadow-primary-500/20 group-hover:shadow-primary-500/40 transition-all duration-300 group-hover:-translate-y-1 w-fit">
+          <div className={`inline-flex items-center justify-center gap-2 px-6 py-3 mt-auto text-sm font-bold text-black ${getStyle('bg')} hover:opacity-90 rounded-xl shadow-lg ${getStyle('shadow')} transition-all duration-300 group-hover:-translate-y-1 w-fit`}>
             Ver detalhes <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </div>
         ) : layer.ctaLabel ? (
           <Link
             to={layer.href ?? '/ecossistema'}
-            className={`inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-bold text-black bg-primary-500 hover:bg-primary-600 rounded-xl shadow-lg shadow-primary-500/20 hover:shadow-primary-500/40 transition-all duration-300 hover:-translate-y-1 w-fit group/btn ${expanded ? 'mt-6' : 'mt-auto'}`}
+            className={`inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-bold text-black ${getStyle('bg')} hover:opacity-90 rounded-xl shadow-lg ${getStyle('shadow')} transition-all duration-300 hover:-translate-y-1 w-fit group/btn ${expanded ? 'mt-6' : 'mt-auto'}`}
             onClick={(e) => {
               if (canExpand) e.stopPropagation();
             }}

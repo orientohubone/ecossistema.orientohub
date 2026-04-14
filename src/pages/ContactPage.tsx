@@ -19,6 +19,7 @@ import {
   Users,
   Building
 } from 'lucide-react';
+import { contactService } from '../services/contactService';
 
 const ContactPage = () => {
   const { t } = useTranslation();
@@ -44,24 +45,28 @@ const ContactPage = () => {
     setIsSubmitting(true);
     
     try {
-      // Simulate form submission
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      setIsSubmitted(true);
+      const result = await contactService.sendMessage(formData);
       
-      // Reset form after 3 seconds
-      setTimeout(() => {
-        setIsSubmitted(false);
-        setFormData({
-          name: '',
-          email: '',
-          phone: '',
-          company: '',
-          subject: 'general',
-          message: ''
-        });
-      }, 3000);
+      if (result.success) {
+        setIsSubmitted(true);
+        // Reset form after notification
+        setTimeout(() => {
+          setIsSubmitted(false);
+          setFormData({
+            name: '',
+            email: '',
+            phone: '',
+            company: '',
+            subject: 'general',
+            message: ''
+          });
+        }, 5000);
+      } else {
+        alert('Erro ao enviar mensagem: ' + result.error);
+      }
     } catch (error) {
       console.error('Form submission failed:', error);
+      alert('Ocorreu um erro ao enviar sua mensagem. Por favor, tente novamente mais tarde.');
     } finally {
       setIsSubmitting(false);
     }
@@ -102,7 +107,7 @@ const ContactPage = () => {
 
   const socialLinks = [
     { icon: Twitter, href: '#', label: 'Twitter', color: 'hover:text-blue-400' },
-    { icon: Linkedin, href: '#', label: 'LinkedIn', color: 'hover:text-blue-600' },
+    { icon: Linkedin, href: 'https://www.linkedin.com/in/fernandoramalhooficial/', label: 'LinkedIn', color: 'hover:text-blue-600' },
     { icon: Instagram, href: '#', label: 'Instagram', color: 'hover:text-pink-500' },
     { icon: Github, href: '#', label: 'GitHub', color: 'hover:text-gray-400' },
   ];

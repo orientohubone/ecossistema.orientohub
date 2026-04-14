@@ -27,6 +27,7 @@ import {
   Sun
 } from 'lucide-react';
 import { useAuthStore } from '../stores/authStore';
+import ContactFab from '../components/layout/ContactFab';
 
 const DashboardLayout = () => {
   const { t } = useTranslation();
@@ -193,6 +194,7 @@ const DashboardLayout = () => {
           </motion.main>
         </div>
       </div>
+      <ContactFab />
     </Tooltip.Provider>
   );
 };

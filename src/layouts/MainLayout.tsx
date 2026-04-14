@@ -2,6 +2,7 @@ import { Outlet, useLocation } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
 import Header from '../components/layout/Header';
 import Footer from '../components/layout/Footer';
+import ContactFab from '../components/layout/ContactFab';
 import { motion } from 'framer-motion';
 
 const MainLayout = () => {
@@ -95,6 +96,7 @@ const MainLayout = () => {
         <Outlet />
       </motion.main>
       <Footer />
+      <ContactFab />
     </div>
   );
 };
