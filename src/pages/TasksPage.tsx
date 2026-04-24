@@ -14,54 +14,51 @@ import {
   X
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-
-// Mock data para tarefas
-const mockTasks = [
-  {
-    id: 'task-1',
-    title: 'Validar hipótese de mercado',
-    description: 'Realizar entrevistas com 10 potenciais clientes para validar o problema',
-    status: 'todo',
-    priority: 'high',
-    dueDate: '2024-02-15',
-    projectId: 1,
-    projectName: 'Plataforma de Educação Online',
-    projectStage: 'validation',
-    type: 'hypothesis'
-  },
-  {
-    id: 'task-2', 
-    title: 'Desenvolver protótipo funcional',
-    description: 'Criar MVP com funcionalidades essenciais para teste',
-    status: 'in_progress',
-    priority: 'high',
-    dueDate: '2024-02-20',
-    projectId: 1,
-    projectName: 'Plataforma de Educação Online',
-    projectStage: 'validation',
-    type: 'experiment'
-  },
-  {
-    id: 'task-3',
-    title: 'Analisar concorrentes',
-    description: 'Mapear principais concorrentes e suas estratégias',
-    status: 'completed',
-    priority: 'medium',
-    dueDate: '2024-02-10',
-    projectId: 2,
-    projectName: 'App de Fitness Gamificado',
-    projectStage: 'ideation',
-    type: 'research'
-  }
-];
+import { dashboardService, type DashboardTask } from '../services/dashboardService';
+import DashboardPageSkeleton from '../components/ui/DashboardPageSkeleton';
 
 const TasksPage = () => {
   const navigate = useNavigate();
-  const [tasks, setTasks] = useState(mockTasks);
-  const [filteredTasks, setFilteredTasks] = useState(mockTasks);
+  const [tasks, setTasks] = useState<any[]>([]);
+  const [filteredTasks, setFilteredTasks] = useState<any[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [priorityFilter, setPriorityFilter] = useState('all');
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const loadTasks = async () => {
+      try {
+        setIsLoading(true);
+        // Utiliza o dashboardService pois as tarefas provêm dos projetos e experimentos
+        const data = await dashboardService.getDashboardData();
+        
+        // Mapeia o DashboardTask para o formato da TasksPage
+        const mappedTasks = data.tasks.map(t => ({
+          id: t.id,
+          title: t.title,
+          description: t.category,
+          status: t.completed ? 'completed' : (t.progress && t.progress > 0 ? 'in_progress' : 'todo'),
+          priority: t.priority,
+          dueDate: new Date().toISOString(), // Fallback de data
+          projectId: t.project_id,
+          projectName: t.project_name || 'Geral',
+          projectStage: 'validation',
+          type: t.category.toLowerCase().includes('experimento') ? 'experiment' : 
+                t.category.toLowerCase().includes('entrevista') ? 'hypothesis' : 'research'
+        }));
+        
+        setTasks(mappedTasks);
+        setFilteredTasks(mappedTasks);
+      } catch (error) {
+        console.error('Error loading tasks:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    loadTasks();
+  }, []);
 
   useEffect(() => {
     let filtered = tasks;
@@ -118,7 +115,7 @@ const TasksPage = () => {
   };
 
   const handleTaskClick = (task: any) => {
-    navigate(`/projects/${task.projectId}`);
+    navigate(`/dashboard/projects/${task.projectId}`);
   };
 
   const stats = {
@@ -127,6 +124,10 @@ const TasksPage = () => {
     inProgress: tasks.filter(t => t.status === 'in_progress').length,
     todo: tasks.filter(t => t.status === 'todo').length
   };
+
+  if (isLoading) {
+    return <DashboardPageSkeleton hero={false} cards={4} columns={1} />;
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">

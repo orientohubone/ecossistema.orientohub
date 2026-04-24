@@ -1,5 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { dashboardService, type JourneyPhase } from '../services/dashboardService';
+import DashboardPageSkeleton from '../components/ui/DashboardPageSkeleton';
 import { 
   Rocket,
   Target,
@@ -21,96 +23,46 @@ import {
   Clock
 } from 'lucide-react';
 
+const iconMap: { [key: string]: any } = {
+  'Lightbulb': Lightbulb,
+  'Target': Target,
+  'Users': Users,
+  'TrendingUp': TrendingUp,
+  'Rocket': Rocket
+};
+
 const JourneyPage = () => {
   const [selectedPhase, setSelectedPhase] = useState(0);
+  const [expandedMission, setExpandedMission] = useState<number | null>(null);
+  const [journeyPhases, setJourneyPhases] = useState<JourneyPhase[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const journeyPhases = [
-    {
-      id: 1,
-      name: 'Ideação',
-      icon: Lightbulb,
-      color: 'from-blue-400 to-blue-600',
-      bgColor: 'bg-blue-500/10',
-      status: 'completed',
-      progress: 100,
-      xpEarned: 500,
-      description: 'Validação inicial da sua ideia de negócio',
-      missions: [
-        { id: 1, title: 'Definir problema a resolver', completed: true, xp: 100 },
-        { id: 2, title: 'Identificar público-alvo', completed: true, xp: 100 },
-        { id: 3, title: 'Análise de concorrência', completed: true, xp: 150 },
-        { id: 4, title: 'Proposta de valor única', completed: true, xp: 150 }
-      ]
-    },
-    {
-      id: 2,
-      name: 'Validação',
-      icon: Target,
-      color: 'from-green-400 to-green-600',
-      bgColor: 'bg-green-500/10',
-      status: 'in-progress',
-      progress: 60,
-      xpEarned: 360,
-      description: 'Teste e validação da sua solução no mercado',
-      missions: [
-        { id: 5, title: 'Criar MVP', completed: true, xp: 200 },
-        { id: 6, title: 'Entrevistar 10 clientes', completed: true, xp: 150 },
-        { id: 7, title: 'Testar hipóteses principais', completed: false, xp: 200 },
-        { id: 8, title: 'Ajustar produto baseado em feedback', completed: false, xp: 150 }
-      ]
-    },
-    {
-      id: 3,
-      name: 'Estruturação',
-      icon: Users,
-      color: 'from-purple-400 to-purple-600',
-      bgColor: 'bg-purple-500/10',
-      status: 'locked',
-      progress: 0,
-      xpEarned: 0,
-      description: 'Construção da estrutura do negócio',
-      missions: [
-        { id: 9, title: 'Formalizar a empresa', completed: false, xp: 200 },
-        { id: 10, title: 'Montar time inicial', completed: false, xp: 250 },
-        { id: 11, title: 'Definir processos operacionais', completed: false, xp: 200 },
-        { id: 12, title: 'Criar modelo de negócio', completed: false, xp: 250 }
-      ]
-    },
-    {
-      id: 4,
-      name: 'Tração',
-      icon: TrendingUp,
-      color: 'from-orange-400 to-orange-600',
-      bgColor: 'bg-orange-500/10',
-      status: 'locked',
-      progress: 0,
-      xpEarned: 0,
-      description: 'Crescimento e conquista de mercado',
-      missions: [
-        { id: 13, title: 'Alcançar primeiros 100 clientes', completed: false, xp: 300 },
-        { id: 14, title: 'Estabelecer canais de aquisição', completed: false, xp: 250 },
-        { id: 15, title: 'Otimizar funil de vendas', completed: false, xp: 200 },
-        { id: 16, title: 'Atingir Product-Market Fit', completed: false, xp: 350 }
-      ]
-    },
-    {
-      id: 5,
-      name: 'Escala',
-      icon: Rocket,
-      color: 'from-red-400 to-red-600',
-      bgColor: 'bg-red-500/10',
-      status: 'locked',
-      progress: 0,
-      xpEarned: 0,
-      description: 'Crescimento exponencial e expansão',
-      missions: [
-        { id: 17, title: 'Captar investimento', completed: false, xp: 400 },
-        { id: 18, title: 'Expandir equipe', completed: false, xp: 300 },
-        { id: 19, title: 'Escalar operações', completed: false, xp: 350 },
-        { id: 20, title: 'Expandir mercado', completed: false, xp: 450 }
-      ]
-    }
-  ];
+  useEffect(() => {
+    const loadJourney = async () => {
+      try {
+        setIsLoading(true);
+        const data = await dashboardService.getJourneyData();
+        setJourneyPhases(data);
+        
+        // Find first active/in-progress phase
+        const activeIndex = data.findIndex(p => p.status === 'in-progress');
+        if (activeIndex !== -1) {
+          setSelectedPhase(activeIndex);
+        } else {
+          // If none in progress, select the last completed or first if all locked
+          const lastCompleted = data.map(p => p.status).lastIndexOf('completed');
+          setSelectedPhase(lastCompleted !== -1 ? lastCompleted : 0);
+        }
+      } catch (error) {
+        console.error('Error loading journey:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    loadJourney();
+  }, []);
+
+  // Removed static mock journeyPhases
 
   const achievements = [
     { icon: Trophy, title: 'Primeiro MVP', description: 'Criou seu primeiro produto mínimo viável', unlocked: true },
@@ -121,7 +73,11 @@ const JourneyPage = () => {
     { icon: Flag, title: 'Conquistador', description: 'Completou todas as fases', unlocked: false }
   ];
 
-  const currentPhase = journeyPhases[selectedPhase];
+  if (isLoading) {
+    return <DashboardPageSkeleton hero={true} cards={0} columns={1} />;
+  }
+
+  const currentPhase = journeyPhases[selectedPhase] || journeyPhases[0];
   const totalXP = journeyPhases.reduce((acc, phase) => acc + phase.xpEarned, 0);
   const completedMissions = journeyPhases.reduce((acc, phase) => 
     acc + phase.missions.filter(m => m.completed).length, 0
@@ -211,7 +167,7 @@ const JourneyPage = () => {
             {/* Phase Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
               {journeyPhases.map((phase, index) => {
-                const Icon = phase.icon;
+                const Icon = iconMap[phase.icon as string] || Target;
                 const isLocked = phase.status === 'locked';
                 const isActive = phase.status === 'in-progress';
                 const isCompleted = phase.status === 'completed';
@@ -283,7 +239,10 @@ const JourneyPage = () => {
                 <div>
                   <div className="flex items-center gap-3 mb-2">
                     <div className={`w-14 h-14 ${currentPhase.bgColor} rounded-xl flex items-center justify-center`}>
-                      <currentPhase.icon className={`w-7 h-7 bg-gradient-to-br ${currentPhase.color} bg-clip-text`} style={{ WebkitTextFillColor: 'transparent' }} />
+                      {(() => {
+                        const CurrentIcon = iconMap[currentPhase.icon as string] || Target;
+                        return <CurrentIcon className={`w-7 h-7 bg-gradient-to-br ${currentPhase.color} bg-clip-text`} style={{ WebkitTextFillColor: 'transparent' }} />;
+                      })()}
                     </div>
                     <div>
                       <h2 className="text-3xl font-bold">{currentPhase.name}</h2>
@@ -310,60 +269,147 @@ const JourneyPage = () => {
                   Missões da Fase
                 </h3>
 
-                {currentPhase.missions.map((mission, index) => (
-                  <motion.div
-                    key={mission.id}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                    className={`flex items-center justify-between p-4 rounded-xl border-2 transition-all duration-300 ${
-                      mission.completed
-                        ? 'border-green-500/30 bg-green-500/5'
-                        : currentPhase.status === 'locked'
-                        ? 'border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 opacity-50'
-                        : 'border-gray-200 dark:border-gray-700 hover:border-primary-500 cursor-pointer'
-                    }`}
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                {currentPhase.missions.map((mission, index) => {
+                  const isExpanded = expandedMission === mission.id;
+                  
+                  return (
+                    <motion.div
+                      key={mission.id}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                      className={`flex flex-col rounded-xl border-2 transition-all duration-300 overflow-hidden ${
                         mission.completed
-                          ? 'bg-green-500'
+                          ? 'border-green-500/30 bg-green-500/5'
                           : currentPhase.status === 'locked'
-                          ? 'bg-gray-300 dark:bg-gray-700'
-                          : 'bg-gray-200 dark:bg-gray-700'
-                      }`}>
-                        {mission.completed ? (
-                          <CheckCircle2 className="w-5 h-5 text-white" />
-                        ) : currentPhase.status === 'locked' ? (
-                          <Lock className="w-4 h-4 text-gray-500" />
-                        ) : (
-                          <Circle className="w-5 h-5 text-gray-400" />
-                        )}
-                      </div>
-                      <div>
-                        <p className={`font-medium ${mission.completed ? 'line-through text-gray-500' : ''}`}>
-                          {mission.title}
-                        </p>
-                        {currentPhase.status === 'in-progress' && !mission.completed && (
-                          <p className="text-sm text-gray-500 flex items-center gap-1 mt-1">
-                            <Clock className="w-3 h-3" />
-                            Em andamento
-                          </p>
-                        )}
-                      </div>
-                    </div>
+                          ? 'border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 opacity-50'
+                          : isExpanded 
+                          ? 'border-primary-500 shadow-xl shadow-primary-500/10 bg-white dark:bg-gray-800' 
+                          : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:border-primary-500/50 cursor-pointer'
+                      }`}
+                    >
+                      <div 
+                        className="flex items-center justify-between p-4 cursor-pointer"
+                        onClick={() => {
+                          if (currentPhase.status !== 'locked') {
+                            setExpandedMission(isExpanded ? null : mission.id);
+                          }
+                        }}
+                      >
+                        <div className="flex items-center gap-3">
+                          <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${
+                            mission.completed
+                              ? 'bg-green-500'
+                              : currentPhase.status === 'locked'
+                              ? 'bg-gray-300 dark:bg-gray-700'
+                              : isExpanded 
+                              ? 'bg-primary-500' 
+                              : 'bg-gray-200 dark:bg-gray-700 group-hover:bg-primary-500/20'
+                          }`}>
+                            {mission.completed ? (
+                              <CheckCircle2 className="w-5 h-5 text-white" />
+                            ) : currentPhase.status === 'locked' ? (
+                              <Lock className="w-4 h-4 text-gray-500" />
+                            ) : (
+                              <Circle className={`w-5 h-5 ${isExpanded ? 'text-white' : 'text-gray-400'}`} />
+                            )}
+                          </div>
+                          <div>
+                            <p className={`font-medium ${mission.completed ? 'line-through text-gray-500' : 'text-gray-900 dark:text-white'}`}>
+                              {mission.title}
+                            </p>
+                            {currentPhase.status === 'in-progress' && !mission.completed && (
+                              <p className="text-sm text-primary-600 dark:text-primary-400 flex items-center gap-1 mt-1 font-medium">
+                                <Zap className="w-3 h-3" />
+                                Missão Ativa
+                              </p>
+                            )}
+                          </div>
+                        </div>
 
-                    <div className="flex items-center gap-2">
-                      <div className="flex items-center gap-1 text-primary-500">
-                        <Star className="w-4 h-4" />
-                        <span className="font-bold">{mission.xp}</span>
+                        <div className="flex items-center gap-3">
+                          <div className="flex items-center gap-1 text-yellow-500 bg-yellow-500/10 px-2.5 py-1 rounded-full">
+                            <Star className="w-4 h-4 fill-current" />
+                            <span className="font-bold text-sm">+{mission.xp}</span>
+                          </div>
+                          {!mission.completed && currentPhase.status !== 'locked' && (
+                            <div className={`transition-transform duration-300 ${isExpanded ? 'rotate-90' : ''}`}>
+                              <ChevronRight className={`w-5 h-5 ${isExpanded ? 'text-primary-500' : 'text-gray-400'}`} />
+                            </div>
+                          )}
+                        </div>
                       </div>
-                      {!mission.completed && currentPhase.status !== 'locked' && (
-                        <ChevronRight className="w-5 h-5 text-gray-400" />
+
+                      {/* Expanded Content with Frameworks and Tasks Details */}
+                      {isExpanded && !mission.completed && (
+                        <motion.div 
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: 'auto' }}
+                          exit={{ opacity: 0, height: 0 }}
+                          className="px-4 pb-4 pt-2 border-t border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/30"
+                        >
+                          <div className="flex flex-col gap-4 mt-2">
+                            {/* Assitant Suggestion / Gamification Lore */}
+                            <div className="text-sm text-gray-600 dark:text-gray-400 flex gap-2">
+                              <Sparkles className="w-4 h-4 text-primary-500 shrink-0 mt-0.5" />
+                              <p>Concluir esta missão aproximará você de destravar a próxima fase da jornada. Utilize os recursos e tarefas ativas abaixo para acelerar seu progresso e ganhar mais XP.</p>
+                            </div>
+
+                            {/* Tarefas Sugeridas */}
+                            {mission.tasks && mission.tasks.length > 0 && (
+                              <div>
+                                <h4 className="text-xs uppercase font-bold text-gray-500 tracking-wider mb-2 flex flex-row items-center gap-1">
+                                  <CheckCircle2 className="w-3 h-3" />
+                                  Checklist recomendado
+                                </h4>
+                                <div className="space-y-2">
+                                  {mission.tasks.map((task: any, tIndex: number) => (
+                                    <a 
+                                      key={tIndex}
+                                      href={task.path}
+                                      className="flex justify-between items-center bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg p-3 hover:border-primary-500 transition-colors"
+                                    >
+                                      <span className="text-sm font-medium">{task.name}</span>
+                                      <span className="text-xs bg-primary-500/10 text-primary-600 dark:text-primary-400 px-2 py-1 rounded">Fazer agora</span>
+                                    </a>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
+
+                            {/* Frameworks Relacionados */}
+                            {mission.frameworks && mission.frameworks.length > 0 && (
+                              <div>
+                                <h4 className="text-xs uppercase font-bold text-gray-500 tracking-wider mb-2 flex flex-row items-center gap-1">
+                                  <BarChart className="w-3 h-3" />
+                                  Frameworks Relacionados
+                                </h4>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                  {mission.frameworks.map((fw: any, fwIndex: number) => (
+                                    <a 
+                                      key={fwIndex}
+                                      href={fw.path}
+                                      className="flex items-center gap-2 bg-gradient-to-r from-blue-500/10 to-indigo-500/10 border border-blue-500/30 rounded-lg p-2.5 hover:shadow-md transition-shadow"
+                                    >
+                                      <Target className="w-4 h-4 text-blue-500" />
+                                      <span className="text-sm font-semibold text-blue-700 dark:text-blue-400">{fw.name}</span>
+                                    </a>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
+                            
+                            {(!mission.tasks || mission.tasks.length === 0) && (!mission.frameworks || mission.frameworks.length === 0) && (
+                              <div className="bg-white dark:bg-gray-700 rounded-lg p-4 text-center border border-gray-200 dark:border-gray-600 mt-2">
+                                <p className="text-sm text-gray-500">Nenhum atalho disponível para esta missão, use sua expertise para validá-la.</p>
+                              </div>
+                            )}
+                          </div>
+                        </motion.div>
                       )}
-                    </div>
-                  </motion.div>
-                ))}
+                    </motion.div>
+                  );
+                })}
               </div>
             </motion.div>
           </div>

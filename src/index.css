@@ -224,17 +224,17 @@
 }
 
 html:hover ::-webkit-scrollbar-thumb {
-  background: rgba(255, 215, 0, 0.7);
+  background: rgba(234, 179, 8, 0.7);
   background-clip: padding-box;
 }
 
 html:hover ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 215, 0, 0.9);
+  background: rgba(234, 179, 8, 0.9);
   background-clip: padding-box;
 }
 
 html:hover ::-webkit-scrollbar-thumb:active {
-  background: #ffd700;
+  background: #eab308;
   background-clip: padding-box;
 }
 
@@ -249,30 +249,30 @@ html:hover ::-webkit-scrollbar-thumb:active {
 
 .dark html:hover ::-webkit-scrollbar-thumb,
 html.dark:hover ::-webkit-scrollbar-thumb {
-  background: rgba(255, 215, 0, 0.75);
+  background: rgba(234, 179, 8, 0.75);
   background-clip: padding-box;
 }
 
 .dark html:hover ::-webkit-scrollbar-thumb:hover,
 html.dark:hover ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 215, 0, 0.92);
+  background: rgba(234, 179, 8, 0.92);
   background-clip: padding-box;
 }
 
 .dark html:hover ::-webkit-scrollbar-thumb:active,
 html.dark:hover ::-webkit-scrollbar-thumb:active {
-  background: #ffd700;
+  background: #eab308;
   background-clip: padding-box;
 }
 
 /* Para Firefox */
 * {
   scrollbar-width: thin;
-  scrollbar-color: rgba(255, 215, 0, 0.55) transparent;
+  scrollbar-color: rgba(234, 179, 8, 0.55) transparent;
 }
 
 .dark * {
-  scrollbar-color: rgba(255, 215, 0, 0.65) transparent;
+  scrollbar-color: rgba(234, 179, 8, 0.65) transparent;
 }
 
 html.home-scrollbar-hidden,

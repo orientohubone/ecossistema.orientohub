@@ -1,4 +1,14 @@
 import * as React from "react";
+
+
+
+
+
+
+
+
+
+
 import {
   add,
   eachDayOfInterval,
@@ -24,9 +34,11 @@ import {
   Clock,
   X,
   MapPin,
+  Edit2
 } from "lucide-react";
 import { Helmet } from "react-helmet-async";
 import { motion, AnimatePresence } from "framer-motion";
+import { eventsService, type Event as ServiceEvent } from "../services/eventsService";
 
 const colStartClasses = [
   "",
@@ -39,7 +51,7 @@ const colStartClasses = [
 ];
 
 interface EventType {
-  id: number;
+  id: string;
   name: string;
   time: string;
   datetime: string;
@@ -51,35 +63,6 @@ interface CalendarData {
   day: Date;
   events: EventType[];
 }
-
-const initialEvents: CalendarData[] = [
-  {
-    day: startOfToday(),
-    events: [
-      {
-        id: 1,
-        name: "Mentoria com João Silva",
-        time: "15:00",
-        datetime: format(startOfToday(), "yyyy-MM-dd") + "T15:00",
-        type: "mentoria",
-        location: "Google Meet",
-      },
-    ],
-  },
-  {
-    day: add(startOfToday(), { days: 1 }),
-    events: [
-      {
-        id: 2,
-        name: "Workshop: Validação de Problemas",
-        time: "10:00",
-        datetime: format(add(startOfToday(), { days: 1 }), "yyyy-MM-dd") + "T10:00",
-        type: "workshop",
-        location: "Sala Virtual",
-      },
-    ],
-  },
-];
 
 const eventTypeColors = {
   mentoria: "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-800",
@@ -94,14 +77,17 @@ export default function CalendarPage() {
   const today = startOfToday();
   const [selectedDay, setSelectedDay] = React.useState(today);
   const [currentMonth, setCurrentMonth] = React.useState(format(today, "MMM-yyyy"));
-  const [data, setData] = React.useState<CalendarData[]>(initialEvents);
+  const [data, setData] = React.useState<CalendarData[]>([]);
   const [showModal, setShowModal] = React.useState(false);
   const [viewMode, setViewMode] = React.useState<ViewMode>('month');
   const [lastClick, setLastClick] = React.useState<number>(0);
+  const [isLoading, setIsLoading] = React.useState(true);
+  const [editingEventId, setEditingEventId] = React.useState<string | null>(null);
+  
   const [newEvent, setNewEvent] = React.useState({ 
     name: "", 
     time: "", 
-    type: "outro" as EventType['type'],
+    type: "reuniao" as EventType['type'],
     location: "" 
   });
 
@@ -111,6 +97,47 @@ export default function CalendarPage() {
     start: startOfWeek(firstDayCurrentMonth),
     end: endOfWeek(endOfMonth(firstDayCurrentMonth)),
   });
+
+  const loadEvents = async () => {
+    setIsLoading(true);
+    try {
+      const rawEvents = await eventsService.getAll();
+      
+      const mappedData: CalendarData[] = [];
+      
+      rawEvents.forEach(evt => {
+        const dateObj = new Date(evt.date);
+        const dayStart = new Date(dateObj.getFullYear(), dateObj.getMonth(), dateObj.getDate());
+        
+        const existingDay = mappedData.find(d => isSameDay(d.day, dayStart));
+        
+        const localEvent: EventType = {
+          id: evt.id,
+          name: evt.title,
+          time: format(dateObj, "HH:mm"),
+          datetime: evt.date,
+          type: (evt.type === 'evento' ? 'outro' : evt.type) as EventType['type'],
+          location: evt.location || evt.meeting_url || ''
+        };
+        
+        if (existingDay) {
+          existingDay.events.push(localEvent);
+        } else {
+          mappedData.push({ day: dayStart, events: [localEvent] });
+        }
+      });
+      
+      setData(mappedData);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  React.useEffect(() => {
+    loadEvents();
+  }, [currentMonth]);
 
   const selectedDayEvents = data.find((d: CalendarData) => isSameDay(d.day, selectedDay))?.events || [];
 
@@ -134,60 +161,81 @@ export default function CalendarPage() {
     const timeSinceLastClick = now - lastClick;
     
     if (timeSinceLastClick < 300 && isSameDay(day, selectedDay)) {
-      // Duplo clique - abre detalhes ou modal
       const dayEvents = data.find((d) => isSameDay(d.day, day))?.events || [];
       if (dayEvents.length > 0) {
         setViewMode('day');
       } else {
-        setShowModal(true);
+        openModalForNew(day);
       }
     } else {
-      // Clique simples - seleciona dia
       setSelectedDay(day);
     }
     
     setLastClick(now);
   }
 
-  function handleAddEvent() {
-    if (!newEvent.name || !newEvent.time) return;
-    setData((prev: CalendarData[]) => {
-      const idx = prev.findIndex((d: CalendarData) => isSameDay(d.day, selectedDay));
-      if (idx > -1) {
-        const updated = [...prev];
-        updated[idx].events.push({
-          id: Date.now(),
-          name: newEvent.name,
-          time: newEvent.time,
-          datetime: format(selectedDay, "yyyy-MM-dd") + "T" + newEvent.time,
-          type: newEvent.type,
-          location: newEvent.location,
-        });
-        return updated;
-      } else {
-        return [
-          ...prev,
-          {
-            day: selectedDay,
-            events: [
-              {
-                id: Date.now(),
-                name: newEvent.name,
-                time: newEvent.time,
-                datetime: format(selectedDay, "yyyy-MM-dd") + "T" + newEvent.time,
-                type: newEvent.type,
-                location: newEvent.location,
-              },
-            ],
-          },
-        ];
-      }
-    });
-    setShowModal(false);
-    setNewEvent({ name: "", time: "", type: "outro", location: "" });
+  function openModalForNew(day?: Date) {
+    if (day) setSelectedDay(day);
+    setEditingEventId(null);
+    setNewEvent({ name: "", time: "12:00", type: "reuniao", location: "" });
+    setShowModal(true);
   }
 
-  // Função para renderizar view de ano
+  function openModalForEdit(event: EventType) {
+    setEditingEventId(event.id);
+    setNewEvent({
+      name: event.name,
+      time: event.time,
+      type: event.type || "reuniao",
+      location: event.location || ""
+    });
+    setShowModal(true);
+  }
+
+  async function handleAddOrUpdateEvent() {
+    if (!newEvent.name || !newEvent.time) return;
+    
+    const [hours, minutes] = newEvent.time.split(':');
+    const eventDate = new Date(selectedDay);
+    eventDate.setHours(parseInt(hours, 10), parseInt(minutes, 10), 0);
+    
+    try {
+      if (editingEventId) {
+        await eventsService.update(editingEventId, {
+          title: newEvent.name,
+          date: eventDate.toISOString(),
+          type: (newEvent.type === 'outro' ? 'evento' : newEvent.type) as any,
+          location: newEvent.location,
+        });
+      } else {
+        await eventsService.create({
+          title: newEvent.name,
+          date: eventDate.toISOString(),
+          duration: "1h",
+          type: (newEvent.type === 'outro' ? 'evento' : newEvent.type) as any,
+          location: newEvent.location,
+          is_virtual: newEvent.location.includes('http')
+        });
+      }
+      
+      await loadEvents();
+      
+    } catch (err) {
+      console.error("Falha ao salvar evento", err);
+    }
+    
+    setShowModal(false);
+  }
+
+  async function handleDeleteEvent(id: string) {
+    try {
+      await eventsService.delete(id);
+      await loadEvents();
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
   const renderYearView = () => {
     const currentYear = parse(currentMonth, "MMM-yyyy", new Date()).getFullYear();
     const months = Array.from({ length: 12 }, (_, i) => new Date(currentYear, i, 1));
@@ -217,7 +265,7 @@ export default function CalendarPage() {
                   className={[
                     "aspect-square flex items-center justify-center rounded",
                     isSameMonth(day, month) ? "text-gray-700 dark:text-gray-300" : "text-gray-300 dark:text-gray-700",
-                    isToday(day) ? "bg-primary-500 text-white font-bold" : "",
+                    isToday(day) ? "bg-primary-500 text-gray-900 dark:text-black font-bold" : "",
                   ].join(" ")}
                 >
                   {format(day, "d")}
@@ -230,7 +278,6 @@ export default function CalendarPage() {
     );
   };
 
-  // Função para renderizar view de dia
   const renderDayView = () => {
     const hourSlots = Array.from({ length: 24 }, (_, i) => i);
     
@@ -289,21 +336,19 @@ export default function CalendarPage() {
       </Helmet>
       
       <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
-        {/* Header */}
         <div className="border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900">
           <div className="container-custom py-6">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-              {/* Left side - Month info */}
               <div className="flex items-center gap-6">
                 <motion.div 
                   className="hidden md:flex flex-col items-center justify-center w-20 h-20 bg-gradient-to-br from-primary-500 to-primary-600 rounded-2xl shadow-lg"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  <span className="text-xs uppercase text-white/80 font-semibold">
+                  <span className="text-xs uppercase text-gray-900/80 dark:text-black/80 font-semibold">
                     {format(today, "MMM", { locale: ptBR })}
                   </span>
-                  <span className="text-2xl font-bold text-white">
+                  <span className="text-2xl font-bold text-gray-900 dark:text-black">
                     {format(today, "d")}
                   </span>
                 </motion.div>
@@ -318,9 +363,7 @@ export default function CalendarPage() {
                 </div>
               </div>
 
-              {/* Right side - Actions */}
               <div className="flex items-center gap-4 flex-wrap">
-                {/* View Mode Toggle */}
                 <div className="flex items-center bg-gray-100 dark:bg-gray-800 rounded-xl p-1">
                   <motion.button
                     whileHover={{ scale: 1.05 }}
@@ -403,8 +446,8 @@ export default function CalendarPage() {
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  onClick={() => setShowModal(true)}
-                  className="flex items-center gap-2 px-6 py-3 bg-primary-500 hover:bg-primary-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all"
+                  onClick={() => openModalForNew()}
+                  className="flex items-center gap-2 px-6 py-3 bg-primary-500 hover:bg-primary-600 text-gray-900 dark:text-black font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all"
                 >
                   <PlusCircle size={20} />
                   <span className="hidden md:inline">Novo Evento</span>
@@ -416,12 +459,10 @@ export default function CalendarPage() {
 
         <div className="container-custom py-8">
           <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-800 overflow-hidden">
-            {/* Renderiza a view apropriada */}
             {viewMode === 'year' && renderYearView()}
             {viewMode === 'day' && renderDayView()}
             {viewMode === 'month' && (
               <>
-                {/* Calendar Grid */}
                 <div className="grid grid-cols-7 border-b border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50">
                   {['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'].map((day) => (
                     <div key={day} className="py-4 text-center text-sm font-semibold text-gray-700 dark:text-gray-300 border-r border-gray-200 dark:border-gray-800 last:border-r-0">
@@ -451,12 +492,11 @@ export default function CalendarPage() {
                           !isCurrentMonth && "bg-gray-50/50 dark:bg-gray-800/20"
                         ].join(" ")}
                       >
-                        {/* Day number */}
                         <div className="flex items-center justify-between mb-2">
                           <span className={[
                             "text-sm font-semibold",
                             isTodayDate 
-                              ? "w-7 h-7 flex items-center justify-center rounded-full bg-primary-500 text-white"
+                              ? "w-7 h-7 flex items-center justify-center rounded-full bg-primary-500 text-gray-900 dark:text-black font-bold"
                               : isSelected
                               ? "text-primary-600 dark:text-primary-400"
                               : !isCurrentMonth
@@ -467,7 +507,6 @@ export default function CalendarPage() {
                           </span>
                         </div>
 
-                        {/* Events */}
                         <div className="space-y-1">
                           {dayEvents.slice(0, 2).map((event) => (
                             <motion.div
@@ -500,7 +539,6 @@ export default function CalendarPage() {
             )}
           </div>
 
-          {/* Selected Day Events - só mostra na view de mês */}
           {viewMode === 'month' && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -517,7 +555,6 @@ export default function CalendarPage() {
                   </h3>
                   <p className="text-sm text-gray-600 dark:text-gray-400">
                     {selectedDayEvents.length} {selectedDayEvents.length === 1 ? 'evento' : 'eventos'}
-                    {selectedDayEvents.length === 0 && ' - Duplo clique para adicionar'}
                   </p>
                 </div>
               </div>
@@ -531,8 +568,8 @@ export default function CalendarPage() {
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    onClick={() => setShowModal(true)}
-                    className="inline-flex items-center gap-2 px-6 py-3 bg-primary-500 hover:bg-primary-600 text-white font-semibold rounded-xl transition-colors"
+                    onClick={() => openModalForNew()}
+                    className="inline-flex items-center gap-2 px-6 py-3 bg-primary-500 hover:bg-primary-600 text-gray-900 dark:text-black font-semibold rounded-xl transition-colors"
                   >
                     <PlusCircle size={20} />
                     Adicionar Evento
@@ -571,13 +608,24 @@ export default function CalendarPage() {
                             </div>
                           )}
                         </div>
-                        <motion.button
-                          whileHover={{ scale: 1.1 }}
-                          whileTap={{ scale: 0.9 }}
-                          className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                        >
-                          <X size={20} className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300" />
-                        </motion.button>
+                        <div className="flex bg-gray-50 border border-gray-200 dark:border-gray-700 dark:bg-gray-800 rounded-lg overflow-hidden">
+                          <motion.button
+                            whileHover={{ backgroundColor: "rgba(0,0,0,0.05)" }}
+                            whileTap={{ scale: 0.95 }}
+                            onClick={() => openModalForEdit(event)}
+                            className="p-2 transition-colors border-r border-gray-200 dark:border-gray-700"
+                          >
+                            <Edit2 size={18} className="text-gray-500 hover:text-blue-500 dark:hover:text-blue-400" />
+                          </motion.button>
+                          <motion.button
+                            whileHover={{ backgroundColor: "rgba(239,68,68,0.1)" }}
+                            whileTap={{ scale: 0.95 }}
+                            onClick={() => handleDeleteEvent(event.id)}
+                            className="p-2 transition-colors"
+                          >
+                            <X size={18} className="text-gray-500 hover:text-red-500 dark:hover:text-red-400" />
+                          </motion.button>
+                        </div>
                       </div>
                     </motion.div>
                   ))}
@@ -587,7 +635,6 @@ export default function CalendarPage() {
           )}
         </div>
 
-        {/* Modal */}
         <AnimatePresence>
           {showModal && (
             <motion.div
@@ -606,7 +653,9 @@ export default function CalendarPage() {
               >
                 <div className="p-6 border-b border-gray-200 dark:border-gray-800">
                   <div className="flex items-center justify-between">
-                    <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Novo Evento</h2>
+                    <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+                      {editingEventId ? "Editar Evento" : "Novo Evento"}
+                    </h2>
                     <motion.button
                       whileHover={{ scale: 1.1, rotate: 90 }}
                       whileTap={{ scale: 0.9 }}
@@ -678,10 +727,10 @@ export default function CalendarPage() {
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    onClick={handleAddEvent}
-                    className="flex-1 px-6 py-3 bg-primary-500 hover:bg-primary-600 text-white font-semibold rounded-xl transition-colors shadow-lg"
+                    onClick={handleAddOrUpdateEvent}
+                    className="flex-1 px-6 py-3 bg-primary-500 hover:bg-primary-600 text-gray-900 dark:text-black font-semibold rounded-xl transition-colors shadow-lg"
                   >
-                    Criar Evento
+                    {editingEventId ? "Salvar Alterações" : "Criar Evento"}
                   </motion.button>
                   <motion.button
                     whileHover={{ scale: 1.02 }}

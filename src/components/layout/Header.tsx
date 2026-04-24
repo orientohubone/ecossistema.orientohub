@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Menu, X, Globe, Moon, Sun, Sparkles, GraduationCap, Rocket, ChevronDown, Layout, Info, MessageCircle } from 'lucide-react';
+import { Menu, X, Globe, Sparkles, GraduationCap, Rocket, ChevronDown, Layout, Info, MessageCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuthStore } from '../../stores/authStore';
 
@@ -28,20 +28,14 @@ const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null);
-  const [darkMode, setDarkMode] = useState(
-    localStorage.getItem('theme') === 'dark' || 
-    (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)
-  );
+
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
     setActiveSubmenu(null);
   };
   
-  const toggleDarkMode = () => {
-    const newDarkMode = !darkMode;
-    setDarkMode(newDarkMode);
-  };
+
   
   const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng);
@@ -61,9 +55,9 @@ const Header = () => {
   }, []);
 
   useEffect(() => {
-    // Initialize dark mode
-    applyTheme(darkMode);
-  }, [darkMode]);
+    // Force dark mode on public pages
+    applyTheme(true);
+  }, []);
 
   const navItems = [
     { name: t('nav.home'), href: '/' },
@@ -118,12 +112,12 @@ const Header = () => {
             <div className="flex-shrink-0">
               <Link to="/" className="flex items-center">
                 <img 
-                  src="/orientohub-dark.png" 
+                  src="/orientohub.png" 
                   alt="Orientohub" 
                   className="h-7 w-auto dark:hidden"
                 />
                 <img 
-                  src="/orientohub.png" 
+                  src="/orientohub-dark.png" 
                   alt="Orientohub" 
                   className="h-6 w-auto hidden dark:block"
                 />
@@ -172,8 +166,8 @@ const Header = () => {
                 to="/academy"
                 className={`group relative ml-2 inline-flex items-center gap-2 overflow-hidden rounded-full border px-5 py-2.5 font-bold transition-all duration-300 ${
                   location.pathname === '/academy'
-                    ? 'border-primary-400 bg-gradient-to-r from-primary-500 via-yellow-400 to-primary-500 text-black shadow-[0_10px_30px_rgba(255,215,0,0.35)]'
-                    : 'border-primary-500/40 bg-gradient-to-r from-primary-500/16 via-yellow-400/10 to-primary-500/16 text-primary-700 dark:text-primary-300 shadow-[0_8px_24px_rgba(255,215,0,0.12)] hover:border-primary-400/70 hover:shadow-[0_12px_32px_rgba(255,215,0,0.18)]'
+                    ? 'border-primary-400 bg-gradient-to-r from-primary-500 via-yellow-400 to-primary-500 text-black shadow-[0_10px_30px_rgba(234,179,8,0.35)]'
+                    : 'border-primary-500/40 bg-gradient-to-r from-primary-500/16 via-yellow-400/10 to-primary-500/16 text-primary-700 dark:text-primary-300 shadow-[0_8px_24px_rgba(234,179,8,0.12)] hover:border-primary-400/70 hover:shadow-[0_12px_32px_rgba(234,179,8,0.18)]'
                 }`}
               >
                 <span className={`absolute inset-[1px] rounded-full transition-colors duration-300 group-hover:bg-white/82 dark:group-hover:bg-gray-950/82 ${location.pathname === '/academy' ? 'bg-transparent dark:bg-transparent group-hover:bg-transparent dark:group-hover:bg-transparent' : 'bg-white/78 dark:bg-gray-950/78'}`} />
@@ -208,12 +202,7 @@ const Header = () => {
                 </div>
               </div>
               
-              <button
-                onClick={toggleDarkMode}
-                className="text-gray-700 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400"
-              >
-                {darkMode ? <Sun size={20} /> : <Moon size={20} />}
-              </button>
+
               
               {isAuthenticated ? (
                 <Link to="/dashboard" className="btn-primary">{t('common.dashboard')}</Link>
@@ -322,9 +311,7 @@ const Header = () => {
 
                 <div className="pt-4 mt-2 border-t border-gray-100 dark:border-gray-800 flex items-center justify-between px-3">
                   <div className="flex items-center space-x-4">
-                    <button onClick={toggleDarkMode} className="text-gray-700 dark:text-gray-300">
-                      {darkMode ? <Sun size={22} /> : <Moon size={22} />}
-                    </button>
+
                     <button className="text-gray-700 dark:text-gray-300">
                       <Globe size={22} />
                     </button>

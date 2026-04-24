@@ -93,6 +93,28 @@ export interface DashboardData {
   }>;
 }
 
+export interface JourneyMission {
+  id: number;
+  title: string;
+  completed: boolean;
+  xp: number;
+  frameworks: Array<{ name: string; path: string }>;
+  tasks: Array<{ name: string; path: string }>;
+}
+
+export interface JourneyPhase {
+  id: number;
+  name: string;
+  icon: string | any;
+  color: string;
+  bgColor: string;
+  status: 'locked' | 'in-progress' | 'completed';
+  progress: number;
+  xpEarned: number;
+  description: string;
+  missions: JourneyMission[];
+}
+
 class DashboardService {
   // Calcular XP baseado em atividades do usuário
   private calculateXP(projects: ProjectWithRelations[]): number {
@@ -363,11 +385,183 @@ class DashboardService {
         await projectsService.updateExperiment(parseInt(id), {
           status: progress >= 100 ? 'completed' : progress > 0 ? 'in_progress' : 'planned'
         });
+      } else if (type === 'int') {
+        await projectsService.updateInterview(parseInt(id), {
+          status: progress >= 100 ? 'completed' : 'scheduled'
+        });
       }
       // Implementar outros tipos conforme necessário
     } catch (error) {
       console.error('Error updating task progress:', error);
       throw new Error('Não foi possível atualizar o progresso da tarefa');
+    }
+  }
+
+  // Buscar dados da Jornada Empreendedora amarrados ao banco
+  async getJourneyData(): Promise<JourneyPhase[]> {
+    try {
+      const projects = await projectsService.getAll();
+      const activeProject = projects.length > 0 ? await projectsService.getById(projects[0].id) : null;
+      
+      const hasProject = !!activeProject;
+      const stage = activeProject ? activeProject.stage : 'ideation';
+      const hasHypotheses = activeProject ? activeProject.hypotheses?.length > 0 : false;
+      const hasMVP = activeProject ? activeProject.experiments?.some(e => e.title.includes('MVP') || e.method?.includes('MVP')) : false;
+      const interviewsCount = activeProject ? (activeProject.interviews?.length || 0) : 0;
+      const hasExperiments = activeProject ? activeProject.experiments?.length > 0 : false;
+
+      const ideationProgress = hasProject ? (hasHypotheses ? 100 : 50) : 0;
+      const ideationStatus = stage !== 'ideation' && hasProject ? 'completed' : 'in-progress';
+      
+      const validationProgress = activeProject ? Math.min(100, Math.floor(((hasMVP ? 25 : 0) + (interviewsCount * 5) + (hasExperiments ? 25 : 0)))) : 0;
+      const validationStatus = stage === 'validation' ? 'in-progress' : (stage !== 'ideation' && stage !== 'validation' ? 'completed' : 'locked');
+      
+      return [
+        {
+          id: 1,
+          name: 'Ideação',
+          icon: 'Lightbulb',
+          color: 'from-blue-400 to-blue-600',
+          bgColor: 'bg-blue-500/10',
+          status: ideationStatus,
+          progress: ideationProgress,
+          xpEarned: (hasProject ? 100 : 0) + (hasProject ? 100 : 0) + (hasHypotheses ? 150 : 0) + (hasHypotheses ? 150 : 0),
+          description: 'Validação inicial da sua ideia de negócio',
+          missions: [
+            { 
+              id: 1, 
+              title: 'Definir problema a resolver', 
+              completed: hasProject, 
+              xp: 100,
+              frameworks: [{ name: 'Lean Canvas', path: '/dashboard/frameworks' }, { name: 'Customer Development', path: '/dashboard/frameworks' }],
+              tasks: [{ name: 'Criar primeiro projeto', path: '/dashboard/projects/novo' }]
+            },
+            { 
+              id: 2, 
+              title: 'Identificar público-alvo', 
+              completed: hasProject, 
+              xp: 100,
+              frameworks: [{ name: 'Mapa de Empatia', path: '/dashboard/frameworks' }],
+              tasks: [{ name: 'Preencher descrição do projeto', path: '/dashboard/projects' }]
+            },
+            { 
+              id: 3, 
+              title: 'Levantamento de hipóteses', 
+              completed: hasHypotheses, 
+              xp: 150,
+              frameworks: [],
+              tasks: [{ name: 'Escrever primeira hipótese validável no painel', path: '/dashboard/projects' }]
+            },
+            { 
+              id: 4, 
+              title: 'Proposta de valor única', 
+              completed: hasHypotheses, 
+              xp: 150,
+              frameworks: [{ name: 'Value Proposition Canvas', path: '/dashboard/frameworks' }],
+              tasks: [{ name: 'Adicionar nível de confiança na hipótese', path: '/dashboard/projects' }]
+            }
+          ]
+        },
+        {
+          id: 2,
+          name: 'Validação',
+          icon: 'Target',
+          color: 'from-green-400 to-green-600',
+          bgColor: 'bg-green-500/10',
+          status: validationStatus,
+          progress: validationProgress,
+          xpEarned: (hasMVP ? 200 : 0) + (interviewsCount >= 10 ? 150 : interviewsCount * 15) + (hasExperiments ? 200 : 0),
+          description: 'Teste e validação da sua solução no mercado',
+          missions: [
+            { 
+              id: 5, 
+              title: 'Criar MVP (Produto Mínimo Viável)', 
+              completed: hasMVP, 
+              xp: 200,
+              frameworks: [{ name: 'Startup Enxuta (Lean)', path: '/dashboard/frameworks' }],
+              tasks: [{ name: 'Criar funcionalidade básica no experimento', path: '/dashboard/projects' }]
+            },
+            { 
+              id: 6, 
+              title: 'Entrevistar potenciais clientes', 
+              completed: interviewsCount >= 10, 
+              xp: 150,
+              frameworks: [{ name: 'Jobs to be Done', path: '/dashboard/frameworks' }],
+              tasks: [{ name: `Realizar mais contatos (${interviewsCount}/10)`, path: '/dashboard/projects' }]
+            },
+            { 
+              id: 7, 
+              title: 'Testar hipóteses principais', 
+              completed: hasExperiments, 
+              xp: 200,
+              frameworks: [],
+              tasks: [{ name: 'Criar 1 Novo Experimento', path: '/dashboard/projects' }]
+            },
+            { 
+              id: 8, 
+              title: 'Ajustar produto baseado em feedback', 
+              completed: interviewsCount > 0 && hasExperiments, 
+              xp: 150,
+              frameworks: [{ name: 'Product-Market Fit', path: '/dashboard/frameworks' }],
+              tasks: [{ name: 'Preencher aba insights', path: '/dashboard/insights' }]
+            }
+          ]
+        },
+        {
+          id: 3,
+          name: 'Estruturação',
+          icon: 'Users',
+          color: 'from-purple-400 to-purple-600',
+          bgColor: 'bg-purple-500/10',
+          status: ['mvp', 'traction', 'growth'].includes(stage) ? 'in-progress' : 'locked',
+          progress: 0,
+          xpEarned: 0,
+          description: 'Construção da estrutura do negócio',
+          missions: [
+            { id: 9, title: 'Formalizar a empresa', completed: false, xp: 200, frameworks: [], tasks: [] },
+            { id: 10, title: 'Montar time inicial', completed: false, xp: 250, frameworks: [], tasks: [] },
+            { id: 11, title: 'Definir processos operacionais', completed: false, xp: 200, frameworks: [{ name: 'OKRs', path: '/dashboard/frameworks' }], tasks: [] },
+            { id: 12, title: 'Criar modelo de negócio', completed: false, xp: 250, frameworks: [{ name: 'Business Model Canvas', path: '/dashboard/frameworks' }], tasks: [] }
+          ]
+        },
+        {
+          id: 4,
+          name: 'Tração',
+          icon: 'TrendingUp',
+          color: 'from-orange-400 to-orange-600',
+          bgColor: 'bg-orange-500/10',
+          status: ['traction', 'growth'].includes(stage) ? 'in-progress' : 'locked',
+          progress: 0,
+          xpEarned: 0,
+          description: 'Crescimento e conquista de mercado',
+          missions: [
+            { id: 13, title: 'Alcançar primeiros 100 clientes', completed: false, xp: 300, frameworks: [], tasks: [] },
+            { id: 14, title: 'Estabelecer canais de aquisição', completed: false, xp: 250, frameworks: [], tasks: [] },
+            { id: 15, title: 'Otimizar funil de vendas', completed: false, xp: 200, frameworks: [{ name: 'SaaS B2B Estratégia', path: '/dashboard/frameworks' }], tasks: [] },
+            { id: 16, title: 'Atingir Product-Market Fit', completed: false, xp: 350, frameworks: [{ name: 'PMF Survey', path: '/dashboard/frameworks' }], tasks: [] }
+          ]
+        },
+        {
+          id: 5,
+          name: 'Escala',
+          icon: 'Rocket',
+          color: 'from-red-400 to-red-600',
+          bgColor: 'bg-red-500/10',
+          status: stage === 'growth' ? 'in-progress' : 'locked',
+          progress: 0,
+          xpEarned: 0,
+          description: 'Crescimento exponencial e expansão',
+          missions: [
+            { id: 17, title: 'Captar investimento Anjo/Seed', completed: false, xp: 400, frameworks: [], tasks: [] },
+            { id: 18, title: 'Expandir equipe', completed: false, xp: 300, frameworks: [{ name: 'SAFe / Scrum / Agile', path: '/dashboard/frameworks' }], tasks: [] },
+            { id: 19, title: 'Escalar operações', completed: false, xp: 350, frameworks: [], tasks: [] },
+            { id: 20, title: 'Expandir novos mercados', completed: false, xp: 450, frameworks: [], tasks: [] }
+          ]
+        }
+      ];
+    } catch (error) {
+      console.error('Error fetching journey data:', error);
+      throw new Error('Não foi possível carregar a jornada');
     }
   }
 

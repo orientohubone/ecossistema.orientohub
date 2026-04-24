@@ -74,7 +74,7 @@ const MVPCarouselPaginated = ({ children }: { children: React.ReactNode }) => {
       {currentPage > 0 && (
         <button
           onClick={prevPage}
-          className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-16 bg-white dark:bg-gray-800 p-4 rounded-full shadow-xl hover:shadow-2xl hover:scale-110 transition-all z-10 border-2 border-primary-500/30 hover:border-primary-500 group"
+          className="absolute left-0 md:left-0 top-1/2 -translate-y-1/2 md:-translate-x-16 bg-white dark:bg-gray-800 p-3 md:p-4 rounded-full shadow-xl hover:shadow-2xl hover:scale-110 transition-all z-10 border-2 border-primary-500/30 hover:border-primary-500 group focus:outline-none"
           aria-label="Página anterior"
         >
           <ArrowRight className="w-6 h-6 rotate-180 text-primary-500 group-hover:text-primary-600" />
@@ -85,7 +85,7 @@ const MVPCarouselPaginated = ({ children }: { children: React.ReactNode }) => {
       {currentPage < totalPages - 1 && (
         <button
           onClick={nextPage}
-          className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-16 bg-white dark:bg-gray-800 p-4 rounded-full shadow-xl hover:shadow-2xl hover:scale-110 transition-all z-10 border-2 border-primary-500/30 hover:border-primary-500 group"
+          className="absolute right-0 md:right-0 top-1/2 -translate-y-1/2 md:translate-x-16 bg-white dark:bg-gray-800 p-3 md:p-4 rounded-full shadow-xl hover:shadow-2xl hover:scale-110 transition-all z-10 border-2 border-primary-500/30 hover:border-primary-500 group focus:outline-none"
           aria-label="Próxima página"
         >
           <ArrowRight className="w-6 h-6 text-primary-500 group-hover:text-primary-600" />
@@ -232,7 +232,7 @@ const EcosystemPage = () => {
               <Compass className="w-5 h-5 text-primary-500" />
               <span className="text-primary-500 font-semibold text-sm">NÚCLEO</span>
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">Orientohub Soluções Empresariais</h2>
+            <h2 className="text-3xl md:text-5xl font-bold mb-6">Orientohub Soluções Empresariais</h2>
             <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
               Base institucional e marca-mãe. Responsável por governança, cultura, metodologia e estrutura de aceleração.
             </p>
@@ -292,7 +292,7 @@ const EcosystemPage = () => {
               <Network className="w-5 h-5 text-blue-500" />
               <span className="text-blue-500 font-semibold text-sm">CAMADA 1</span>
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">Plataforma Orientohub</h2>
+            <h2 className="text-3xl md:text-5xl font-bold mb-6">Plataforma Orientohub</h2>
             <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
               O hub digital onde startups, founders e parceiros interagem, compartilham recursos e validam ideias.
             </p>
@@ -344,7 +344,7 @@ const EcosystemPage = () => {
               <Rocket className="w-5 h-5 text-green-500" />
               <span className="text-green-500 font-semibold text-sm">CAMADA 2</span>
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">MVPs & Soluções Conectadas</h2>
+            <h2 className="text-3xl md:text-5xl font-bold mb-6">MVPs & Soluções Conectadas</h2>
             <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
               Produtos criados ou incubados dentro do ecossistema. Cada um com autonomia, mas conectados via participação societária de 20%.
             </p>
@@ -466,7 +466,7 @@ const EcosystemPage = () => {
               <TrendingUp className="w-5 h-5 text-purple-500" />
               <span className="text-purple-500 font-semibold text-sm">CAMADA 3</span>
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">Verticais de Expansão</h2>
+            <h2 className="text-3xl md:text-5xl font-bold mb-6">Verticais de Expansão</h2>
             <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
               Produtos e iniciativas de fortalecimento da comunidade e monetização de conhecimento.
             </p>

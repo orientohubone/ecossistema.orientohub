@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
 import { dashboardService, type DashboardData } from '../services/dashboardService';
 import DashboardPageSkeleton from '../components/ui/DashboardPageSkeleton';
-import { getCachedValue, getOrLoadCachedValue } from '../lib/memoryCache';
+import { getCachedValue, getOrLoadCachedValue, invalidateCache } from '../lib/memoryCache';
 import { 
   CheckSquare, 
   FileText, 
@@ -19,12 +19,16 @@ import {
   ChevronRight,
   Play,
   Bell,
-  Sparkles,
   Crown,
   Activity,
   TrendingUp,
   Award,
-  Lightbulb
+  Lightbulb,
+  Compass,
+  Flag,
+  BarChart,
+  LineChart,
+  Sparkles
 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -90,11 +94,11 @@ const DashboardPage = () => {
     return 'Boa noite';
   };
 
-  const getMotivationalMessage = (level: number) => {
-    if (level <= 3) return '🌟 Sua jornada está começando! Cada passo conta!';
-    if (level <= 6) return '🚀 Você está construindo momentum! Continue assim!';
-    if (level <= 9) return '🔥 Seu progresso é impressionante! Não pare agora!';
-    return '⭐ Você é uma inspiração! Continue brilhando!';
+  const getMotivationalData = (level: number) => {
+    if (level <= 3) return { icon: Compass, text: 'Estruture suas premissas e direcione o foco do seu negócio.' };
+    if (level <= 6) return { icon: LineChart, text: 'Suas validações estão gerando dados consistentes. Mantenha a cadência.' };
+    if (level <= 9) return { icon: Activity, text: 'O ecossistema do seu projeto está tracionando em alta performance.' };
+    return { icon: Crown, text: 'Operação estabelecida com excelência estratégica.' };
   };
 
   const userData = dashboardData.userProfile;
@@ -147,16 +151,62 @@ const DashboardPage = () => {
     'Activity': Activity
   };
 
+  // Função para mudar o status da tarefa
+  const handleTaskToggle = async (e: React.ChangeEvent<HTMLInputElement>, task: any) => {
+    e.stopPropagation();
+    try {
+      const isCompleting = !task.completed;
+      const newProgress = isCompleting ? 100 : 0;
+      
+      // Atualização otimista na UI
+      setDashboardData(prev => {
+        if (!prev) return prev;
+        
+        const newTasks = prev.tasks.map(t => {
+          if (t.id === task.id) {
+            return {
+              ...t,
+              completed: isCompleting,
+              progress: newProgress,
+              priority: isCompleting ? 'low' : 'high'
+            };
+          }
+          return t;
+        });
+
+        // Ordenar: tarefas não concluídas primeiro
+        newTasks.sort((a, b) => Number(a.completed) - Number(b.completed));
+
+        return {
+          ...prev,
+          tasks: newTasks
+        };
+      });
+
+      // Atualizar no backend
+      await dashboardService.updateTaskProgress(task.id, newProgress);
+      
+      // Invalidar o cache da dashboard para refletir as mudanças permanentemente
+      invalidateCache('dashboard:data');
+    } catch (err: any) {
+      console.error('Error toggling task:', err);
+      // Se falhar, tenta recarregar os dados do backend
+      dashboardService.getDashboardData().then(data => {
+        setDashboardData(data);
+      }).catch(console.error);
+    }
+  };
+
   // Função para lidar com clique em tarefas
   const handleTaskClick = async (task: any) => {
     if (!task.completed) {
       try {
         // Navegar para a página do projeto se tiver project_id
         if (task.project_id) {
-          navigate(`/projetos/${task.project_id}`);
+          navigate(`/dashboard/projects/${task.project_id}`);
         } else {
           // Se não tiver projeto, navegar para página de tarefas
-          navigate('/tarefas');
+          navigate('/dashboard/tarefas');
         }
       } catch (error) {
         console.error('Error navigating to task:', error);
@@ -167,9 +217,9 @@ const DashboardPage = () => {
   // Função para lidar com clique em frameworks
   const handleFrameworkClick = (framework: any) => {
     if (framework.project_id) {
-      navigate(`/projetos/${framework.project_id}`);
+      navigate(`/dashboard/projects/${framework.project_id}`);
     } else {
-      navigate('/frameworks');
+      navigate('/dashboard/frameworks');
     }
   };
 
@@ -177,13 +227,13 @@ const DashboardPage = () => {
   const handleRecommendationClick = (recommendation: any) => {
     switch (recommendation.action) {
       case 'Criar projeto':
-        navigate('/projetos/novo');
+        navigate('/dashboard/projects');
         break;
       case 'Começar agora':
         navigate('/dashboard/frameworks');
         break;
       case 'Ver progresso':
-        navigate('/perfil');
+        navigate('/dashboard/jornada');
         break;
       default:
         navigate('/dashboard');
@@ -253,12 +303,19 @@ const DashboardPage = () => {
                 <div className="space-y-3">
                   {/* Saudação personalizada com base no horário */}
                   <div>
-                    <h1 className="text-3xl font-bold text-white mb-1">
-                      {getGreeting()}, <span className="text-primary-400">{userData.name}</span>! 🚀
+                    <h1 className="text-3xl font-bold text-white mb-2 flex items-center gap-2">
+                      {getGreeting()}, <span className="text-primary-400">{userData.name}</span>!
                     </h1>
-                    <p className="text-gray-300 text-lg">
-                      {getMotivationalMessage(userData.level)}
-                    </p>
+                    {(() => {
+                      const motivation = getMotivationalData(userData.level);
+                      const MotivationIcon = motivation.icon;
+                      return (
+                        <p className="text-gray-300 text-lg flex items-center gap-2">
+                          <MotivationIcon className="w-5 h-5 text-primary-500" />
+                          {motivation.text}
+                        </p>
+                      );
+                    })()}
                   </div>
 
                   {/* XP Bar melhorada */}
@@ -280,8 +337,9 @@ const DashboardPage = () => {
                         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-pulse" />
                       </motion.div>
                     </div>
-                    <p className="text-xs text-gray-400 mt-1">
-                      🎯 Faltam {userData.nextLevelXP - userData.currentXP} XP para o próximo nível
+                    <p className="text-xs text-gray-400 mt-2 flex items-center gap-1.5 font-medium">
+                      <Flag className="w-3.5 h-3.5 text-gray-500" />
+                      Faltam {userData.nextLevelXP - userData.currentXP} XP para avançar de nível
                     </p>
                   </div>
                 </div>
@@ -352,7 +410,7 @@ const DashboardPage = () => {
                 <Rocket className="w-6 h-6 text-primary-500" />
                 Sua Jornada Empreendedora
               </h2>
-              <Link to="jornada" className="text-primary-500 hover:text-primary-600 font-medium text-sm flex items-center gap-1">
+              <Link to="/dashboard/jornada" className="text-primary-500 hover:text-primary-600 font-medium text-sm flex items-center gap-1">
                 Ver detalhes
                 <ChevronRight className="w-4 h-4" />
               </Link>
@@ -451,7 +509,7 @@ const DashboardPage = () => {
                           <input
                             type="checkbox"
                             checked={task.completed}
-                            readOnly
+                            onChange={(e) => handleTaskToggle(e, task)}
                             className="w-5 h-5 rounded border-2 border-gray-300 dark:border-gray-600 text-primary-500 focus:ring-primary-500 cursor-pointer"
                           />
                         </div>
