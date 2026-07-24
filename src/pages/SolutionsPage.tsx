@@ -224,8 +224,26 @@ const SolutionsPage = () => {
 
 // --- COMPONENTES AUXILIARES ---
 
+const SolutionLogo = ({ solution, large = false }: { solution: any; large?: boolean }) => {
+  const [imageError, setImageError] = useState(false);
+  const isGeneratedAvatar = solution.logo_url?.includes('ui-avatars.com');
+  const showFallback = !solution.logo_url || isGeneratedAvatar || imageError;
+
+  return (
+    <div className={`${large ? 'w-full h-full rounded-2xl' : 'w-full h-full rounded-xl'} flex items-center justify-center ${showFallback ? 'bg-gradient-to-br from-primary-400 to-primary-600' : 'bg-white dark:bg-gray-900'}`}>
+      {showFallback ? (
+        <Rocket className={`${large ? 'w-9 h-9' : 'w-7 h-7'} text-black`} strokeWidth={1.8} />
+      ) : (
+        <img src={solution.logo_url} alt={solution.name} onError={() => setImageError(true)} className="w-full h-full object-contain p-1" />
+      )}
+    </div>
+  );
+};
+
 const SolutionCard = memo(({ solution, index, onViewDetails, onUpdateData, onRemove, getHealthColor, getHealthLabel, getStageColor }: any) => {
   const [isFetching, setIsFetching] = useState(false);
+  const healthScore = solution.github_data?.health_score || 0;
+  const hasGithub = Boolean(solution.github_data && !solution.github_data.error);
 
   useEffect(() => {
     if (solution.git_url && !solution.github_data && !isFetching) {
@@ -241,44 +259,50 @@ const SolutionCard = memo(({ solution, index, onViewDetails, onUpdateData, onRem
   }, [solution.git_url, solution.github_data]);
 
   return (
-    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="group bg-white dark:bg-gray-800 rounded-2xl border-2 border-gray-200 dark:border-gray-700 overflow-hidden transition-all hover:border-primary-500 hover:shadow-xl">
-      <div className="p-5 border-b-2 border-gray-100 dark:border-gray-700 flex items-start justify-between bg-gray-50/50 dark:bg-gray-800/50">
-        <div className="flex items-center gap-4">
-          <div className="w-12 h-12 bg-white dark:bg-gray-800 rounded-xl p-2 shadow-sm border border-gray-100 dark:border-gray-700">
-            <img src={solution.logo_url} alt={solution.name} className="w-full h-full object-contain" />
+    <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.05 }} className="group relative bg-white dark:bg-gray-800 rounded-[1.75rem] border border-gray-200/80 dark:border-gray-700 overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:border-primary-500/70 hover:shadow-2xl hover:shadow-primary-500/10">
+      <div className="relative p-6 overflow-hidden bg-gradient-to-br from-gray-50 via-white to-primary-50/40 dark:from-gray-800 dark:via-gray-800 dark:to-primary-950/30 border-b border-gray-100 dark:border-gray-700">
+        <div className="absolute -right-8 -top-10 w-32 h-32 rounded-full bg-primary-500/10 blur-2xl group-hover:bg-primary-500/20 transition-colors" />
+        <div className="relative flex items-start justify-between gap-4">
+          <div className="flex items-center gap-4 min-w-0">
+          <div className="w-14 h-14 bg-white dark:bg-gray-900 rounded-2xl p-2.5 shadow-md border border-gray-100 dark:border-gray-700 flex-shrink-0 group-hover:scale-105 transition-transform">
+            <SolutionLogo solution={solution} />
           </div>
-          <div>
-            <h3 className="font-bold text-gray-900 dark:text-white line-clamp-1">{solution.name}</h3>
-            <span className={`inline-block px-2 py-0.5 rounded-full text-[10px] font-bold text-white ${getStageColor(solution.stage)}`}>{solution.stage}</span>
-          </div>
-        </div>
-        <button onClick={onRemove} className="p-2 text-gray-400 hover:text-red-500"><Trash2 className="w-4 h-4" /></button>
-      </div>
-      <div className="p-5 space-y-4">
-        <div className="flex items-center justify-between p-3 bg-white dark:bg-gray-900 rounded-xl border border-gray-100 dark:border-gray-700">
-          <div className="flex items-center gap-3">
-            <Activity className={`w-4 h-4 ${solution.github_data?.error ? 'text-red-500' : solution.github_data ? getHealthColor(solution.github_data.health_score) : 'text-gray-400'}`} />
-            <div>
-              <p className="text-[10px] text-gray-500 uppercase font-black">Saúde Técnica</p>
-              <p className={`text-sm font-bold ${solution.github_data?.error ? 'text-red-500' : solution.github_data ? getHealthColor(solution.github_data.health_score) : 'text-gray-400'}`}>
-                {solution.github_data 
-                  ? (solution.github_data.error ? solution.github_data.error : `${solution.github_data.health_score}% - ${getHealthLabel(solution.github_data.health_score)}`)
-                  : 'Sincronizando...'}
-              </p>
+          <div className="min-w-0">
+            <p className="text-[10px] uppercase tracking-[0.18em] text-gray-400 font-black mb-1">Solução</p>
+            <h3 className="font-bold text-lg text-gray-900 dark:text-white line-clamp-1">{solution.name}</h3>
+            <div className="flex items-center gap-2 mt-1.5">
+              <span className={`inline-block px-2.5 py-1 rounded-full text-[10px] font-bold text-white ${getStageColor(solution.stage)}`}>{solution.stage}</span>
+              {solution.category && <span className="text-[10px] font-bold text-gray-500 truncate">{solution.category}</span>}
             </div>
           </div>
         </div>
-        <div className="grid grid-cols-2 gap-3">
-          <div className="p-3 bg-gray-50 dark:bg-gray-800/30 rounded-xl text-center">
-            <Star className="w-4 h-4 text-yellow-500 mx-auto mb-1" />
-            <p className="text-lg font-bold">{solution.github_data?.stars || 0}</p>
-          </div>
-          <div className="p-3 bg-gray-50 dark:bg-gray-800/30 rounded-xl text-center">
-            <GitCommit className="w-4 h-4 text-primary-500 mx-auto mb-1" />
-            <p className="text-lg font-bold">{solution.github_data?.commits || 0}</p>
-          </div>
+        <button onClick={onRemove} aria-label={`Remover ${solution.name}`} className="relative p-2 text-gray-400 hover:text-red-500 hover:bg-red-500/10 rounded-xl transition-colors"><Trash2 className="w-4 h-4" /></button>
         </div>
-        <button onClick={onViewDetails} className="w-full py-2.5 bg-blue-500 hover:bg-blue-600 text-white text-xs font-bold rounded-xl active:scale-95 transition-all shadow-md">VER DETALHES</button>
+        <p className="relative mt-5 text-sm text-gray-600 dark:text-gray-300 line-clamp-2 min-h-10 leading-relaxed">{solution.description || solution.github_data?.overview?.description || 'Solução em desenvolvimento no ecossistema Orientohub.'}</p>
+      </div>
+      <div className="p-6 space-y-5">
+        <div className="flex items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${hasGithub ? 'bg-green-500/10' : 'bg-gray-100 dark:bg-gray-700'}`}>
+              <Activity className={`w-5 h-5 ${solution.github_data?.error ? 'text-red-500' : hasGithub ? getHealthColor(healthScore) : 'text-gray-400'}`} />
+            </div>
+            <div>
+              <p className="text-[10px] text-gray-400 uppercase tracking-wider font-black">Saúde técnica</p>
+              <p className={`text-sm font-bold ${solution.github_data?.error ? 'text-red-500' : hasGithub ? getHealthColor(healthScore) : 'text-gray-400'}`}>
+                {solution.github_data ? (solution.github_data.error || `${healthScore}% · ${getHealthLabel(healthScore)}`) : 'Sincronizando dados...'}
+              </p>
+            </div>
+          </div>
+          <ChevronRight className="w-5 h-5 text-gray-300 group-hover:text-primary-500 group-hover:translate-x-1 transition-all" />
+        </div>
+        <div className="grid grid-cols-3 gap-2">
+          {[
+            { icon: Star, value: solution.github_data?.stars || 0, label: 'Stars', color: 'text-yellow-500' },
+            { icon: GitCommit, value: solution.github_data?.commits || 0, label: 'Commits', color: 'text-primary-500' },
+            { icon: Users, value: solution.github_data?.contributors || 0, label: 'Pessoas', color: 'text-blue-500' }
+          ].map(({ icon: Icon, value, label, color }) => <div key={label} className="p-3 rounded-xl bg-gray-50 dark:bg-gray-900/70 border border-gray-100 dark:border-gray-700 text-center"><Icon className={`w-4 h-4 ${color} mx-auto mb-1`} /><p className="text-base font-black">{value}</p><p className="text-[9px] text-gray-400 uppercase font-bold">{label}</p></div>)}
+        </div>
+        <button onClick={onViewDetails} className="w-full py-3 bg-gray-900 dark:bg-primary-500 hover:bg-primary-500 dark:hover:bg-primary-400 text-white dark:text-black text-xs font-black tracking-widest rounded-xl active:scale-[.98] transition-all flex items-center justify-center gap-2">EXPLORAR SOLUÇÃO <ChevronRight className="w-4 h-4" /></button>
       </div>
     </motion.div>
   );
@@ -305,23 +329,23 @@ const SolutionDetailsPage = memo(({ solution, onBack, onDelete, getHealthColor, 
       </div>
 
       {/* Main Card Contento */}
-      <div className="bg-white dark:bg-gray-800 rounded-2xl w-full min-h-[calc(100vh-12rem)] overflow-hidden border-2 border-gray-200 dark:border-gray-700 flex flex-col">
+      <div className="bg-white dark:bg-gray-800 rounded-[2rem] w-full min-h-[calc(100vh-12rem)] overflow-hidden border border-gray-200/80 dark:border-gray-700 flex flex-col shadow-xl shadow-gray-200/40 dark:shadow-black/20">
         {/* Header Interno Estilo ProjectsPage */}
         <div className="relative min-h-[140px] bg-gradient-to-br from-gray-100 via-gray-50 to-white dark:from-gray-700 dark:via-gray-800 dark:to-gray-900 overflow-hidden border-b-2 border-gray-200 dark:border-gray-700">
           <div className="absolute inset-0 opacity-40">
             <div className={`absolute top-0 right-0 w-64 h-64 bg-primary-500 rounded-full blur-3xl`} />
           </div>
 
-          <div className="relative z-10 p-6 flex items-start gap-6">
-            <div className="w-14 h-14 bg-white dark:bg-gray-800 rounded-2xl flex items-center justify-center shadow-xl flex-shrink-0 border-2 border-white dark:border-gray-700">
-              <img src={solution.logo_url} alt={solution.name} className="w-full h-full object-contain" />
+          <div className="relative z-10 p-6 md:p-8 flex flex-col lg:flex-row items-start gap-6">
+            <div className="w-20 h-20 bg-white dark:bg-gray-800 rounded-3xl flex items-center justify-center shadow-xl flex-shrink-0 border-2 border-white dark:border-gray-700 p-3">
+              <SolutionLogo solution={solution} large />
             </div>
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-3 mb-1">
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white line-clamp-1">{solution.name}</h2>
-                <span className={`inline-block px-3 py-0.5 rounded-full text-[10px] font-bold text-white ${getStageColor(solution.stage)}`}>{solution.stage}</span>
+                <h2 className="text-3xl font-black text-gray-900 dark:text-white line-clamp-1">{solution.name}</h2>
+                <span className={`inline-block px-3 py-1 rounded-full text-[10px] font-bold text-white ${getStageColor(solution.stage)}`}>{solution.stage}</span>
               </div>
-              <p className="text-gray-600 dark:text-gray-400 line-clamp-2 max-w-4xl text-sm">{github?.overview?.description || 'Repositório monitorado com integração de métricas em tempo real.'}</p>
+              <p className="text-gray-600 dark:text-gray-400 line-clamp-2 max-w-4xl text-sm leading-relaxed">{solution.description || github?.overview?.description || 'Repositório monitorado com integração de métricas em tempo real.'}</p>
               
               {github?.error && (
                 <div className="mt-2 inline-flex items-center gap-2 px-3 py-1 bg-red-100 dark:bg-red-900/30 text-red-600 rounded-lg text-[10px] font-bold uppercase">
@@ -329,16 +353,20 @@ const SolutionDetailsPage = memo(({ solution, onBack, onDelete, getHealthColor, 
                 </div>
               )}
 
-              <div className="mt-4 flex flex-wrap gap-2">
-                <a href={solution.solution_url} target="_blank" className="inline-flex items-center gap-2 px-3 py-1.5 bg-white dark:bg-gray-800 border-2 border-gray-100 dark:border-gray-700 rounded-xl text-xs font-bold hover:border-primary-500 transition-all">
+              <div className="mt-5 flex flex-wrap gap-2">
+                <a href={solution.solution_url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 px-4 py-2 bg-gray-900 dark:bg-primary-500 text-white dark:text-black rounded-xl text-xs font-bold hover:bg-primary-500 dark:hover:bg-primary-400 transition-all">
                   <Globe className="w-3.5 h-3.5" /> Site Oficial
                 </a>
                 {solution.git_url && (
-                  <a href={solution.git_url} target="_blank" className="inline-flex items-center gap-2 px-3 py-1.5 bg-white dark:bg-gray-800 border-2 border-gray-100 dark:border-gray-700 rounded-xl text-xs font-bold hover:border-primary-500 transition-all">
+                  <a href={solution.git_url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-xl text-xs font-bold hover:border-primary-500 transition-all">
                     <GitBranch className="w-3.5 h-3.5" /> Repositório
                   </a>
                 )}
               </div>
+            </div>
+            <div className="grid grid-cols-2 gap-3 w-full lg:w-auto lg:min-w-[220px]">
+              <div className="rounded-2xl bg-white/70 dark:bg-gray-900/60 border border-white/80 dark:border-gray-700 p-4"><p className="text-[10px] text-gray-400 uppercase font-black">Usuários ativos</p><p className="text-xl font-black mt-1">{solution.active_users || 0}</p></div>
+              <div className="rounded-2xl bg-white/70 dark:bg-gray-900/60 border border-white/80 dark:border-gray-700 p-4"><p className="text-[10px] text-gray-400 uppercase font-black">MRR</p><p className="text-xl font-black mt-1">{solution.mrr ? `R$ ${Number(solution.mrr).toLocaleString('pt-BR')}` : '—'}</p></div>
             </div>
           </div>
         </div>
@@ -357,7 +385,7 @@ const SolutionDetailsPage = memo(({ solution, onBack, onDelete, getHealthColor, 
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id as any)}
                   className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-sm transition-all whitespace-nowrap ${activeTab === tab.id
-                      ? 'bg-blue-500 text-white shadow-lg'
+                      ? 'bg-primary-500 text-black shadow-lg shadow-primary-500/20'
                       : 'hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300'
                     }`}
                 >
@@ -380,9 +408,11 @@ const SolutionDetailsPage = memo(({ solution, onBack, onDelete, getHealthColor, 
                     { label: 'Stars', value: github?.stars || 0, icon: Star, color: 'text-yellow-500', bg: 'bg-yellow-500/10' },
                     { label: 'Commits', value: github?.commits || 0, icon: GitCommit, color: 'text-primary-500', bg: 'bg-primary-500/10' },
                     { label: 'Contributors', value: github?.contributors || 0, icon: Users, color: 'text-blue-500', bg: 'bg-blue-500/10' },
-                    { label: 'Open Issues', value: github?.open_issues || 0, icon: Bug, color: 'text-red-500', bg: 'bg-red-500/10' }
+                    { label: 'Open Issues', value: github?.open_issues || 0, icon: Bug, color: 'text-red-500', bg: 'bg-red-500/10' },
+                    { label: 'Usuários Ativos', value: solution.active_users || 0, icon: Users, color: 'text-purple-500', bg: 'bg-purple-500/10' },
+                    { label: 'MRR', value: solution.mrr ? `R$ ${Number(solution.mrr).toLocaleString('pt-BR')}` : '—', icon: TrendingUp, color: 'text-green-500', bg: 'bg-green-500/10' }
                   ].map((s, i) => (
-                    <div key={i} className={`p-5 ${s.bg} rounded-2xl border-2 border-gray-100 dark:border-gray-700 text-center`}>
+                    <div key={i} className={`p-5 ${s.bg} rounded-2xl border border-gray-100 dark:border-gray-700 text-center`}>
                       <s.icon className={`w-5 h-5 ${s.color} mx-auto mb-2`} />
                       <p className="text-2xl font-bold">{s.value}</p>
                       <p className="text-[10px] text-gray-500 font-bold uppercase">{s.label}</p>
@@ -390,7 +420,7 @@ const SolutionDetailsPage = memo(({ solution, onBack, onDelete, getHealthColor, 
                   ))}
                 </div>
 
-                <div className="lg:col-span-4 p-6 bg-gradient-to-br from-gray-50 to-white dark:from-gray-700/50 dark:to-gray-800/50 rounded-2xl border-2 border-gray-200 dark:border-gray-700">
+                <div className="lg:col-span-4 p-6 bg-gradient-to-br from-gray-50 to-white dark:from-gray-700/50 dark:to-gray-800/50 rounded-2xl border border-gray-200 dark:border-gray-700">
                   <div className="flex items-center justify-between gap-4">
                     <div>
                       <h3 className="font-bold text-sm mb-1 uppercase tracking-tight text-gray-500">Saúde Técnica</h3>
@@ -404,6 +434,47 @@ const SolutionDetailsPage = memo(({ solution, onBack, onDelete, getHealthColor, 
                         <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" strokeWidth="3" strokeDasharray={`${github?.health_score || 0}, 100`} className={getHealthColor(github?.health_score || 0)} />
                       </svg>
                     </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+                <div className="lg:col-span-3 p-6 bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-700 rounded-2xl">
+                  <div className="flex items-center justify-between gap-3 mb-5">
+                    <h4 className="font-bold flex items-center gap-2"><Rocket className="w-5 h-5 text-primary-500" /> Sobre a solução</h4>
+                    <span className="text-[10px] px-2.5 py-1 rounded-full bg-primary-500/10 text-primary-600 dark:text-primary-400 font-black uppercase">{solution.stage}</span>
+                  </div>
+                  <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed mb-5">
+                    {solution.description || github?.overview?.description || 'Ainda não há uma descrição cadastrada para esta solução.'}
+                  </p>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="p-3 rounded-xl bg-gray-50 dark:bg-gray-800/70"><p className="text-[10px] text-gray-400 uppercase font-black">Categoria</p><p className="text-sm font-bold mt-1">{solution.category || 'Não definida'}</p></div>
+                    <div className="p-3 rounded-xl bg-gray-50 dark:bg-gray-800/70"><p className="text-[10px] text-gray-400 uppercase font-black">Responsável</p><p className="text-sm font-bold mt-1">{solution.founder_name || 'Não informado'}</p></div>
+                  </div>
+                </div>
+
+                <div className="lg:col-span-2 p-6 bg-gray-900 text-white rounded-2xl border border-gray-800 relative overflow-hidden">
+                  <div className="absolute -right-8 -top-8 w-32 h-32 rounded-full bg-primary-500/20 blur-2xl" />
+                  <h4 className="relative font-bold flex items-center gap-2 mb-5"><GitBranch className="w-5 h-5 text-primary-500" /> Repositório</h4>
+                  <div className="relative space-y-3">
+                    {[
+                      { label: 'Branch principal', value: github?.overview?.default_branch || '—' },
+                      { label: 'Licença', value: github?.overview?.license || 'Não especificada' },
+                      { label: 'Forks', value: github?.forks || 0 },
+                      { label: 'Último push', value: github?.last_commit ? new Date(github.last_commit).toLocaleDateString('pt-BR') : '—' }
+                    ].map((item) => <div key={item.label} className="flex items-center justify-between gap-3 text-xs"><span className="text-gray-400">{item.label}</span><span className="font-bold text-right truncate">{item.value}</span></div>)}
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-6 bg-gradient-to-r from-primary-500/10 via-white to-blue-500/10 dark:from-primary-500/10 dark:via-gray-900 dark:to-blue-500/10 border border-primary-500/20 rounded-2xl">
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                  <div>
+                    <h4 className="font-bold flex items-center gap-2"><Target className="w-5 h-5 text-primary-500" /> Contexto e classificação</h4>
+                    <p className="text-xs text-gray-500 mt-1">Tópicos associados ao repositório para facilitar a leitura do posicionamento técnico.</p>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {github?.overview?.topics?.length ? github.overview.topics.map((topic: string) => <span key={topic} className="px-3 py-1.5 rounded-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-xs font-bold text-gray-600 dark:text-gray-300">#{topic}</span>) : <span className="text-xs text-gray-400">Nenhum tópico cadastrado</span>}
                   </div>
                 </div>
               </div>
@@ -429,7 +500,7 @@ const SolutionDetailsPage = memo(({ solution, onBack, onDelete, getHealthColor, 
                   <div className="absolute top-0 right-0 w-32 h-32 bg-primary-500 rounded-full blur-[80px] opacity-20" />
                   <h4 className="font-bold flex items-center gap-2 mb-6 relative z-10"><Target className="w-5 h-5 text-primary-500" /> Stack Breakdown</h4>
                   <div className="space-y-6 relative z-10">
-                    {github?.languages?.map((lang: any, i: number) => (
+                    {github?.languages?.length ? github.languages.map((lang: any, i: number) => (
                       <div key={i}>
                         <div className="flex justify-between text-[10px] mb-2 font-bold uppercase tracking-widest text-gray-400">
                           <span>{lang.name}</span>
@@ -439,7 +510,7 @@ const SolutionDetailsPage = memo(({ solution, onBack, onDelete, getHealthColor, 
                           <motion.div initial={{ width: 0 }} animate={{ width: `${lang.percentage}%` }} className="h-full rounded-full" style={{ backgroundColor: lang.color }} />
                         </div>
                       </div>
-                    ))}
+                    )) : <p className="text-sm text-gray-400">Conecte um repositório público para visualizar a composição da stack.</p>}
                   </div>
                 </div>
               </div>
