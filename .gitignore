@@ -23,3 +23,6 @@ dist-ssr
 *.sln
 *.sw?
 .env
+
+# Documentação de trabalho/local — não versionar
+documentacao-privada/
