@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { PlusCircle, PlayCircle, CheckCircle, Clock } from 'lucide-react';
+import { PlusCircle, PlayCircle, CheckCircle, Clock, FlaskConical, ArrowRight } from 'lucide-react';
 
 interface Experiment {
   id: string;
@@ -131,7 +131,26 @@ const ExperimentsList = ({ experiments, hypotheses, onUpdate }: ExperimentsListP
       )}
 
       <div className="space-y-4">
-        {experiments.map((experiment) => {
+        {experiments.length === 0 ? (
+          <div className="rounded-2xl border-2 border-dashed border-primary-300/70 bg-gradient-to-br from-primary-50 via-white to-blue-50 px-6 py-10 text-center dark:border-primary-700/60 dark:from-primary-950/30 dark:via-gray-800/70 dark:to-blue-950/20">
+            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary-100 text-primary-600 dark:bg-primary-900/50 dark:text-primary-300">
+              <FlaskConical className="h-7 w-7" />
+            </div>
+            <h4 className="mb-2 text-lg font-semibold text-gray-900 dark:text-white">
+              Pronto para testar uma hipótese?
+            </h4>
+            <p className="mx-auto mb-5 max-w-lg text-gray-600 dark:text-gray-400">
+              Desenhe um experimento simples, observe os sinais e transforme descobertas em decisões melhores.
+            </p>
+            <button
+              onClick={() => setShowForm(true)}
+              className="btn-primary inline-flex items-center"
+            >
+              Criar primeiro experimento
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </button>
+          </div>
+        ) : experiments.map((experiment) => {
           const StatusIcon = statusIcons[experiment.status];
           const hypothesis = hypotheses.find(h => h.id === experiment.hypothesis);
 

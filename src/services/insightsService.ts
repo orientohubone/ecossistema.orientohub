@@ -1,5 +1,4 @@
-import { supabase } from '../config/supabase';
-import { dashboardService } from './dashboardService';
+import { projectsService } from './projectsService';
 import type { ProjectWithRelations } from './projectsService';
 
 export interface InsightMetric {
@@ -40,17 +39,17 @@ export interface InsightData {
 }
 
 class InsightsService {
-  // Calcular métricas baseadas em dados reais
   async getInsightsData(): Promise<InsightData> {
     try {
-      // Obter dados do dashboard (já tem tudo que precisamos)
-      const dashboardData = await dashboardService.getDashboardData();
-      
-      // Calcular métricas reais baseadas nos dados do dashboard
-      const metrics = this.calculateMetrics(dashboardData);
-      const performanceData = this.generatePerformanceData();
-      const projectDistribution = this.calculateProjectDistribution(dashboardData);
-      const recommendations = this.generateRecommendations(dashboardData);
+      const projects = await projectsService.getAll();
+      const projectsWithRelations = await Promise.all(
+        projects.map((project) => projectsService.getById(project.id))
+      );
+
+      const metrics = this.calculateMetrics(projectsWithRelations);
+      const performanceData = this.calculatePerformanceData(projectsWithRelations);
+      const projectDistribution = this.calculateProjectDistribution(projectsWithRelations);
+      const recommendations = this.generateRecommendations(projectsWithRelations);
 
       return {
         metrics,
@@ -64,194 +63,215 @@ class InsightsService {
     }
   }
 
-  // Calcular métricas baseadas em dados reais
-  private calculateMetrics(dashboardData: any): InsightMetric[] {
-    // Usar dados do dashboardData para calcular métricas
-    const stats = dashboardData.stats;
-    const tasks = dashboardData.tasks;
-    const frameworks = dashboardData.frameworks;
-    
+  private calculateMetrics(projects: ProjectWithRelations[]): InsightMetric[] {
+    const hypotheses = projects.flatMap((project) => project.hypotheses);
+    const experiments = projects.flatMap((project) => project.experiments);
+    const interviews = projects.flatMap((project) => project.interviews);
+    const validatedHypotheses = hypotheses.filter((hypothesis) => hypothesis.validated);
+    const activeActivities = [
+      ...experiments.filter((experiment) => experiment.status !== 'completed'),
+      ...interviews.filter((interview) => interview.status !== 'completed'),
+    ];
+    const advancedProjects = projects.filter((project) => project.progress >= 80);
+    const streak = this.calculateStreak(projects);
+
     return [
       {
         id: 'validations',
         title: 'Validações Realizadas',
-        value: stats.achievements.completed,
-        change: 12,
-        trend: 'up' as const,
-        icon: null,
+        value: validatedHypotheses.length,
+        ...this.getTrend(validatedHypotheses.map((item) => item.updated_at)),
         color: 'from-blue-500 to-blue-600',
         bgColor: 'bg-blue-500/10',
         description: 'Hipóteses validadas',
-        goal: stats.achievements.total,
-        status: this.getMetricStatus(stats.achievements.completed, stats.achievements.total)
+        goal: hypotheses.length,
+        status: this.getMetricStatus(validatedHypotheses.length, hypotheses.length)
       },
       {
         id: 'tasks',
-        title: 'Tarefas Ativas',
-        value: tasks.filter(t => !t.completed).length,
-        change: 8,
-        trend: 'up' as const,
-        icon: null,
+        title: 'Atividades em Andamento',
+        value: activeActivities.length,
+        ...this.getTrend(activeActivities.map((item) => item.updated_at || item.date)),
         color: 'from-purple-500 to-purple-600',
         bgColor: 'bg-purple-500/10',
-        description: 'Tarefas em andamento',
-        goal: tasks.length,
-        status: this.getMetricStatus(tasks.filter(t => !t.completed).length, tasks.length)
+        description: 'Experimentos e entrevistas abertos',
+        goal: experiments.length + interviews.length,
+        status: this.getMetricStatus(activeActivities.length, experiments.length + interviews.length)
       },
       {
         id: 'frameworks',
-        title: 'Frameworks Concluídos',
-        value: frameworks.filter(f => f.completed).length,
-        change: 15,
-        trend: 'up' as const,
-        icon: null,
+        title: 'Projetos Avançados',
+        value: advancedProjects.length,
+        ...this.getTrend(advancedProjects.map((project) => project.updated_at)),
         color: 'from-green-500 to-green-600',
         bgColor: 'bg-green-500/10',
-        description: 'Frameworks finalizados',
-        goal: frameworks.length,
-        status: this.getMetricStatus(frameworks.filter(f => f.completed).length, frameworks.length)
+        description: 'Projetos com 80% ou mais de progresso',
+        goal: projects.length,
+        status: this.getMetricStatus(advancedProjects.length, projects.length)
       },
       {
         id: 'streak',
         title: 'Sequência Atual',
-        value: stats.streak,
-        change: 5,
+        value: streak,
+        change: 0,
         trend: 'stable' as const,
-        icon: null,
         color: 'from-orange-500 to-orange-600',
         bgColor: 'bg-orange-500/10',
-        description: 'Dias consecutivos',
+        description: 'Dias consecutivos com atividade',
         goal: 7,
-        status: this.getMetricStatus(stats.streak, 7)
+        status: this.getMetricStatus(streak, 7)
       },
       {
         id: 'goals',
-        title: 'Metas Concluídas',
-        value: stats.completedGoals.completed,
-        change: -5,
-        trend: 'down' as const,
-        icon: null,
+        title: 'Projetos Concluídos',
+        value: advancedProjects.length,
+        ...this.getTrend(advancedProjects.map((project) => project.updated_at)),
         color: 'from-pink-500 to-pink-600',
         bgColor: 'bg-pink-500/10',
-        description: 'Metas alcançadas',
-        goal: stats.completedGoals.total,
-        status: this.getMetricStatus(stats.completedGoals.completed, stats.completedGoals.total)
+        description: 'Projetos que atingiram 80% de progresso',
+        goal: projects.length,
+        status: this.getMetricStatus(advancedProjects.length, projects.length)
       },
       {
         id: 'networking',
-        title: 'Conexões',
-        value: stats.networking,
-        change: 10,
-        trend: 'up' as const,
-        icon: null,
+        title: 'Entrevistas Realizadas',
+        value: interviews.length,
+        ...this.getTrend(interviews.map((interview) => interview.updated_at || interview.date)),
         color: 'from-indigo-500 to-indigo-600',
         bgColor: 'bg-indigo-500/10',
-        description: 'Contatos realizados',
-        goal: Math.max(50, stats.networking + 10),
-        status: this.getMetricStatus(stats.networking, Math.max(50, stats.networking + 10))
+        description: 'Conversas registradas com clientes',
+        goal: Math.max(interviews.length, 10),
+        status: this.getMetricStatus(interviews.length, Math.max(interviews.length, 10))
       }
     ];
   }
 
-  // Gerar dados de performance (últimos 30 dias)
-  private generatePerformanceData() {
-    const data = [];
+  private calculatePerformanceData(projects: ProjectWithRelations[]) {
+    const hypotheses = projects.flatMap((project) => project.hypotheses);
+    const experiments = projects.flatMap((project) => project.experiments);
+    const interviews = projects.flatMap((project) => project.interviews);
     const today = new Date();
-    
-    for (let i = 29; i >= 0; i--) {
+
+    return Array.from({ length: 30 }, (_, index) => {
       const date = new Date(today);
-      date.setDate(date.getDate() - i);
-      
-      // Simular dados baseados em crescimento real
-      const baseValue = 30 - i;
-      const randomVariation = Math.random() * 10 - 5;
-      
-      data.push({
-        date: date.toISOString().split('T')[0],
-        validations: Math.max(0, baseValue + randomVariation),
-        interviews: Math.max(0, (baseValue * 1.5) + randomVariation),
-        experiments: Math.max(0, (baseValue * 0.8) + randomVariation),
-        progress: Math.min(100, (baseValue * 2) + randomVariation)
+      date.setDate(today.getDate() - (29 - index));
+      const dateKey = date.toISOString().slice(0, 10);
+      const countOnDate = (items: Array<{ created_at?: string; updated_at?: string; date?: string }>) =>
+        items.filter((item) => (item.updated_at || item.created_at || item.date || '').slice(0, 10) === dateKey).length;
+      const updatedProjects = projects.filter((project) => project.updated_at.slice(0, 10) === dateKey);
+
+      return {
+        date: dateKey,
+        validations: countOnDate(hypotheses.filter((hypothesis) => hypothesis.validated)),
+        interviews: countOnDate(interviews),
+        experiments: countOnDate(experiments),
+        progress: updatedProjects.length
+          ? Math.round(updatedProjects.reduce((total, project) => total + project.progress, 0) / updatedProjects.length)
+          : 0,
+      };
+    });
+  }
+
+  private calculateProjectDistribution(projects: ProjectWithRelations[]) {
+    const stages = [
+      { key: 'ideation', name: 'Ideação', color: '#8B5CF6' },
+      { key: 'validation', name: 'Validação', color: '#3B82F6' },
+      { key: 'mvp', name: 'MVP', color: '#EAB308' },
+      { key: 'traction', name: 'Tração', color: '#F97316' },
+      { key: 'growth', name: 'Crescimento', color: '#22C55E' },
+    ];
+
+    return stages
+      .map((stage) => ({
+        name: stage.name,
+        value: projects.filter((project) => project.stage === stage.key).length,
+        color: stage.color,
+      }))
+      .filter((stage) => stage.value > 0);
+  }
+
+  private generateRecommendations(projects: ProjectWithRelations[]) {
+    const recommendations: InsightData['recommendations'] = [];
+    const hypotheses = projects.flatMap((project) => project.hypotheses);
+    const experiments = projects.flatMap((project) => project.experiments);
+    const interviews = projects.flatMap((project) => project.interviews);
+    const pendingActivities = [
+      ...experiments.filter((experiment) => experiment.status !== 'completed'),
+      ...interviews.filter((interview) => interview.status !== 'completed'),
+    ];
+
+    if (projects.length === 0) {
+      recommendations.push({
+        id: 'create-project',
+        title: 'Crie seu primeiro projeto',
+        description: 'Registre uma ideia para começar a acompanhar validações, experimentos e progresso.',
+        priority: 'high',
+        action: 'Criar projeto',
       });
     }
-    
-    return data;
-  }
 
-  // Calcular distribuição de projetos por estágio
-  private calculateProjectDistribution(dashboardData: any) {
-    // Simular distribuição baseada nas fases do dashboard
-    const phases = dashboardData.phases || [];
-    
-    return phases.map((phase: any) => ({
-      name: phase.name,
-      value: phase.completed ? 2 : 1,
-      color: phase.active ? '#10B981' : phase.completed ? '#3B82F6' : '#6B7280'
-    }));
-  }
-
-  // Gerar recomendações baseadas em dados reais
-  private generateRecommendations(dashboardData: any) {
-    const recommendations = [];
-    const stats = dashboardData.stats;
-    const tasks = dashboardData.tasks;
-    
-    // Verificar se há muitas tarefas pendentes
-    const pendingTasks = tasks.filter(t => !t.completed);
-    if (pendingTasks.length > 5) {
+    if (pendingActivities.length > 5) {
       recommendations.push({
         id: 'pending-tasks',
-        title: 'Muitas Tarefas Pendentes',
-        description: `Você tem ${pendingTasks.length} tarefas pendentes. Considere priorizar as mais importantes.`,
+        title: 'Atividades aguardando atenção',
+        description: `Você tem ${pendingActivities.length} experimentos ou entrevistas em aberto. Priorize os próximos aprendizados.`,
         priority: 'high' as const,
-        action: 'Organizar tarefas'
+        action: 'Revisar projetos'
       });
     }
 
-    // Verificar sequência baixa
-    if (stats.streak < 3) {
+    if (projects.length > 0 && hypotheses.length === 0) {
       recommendations.push({
-        id: 'low-streak',
-        title: 'Baixa Sequência',
-        description: `Sua sequência atual é de ${stats.streak} dias. Tente manter uma rotina diária.`,
+        id: 'create-hypothesis',
+        title: 'Formule uma hipótese',
+        description: 'Transforme a principal suposição do projeto em uma hipótese testável.',
         priority: 'medium' as const,
-        action: 'Criar rotina'
+        action: 'Abrir projeto'
       });
     }
 
-    // Verificar metas não concluídas
-    if (stats.completedGoals.completed < stats.completedGoals.total * 0.5) {
+    if (hypotheses.length > 0 && !hypotheses.some((hypothesis) => hypothesis.validated)) {
       recommendations.push({
-        id: 'incomplete-goals',
-        title: 'Metas Inacabadas',
-        description: 'Menos da metade das suas metas foram concluídas. Foque em finalizar as iniciadas.',
+        id: 'validate-hypothesis',
+        title: 'Valide sua primeira hipótese',
+        description: 'Use entrevistas e experimentos para transformar suposições em evidências.',
         priority: 'medium' as const,
-        action: 'Revisar metas'
+        action: 'Iniciar validação'
       });
     }
 
-    // Recomendação positiva se estiver indo bem
-    if (stats.streak >= 5 && stats.achievements.completed >= stats.achievements.total * 0.7) {
+    if (projects.length > 0 && projects.every((project) => project.progress >= 80)) {
       recommendations.push({
         id: 'excellent-progress',
         title: 'Excelente Progresso!',
-        description: 'Você está com um ótimo desempenho. Continue assim e explore novos desafios.',
+        description: 'Todos os seus projetos estão em estágio avançado. Continue acompanhando os próximos marcos.',
         priority: 'low' as const,
-        action: 'Celebrar conquista'
+        action: 'Ver progresso'
       });
     }
 
     return recommendations;
   }
 
-  // Calcular variação percentual
-  private calculateChange(current: number, growthRate: number): number {
-    const previous = current / (1 + growthRate);
-    return Math.round(((current - previous) / previous) * 100);
+  private getTrend(dates: string[]) {
+    const now = Date.now();
+    const currentWindow = 30 * 24 * 60 * 60 * 1000;
+    const previousWindow = currentWindow * 2;
+    const current = dates.filter((date) => now - new Date(date).getTime() <= currentWindow).length;
+    const previous = dates.filter((date) => {
+      const age = now - new Date(date).getTime();
+      return age > currentWindow && age <= previousWindow;
+    }).length;
+    const change = previous === 0 ? (current > 0 ? 100 : 0) : Math.round(((current - previous) / previous) * 100);
+
+    return {
+      change,
+      trend: (change > 0 ? 'up' : change < 0 ? 'down' : 'stable') as 'up' | 'down' | 'stable',
+    };
   }
 
-  // Determinar status da métrica
   private getMetricStatus(current: number, goal: number): 'excellent' | 'good' | 'on-track' | 'warning' | 'critical' {
+    if (goal <= 0) return current > 0 ? 'excellent' : 'on-track';
     const percentage = (current / goal) * 100;
     
     if (percentage >= 100) return 'excellent';
@@ -261,16 +281,27 @@ class InsightsService {
     return 'critical';
   }
 
-  // Obter label do estágio
-  private getStageLabel(stage: string): string {
-    const labels: { [key: string]: string } = {
-      ideation: 'Ideação',
-      validation: 'Validação',
-      mvp: 'MVP',
-      traction: 'Tração',
-      growth: 'Crescimento'
-    };
-    return labels[stage] || stage;
+  private calculateStreak(projects: ProjectWithRelations[]): number {
+    const activityDays = new Set(
+      projects.flatMap((project) => [
+        project.created_at,
+        project.updated_at,
+        ...project.hypotheses.map((item) => item.updated_at),
+        ...project.experiments.map((item) => item.updated_at),
+        ...project.interviews.map((item) => item.updated_at || item.date),
+      ]).map((date) => new Date(date).toDateString())
+    );
+    let streak = 0;
+    for (let offset = 0; offset < 30; offset += 1) {
+      const date = new Date();
+      date.setDate(date.getDate() - offset);
+      if (!activityDays.has(date.toDateString())) {
+        if (offset === 0) return 0;
+        break;
+      }
+      streak += 1;
+    }
+    return streak;
   }
 }
 

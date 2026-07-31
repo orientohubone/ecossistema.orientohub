@@ -2,6 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --dashboard-canvas: #e5e7eb;
+  --dashboard-surface: #f8fafc;
+}
+
+.dark {
+  --dashboard-canvas: #0b0f14;
+  --dashboard-surface: #171c24;
+}
+
 @layer base {
   html,
   body {
@@ -40,6 +50,28 @@
   
   .container-custom {
     @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  /* As rotas autenticadas ocupam toda a área disponível. As páginas públicas
+     continuam usando o limite visual do container-custom. */
+  .dashboard-content .container-custom {
+    @apply w-full max-w-none mx-0;
+  }
+
+  .dashboard-shell,
+  .dashboard-main {
+    background-color: var(--dashboard-canvas);
+  }
+
+  .dashboard-content {
+    min-height: 100%;
+    background-color: var(--dashboard-surface);
+  }
+
+  /* Normaliza os shells das telas protegidas para que a superfície interna
+     permaneça mais clara que o canvas externo em todos os módulos. */
+  .dashboard-content > [class*='min-h-screen'] {
+    background: var(--dashboard-surface) !important;
   }
   
   .card {

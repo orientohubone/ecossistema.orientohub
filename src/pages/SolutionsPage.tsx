@@ -32,7 +32,8 @@ import {
   BarChart2,
   Award,
   ExternalLink,
-  ChevronRight
+  ChevronRight,
+  Pencil
 } from 'lucide-react';
 import { useAuthStore } from '../stores/authStore';
 import DashboardPageSkeleton from '../components/ui/DashboardPageSkeleton';
@@ -45,6 +46,23 @@ const SolutionsPage = () => {
   const [showAddModal, setShowAddModal] = useState(false);
   const [isLoading, setIsLoading] = useState(!solutionsService.getCachedSolutions());
   const [isSyncing, setIsSyncing] = useState(false);
+  const [isEditingSolution, setIsEditingSolution] = useState(false);
+  const [isSavingSolution, setIsSavingSolution] = useState(false);
+  const [editForm, setEditForm] = useState({
+    name: '',
+    logo_url: '',
+    solution_url: '',
+    founder_name: '',
+    stage: 'Ideação' as Solution['stage'],
+    git_url: '',
+    ide_url: '',
+    database_url: '',
+    instagram_url: '',
+    description: '',
+    category: '',
+    mrr: '',
+    active_users: '',
+  });
   const [error, setError] = useState<string | null>(null);
   const [newSolution, setNewSolution] = useState<Partial<Solution>>({
     name: '',
@@ -102,6 +120,60 @@ const SolutionsPage = () => {
       await fetchSolutions();
     } catch (err: any) {
       setError(err.message);
+    }
+  };
+
+  const handleOpenEdit = (solution: Solution) => {
+    setEditForm({
+      name: solution.name || '',
+      logo_url: solution.logo_url || '',
+      solution_url: solution.solution_url || '',
+      founder_name: solution.founder_name || '',
+      stage: solution.stage || 'Ideação',
+      git_url: solution.git_url || '',
+      ide_url: solution.ide_url || '',
+      database_url: solution.database_url || '',
+      instagram_url: solution.instagram_url || '',
+      description: solution.description || '',
+      category: solution.category || '',
+      mrr: solution.mrr ? String(solution.mrr) : '',
+      active_users: solution.active_users ? String(solution.active_users) : '',
+    });
+    setIsEditingSolution(true);
+  };
+
+  const handleSaveSolution = async () => {
+    if (!selectedSolution || !editForm.name.trim() || !editForm.solution_url.trim()) return;
+
+    try {
+      setIsSavingSolution(true);
+      setError(null);
+      const updated = await solutionsService.update(selectedSolution.id, {
+        name: editForm.name.trim(),
+        logo_url: editForm.logo_url.trim(),
+        solution_url: editForm.solution_url.trim(),
+        founder_name: editForm.founder_name.trim() || null,
+        stage: editForm.stage,
+        git_url: editForm.git_url.trim() || null,
+        ide_url: editForm.ide_url.trim() || null,
+        database_url: editForm.database_url.trim() || null,
+        instagram_url: editForm.instagram_url.trim() || null,
+        description: editForm.description.trim() || null,
+        category: editForm.category.trim() || null,
+        mrr: Number(editForm.mrr) || 0,
+        active_users: Number(editForm.active_users) || 0,
+      });
+
+      const updatedSolution = { ...selectedSolution, ...updated, github_data: selectedSolution.github_data };
+      setSelectedSolution(updatedSolution);
+      setSolutions((currentSolutions) => currentSolutions.map((solution) => (
+        solution.id === updatedSolution.id ? updatedSolution : solution
+      )));
+      setIsEditingSolution(false);
+    } catch (err: any) {
+      setError(err.message || 'Não foi possível salvar as alterações da solução');
+    } finally {
+      setIsSavingSolution(false);
     }
   };
 
@@ -208,6 +280,7 @@ const SolutionsPage = () => {
             <SolutionDetailsPage
               solution={selectedSolution}
               onBack={() => setSelectedSolution(null)}
+              onEdit={() => handleOpenEdit(selectedSolution)}
               onDelete={() => handleRemoveSolution(selectedSolution.id)}
               getHealthColor={getHealthColor}
               getHealthLabel={getHealthLabel}
@@ -218,6 +291,15 @@ const SolutionsPage = () => {
       </div>
 
       <AddSolutionModal show={showAddModal} onClose={() => setShowAddModal(false)} newSolution={newSolution} setNewSolution={setNewSolution} onSave={handleAddSolution} isSyncing={isSyncing} />
+      <EditSolutionModal
+        show={isEditingSolution}
+        solution={selectedSolution}
+        editForm={editForm}
+        setEditForm={setEditForm}
+        isSaving={isSavingSolution}
+        onClose={() => setIsEditingSolution(false)}
+        onSave={handleSaveSolution}
+      />
     </>
   );
 };
@@ -312,7 +394,7 @@ const SolutionCard = memo(({ solution, index, onViewDetails, onUpdateData, onRem
 });
 
 // COMPONENTE DE TELA DEDICADA - PADRAO PROJECTSPAGE
-const SolutionDetailsPage = memo(({ solution, onBack, onDelete, getHealthColor, getHealthLabel, getStageColor }: any) => {
+const SolutionDetailsPage = memo(({ solution, onBack, onEdit, onDelete, getHealthColor, getHealthLabel, getStageColor }: any) => {
   const [activeTab, setActiveTab] = useState<'overview' | 'tech' | 'growth'>('overview');
   const github = solution.github_data;
 
@@ -323,9 +405,14 @@ const SolutionDetailsPage = memo(({ solution, onBack, onDelete, getHealthColor, 
         <button onClick={onBack} className="inline-flex items-center gap-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-blue-600 transition-colors">
           <ArrowLeft className="w-4 h-4" /> Voltar para soluções
         </button>
-        <button onClick={onDelete} className="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-red-100 dark:bg-red-900/30 hover:bg-red-200 text-red-600 transition-all text-xs font-bold">
-          <Trash2 className="w-4 h-4" /> Excluir solução
-        </button>
+        <div className="flex items-center gap-2">
+          <button onClick={onEdit} className="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-primary-100 dark:bg-primary-900/30 hover:bg-primary-200 text-primary-700 dark:text-primary-300 transition-all text-xs font-bold">
+            <Pencil className="w-4 h-4" /> Editar solução
+          </button>
+          <button onClick={onDelete} className="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-red-100 dark:bg-red-900/30 hover:bg-red-200 text-red-600 transition-all text-xs font-bold">
+            <Trash2 className="w-4 h-4" /> Excluir solução
+          </button>
+        </div>
       </div>
 
       {/* Main Card Contento */}
@@ -573,6 +660,154 @@ const SolutionDetailsPage = memo(({ solution, onBack, onDelete, getHealthColor, 
   return prev.solution.id === next.solution.id && 
          prev.solution.github_data === next.solution.github_data;
 });
+
+interface SolutionEditForm {
+  name: string;
+  logo_url: string;
+  solution_url: string;
+  founder_name: string;
+  stage: Solution['stage'];
+  git_url: string;
+  ide_url: string;
+  database_url: string;
+  instagram_url: string;
+  description: string;
+  category: string;
+  mrr: string;
+  active_users: string;
+}
+
+interface EditSolutionModalProps {
+  show: boolean;
+  solution: Solution | null;
+  editForm: SolutionEditForm;
+  setEditForm: (form: SolutionEditForm) => void;
+  isSaving: boolean;
+  onClose: () => void;
+  onSave: () => void;
+}
+
+const EditSolutionModal = ({ show, solution, editForm, setEditForm, isSaving, onClose, onSave }: EditSolutionModalProps) => {
+  if (!show || !solution) return null;
+
+  const inputClass = 'w-full rounded-xl border-2 border-gray-200 bg-white px-4 py-2.5 text-sm font-medium text-gray-900 outline-none transition-all focus:border-primary-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white';
+  const updateField = <K extends keyof SolutionEditForm>(field: K, value: SolutionEditForm[K]) => {
+    setEditForm({ ...editForm, [field]: value });
+  };
+
+  return (
+    <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
+      <motion.div
+        initial={{ scale: 0.96, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        className="max-h-[92vh] w-full max-w-4xl overflow-y-auto rounded-[2rem] border-2 border-gray-200 bg-white shadow-3xl dark:border-gray-700 dark:bg-gray-900"
+      >
+        <div className="sticky top-0 z-10 flex items-center justify-between border-b-2 border-gray-100 bg-white/95 px-6 py-5 backdrop-blur dark:border-gray-700 dark:bg-gray-900/95 md:px-8">
+          <div className="flex items-center gap-3">
+            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary-500/10">
+              <Pencil className="h-5 w-5 text-primary-500" />
+            </div>
+            <div>
+              <h2 className="text-xl font-bold text-gray-900 dark:text-white">Editar solução</h2>
+              <p className="text-xs text-gray-500 dark:text-gray-400">Atualize os dados editoriais e operacionais.</p>
+            </div>
+          </div>
+          <button onClick={onClose} className="rounded-xl p-2 text-gray-500 transition-colors hover:bg-gray-100 dark:hover:bg-gray-800" aria-label="Fechar edição">
+            <X className="h-5 w-5" />
+          </button>
+        </div>
+
+        <div className="space-y-6 p-6 md:p-8">
+          <section className="space-y-4">
+            <h3 className="text-xs font-black uppercase tracking-widest text-gray-400">Identidade e posicionamento</h3>
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+              <label className="space-y-2 text-sm font-bold text-gray-700 dark:text-gray-300">
+                Nome da solução <span className="text-red-500">*</span>
+                <input className={inputClass} value={editForm.name} onChange={(event) => updateField('name', event.target.value)} required />
+              </label>
+              <label className="space-y-2 text-sm font-bold text-gray-700 dark:text-gray-300">
+                Categoria
+                <input className={inputClass} value={editForm.category} onChange={(event) => updateField('category', event.target.value)} placeholder="Ex.: SaaS, IA, Fintech" />
+              </label>
+            </div>
+            <label className="block space-y-2 text-sm font-bold text-gray-700 dark:text-gray-300">
+              Descrição
+              <textarea className={`${inputClass} resize-y`} rows={4} value={editForm.description} onChange={(event) => updateField('description', event.target.value)} placeholder="Descreva a solução e o valor que ela entrega." />
+            </label>
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+              <label className="space-y-2 text-sm font-bold text-gray-700 dark:text-gray-300">
+                Estágio
+                <select className={inputClass} value={editForm.stage} onChange={(event) => updateField('stage', event.target.value as Solution['stage'])}>
+                  <option value="Ideação">Ideação</option>
+                  <option value="Validação">Validação</option>
+                  <option value="MVP">MVP</option>
+                  <option value="Tração">Tração</option>
+                  <option value="Crescimento">Crescimento</option>
+                  <option value="Escala">Escala</option>
+                </select>
+              </label>
+              <label className="space-y-2 text-sm font-bold text-gray-700 dark:text-gray-300">
+                Responsável
+                <input className={inputClass} value={editForm.founder_name} onChange={(event) => updateField('founder_name', event.target.value)} placeholder="Nome do responsável" />
+              </label>
+            </div>
+          </section>
+
+          <section className="space-y-4 border-t border-gray-200 pt-6 dark:border-gray-700">
+            <h3 className="text-xs font-black uppercase tracking-widest text-gray-400">Links e infraestrutura</h3>
+            <label className="block space-y-2 text-sm font-bold text-gray-700 dark:text-gray-300">
+              URL do produto <span className="text-red-500">*</span>
+              <input type="url" className={inputClass} value={editForm.solution_url} onChange={(event) => updateField('solution_url', event.target.value)} required placeholder="https://app.exemplo.com" />
+            </label>
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+              <label className="space-y-2 text-sm font-bold text-gray-700 dark:text-gray-300">
+                Logo URL
+                <input type="url" className={inputClass} value={editForm.logo_url} onChange={(event) => updateField('logo_url', event.target.value)} placeholder="https://.../logo.png" />
+              </label>
+              <label className="space-y-2 text-sm font-bold text-gray-700 dark:text-gray-300">
+                Repositório GitHub
+                <input type="url" className={inputClass} value={editForm.git_url} onChange={(event) => updateField('git_url', event.target.value)} placeholder="https://github.com/..." />
+              </label>
+              <label className="space-y-2 text-sm font-bold text-gray-700 dark:text-gray-300">
+                IDE / ambiente
+                <input type="url" className={inputClass} value={editForm.ide_url} onChange={(event) => updateField('ide_url', event.target.value)} placeholder="URL do ambiente de desenvolvimento" />
+              </label>
+              <label className="space-y-2 text-sm font-bold text-gray-700 dark:text-gray-300">
+                Banco de dados
+                <input type="url" className={inputClass} value={editForm.database_url} onChange={(event) => updateField('database_url', event.target.value)} placeholder="URL do banco ou console" />
+              </label>
+              <label className="space-y-2 text-sm font-bold text-gray-700 dark:text-gray-300 md:col-span-2">
+                Instagram
+                <input type="url" className={inputClass} value={editForm.instagram_url} onChange={(event) => updateField('instagram_url', event.target.value)} placeholder="https://instagram.com/..." />
+              </label>
+            </div>
+          </section>
+
+          <section className="space-y-4 border-t border-gray-200 pt-6 dark:border-gray-700">
+            <h3 className="text-xs font-black uppercase tracking-widest text-gray-400">Indicadores comerciais</h3>
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+              <label className="space-y-2 text-sm font-bold text-gray-700 dark:text-gray-300">
+                Usuários ativos
+                <input type="number" min="0" className={inputClass} value={editForm.active_users} onChange={(event) => updateField('active_users', event.target.value)} placeholder="0" />
+              </label>
+              <label className="space-y-2 text-sm font-bold text-gray-700 dark:text-gray-300">
+                MRR (R$)
+                <input type="number" min="0" step="0.01" className={inputClass} value={editForm.mrr} onChange={(event) => updateField('mrr', event.target.value)} placeholder="0" />
+              </label>
+            </div>
+          </section>
+        </div>
+
+        <div className="flex justify-end gap-3 border-t-2 border-gray-100 bg-gray-50 px-6 py-5 dark:border-gray-700 dark:bg-gray-800 md:px-8">
+          <button onClick={onClose} disabled={isSaving} className="rounded-xl px-5 py-2.5 text-sm font-bold text-gray-500 transition-colors hover:bg-gray-200 dark:hover:bg-gray-700">Cancelar</button>
+          <button onClick={onSave} disabled={isSaving || !editForm.name.trim() || !editForm.solution_url.trim()} className="rounded-xl bg-primary-500 px-6 py-2.5 text-sm font-bold text-black transition-colors hover:bg-primary-600 disabled:cursor-not-allowed disabled:opacity-50">
+            {isSaving ? 'Salvando...' : 'Salvar alterações'}
+          </button>
+        </div>
+      </motion.div>
+    </div>
+  );
+};
 
 const AddSolutionModal = ({ show, onClose, newSolution, setNewSolution, onSave, isSyncing }: any) => {
   if (!show) return null;

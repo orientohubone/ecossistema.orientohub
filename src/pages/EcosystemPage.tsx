@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
 import {
-  Settings,
   Rocket,
   Target,
   Users,
@@ -149,9 +148,12 @@ const EcosystemPage = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border-2 border-primary-500/30 bg-primary-500/10 text-primary-500 backdrop-blur-sm">
-                <Settings className="w-4 h-4 animate-spin" style={{ animationDuration: '3s' }} />
-                <span className="text-sm font-semibold">Arquitetura Estratégica</span>
+              <div className="inline-flex items-center gap-2.5 rounded-full border border-primary-400/40 bg-black/30 px-3.5 py-2 shadow-[0_0_30px_rgba(255,215,0,0.08)] backdrop-blur-md">
+                <Layers className="h-3.5 w-3.5 text-primary-400" aria-hidden="true" />
+                <span className="h-3 w-px bg-primary-400/40" aria-hidden="true" />
+                <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-white sm:text-xs">
+                  Arquitetura estratégica
+                </span>
               </div>
             </motion.div>
 
@@ -228,9 +230,10 @@ const EcosystemPage = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease: "easeOut" }}
           >
-            <div className="inline-flex items-center gap-2 bg-primary-500/10 border border-primary-500/30 px-4 py-2 rounded-full mb-6">
-              <Compass className="w-5 h-5 text-primary-500" />
-              <span className="text-primary-500 font-semibold text-sm">NÚCLEO</span>
+            <div className="inline-flex items-center gap-2 rounded-full border border-primary-400/40 bg-black/30 px-3.5 py-2 mb-6 shadow-[0_0_30px_rgba(255,215,0,0.08)] backdrop-blur-md">
+              <Compass className="h-3.5 w-3.5 text-primary-400" aria-hidden="true" />
+              <span className="h-3 w-px bg-primary-400/40" aria-hidden="true" />
+              <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-white sm:text-xs">Núcleo</span>
             </div>
             <h2 className="text-3xl md:text-5xl font-bold mb-6">Orientohub Soluções Empresariais</h2>
             <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
@@ -288,9 +291,10 @@ const EcosystemPage = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease: "easeOut" }}
           >
-            <div className="inline-flex items-center gap-2 bg-blue-500/10 border border-blue-500/30 px-4 py-2 rounded-full mb-6">
-              <Network className="w-5 h-5 text-blue-500" />
-              <span className="text-blue-500 font-semibold text-sm">CAMADA 1</span>
+            <div className="inline-flex items-center gap-2 rounded-full border border-primary-400/40 bg-black/30 px-3.5 py-2 mb-6 shadow-[0_0_30px_rgba(255,215,0,0.08)] backdrop-blur-md">
+              <Network className="h-3.5 w-3.5 text-primary-400" aria-hidden="true" />
+              <span className="h-3 w-px bg-primary-400/40" aria-hidden="true" />
+              <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-white sm:text-xs">Camada 1</span>
             </div>
             <h2 className="text-3xl md:text-5xl font-bold mb-6">Plataforma Orientohub</h2>
             <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
@@ -340,9 +344,10 @@ const EcosystemPage = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease: "easeOut" }}
           >
-            <div className="inline-flex items-center gap-2 bg-green-500/10 border border-green-500/30 px-4 py-2 rounded-full mb-6">
-              <Rocket className="w-5 h-5 text-green-500" />
-              <span className="text-green-500 font-semibold text-sm">CAMADA 2</span>
+            <div className="inline-flex items-center gap-2 rounded-full border border-primary-400/40 bg-black/30 px-3.5 py-2 mb-6 shadow-[0_0_30px_rgba(255,215,0,0.08)] backdrop-blur-md">
+              <Rocket className="h-3.5 w-3.5 text-primary-400" aria-hidden="true" />
+              <span className="h-3 w-px bg-primary-400/40" aria-hidden="true" />
+              <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-white sm:text-xs">Camada 2</span>
             </div>
             <h2 className="text-3xl md:text-5xl font-bold mb-6">MVPs & Soluções Conectadas</h2>
             <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
@@ -462,9 +467,10 @@ const EcosystemPage = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease: "easeOut" }}
           >
-            <div className="inline-flex items-center gap-2 bg-purple-500/10 border border-purple-500/30 px-4 py-2 rounded-full mb-6">
-              <TrendingUp className="w-5 h-5 text-purple-500" />
-              <span className="text-purple-500 font-semibold text-sm">CAMADA 3</span>
+            <div className="inline-flex items-center gap-2 rounded-full border border-primary-400/40 bg-black/30 px-3.5 py-2 mb-6 shadow-[0_0_30px_rgba(255,215,0,0.08)] backdrop-blur-md">
+              <TrendingUp className="h-3.5 w-3.5 text-primary-400" aria-hidden="true" />
+              <span className="h-3 w-px bg-primary-400/40" aria-hidden="true" />
+              <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-white sm:text-xs">Camada 3</span>
             </div>
             <h2 className="text-3xl md:text-5xl font-bold mb-6">Verticais de Expansão</h2>
             <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
@@ -544,9 +550,10 @@ const EcosystemPage = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease: "easeOut" }}
           >
-            <div className="inline-flex items-center gap-2 bg-primary-500/20 border-2 border-primary-500/40 px-4 py-2 rounded-full mb-6">
-              <Building2 className="w-5 h-5 text-primary-500" />
-              <span className="text-primary-500 font-semibold text-sm">MODELO DE NEGÓCIO</span>
+            <div className="inline-flex items-center gap-2 rounded-full border border-primary-400/40 bg-black/30 px-3.5 py-2 mb-6 shadow-[0_0_30px_rgba(255,215,0,0.08)] backdrop-blur-md">
+              <Building2 className="h-3.5 w-3.5 text-primary-400" aria-hidden="true" />
+              <span className="h-3 w-px bg-primary-400/40" aria-hidden="true" />
+              <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-white sm:text-xs">Modelo de negócio</span>
             </div>
             <h2 className="text-4xl md:text-5xl font-bold mb-6">Como Geramos Valor</h2>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto">
@@ -656,10 +663,11 @@ const EcosystemPage = () => {
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.5, ease: "easeOut" }}
           >
-            <div className="inline-flex items-center gap-2 bg-primary-500/20 border-2 border-primary-500/40 px-5 py-2 rounded-full mb-8 backdrop-blur-sm">
-              <Sparkles className="w-4 h-4 text-primary-500" />
-              <span className="text-primary-500 font-bold text-sm uppercase tracking-wide">
-                Junte-se a Nós
+            <div className="inline-flex items-center gap-2.5 rounded-full border border-primary-400/40 bg-black/30 px-3.5 py-2 mb-8 shadow-[0_0_30px_rgba(255,215,0,0.08)] backdrop-blur-md">
+              <Users className="h-3.5 w-3.5 text-primary-400" aria-hidden="true" />
+              <span className="h-3 w-px bg-primary-400/40" aria-hidden="true" />
+              <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-white sm:text-xs">
+                Junte-se a nós
               </span>
             </div>
 

@@ -181,9 +181,10 @@ const Footer = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
             >
-              <div className="inline-flex items-center gap-2 bg-primary-500/10 border border-primary-500/30 px-4 py-2 rounded-full mb-6">
-                <Sparkles className="w-4 h-4 text-primary-500" />
-                <span className="text-primary-500 font-semibold text-sm">FIQUE POR DENTRO</span>
+              <div className="inline-flex items-center gap-2 rounded-full border border-primary-400/40 bg-black/30 px-3.5 py-2 mb-6 shadow-[0_0_30px_rgba(255,215,0,0.08)] backdrop-blur-md">
+                <Mail className="h-3.5 w-3.5 text-primary-400" aria-hidden="true" />
+                <span className="h-3 w-px bg-primary-400/40" aria-hidden="true" />
+                <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-white sm:text-xs">FIQUE POR DENTRO</span>
               </div>
               
               <h3 className="text-3xl md:text-4xl font-bold mb-4">

@@ -133,6 +133,62 @@ const GlossaryPage = () => {
       category: 'funding',
       definition: 'Processo de investigação detalhada que investidores realizam antes de investir, analisando aspectos financeiros, legais, técnicos e de mercado.',
       icon: Search
+    },
+    {
+      term: 'ICP',
+      fullName: 'Ideal Customer Profile',
+      category: 'strategy',
+      definition: 'Descrição do cliente ideal para o negócio: o perfil que mais sente o problema, obtém valor da solução e tem maior potencial de compra e retenção.',
+      icon: Users
+    },
+    {
+      term: 'Problem-Solution Fit',
+      fullName: 'Aderência problema-solução',
+      category: 'strategy',
+      definition: 'Estágio em que a solução proposta responde de forma clara e relevante a um problema real, antes de escalar aquisição ou operação.',
+      icon: Target
+    },
+    {
+      term: 'TAM, SAM e SOM',
+      fullName: 'Mercado total, atendível e conquistável',
+      category: 'strategy',
+      definition: 'Forma de dimensionar o mercado: TAM representa todo o potencial, SAM o recorte que a solução pode atender e SOM a parcela realisticamente conquistável no início.',
+      icon: BarChart2
+    },
+    {
+      term: 'MRR',
+      fullName: 'Monthly Recurring Revenue',
+      category: 'metrics',
+      definition: 'Receita recorrente mensal gerada pelas assinaturas ativas. Ajuda a acompanhar previsibilidade, crescimento e qualidade da receita de um negócio recorrente.',
+      icon: DollarSign
+    },
+    {
+      term: 'Retention',
+      fullName: 'Taxa de Retenção',
+      category: 'metrics',
+      definition: 'Percentual de usuários ou clientes que continuam ativos após um período. Uma retenção saudável mostra que o produto entrega valor de forma contínua.',
+      icon: Users
+    },
+    {
+      term: 'Conversion Rate',
+      fullName: 'Taxa de Conversão',
+      category: 'metrics',
+      definition: 'Proporção de pessoas que realizam uma ação desejada, como se cadastrar, solicitar uma demonstração ou comprar, em relação ao total de visitantes ou oportunidades.',
+      icon: TrendingUp
+    },
+    {
+      term: 'A/B Test',
+      fullName: 'Teste A/B',
+      category: 'growth',
+      definition: 'Experimento que compara duas versões de uma página, mensagem ou funcionalidade para descobrir qual gera melhor resultado com base em comportamento real.',
+      icon: Zap
+    },
+    {
+      term: 'Value Proposition',
+      fullName: 'Proposta de Valor',
+      category: 'strategy',
+      definition: 'Declaração clara do valor que a solução entrega, para quem entrega e por que é melhor ou diferente das alternativas disponíveis.',
+      icon: Lightbulb
     }
   ];
 
@@ -163,13 +219,13 @@ const GlossaryPage = () => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 py-32">
           <div className="max-w-4xl mx-auto text-center">
             <motion.div
-              className="inline-flex items-center gap-1.5 bg-primary-500/20 border-2 border-primary-500/40 px-5 py-2 rounded-full mb-8 backdrop-blur-sm"
+              className="inline-flex items-center gap-2.5 rounded-full border border-primary-400/40 bg-black/30 px-3.5 py-2 shadow-[0_0_30px_rgba(255,215,0,0.08)] backdrop-blur-md mb-8"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.2 }}
             >
-              <BookOpen className="w-4 h-4 text-primary-500 flex-shrink-0" />
-              <span className="text-primary-500 font-bold text-sm uppercase tracking-wide text-center">
+              <BookOpen className="h-3.5 w-3.5 shrink-0 text-primary-400" aria-hidden="true" />
+              <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-white sm:text-xs">
                 Glossário de Startups
               </span>
             </motion.div>
@@ -264,7 +320,7 @@ const GlossaryPage = () => {
       <section className="py-24 bg-white dark:bg-gray-900">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-5xl mx-auto">
-            <div className="grid grid-cols-1 gap-6">
+            <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
               {filteredTerms.map((term, index) => (
                 <GlossaryCard key={index} {...term} delay={index * 0.05} />
               ))}
@@ -343,31 +399,41 @@ interface GlossaryCardProps {
   delay: number;
 }
 
-const GlossaryCard = ({ term, fullName, definition, icon: Icon, delay }: GlossaryCardProps) => {
+const GlossaryCard = ({ term, fullName, category, definition, icon: Icon, delay }: GlossaryCardProps) => {
+  const categoryNames: Record<string, string> = {
+    funding: 'Investimento',
+    metrics: 'Métricas',
+    strategy: 'Estratégia',
+    growth: 'Crescimento',
+  };
+
   return (
     <motion.div
-      className="group relative bg-white dark:bg-gray-800 p-8 rounded-2xl border-2 border-gray-200 dark:border-gray-700 hover:border-primary-500 dark:hover:border-primary-500 transition-all duration-300 hover:shadow-2xl hover:shadow-primary-500/20"
+      className="group relative bg-white dark:bg-gray-800 p-6 rounded-2xl border-2 border-gray-200 dark:border-gray-700 hover:border-primary-500 dark:hover:border-primary-500 transition-all duration-300 hover:shadow-2xl hover:shadow-primary-500/20"
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-50px" }}
       transition={{ delay }}
       whileHover={{ y: -4 }}
     >
-      <div className="flex items-start gap-6">
-        <div className="flex-shrink-0 w-16 h-16 bg-gradient-to-br from-black to-gray-900 rounded-xl flex items-center justify-center border-2 border-primary-500/30 group-hover:border-primary-500 transition-all duration-300 group-hover:scale-110">
-          <Icon className="w-8 h-8 text-primary-500" />
+      <div className="flex items-start gap-4">
+        <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-black to-gray-900 rounded-xl flex items-center justify-center border-2 border-primary-500/30 group-hover:border-primary-500 transition-all duration-300 group-hover:scale-110">
+          <Icon className="w-6 h-6 text-primary-500" />
         </div>
         
-        <div className="flex-1">
-          <div className="flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-3 mb-2">
-            <h3 className="text-2xl md:text-3xl font-bold group-hover:text-primary-500 transition-colors">
+        <div className="min-w-0 flex-1">
+          <div className="mb-2 flex flex-wrap items-center gap-2">
+            <h3 className="text-xl font-bold group-hover:text-primary-500 transition-colors">
               {term}
             </h3>
-            <span className="text-sm text-gray-500 dark:text-gray-400 italic">
+            <span className="rounded-full bg-primary-500/10 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-primary-700 dark:text-primary-300">
+              {categoryNames[category] || category}
+            </span>
+            <span className="w-full text-xs text-gray-500 dark:text-gray-400 italic sm:w-auto">
               {fullName}
             </span>
           </div>
-          <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
+          <p className="text-base text-gray-600 dark:text-gray-400 leading-relaxed">
             {definition}
           </p>
         </div>

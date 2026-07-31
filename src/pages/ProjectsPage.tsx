@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet-async';
 import { motion, AnimatePresence } from 'framer-motion';
+import * as Tooltip from '@radix-ui/react-tooltip';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { 
   Lightbulb, 
@@ -26,7 +27,8 @@ import {
   BarChart2,
   Bug,
   Flag,
-  ArrowLeft
+  ArrowLeft,
+  Pencil
 } from 'lucide-react';
 
 // Imports dos componentes do projeto
@@ -41,6 +43,7 @@ import { useProjects, useProject } from '../hooks/useProjects';
 import { ProjectWithRelations } from '../services/projectsService';
 import type { Hypothesis, Experiment, Interview } from '../services/projectsService';
 import { diagnoseProjectsTable } from '../config/supabase';
+import { solutionsService } from '../services/solutionsService';
 
 // Interface adaptada para compatibilidade com componentes existentes
 interface Project extends ProjectWithRelations {
@@ -72,6 +75,9 @@ const ProjectsPage = () => {
     stage: 'ideation' as const,
   });
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [projectToConvert, setProjectToConvert] = useState<Project | null>(null);
+  const [conversionData, setConversionData] = useState({ solution_url: '', git_url: '' });
+  const [isConverting, setIsConverting] = useState(false);
 
   // Converter projetos do banco para formato compatível com componentes
   // Para a lista, não precisamos carregar todas as relações (melhor performance)
@@ -187,6 +193,47 @@ const ProjectsPage = () => {
           console.error('Erro ao executar diagnóstico:', diagError);
         });
       }
+    }
+  };
+
+  const handleOpenConversion = (project: Project) => {
+    setProjectToConvert(project);
+    setConversionData({ solution_url: '', git_url: '' });
+    setErrorMessage(null);
+  };
+
+  const handleConvertProject = async () => {
+    if (!projectToConvert || !conversionData.solution_url.trim()) return;
+
+    const stageMap: Record<Project['stage'], 'Ideação' | 'Validação' | 'MVP' | 'Tração' | 'Crescimento'> = {
+      ideation: 'Ideação',
+      validation: 'Validação',
+      mvp: 'MVP',
+      traction: 'Tração',
+      growth: 'Crescimento',
+    };
+
+    try {
+      setIsConverting(true);
+      setErrorMessage(null);
+
+      await solutionsService.create({
+        user_id: projectToConvert.user_id,
+        name: projectToConvert.name,
+        description: projectToConvert.description,
+        solution_url: conversionData.solution_url.trim(),
+        git_url: conversionData.git_url.trim() || null,
+        stage: stageMap[projectToConvert.stage],
+        logo_url: `https://ui-avatars.com/api/?name=${encodeURIComponent(projectToConvert.name)}&background=FFD700&color=000&bold=true`,
+      });
+
+      setProjectToConvert(null);
+      navigate('/dashboard/solutions');
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Não foi possível converter o projeto em solução';
+      setErrorMessage(message);
+    } finally {
+      setIsConverting(false);
     }
   };
 
@@ -568,6 +615,7 @@ const ProjectsPage = () => {
                   project={project}
                   index={index}
                   onViewDetails={() => handleViewDetails(project)}
+                  onConvert={() => handleOpenConversion(project)}
                   onDelete={() => handleDeleteProject(project.id)}
                   getStageInfo={getStageInfo}
                   getValidationHealthColor={getValidationHealthColor}
@@ -587,6 +635,15 @@ const ProjectsPage = () => {
         setNewProject={setNewProject}
         onSave={handleCreateProject}
       />
+
+      <ConvertProjectModal
+        project={projectToConvert}
+        conversionData={conversionData}
+        setConversionData={setConversionData}
+        isConverting={isConverting}
+        onClose={() => setProjectToConvert(null)}
+        onSave={handleConvertProject}
+      />
     </>
   );
 };
@@ -596,6 +653,7 @@ interface ProjectCardProps {
   project: Project;
   index: number;
   onViewDetails: () => void;
+  onConvert: () => void;
   onDelete: () => void;
   getStageInfo: (stage: Project['stage']) => any;
   getValidationHealthColor: (score: number) => string;
@@ -606,6 +664,7 @@ const ProjectCard = ({
   project, 
   index, 
   onViewDetails, 
+  onConvert,
   onDelete,
   getStageInfo,
   getValidationHealthColor,
@@ -722,6 +781,33 @@ const ProjectCard = ({
             <Eye className="w-4 h-4" />
             Ver Detalhes
           </button>
+
+          <Tooltip.Root delayDuration={100}>
+            <Tooltip.Trigger asChild>
+              <button
+                onClick={onConvert}
+                aria-label={`Promover ${project.name} a solução`}
+                className="inline-flex items-center gap-1.5 px-2.5 py-2 bg-primary-100 dark:bg-primary-900/30 hover:bg-primary-200 dark:hover:bg-primary-900/50 text-primary-700 dark:text-primary-300 text-xs font-semibold rounded-xl transition-all"
+              >
+                <Rocket className="w-4 h-4" />
+                <span>Promover</span>
+              </button>
+            </Tooltip.Trigger>
+            <Tooltip.Portal>
+              <Tooltip.Content
+                side="top"
+                sideOffset={10}
+                className="z-50 rounded-lg border border-primary-500 bg-gray-900 px-3 py-2 text-sm font-medium text-white shadow-xl animate-fadein"
+                style={{
+                  boxShadow: '0 8px 32px 0 rgba(31, 41, 55, 0.25), 0 1.5px 4px 0 rgba(0,0,0,0.10)',
+                  transition: 'opacity 0.18s cubic-bezier(0.4,0,0.2,1)'
+                }}
+              >
+                Promover a solução
+                <Tooltip.Arrow className="fill-primary-500" />
+              </Tooltip.Content>
+            </Tooltip.Portal>
+          </Tooltip.Root>
           
           <button
             onClick={onDelete}
@@ -732,6 +818,123 @@ const ProjectCard = ({
         </div>
       </div>
     </motion.div>
+  );
+};
+
+interface ConvertProjectModalProps {
+  project: Project | null;
+  conversionData: { solution_url: string; git_url: string };
+  setConversionData: (data: { solution_url: string; git_url: string }) => void;
+  isConverting: boolean;
+  onClose: () => void;
+  onSave: () => void;
+}
+
+const ConvertProjectModal = ({
+  project,
+  conversionData,
+  setConversionData,
+  isConverting,
+  onClose,
+  onSave,
+}: ConvertProjectModalProps) => {
+  if (!project) return null;
+
+  const fieldClassName = 'w-full rounded-xl border-2 border-gray-200 bg-white px-4 py-2.5 text-gray-900 outline-none transition-colors focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 dark:border-gray-600 dark:bg-gray-900 dark:text-white';
+
+  return (
+    <AnimatePresence>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm"
+        onClick={onClose}
+      >
+        <motion.div
+          initial={{ opacity: 0, y: 16, scale: 0.98 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: 16, scale: 0.98 }}
+          className="w-full max-w-lg rounded-2xl border-2 border-gray-200 bg-white p-6 shadow-2xl dark:border-gray-700 dark:bg-gray-800"
+          onClick={(event) => event.stopPropagation()}
+        >
+          <div className="mb-6 flex items-start justify-between gap-4">
+            <div>
+              <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-xl bg-primary-500/15">
+                <Rocket className="h-6 w-6 text-primary-500" />
+              </div>
+              <h2 className="text-xl font-bold text-gray-900 dark:text-white">Promover a solução</h2>
+              <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                {project.name} será criado na área de Soluções com os dados já validados.
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={onClose}
+              className="rounded-lg p-2 text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-700 dark:hover:text-white"
+              aria-label="Fechar conversão"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </div>
+
+          <div className="mb-5 rounded-xl border border-primary-200 bg-primary-50 p-3 text-sm text-primary-900 dark:border-primary-800 dark:bg-primary-900/20 dark:text-primary-200">
+            O projeto original continuará disponível em Projetos para preservar seu histórico de validação.
+          </div>
+
+          <div className="space-y-5">
+            <div>
+              <label htmlFor="solution-url" className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
+                URL do produto <span className="text-red-500">*</span>
+              </label>
+              <input
+                id="solution-url"
+                type="url"
+                required
+                value={conversionData.solution_url}
+                onChange={(event) => setConversionData({ ...conversionData, solution_url: event.target.value })}
+                className={fieldClassName}
+                placeholder="https://minha-solucao.com.br"
+                autoFocus
+              />
+            </div>
+
+            <div>
+              <label htmlFor="solution-github" className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
+                Repositório GitHub <span className="font-normal text-gray-400">(opcional)</span>
+              </label>
+              <input
+                id="solution-github"
+                type="url"
+                value={conversionData.git_url}
+                onChange={(event) => setConversionData({ ...conversionData, git_url: event.target.value })}
+                className={fieldClassName}
+                placeholder="https://github.com/organização/repositório"
+              />
+            </div>
+
+            <div className="flex gap-3 border-t border-gray-200 pt-5 dark:border-gray-700">
+              <button
+                type="button"
+                onClick={onClose}
+                disabled={isConverting}
+                className="flex-1 rounded-xl border-2 border-gray-300 px-4 py-2.5 font-medium text-gray-700 transition-colors hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-700"
+              >
+                Cancelar
+              </button>
+              <button
+                type="button"
+                onClick={onSave}
+                disabled={isConverting || !conversionData.solution_url.trim()}
+                className="flex-1 rounded-xl bg-primary-500 px-4 py-2.5 font-bold text-black transition-colors hover:bg-primary-600 disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                {isConverting ? 'Convertendo...' : 'Criar solução'}
+              </button>
+            </div>
+          </div>
+        </motion.div>
+      </motion.div>
+    </AnimatePresence>
   );
 };
 
@@ -872,10 +1075,23 @@ const ProjectDetailsPage = ({
     tabParam === 'interviews'
   ) ? tabParam : 'overview';
   const [localProject, setLocalProject] = useState(project);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editForm, setEditForm] = useState({
+    name: project.name,
+    description: project.description || '',
+    stage: project.stage,
+  });
 
   useEffect(() => {
     setLocalProject(project);
-  }, [project]);
+    if (!isEditing) {
+      setEditForm({
+        name: project.name,
+        description: project.description || '',
+        stage: project.stage,
+      });
+    }
+  }, [project, isEditing]);
 
   const stageInfo = getStageInfo(localProject.stage);
   const StageIcon = stageInfo.icon;
@@ -894,6 +1110,27 @@ const ProjectDetailsPage = ({
     if (shouldPersistProject) {
       onUpdate(updatedProject);
     }
+  };
+
+  const handleOpenEdit = () => {
+    setEditForm({
+      name: localProject.name,
+      description: localProject.description || '',
+      stage: localProject.stage,
+    });
+    setIsEditing(true);
+  };
+
+  const handleSaveEdit = () => {
+    const name = editForm.name.trim();
+    if (!name) return;
+
+    handleUpdateProject({
+      name,
+      description: editForm.description.trim(),
+      stage: editForm.stage,
+    });
+    setIsEditing(false);
   };
 
   const handleTabChange = (tab: 'overview' | 'kanban' | 'validation' | 'experiments' | 'interviews') => {
@@ -920,13 +1157,22 @@ const ProjectDetailsPage = ({
             Voltar para projetos
           </button>
 
-          <button
-            onClick={onDelete}
-            className="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-red-100 dark:bg-red-900/30 hover:bg-red-200 dark:hover:bg-red-900/50 text-red-600 dark:text-red-400 transition-all"
-          >
-            <Trash2 className="w-4 h-4" />
-            Excluir projeto
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={handleOpenEdit}
+              className="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-blue-100 dark:bg-blue-900/30 hover:bg-blue-200 dark:hover:bg-blue-900/50 text-blue-600 dark:text-blue-400 transition-all"
+            >
+              <Pencil className="w-4 h-4" />
+              Editar projeto
+            </button>
+            <button
+              onClick={onDelete}
+              className="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-red-100 dark:bg-red-900/30 hover:bg-red-200 dark:hover:bg-red-900/50 text-red-600 dark:text-red-400 transition-all"
+            >
+              <Trash2 className="w-4 h-4" />
+              Excluir projeto
+            </button>
+          </div>
         </div>
 
         <motion.div
@@ -1153,6 +1399,108 @@ const ProjectDetailsPage = ({
             )}
           </div>
         </motion.div>
+
+        <AnimatePresence>
+          {isEditing && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm"
+              onClick={() => setIsEditing(false)}
+            >
+              <motion.div
+                initial={{ opacity: 0, y: 16, scale: 0.98 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: 16, scale: 0.98 }}
+                className="w-full max-w-lg rounded-2xl border-2 border-gray-200 bg-white p-6 shadow-2xl dark:border-gray-700 dark:bg-gray-800"
+                onClick={(event) => event.stopPropagation()}
+              >
+                <div className="mb-6 flex items-start justify-between gap-4">
+                  <div>
+                    <h3 className="text-xl font-bold text-gray-900 dark:text-white">Editar projeto</h3>
+                    <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                      Atualize as informações principais do projeto.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setIsEditing(false)}
+                    className="rounded-lg p-2 text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-700 dark:hover:text-white"
+                    aria-label="Fechar edição"
+                  >
+                    <X className="h-5 w-5" />
+                  </button>
+                </div>
+
+                <div className="space-y-5">
+                  <div>
+                    <label htmlFor="project-edit-name" className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
+                      Nome do projeto
+                    </label>
+                    <input
+                      id="project-edit-name"
+                      type="text"
+                      value={editForm.name}
+                      onChange={(event) => setEditForm({ ...editForm, name: event.target.value })}
+                      className="w-full rounded-xl border-2 border-gray-200 bg-white px-4 py-2.5 text-gray-900 outline-none transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-gray-600 dark:bg-gray-900 dark:text-white"
+                      autoFocus
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="project-edit-description" className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
+                      Descrição
+                    </label>
+                    <textarea
+                      id="project-edit-description"
+                      value={editForm.description}
+                      onChange={(event) => setEditForm({ ...editForm, description: event.target.value })}
+                      rows={4}
+                      className="w-full resize-y rounded-xl border-2 border-gray-200 bg-white px-4 py-2.5 text-gray-900 outline-none transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-gray-600 dark:bg-gray-900 dark:text-white"
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="project-edit-stage" className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
+                      Estágio atual
+                    </label>
+                    <select
+                      id="project-edit-stage"
+                      value={editForm.stage}
+                      onChange={(event) => setEditForm({ ...editForm, stage: event.target.value as Project['stage'] })}
+                      className="w-full rounded-xl border-2 border-gray-200 bg-white px-4 py-2.5 text-gray-900 outline-none transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-gray-600 dark:bg-gray-900 dark:text-white"
+                    >
+                      <option value="ideation">Ideação</option>
+                      <option value="validation">Validação</option>
+                      <option value="mvp">MVP</option>
+                      <option value="traction">Tração</option>
+                      <option value="growth">Crescimento</option>
+                    </select>
+                  </div>
+
+                  <div className="flex gap-3 border-t border-gray-200 pt-5 dark:border-gray-700">
+                    <button
+                      type="button"
+                      onClick={() => setIsEditing(false)}
+                      className="flex-1 rounded-xl border-2 border-gray-300 px-4 py-2.5 font-medium text-gray-700 transition-colors hover:bg-gray-100 dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-700"
+                    >
+                      Cancelar
+                    </button>
+                    <button
+                      type="button"
+                      onClick={handleSaveEdit}
+                      disabled={!editForm.name.trim()}
+                      className="flex-1 rounded-xl bg-blue-500 px-4 py-2.5 font-bold text-white transition-colors hover:bg-blue-600 disabled:cursor-not-allowed disabled:opacity-50"
+                    >
+                      Salvar alterações
+                    </button>
+                  </div>
+                </div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );

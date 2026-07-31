@@ -10,7 +10,8 @@ import {
   X,
   Edit,
   Trash2,
-  CheckCircle2
+  ListTodo,
+  ArrowRight
 } from 'lucide-react';
 
 interface Task {
@@ -244,15 +245,24 @@ const KanbanBoard = ({ tasks, onUpdate }: KanbanBoardProps) => {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="text-center py-12 bg-gray-50 dark:bg-gray-800/50 rounded-xl border-2 border-dashed border-gray-300 dark:border-gray-700"
+          className="rounded-2xl border-2 border-dashed border-primary-300/70 bg-gradient-to-br from-primary-50 via-white to-blue-50 px-6 py-10 text-center dark:border-primary-700/60 dark:from-primary-950/30 dark:via-gray-800/70 dark:to-blue-950/20"
         >
-          <CheckCircle2 className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-            Nenhuma tarefa criada
+          <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary-100 text-primary-600 dark:bg-primary-900/50 dark:text-primary-300">
+            <ListTodo className="h-7 w-7" />
+          </div>
+          <h3 className="mb-2 text-lg font-semibold text-gray-900 dark:text-white">
+            Vamos organizar o próximo passo?
           </h3>
-          <p className="text-gray-600 dark:text-gray-400 mb-4">
-            Adicione tarefas nas colunas acima para começar
+          <p className="mx-auto mb-5 max-w-lg text-gray-600 dark:text-gray-400">
+            Transforme sua validação em ações claras e acompanhe cada tarefa até a conclusão.
           </p>
+          <button
+            onClick={() => setShowAddTask('todo')}
+            className="btn-primary inline-flex items-center"
+          >
+            Criar primeira tarefa
+            <ArrowRight className="ml-2 h-4 w-4" />
+          </button>
         </motion.div>
       )}
     </div>

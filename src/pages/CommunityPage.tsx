@@ -28,6 +28,7 @@ import {
   Target,
   Sparkles
 } from 'lucide-react';
+import { communityService } from '../services/communityService';
 
 interface Post {
   id: string;
@@ -68,108 +69,41 @@ const CommunityPage = () => {
   const [showNewPostModal, setShowNewPostModal] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [loadError, setLoadError] = useState<string | null>(null);
 
   useEffect(() => {
-    loadCommunityData();
+    void loadCommunityData();
   }, []);
 
-  const loadCommunityData = () => {
-    // Mock data
-    const mockPosts: Post[] = [
-      {
-        id: '1',
-        author: {
-          name: 'Maria Silva',
-          avatar: 'MS',
-          role: 'Founder',
-          reputation: 850
-        },
-        title: 'Como validei minha startup em 30 dias sem gastar nada',
-        content: 'Compartilhando minha jornada de validação usando apenas landing pages e entrevistas com clientes. Consegui 150 leads qualificados!',
-        category: 'showcase',
-        tags: ['validação', 'lean startup', 'mvp'],
-        likes: 45,
-        comments: 12,
-        views: 230,
-        isLiked: false,
-        isBookmarked: false,
-        created_at: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString()
-      },
-      {
-        id: '2',
-        author: {
-          name: 'João Santos',
-          avatar: 'JS',
-          role: 'Developer',
-          reputation: 620
-        },
-        title: 'Qual a melhor stack para um MVP em 2024?',
-        content: 'Estou começando um novo projeto e gostaria de sugestões sobre tecnologias para construir um MVP rápido e escalável.',
-        category: 'question',
-        tags: ['tech', 'mvp', 'desenvolvimento'],
-        likes: 23,
-        comments: 18,
-        views: 156,
-        isLiked: true,
-        isBookmarked: true,
-        created_at: new Date(Date.now() - 5 * 60 * 60 * 1000).toISOString()
-      },
-      {
-        id: '3',
-        author: {
-          name: 'Ana Costa',
-          avatar: 'AC',
-          role: 'Product Manager',
-          reputation: 1250
-        },
-        title: 'Framework de discovery: como encontrar problemas reais',
-        content: 'Desenvolvi um framework que me ajudou a validar 5 ideias em 3 meses. Vou compartilhar o processo completo!',
-        category: 'discussion',
-        tags: ['product discovery', 'framework', 'metodologia'],
-        likes: 67,
-        comments: 24,
-        views: 345,
-        isLiked: false,
-        isBookmarked: false,
-        created_at: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString()
-      }
-    ];
-
-    const mockMembers: Member[] = [
-      {
-        id: '1',
-        name: 'Ana Costa',
-        avatar: 'AC',
-        role: 'Product Manager',
-        reputation: 1250,
-        projects: 8,
-        contributions: 45
-      },
-      {
-        id: '2',
-        name: 'Maria Silva',
-        avatar: 'MS',
-        role: 'Founder',
-        reputation: 850,
-        projects: 5,
-        contributions: 32
-      },
-      {
-        id: '3',
-        name: 'João Santos',
-        avatar: 'JS',
-        role: 'Developer',
-        reputation: 620,
-        projects: 3,
-        contributions: 28
-      }
-    ];
-
-    setPosts(mockPosts);
-    setTopMembers(mockMembers);
+  const loadCommunityData = async () => {
+    setIsLoading(true);
+    setLoadError(null);
+    try {
+      const loadedPosts = await communityService.listPosts();
+      setPosts(loadedPosts);
+      const members = Array.from(new Map(loadedPosts.map(post => [post.author.name, post.author])).values())
+        .map((author, index) => ({
+          id: author.name,
+          name: author.name,
+          avatar: author.avatar,
+          role: author.role,
+          reputation: loadedPosts.filter(post => post.author.name === author.name)
+            .reduce((total, post) => total + post.likes + post.comments, 0),
+          projects: loadedPosts.filter(post => post.author.name === author.name && post.category === 'showcase').length,
+          contributions: loadedPosts.filter(post => post.author.name === author.name).length,
+        }))
+        .sort((a, b) => b.reputation - a.reputation)
+        .slice(0, 5);
+      setTopMembers(members);
+    } catch (error) {
+      setLoadError(error instanceof Error ? error.message : 'Não foi possível carregar a comunidade.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const handleLikePost = (postId: string) => {
+  const handleLikePost = async (postId: string) => {
+    const previousPosts = posts;
     setPosts(posts.map(post => {
       if (post.id === postId) {
         return {
@@ -180,16 +114,41 @@ const CommunityPage = () => {
       }
       return post;
     }));
+    try {
+      await communityService.toggleLike(postId);
+    } catch {
+      setPosts(previousPosts);
+      setLoadError('Não foi possível atualizar a curtida.');
+    }
   };
 
-  const handleBookmarkPost = (postId: string) => {
+  const handleBookmarkPost = async (postId: string) => {
+    const previousPosts = posts;
     setPosts(posts.map(post => {
       if (post.id === postId) {
         return { ...post, isBookmarked: !post.isBookmarked };
       }
       return post;
     }));
+    try {
+      await communityService.toggleBookmark(postId);
+    } catch {
+      setPosts(previousPosts);
+      setLoadError('Não foi possível atualizar o salvamento.');
+    }
   };
+
+  const handleCreatePost = async (data: { title: string; content: string; category: Post['category'] }) => {
+    const createdPost = await communityService.createPost(data);
+    setPosts(currentPosts => [createdPost, ...currentPosts]);
+    setShowNewPostModal(false);
+  };
+
+  const totalLikes = posts.reduce((total, post) => total + post.likes, 0);
+  const totalComments = posts.reduce((total, post) => total + post.comments, 0);
+  const popularTags = Array.from(
+    posts.flatMap(post => post.tags).reduce((counts, tag) => counts.set(tag, (counts.get(tag) || 0) + 1), new Map<string, number>())
+  ).sort(([, countA], [, countB]) => countB - countA).slice(0, 8).map(([tag]) => tag);
 
   const getCategoryInfo = (category: Post['category']) => {
     const categories = {
@@ -251,10 +210,10 @@ const CommunityPage = () => {
           {/* Stats */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             {[
-              { label: 'Membros Ativos', value: '1,234', icon: Users, color: 'from-blue-500 to-blue-600', bgColor: 'bg-blue-500/10' },
-              { label: 'Discussões', value: '567', icon: MessageSquare, color: 'from-purple-500 to-purple-600', bgColor: 'bg-purple-500/10' },
-              { label: 'Projetos Compartilhados', value: '89', icon: Target, color: 'from-green-500 to-green-600', bgColor: 'bg-green-500/10' },
-              { label: 'Experiências Trocadas', value: '2,345', icon: Zap, color: 'from-yellow-500 to-yellow-600', bgColor: 'bg-yellow-500/10' }
+              { label: 'Membros Ativos', value: topMembers.length, icon: Users, color: 'from-blue-500 to-blue-600', bgColor: 'bg-blue-500/10' },
+              { label: 'Publicações', value: posts.length, icon: MessageSquare, color: 'from-purple-500 to-purple-600', bgColor: 'bg-purple-500/10' },
+              { label: 'Showcases', value: posts.filter(post => post.category === 'showcase').length, icon: Target, color: 'from-green-500 to-green-600', bgColor: 'bg-green-500/10' },
+              { label: 'Interações', value: totalLikes + totalComments, icon: Zap, color: 'from-yellow-500 to-yellow-600', bgColor: 'bg-yellow-500/10' }
             ].map((stat, index) => {
               const Icon = stat.icon;
               return (
@@ -276,6 +235,13 @@ const CommunityPage = () => {
               );
             })}
           </div>
+
+          {loadError && (
+            <div className="flex items-center justify-between gap-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-900/50 dark:bg-red-950/30 dark:text-red-300">
+              <span>{loadError}</span>
+              <button onClick={() => void loadCommunityData()} className="font-semibold underline">Tentar novamente</button>
+            </div>
+          )}
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Main Content */}
@@ -319,7 +285,12 @@ const CommunityPage = () => {
 
               {/* Posts */}
               <div className="space-y-4">
-                {filteredPosts.map((post, index) => (
+                {isLoading ? (
+                  <div className="rounded-xl border-2 border-gray-200 bg-white p-10 text-center dark:border-gray-700 dark:bg-gray-800">
+                    <div className="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-4 border-purple-200 border-t-purple-500" />
+                    <p className="text-gray-600 dark:text-gray-400">Carregando publicações...</p>
+                  </div>
+                ) : filteredPosts.map((post, index) => (
                   <PostCard
                     key={post.id}
                     post={post}
@@ -330,7 +301,7 @@ const CommunityPage = () => {
                   />
                 ))}
 
-                {filteredPosts.length === 0 && (
+                {!isLoading && filteredPosts.length === 0 && (
                   <div className="text-center py-12 bg-white dark:bg-gray-800 rounded-xl border-2 border-gray-200 dark:border-gray-700">
                     <MessageSquare className="w-16 h-16 text-gray-400 mx-auto mb-4" />
                     <p className="text-lg font-medium text-gray-600 dark:text-gray-400">
@@ -354,7 +325,9 @@ const CommunityPage = () => {
                     <div key={member.id} className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-all cursor-pointer">
                       <div className="relative">
                         <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold">
-                          {member.avatar}
+                          {member.avatar.startsWith('http') ? (
+                            <img src={member.avatar} alt={member.name} className="h-full w-full rounded-full object-cover" />
+                          ) : member.avatar}
                         </div>
                         {index < 3 && (
                           <div className="absolute -top-1 -right-1 w-6 h-6 bg-yellow-500 rounded-full flex items-center justify-center text-xs font-bold text-white">
@@ -382,10 +355,10 @@ const CommunityPage = () => {
                 <h3 className="font-bold text-lg mb-4">Sua Atividade</h3>
                 <div className="space-y-3">
                   {[
-                    { label: 'Publicações', value: 12, icon: MessageSquare },
-                    { label: 'Comentários', value: 45, icon: MessageCircle },
-                    { label: 'Curtidas Recebidas', value: 89, icon: Heart },
-                    { label: 'Reputação', value: 340, icon: Star }
+                    { label: 'Publicações', value: posts.length, icon: MessageSquare },
+                    { label: 'Comentários', value: totalComments, icon: MessageCircle },
+                    { label: 'Curtidas', value: totalLikes, icon: Heart },
+                    { label: 'Interações', value: totalLikes + totalComments, icon: Star }
                   ].map((stat, i) => {
                     const Icon = stat.icon;
                     return (
@@ -405,7 +378,7 @@ const CommunityPage = () => {
               <div className="bg-white dark:bg-gray-800 rounded-xl p-6 border-2 border-gray-200 dark:border-gray-700">
                 <h3 className="font-bold text-lg mb-4">Tags Populares</h3>
                 <div className="flex flex-wrap gap-2">
-                  {['lean startup', 'mvp', 'validação', 'produto', 'growth', 'fundraising', 'tech'].map((tag) => (
+                  {(popularTags.length > 0 ? popularTags : ['Ainda sem tags']).map((tag) => (
                     <span
                       key={tag}
                       className="px-3 py-1.5 bg-gray-100 dark:bg-gray-700 hover:bg-purple-100 dark:hover:bg-purple-900/30 hover:text-purple-600 dark:hover:text-purple-400 rounded-lg text-sm font-medium cursor-pointer transition-all"
@@ -424,6 +397,7 @@ const CommunityPage = () => {
       <NewPostModal
         show={showNewPostModal}
         onClose={() => setShowNewPostModal(false)}
+        onSubmit={handleCreatePost}
       />
     </>
   );
@@ -464,7 +438,9 @@ const PostCard = ({ post, index, onLike, onBookmark, getCategoryInfo }: PostCard
       <div className="flex items-start justify-between mb-4">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold">
-            {post.author.avatar}
+            {post.author.avatar.startsWith('http') ? (
+              <img src={post.author.avatar} alt={post.author.name} className="h-full w-full rounded-full object-cover" />
+            ) : post.author.avatar}
           </div>
           <div>
             <p className="font-medium">{post.author.name}</p>
@@ -549,13 +525,32 @@ const PostCard = ({ post, index, onLike, onBookmark, getCategoryInfo }: PostCard
 interface NewPostModalProps {
   show: boolean;
   onClose: () => void;
+  onSubmit: (data: { title: string; content: string; category: Post['category'] }) => Promise<void>;
 }
 
-const NewPostModal = ({ show, onClose }: NewPostModalProps) => {
+const NewPostModal = ({ show, onClose, onSubmit }: NewPostModalProps) => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [category, setCategory] = useState<Post['category']>('discussion');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const fieldClassName = "w-full px-4 py-2.5 border-2 border-gray-200 dark:border-gray-600 rounded-xl focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 focus:outline-none bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500";
+
+  const handleSubmit = async () => {
+    if (!title.trim() || !content.trim() || isSubmitting) return;
+    setIsSubmitting(true);
+    setSubmitError(null);
+    try {
+      await onSubmit({ title, content, category });
+      setTitle('');
+      setContent('');
+      setCategory('discussion');
+    } catch (error) {
+      setSubmitError(error instanceof Error ? error.message : 'Não foi possível publicar agora.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   if (!show) return null;
 
@@ -636,12 +631,16 @@ const NewPostModal = ({ show, onClose }: NewPostModalProps) => {
               >
                 Cancelar
               </button>
+              {submitError && (
+                <p className="absolute mt-14 text-sm text-red-600 dark:text-red-400">{submitError}</p>
+              )}
               <button
-                disabled={!title || !content}
+                onClick={() => void handleSubmit()}
+                disabled={!title.trim() || !content.trim() || isSubmitting}
                 className="flex-1 px-6 py-3 bg-purple-500 hover:bg-purple-600 text-white font-bold rounded-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
                 <Send className="w-5 h-5" />
-                Publicar
+                {isSubmitting ? 'Publicando...' : 'Publicar'}
               </button>
             </div>
           </div>

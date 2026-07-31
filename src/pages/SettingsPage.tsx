@@ -42,7 +42,9 @@ import {
   RefreshCw,
   Save,
   X,
-  Check
+  Check,
+  Lightbulb,
+  Rocket
 } from 'lucide-react';
 import { useAuthStore } from '../stores/authStore';
 
@@ -307,7 +309,7 @@ const SettingsPage = () => {
             </motion.div>
           )}
 
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+          <div className="grid min-w-0 grid-cols-1 lg:grid-cols-4 gap-6">
             {/* Sidebar */}
             <div className="lg:col-span-1">
               <div className="bg-white dark:bg-gray-800 rounded-2xl border-2 border-gray-200 dark:border-gray-700 p-4 sticky top-6">
@@ -360,7 +362,7 @@ const SettingsPage = () => {
             </div>
 
             {/* Content */}
-            <div className="lg:col-span-3">
+            <div className="min-w-0 lg:col-span-3">
               <div className="bg-white dark:bg-gray-800 rounded-2xl border-2 border-gray-200 dark:border-gray-700 p-6">
                 {/* Profile Tab */}
                 {activeTab === 'profile' && (
@@ -601,19 +603,19 @@ const SettingsPage = () => {
                     </div>
 
                     {/* Current Plan */}
-                    <div className="p-6 bg-gradient-to-br from-primary-50 to-primary-100 dark:from-primary-900/20 dark:to-primary-800/20 border-2 border-primary-200 dark:border-primary-800 rounded-xl">
-                      <div className="flex items-center justify-between">
-                        <div>
+                    <div className="p-5 sm:p-6 bg-gradient-to-br from-primary-50 to-primary-100 dark:from-primary-900/20 dark:to-primary-800/20 border-2 border-primary-200 dark:border-primary-800 rounded-xl">
+                      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                        <div className="min-w-0">
                           <div className="flex items-center gap-2 mb-2">
                             <Crown className="w-6 h-6 text-primary-600 dark:text-primary-400" />
-                            <h3 className="text-xl font-bold">Plano Atual: {plans.find(p => p.id === currentPlan)?.name}</h3>
+                            <h3 className="text-lg sm:text-xl font-bold break-words">Plano Atual: {plans.find(p => p.id === currentPlan)?.name}</h3>
                           </div>
                           <p className="text-gray-700 dark:text-gray-300">
                             {currentPlan === 'free' ? 'Upgrade para desbloquear recursos premium' : 'Obrigado por ser um membro premium!'}
                           </p>
                         </div>
                         {currentPlan !== 'enterprise' && (
-                          <button className="px-6 py-3 bg-primary-500 hover:bg-primary-600 text-black font-bold rounded-xl transition-all flex items-center gap-2">
+                          <button className="w-full shrink-0 px-5 py-3 sm:w-auto sm:px-6 bg-primary-500 hover:bg-primary-600 text-black font-bold rounded-xl transition-all flex items-center justify-center gap-2">
                             <TrendingUp className="w-5 h-5" />
                             Fazer Upgrade
                           </button>
@@ -622,52 +624,49 @@ const SettingsPage = () => {
                     </div>
 
                     {/* Plans Grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div className="grid min-w-0 grid-cols-3 gap-3 lg:gap-5">
                       {plans.map((plan) => (
                         <div
                           key={plan.id}
-                          className={`relative p-6 rounded-2xl border-2 transition-all ${plan.current
+                          className={`relative min-w-0 p-3 lg:p-5 rounded-2xl border-2 transition-all ${plan.current
                               ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20'
                               : plan.popular
                                 ? 'border-primary-300 dark:border-primary-700 bg-white dark:bg-gray-800 shadow-xl'
                                 : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800'
                             }`}
                         >
-                          {plan.popular && (
-                            <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                              <span className="px-4 py-1 bg-primary-500 text-black text-xs font-bold rounded-full shadow-lg">
+                          <div className="mb-3 flex min-h-7 items-center justify-center">
+                            {plan.popular && (
+                              <span className="max-w-full truncate rounded-full bg-primary-500 px-2 py-1 text-center text-[10px] font-bold text-black shadow-lg lg:px-3 lg:text-xs">
                                 MAIS POPULAR
                               </span>
-                            </div>
-                          )}
-
-                          {plan.current && (
-                            <div className="absolute -top-3 right-4">
-                              <span className="px-3 py-1 bg-green-500 text-white text-xs font-bold rounded-full shadow-lg flex items-center gap-1">
-                                <Check className="w-3 h-3" />
+                            )}
+                            {plan.current && (
+                              <span className="flex max-w-full items-center gap-1 rounded-full bg-green-500 px-2 py-1 text-[10px] font-bold text-white shadow-lg lg:px-3 lg:text-xs">
+                                <Check className="h-3 w-3 shrink-0" />
                                 ATIVO
                               </span>
-                            </div>
-                          )}
+                            )}
+                          </div>
 
                           <div className="text-center mb-6">
-                            <h3 className="text-2xl font-bold mb-2">{plan.name}</h3>
+                            <h3 className="mb-2 text-lg font-bold lg:text-2xl">{plan.name}</h3>
                             <div className="flex items-baseline justify-center gap-1 mb-2">
-                              <span className="text-4xl font-bold">R$ {plan.price.toFixed(2)}</span>
-                              <span className="text-gray-600 dark:text-gray-400">/{plan.period}</span>
+                              <span className="text-xl font-bold lg:text-4xl">R$ {plan.price.toFixed(2)}</span>
+                              <span className="text-xs text-gray-600 dark:text-gray-400 lg:text-sm">/{plan.period}</span>
                             </div>
                             <p className="text-sm text-gray-600 dark:text-gray-400">{plan.description}</p>
                           </div>
 
                           <ul className="space-y-3 mb-6">
                             {plan.features.map((feature, i) => (
-                              <li key={i} className="flex items-start gap-2 text-sm">
+                              <li key={i} className="flex items-start gap-1.5 text-xs lg:gap-2 lg:text-sm">
                                 {feature.included ? (
-                                  <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
+                                  <CheckCircle className="mt-0.5 h-4 w-4 shrink-0 text-green-500 lg:h-5 lg:w-5" />
                                 ) : (
-                                  <XCircle className="w-5 h-5 text-gray-300 dark:text-gray-600 flex-shrink-0 mt-0.5" />
+                                  <XCircle className="mt-0.5 h-4 w-4 shrink-0 text-gray-300 dark:text-gray-600 lg:h-5 lg:w-5" />
                                 )}
-                                <span className={feature.included ? '' : 'text-gray-400 dark:text-gray-500'}>
+                                <span className={`break-words ${feature.included ? '' : 'text-gray-400 dark:text-gray-500'}`}>
                                   {feature.name}
                                 </span>
                               </li>
@@ -676,7 +675,7 @@ const SettingsPage = () => {
 
                           <button
                             disabled={plan.current}
-                            className={`w-full py-3 rounded-xl font-bold transition-all ${plan.current
+                            className={`w-full rounded-xl py-2.5 text-xs font-bold transition-all lg:py-3 lg:text-sm ${plan.current
                                 ? 'bg-gray-200 dark:bg-gray-700 text-gray-500 cursor-not-allowed'
                                 : plan.popular
                                   ? 'bg-primary-500 hover:bg-primary-600 text-black'

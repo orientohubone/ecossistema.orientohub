@@ -183,13 +183,13 @@ const BlogPage = () => {
             transition={{ duration: 0.8 }}
           >
             <motion.div
-              className="inline-flex items-center gap-2 bg-primary-500/20 border-2 border-primary-500/40 px-5 py-2 rounded-full mb-8 backdrop-blur-sm"
+              className="inline-flex items-center gap-2.5 rounded-full border border-primary-400/40 bg-black/30 px-3.5 py-2 shadow-[0_0_30px_rgba(255,215,0,0.08)] backdrop-blur-md mb-8"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.2 }}
             >
-              <Sparkles className="w-4 h-4 text-primary-500" />
-              <span className="text-primary-500 font-bold text-sm uppercase tracking-wide">
+              <Rocket className="h-3.5 w-3.5 text-primary-400" aria-hidden="true" />
+              <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-white sm:text-xs">
                 Blog Orientohub
               </span>
             </motion.div>
@@ -328,9 +328,9 @@ const BlogPage = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <div className="inline-flex items-center gap-2 bg-primary-500/20 border-2 border-primary-500/40 px-4 py-2 rounded-full mb-6 backdrop-blur-sm">
-              <Mail className="w-4 h-4 text-primary-500" />
-              <span className="text-primary-500 font-bold text-sm uppercase tracking-wide">
+            <div className="inline-flex items-center gap-2.5 rounded-full border border-primary-400/40 bg-black/30 px-3.5 py-2 shadow-[0_0_30px_rgba(255,215,0,0.08)] backdrop-blur-md mb-6">
+              <Mail className="h-3.5 w-3.5 text-primary-400" aria-hidden="true" />
+              <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-white sm:text-xs">
                 Newsletter Exclusiva
               </span>
             </div>
@@ -404,8 +404,9 @@ const FeaturedPostCard = ({ post }: FeaturedPostCardProps) => {
             />
             <div className="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-r from-black/60 to-transparent" />
             <div className="absolute top-6 left-6">
-              <span className="px-4 py-2 bg-primary-500 text-black text-sm font-bold rounded-full shadow-lg">
-                ⭐ DESTAQUE
+              <span className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border border-primary-300/60 bg-black/70 px-3.5 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-white shadow-lg backdrop-blur-md">
+                <Sparkles className="h-3.5 w-3.5 text-primary-400" />
+                Destaque
               </span>
             </div>
           </div>
@@ -461,6 +462,14 @@ interface BlogPostCardProps {
 }
 
 const BlogPostCard = ({ post, delay }: BlogPostCardProps) => {
+  const CategoryIcon = post.category === 'validacao'
+    ? Target
+    : post.category === 'mvp'
+      ? Rocket
+      : post.category === 'pitch'
+        ? TrendingUp
+        : Sparkles;
+
   return (
     <motion.article
       initial={{ opacity: 0, y: 20 }}
@@ -480,7 +489,8 @@ const BlogPostCard = ({ post, delay }: BlogPostCardProps) => {
             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
           />
           <div className="absolute top-4 left-4">
-            <span className="px-3 py-1 bg-primary-500 text-black text-xs font-bold rounded-full shadow-lg uppercase">
+            <span className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border border-primary-300/60 bg-black/70 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-white shadow-lg backdrop-blur-md">
+              <CategoryIcon className="h-3 w-3 text-primary-400" />
               {post.category}
             </span>
           </div>

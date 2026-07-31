@@ -6,7 +6,7 @@ import {
   UpdateHypothesisData 
 } from '../services/projectsService';
 
-export const useHypotheses = (projectId: number | null) => {
+export const useHypotheses = (projectId: number | string | null) => {
   const [hypotheses, setHypotheses] = useState<Hypothesis[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);

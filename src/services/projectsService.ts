@@ -25,7 +25,7 @@ export interface ProjectWithRelations extends Project {
 
 export interface Hypothesis {
   id: number;
-  project_id: number;
+  project_id: number | string;
   user_id: string;
   statement: string;
   validated: boolean;
@@ -90,7 +90,7 @@ export interface UpdateProjectData {
 }
 
 export interface CreateHypothesisData {
-  project_id: number;
+  project_id: number | string;
   statement: string;
   validated?: boolean;
   confidence?: number;

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { PlusCircle, Calendar, Check, Clock } from 'lucide-react';
+import { PlusCircle, Calendar, Check, Clock, MessageSquare, ArrowRight } from 'lucide-react';
 
 interface Interview {
   id: string;
@@ -139,7 +139,26 @@ const InterviewsList = ({ interviews, onUpdate }: InterviewsListProps) => {
       )}
 
       <div className="space-y-4">
-        {interviews.map((interview) => (
+        {interviews.length === 0 ? (
+          <div className="rounded-2xl border-2 border-dashed border-primary-300/70 bg-gradient-to-br from-primary-50 via-white to-blue-50 px-6 py-10 text-center dark:border-primary-700/60 dark:from-primary-950/30 dark:via-gray-800/70 dark:to-blue-950/20">
+            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary-100 text-primary-600 dark:bg-primary-900/50 dark:text-primary-300">
+              <MessageSquare className="h-7 w-7" />
+            </div>
+            <h4 className="mb-2 text-lg font-semibold text-gray-900 dark:text-white">
+              Vamos ouvir quem importa?
+            </h4>
+            <p className="mx-auto mb-5 max-w-lg text-gray-600 dark:text-gray-400">
+              Agende uma conversa com um cliente e descubra sinais reais para orientar os próximos passos.
+            </p>
+            <button
+              onClick={() => setShowForm(true)}
+              className="btn-primary inline-flex items-center"
+            >
+              Agendar primeira entrevista
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </button>
+          </div>
+        ) : interviews.map((interview) => (
           <div
             key={interview.id}
             className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-4"

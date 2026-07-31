@@ -43,13 +43,13 @@ const AboutPage = () => {
         <div className="container-custom relative z-10 py-32">
           <div className="max-w-4xl mx-auto text-center">
             <motion.div
-              className="inline-flex items-center gap-2 bg-primary-500/20 border-2 border-primary-500/40 px-5 py-2 rounded-full mb-8 backdrop-blur-sm"
+              className="inline-flex items-center gap-2.5 rounded-full border border-primary-400/40 bg-black/30 px-3.5 py-2 shadow-[0_0_30px_rgba(255,215,0,0.08)] backdrop-blur-md mb-8"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.2 }}
             >
-              <Sparkles className="w-4 h-4 text-primary-500" />
-              <span className="text-primary-500 font-bold text-sm uppercase tracking-wide">
+              <Rocket className="h-3.5 w-3.5 text-primary-400" aria-hidden="true" />
+              <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-white sm:text-xs">
                 Sobre o Orientohub
               </span>
             </motion.div>
@@ -89,9 +89,9 @@ const AboutPage = () => {
                 <div className="absolute inset-0 bg-gradient-to-r from-primary-500/0 via-primary-500/10 to-primary-500/0 animate-pulse" />
 
                 <div className="relative z-10 text-center space-y-4">
-                  <div className="inline-flex items-center gap-2 bg-primary-500/20 px-4 py-2 rounded-full mb-2">
-                    <Sparkles className="w-4 h-4 text-primary-500 animate-pulse" />
-                    <span className="text-primary-500 font-bold text-sm">EM CONSTRUÇÃO</span>
+                  <div className="inline-flex items-center gap-2.5 rounded-full border border-primary-400/40 bg-black/30 px-3.5 py-2 shadow-[0_0_30px_rgba(255,215,0,0.08)] backdrop-blur-md mb-2">
+                    <Sparkles className="h-3.5 w-3.5 animate-pulse text-primary-400" aria-hidden="true" />
+                    <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-white sm:text-xs">EM CONSTRUÇÃO</span>
                   </div>
 
                   <h3 className="text-2xl md:text-3xl font-bold text-white leading-tight">
@@ -135,9 +135,9 @@ const AboutPage = () => {
               transition={{ duration: 0.8 }}
               viewport={{ once: true }}
             >
-              <div className="inline-flex items-center gap-2 bg-primary-500/10 border border-primary-500/30 px-4 py-2 rounded-full mb-6">
-                <Target className="w-4 h-4 text-primary-500" />
-                <span className="text-primary-500 font-semibold text-sm">NOSSA MISSÃO</span>
+              <div className="inline-flex items-center gap-2.5 rounded-full border border-primary-400/40 bg-gray-950/90 px-3.5 py-2 shadow-[0_0_30px_rgba(255,215,0,0.08)] backdrop-blur-md mb-6">
+                <Target className="h-3.5 w-3.5 text-primary-400" aria-hidden="true" />
+                <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-white sm:text-xs">NOSSA MISSÃO</span>
               </div>
 
               <h2 className="text-4xl md:text-5xl font-bold mb-6">
@@ -232,9 +232,9 @@ const AboutPage = () => {
             transition={{ duration: 0.5 }}
             viewport={{ once: true }}
           >
-            <div className="inline-flex items-center gap-2 bg-primary-500/10 border border-primary-500/30 px-4 py-2 rounded-full mb-6">
-              <Heart className="w-4 h-4 text-primary-500" />
-              <span className="text-primary-500 font-semibold text-sm">NOSSOS VALORES</span>
+            <div className="inline-flex items-center gap-2.5 rounded-full border border-primary-400/40 bg-gray-950/90 px-3.5 py-2 shadow-[0_0_30px_rgba(255,215,0,0.08)] backdrop-blur-md mb-6">
+              <Heart className="h-3.5 w-3.5 text-primary-400" aria-hidden="true" />
+              <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-white sm:text-xs">NOSSOS VALORES</span>
             </div>
 
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
@@ -300,9 +300,9 @@ const AboutPage = () => {
             transition={{ duration: 0.5 }}
             viewport={{ once: true }}
           >
-            <div className="inline-flex items-center gap-2 bg-primary-500/10 border border-primary-500/30 px-4 py-2 rounded-full mb-6">
-              <User className="w-4 h-4 text-primary-500" />
-              <span className="text-primary-500 font-semibold text-sm">FUNDADOR</span>
+            <div className="inline-flex items-center gap-2.5 rounded-full border border-primary-400/40 bg-gray-950/90 px-3.5 py-2 shadow-[0_0_30px_rgba(255,215,0,0.08)] backdrop-blur-md mb-6">
+              <User className="h-3.5 w-3.5 text-primary-400" aria-hidden="true" />
+              <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-white sm:text-xs">FUNDADOR</span>
             </div>
 
             <h2 className="text-4xl md:text-5xl font-bold mb-6">

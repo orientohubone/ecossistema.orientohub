@@ -97,7 +97,7 @@ const JourneyPage = () => {
           }}></div>
         </div>
 
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="w-full px-4 sm:px-6 lg:px-8 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -162,8 +162,8 @@ const JourneyPage = () => {
 
       {/* Journey Timeline */}
       <section className="py-12">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-6xl mx-auto">
+        <div className="w-full px-4 sm:px-6 lg:px-8">
+          <div className="w-full">
             {/* Phase Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
               {journeyPhases.map((phase, index) => {
@@ -418,8 +418,8 @@ const JourneyPage = () => {
 
       {/* Achievements Section */}
       <section className="py-12 bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-6xl mx-auto">
+        <div className="w-full px-4 sm:px-6 lg:px-8">
+          <div className="w-full">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}

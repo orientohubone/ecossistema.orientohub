@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -66,12 +66,14 @@ const heroBackgroundStyle = {
   pointerEvents: 'none' as const,
 };
 
+const heroOutcomeWords = ['Conexão', 'Aceleração', 'Inovação', 'Construção', 'Evolução'];
+
 const ecosystemLayers: EcosystemLayer[] = [
   {
     number: '01',
     title: 'Núcleo',
-    shortDescription: 'O coração do ecossistema e marca-mãe, centralizando a governança e fundadores.',
-    description: 'Núcleo representa a raiz de toda marca, sendo marca-mãe, tendo nosso founder como orquestrador do ecossistema e suas soluções e conectando sua marca pessoal como canal de aquisição.',
+    shortDescription: 'A origem da OrientoHub: serviços de estratégia, inovação e construção que deram início ao ecossistema.',
+    description: 'A OrientoHub nasceu como uma operação de serviços. O Núcleo continua sendo essa raiz institucional, reunindo estratégia, inovação, IA, marketing, design e construção de negócios para orientar toda a expansão do ecossistema.',
     icon: Target,
     color: 'from-amber-500 to-orange-600',
     brandColor: 'amber',
@@ -135,6 +137,7 @@ const quickActions: QuickAction[] = [
 const HomePage = () => {
   const [presentationOpen, setPresentationOpen] = useState(false);
   const [expandedLayer, setExpandedLayer] = useState<string | null>(null);
+  const [heroOutcomeIndex, setHeroOutcomeIndex] = useState(0);
   const modalContentRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -154,6 +157,14 @@ const HomePage = () => {
       document.body.style.overflow = '';
     };
   }, [presentationOpen]);
+
+  useEffect(() => {
+    const interval = window.setInterval(() => {
+      setHeroOutcomeIndex((current) => (current + 1) % heroOutcomeWords.length);
+    }, 2600);
+
+    return () => window.clearInterval(interval);
+  }, []);
 
   const openFullscreen = async () => {
     const element = modalContentRef.current;
@@ -193,23 +204,37 @@ const HomePage = () => {
               className="flex justify-center mb-6 sm:mb-8"
               variants={itemVariants}
             >
-              <div className="inline-flex items-center gap-2 bg-primary-500/20 border-2 border-primary-500/40 px-5 py-2 rounded-full backdrop-blur-sm">
-                <Sparkles className="w-4 h-4 text-primary-500" />
-                <span className="text-primary-500 font-bold text-sm uppercase tracking-wide">
-                  OrientoHub
+              <div className="inline-flex items-center gap-2.5 rounded-full border border-primary-400/40 bg-black/30 px-3.5 py-2 shadow-[0_0_30px_rgba(255,215,0,0.08)] backdrop-blur-md">
+                <Rocket className="h-3.5 w-3.5 text-primary-400" aria-hidden="true" />
+                <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-white sm:text-xs">
+                  Ecossistema de construção
                 </span>
               </div>
             </motion.div>
 
             <motion.h1
-              className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-center mb-6 tracking-tight leading-[1.2] flex flex-col items-center"
+              className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-center mb-6 tracking-tight leading-[1.08] flex flex-col items-center"
               variants={itemVariants}
             >
-              <span className="block text-white mb-2">
-                Orientação e Conexão
-              </span>
-              <span className="bg-gradient-to-r from-primary-400 via-primary-500 to-primary-600 bg-clip-text text-transparent pb-4">
-                = Aceleração.
+              <span className="block text-white mb-4 sm:mb-3">
+                <span className="block">Orientação e</span>
+                <span
+                  className="relative mx-auto mt-2 flex h-[1.35em] w-[15ch] items-center justify-center overflow-hidden text-center leading-[1.15] sm:w-[16ch]"
+                  aria-live="polite"
+                >
+                  <AnimatePresence mode="wait" initial={false}>
+                    <motion.span
+                      key={heroOutcomeWords[heroOutcomeIndex]}
+                      className="absolute inset-0 flex items-center justify-center whitespace-nowrap bg-gradient-to-r from-primary-400 via-primary-500 to-primary-600 bg-clip-text text-transparent"
+                      initial={{ opacity: 0, y: 18, filter: 'blur(5px)' }}
+                      animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                      exit={{ opacity: 0, y: -18, filter: 'blur(5px)' }}
+                      transition={{ duration: 0.45, ease: 'easeOut' }}
+                    >
+                      {heroOutcomeWords[heroOutcomeIndex]}
+                    </motion.span>
+                  </AnimatePresence>
+                </span>
               </span>
             </motion.h1>
 
@@ -217,7 +242,7 @@ const HomePage = () => {
               className="text-xl sm:text-2xl text-gray-300 text-center max-w-3xl mx-auto mb-10 sm:mb-12 leading-relaxed"
               variants={itemVariants}
             >
-              Um hub de ideias, produtos e estratégia conectados em quatro camadas — do núcleo institucional aos MVPs em construção.
+              Da estratégia à execução: serviços, plataforma, MVPs e verticais conectados para transformar ideias em negócios.
             </motion.p>
 
             <motion.div
@@ -317,8 +342,8 @@ const HomePage = () => {
             <SectionHeader
               icon={Component}
               label="02 | Ecossistema"
-              title="As 4 Camadas do Ecossistema OrientoHub"
-              description="Uma arquitetura pensada para apoiar empreendedores em cada etapa da jornada"
+              title="Do serviço ao ecossistema"
+              description="A OrientoHub nasceu prestando serviços. Hoje, essa mesma raiz conecta o núcleo de serviços à plataforma, aos MVPs e às verticais que ampliam o ecossistema."
               titleClassName="text-4xl md:text-5xl font-bold mb-6 text-gray-900 dark:text-white"
               descriptionClassName="text-xl text-gray-600 dark:text-gray-300"
               containerClassName="max-w-4xl mx-auto"
@@ -357,7 +382,7 @@ const HomePage = () => {
             </div>
           ) : (
             <motion.div
-              className="grid grid-cols-1 lg:grid-cols-4 gap-5 md:gap-6 max-w-6xl mx-auto items-stretch"
+              className="grid grid-cols-1 lg:grid-cols-4 auto-rows-fr gap-5 md:gap-6 max-w-6xl mx-auto items-stretch"
               variants={containerVariants}
               initial="hidden"
               whileInView="visible"
@@ -381,7 +406,7 @@ const HomePage = () => {
       <section className="relative pt-2 pb-8 overflow-hidden">
         <div className="container-custom relative z-10">
           <SectionHeader
-            icon={Sparkles}
+            icon={Users}
             label="03 — O Founder"
             title="Criado por quem vive o ecossistema"
             titleClassName="text-4xl md:text-5xl font-bold mb-6 text-white"
@@ -429,7 +454,7 @@ const HomePage = () => {
       <section className="relative pt-4 pb-10 overflow-hidden">
         <div className="container-custom relative z-10">
           <SectionHeader
-            icon={Sparkles}
+            icon={Lightbulb}
             label="04 — Manifesto"
             title="Pense. Crie. Acelere."
             titleClassName="text-5xl md:text-7xl font-bold mb-8 text-white leading-tight"
@@ -471,7 +496,7 @@ const HomePage = () => {
         <div className="container-custom relative z-10">
           <div className="mb-14">
             <SectionHeader
-              icon={Sparkles}
+              icon={ArrowRight}
               label="05 — Próximos Passos"
               title="Sua jornada começa aqui"
               description="Escolha como você quer explorar o OrientoHub e começar a transformar suas ideias em realidade"
@@ -534,9 +559,10 @@ const SectionHeader = ({
       viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 0.6 }}
     >
-      <div className="inline-flex items-center gap-2 bg-primary-500/10 border border-primary-500/30 px-4 py-2 rounded-full mb-6">
-        <Icon className="w-4 h-4 text-[#FFD700]" />
-        <span className="text-[#FFD700] font-semibold text-sm uppercase tracking-wider">
+      <div className="inline-flex items-center gap-2 rounded-full border border-primary-400/40 bg-black/30 px-3.5 py-2 mb-6 shadow-[0_0_30px_rgba(255,215,0,0.08)] backdrop-blur-md">
+        <Icon className="h-3.5 w-3.5 text-primary-400" aria-hidden="true" />
+        <span className="h-3 w-px bg-primary-400/40" aria-hidden="true" />
+        <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-white sm:text-xs">
           {label}
         </span>
       </div>
@@ -562,7 +588,7 @@ const EcosystemCard = ({ layer, compact = false, expanded = false, onToggleExpan
   const isVerticais = layer.number === '04';
   const canExpand = (isNucleus || isPlataforma || isMVPs || isVerticais) && Boolean(onToggleExpand);
   // Refined mobile paddings: more compact on small screens
-  const shellPadding = expanded ? 'p-5 sm:p-8 lg:p-10' : 'p-5 sm:p-7 md:p-8';
+  const shellPadding = expanded ? 'p-5 sm:p-8 lg:p-10' : 'p-4 sm:p-5 md:p-6';
   const is2ColumnLayout = expanded && isNucleus;
   const cardLayout = is2ColumnLayout
     ? 'grid gap-6 lg:gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-center'
@@ -591,7 +617,7 @@ const EcosystemCard = ({ layer, compact = false, expanded = false, onToggleExpan
       className={`group relative overflow-hidden rounded-2xl border bg-white/90 dark:bg-gray-900/85 shadow-[0_12px_40px_rgba(0,0,0,0.06)] dark:shadow-none backdrop-blur-md transition-all duration-300 ${expanded
           ? `border-${brandColor}-500/60 shadow-[0_28px_80px_rgba(0,0,0,0.16)]`
           : `border-gray-200/80 dark:border-gray-700/50 hover:border-${brandColor}-500 dark:hover:border-${brandColor}-500`
-        } ${shellPadding} h-full min-h-[280px] sm:min-h-[320px] ${canExpand || expanded ? 'cursor-pointer' : 'cursor-default'}`}
+        } ${shellPadding} h-full ${expanded ? 'min-h-[280px] sm:min-h-[320px]' : 'min-h-[270px] sm:min-h-[290px]'} ${canExpand || expanded ? 'cursor-pointer' : 'cursor-default'}`}
       variants={itemVariants}
       role={canExpand ? 'button' : undefined}
       tabIndex={canExpand ? 0 : undefined}
@@ -613,25 +639,44 @@ const EcosystemCard = ({ layer, compact = false, expanded = false, onToggleExpan
 
       <div className={`relative z-10 h-full ${cardLayout}`}>
         <div className={expanded ? 'flex flex-col justify-between gap-5' : 'flex h-full flex-col'}>
-          <div className="flex items-center justify-between gap-4 mb-4">
+          <div className="flex items-center justify-between gap-4 mb-3">
             <span className={`${expanded ? 'text-3xl sm:text-5xl' : compact ? 'text-2xl' : 'text-3xl sm:text-4xl'} font-bold ${getStyle('faded')}`}>
               {layer.number}
             </span>
             {!expanded && <Icon className={`${compact ? 'w-6 h-6' : 'w-7 h-7 sm:w-8 sm:h-8'} ${getStyle('text')} group-hover:scale-110 transition-transform`} />}
           </div>
 
-          <div className={expanded && isNucleus ? 'max-w-2xl' : expanded ? 'w-full' : ''}>
+          <div className={`${expanded && isNucleus ? 'max-w-2xl' : expanded ? 'w-full' : ''} ${isNucleus && !expanded ? 'max-w-xl' : ''}`}>
+            {isNucleus && (
+              <span className={`inline-flex items-center gap-2 mb-3 text-[10px] sm:text-xs font-bold uppercase tracking-[0.18em] ${getStyle('text')}`}>
+                <span className={`h-1.5 w-1.5 rounded-full ${getStyle('bg')}`} />
+                Origem da OrientoHub
+              </span>
+            )}
             <h3 className={`${expanded ? 'text-2xl sm:text-4xl' : compact ? 'text-lg sm:text-xl' : 'text-xl sm:text-2xl'} font-bold mb-2 sm:mb-3 text-gray-900 dark:text-white leading-tight`}>
               {layer.title}
             </h3>
-            <p className={`${expanded ? 'text-sm sm:text-lg max-w-2xl' : compact ? 'text-xs sm:text-[0.95rem]' : 'text-sm sm:text-base text-gray-600 dark:text-gray-400'} mb-5 sm:mb-6 leading-relaxed`}>
+            <p className={`${expanded ? 'text-sm sm:text-lg max-w-2xl' : compact ? 'text-xs sm:text-[0.95rem]' : 'text-sm sm:text-base text-gray-600 dark:text-gray-400 line-clamp-2'} mb-4 sm:mb-5 leading-relaxed`}>
               {!expanded && layer.shortDescription ? layer.shortDescription : layer.description}
             </p>
 
+            {isNucleus && !expanded && (
+              <div className="flex flex-wrap gap-1.5 mb-4 sm:mb-5" aria-label="Serviços do Núcleo">
+                {['Estratégia', 'Inovação & IA', 'Construção & Growth'].map((service) => (
+                  <span
+                    key={service}
+                    className="rounded-full border border-amber-500/25 bg-amber-500/10 px-2.5 py-1 text-[10px] sm:text-xs font-semibold text-amber-700 dark:text-amber-300"
+                  >
+                    {service}
+                  </span>
+                ))}
+              </div>
+            )}
+
             {isNucleus && expanded ? (
               <div className="flex flex-col gap-6">
-                <div className="grid gap-3 sm:grid-cols-3">
-                  {['Estratégia', 'Marca', 'Direção'].map((item) => (
+                <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                  {['Estratégia', 'Inovação & IA', 'Marketing & Design', 'Construção'].map((item) => (
                     <div
                       key={item}
                       className="rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-white/5 px-4 py-3 text-sm text-gray-700 dark:text-gray-200 font-medium text-center"
@@ -782,7 +827,18 @@ const EcosystemCard = ({ layer, compact = false, expanded = false, onToggleExpan
           </div>
         )}
 
-        {canExpand && !expanded ? (
+        {isNucleus && !expanded ? (
+          <a
+            href="https://fernandoramalhobuilder.com.br"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Conheça as possibilidades de serviços do Núcleo"
+            className={`inline-flex items-center justify-center gap-2 px-5 py-3 mt-auto text-sm font-bold text-black ${getStyle('bg')} hover:opacity-90 rounded-xl shadow-lg ${getStyle('shadow')} transition-all duration-300 group-hover:-translate-y-1 w-fit`}
+            onClick={(event) => event.stopPropagation()}
+          >
+            Conheça as possibilidades <ExternalLink className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+          </a>
+        ) : canExpand && !expanded ? (
           <div className={`inline-flex items-center justify-center gap-2 px-6 py-3 mt-auto text-sm font-bold text-black ${getStyle('bg')} hover:opacity-90 rounded-xl shadow-lg ${getStyle('shadow')} transition-all duration-300 group-hover:-translate-y-1 w-fit`}>
             Ver detalhes <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </div>

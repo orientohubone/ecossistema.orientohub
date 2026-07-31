@@ -80,6 +80,9 @@ export const solutionsService = {
       .single();
 
     if (error) throw error;
+    if (solutionsCache) {
+      solutionsCache = [data, ...solutionsCache];
+    }
     return data;
   },
 
@@ -92,6 +95,9 @@ export const solutionsService = {
       .single();
 
     if (error) throw error;
+    if (solutionsCache) {
+      solutionsCache = solutionsCache.map((solution) => solution.id === id ? data : solution);
+    }
     return data;
   },
 

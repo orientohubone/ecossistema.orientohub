@@ -9,9 +9,11 @@ import {
   Rocket,
   Brain,
   AlertCircle,
-  CheckCircle,
+  CheckCircle, 
   Circle,
-  X
+  X,
+  ArrowRight,
+  ListTodo
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { dashboardService, type DashboardTask } from '../services/dashboardService';
@@ -282,17 +284,37 @@ const TasksPage = () => {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-center py-16"
+            className="rounded-2xl border-2 border-dashed border-primary-300/70 bg-gradient-to-br from-primary-50 via-white to-blue-50 px-6 py-10 text-center dark:border-primary-700/60 dark:from-primary-950/30 dark:via-gray-800/70 dark:to-blue-950/20"
           >
-            <div className="w-24 h-24 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-6">
-              <CheckSquare className="w-12 h-12 text-gray-400" />
+            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary-100 text-primary-600 dark:bg-primary-900/50 dark:text-primary-300">
+              <ListTodo className="h-7 w-7" />
             </div>
-            <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-              Nenhuma tarefa encontrada
-            </h3>
-            <p className="text-gray-600 dark:text-gray-400">
-              Tente ajustar os filtros para encontrar tarefas
-            </p>
+            {tasks.length === 0 ? (
+              <>
+                <h3 className="mb-2 text-lg font-semibold text-gray-900 dark:text-white">
+                  Vamos transformar seus próximos passos em ação?
+                </h3>
+                <p className="mx-auto mb-5 max-w-lg text-gray-600 dark:text-gray-400">
+                  Crie uma tarefa dentro de um projeto para organizar sua validação e acompanhar o que precisa acontecer agora.
+                </p>
+                <button
+                  onClick={() => navigate('/dashboard/projects')}
+                  className="btn-primary inline-flex items-center"
+                >
+                  Criar primeira tarefa
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </button>
+              </>
+            ) : (
+              <>
+                <h3 className="mb-2 text-lg font-semibold text-gray-900 dark:text-white">
+                  Nenhuma tarefa corresponde aos filtros
+                </h3>
+                <p className="text-gray-600 dark:text-gray-400">
+                  Ajuste a busca, o status ou a prioridade para encontrar suas tarefas.
+                </p>
+              </>
+            )}
           </motion.div>
         )}
       </div>

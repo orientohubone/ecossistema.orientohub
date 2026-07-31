@@ -12,7 +12,6 @@ import {
   Lock,
   Eye,
   EyeOff,
-  Sparkles,
   CheckCircle2,
   ArrowRight,
   Rocket
@@ -178,9 +177,10 @@ const LoginPage = () => {
                 <div className="absolute inset-0 bg-gradient-to-r from-primary-500/0 via-primary-500/10 to-primary-500/0 animate-pulse" />
 
                 <div className="relative z-10 space-y-4">
-                  <div className="inline-flex items-center gap-2 bg-primary-500/20 px-4 py-2 rounded-full mb-2">
-                    <Sparkles className="w-5 h-5 text-primary-500 animate-pulse" />
-                    <span className="text-primary-500 font-bold text-sm">PLATAFORMA PRONTA</span>
+                  <div className="inline-flex items-center gap-2 rounded-full border border-primary-400/40 bg-black/70 px-3.5 py-2 mb-2 shadow-[0_0_30px_rgba(255,215,0,0.08)] backdrop-blur-md">
+                    <Rocket className="h-3.5 w-3.5 text-primary-400" aria-hidden="true" />
+                    <span className="h-3 w-px bg-primary-400/40" aria-hidden="true" />
+                    <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-white sm:text-xs">PLATAFORMA PRONTA</span>
                   </div>
 
                   <h3 className="text-2xl md:text-3xl font-bold text-white leading-tight">
@@ -221,9 +221,10 @@ const LoginPage = () => {
 
                 {/* Header */}
                 <div className="text-center mb-8">
-                  <div className="inline-flex items-center gap-2 bg-primary-500/20 border-2 border-primary-500/40 px-4 py-2 rounded-full mb-4 backdrop-blur-sm">
-                    <Sparkles className="w-4 h-4 text-primary-500" />
-                    <span className="text-primary-500 font-bold text-sm uppercase tracking-wide">
+                  <div className="inline-flex items-center gap-2 rounded-full border border-primary-400/40 bg-black/30 px-3.5 py-2 mb-4 shadow-[0_0_30px_rgba(255,215,0,0.08)] backdrop-blur-md">
+                    <Lock className="h-3.5 w-3.5 text-primary-400" aria-hidden="true" />
+                    <span className="h-3 w-px bg-primary-400/40" aria-hidden="true" />
+                    <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-white sm:text-xs">
                       Login
                     </span>
                   </div>

@@ -44,14 +44,15 @@ const ManifestoPage = () => {
         <div className="container-custom relative z-10 py-32">
           <div className="max-w-4xl mx-auto text-center">
             <motion.div
-              className="inline-flex items-center gap-2 bg-primary-500/20 border-2 border-primary-500/40 px-5 py-2 rounded-full mb-8 backdrop-blur-sm"
+              className="inline-flex items-center gap-2.5 rounded-full border border-primary-400/40 bg-black/30 px-3.5 py-2 mb-8 shadow-[0_0_30px_rgba(255,215,0,0.08)] backdrop-blur-md"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.2 }}
             >
-              <Compass className="w-4 h-4 text-primary-500" />
-              <span className="text-primary-500 font-bold text-sm uppercase tracking-wide">
-                Nosso Manifesto
+              <Compass className="h-3.5 w-3.5 text-primary-400" aria-hidden="true" />
+              <span className="h-3 w-px bg-primary-400/40" aria-hidden="true" />
+              <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-white sm:text-xs">
+                Nosso manifesto
               </span>
             </motion.div>
 
@@ -158,9 +159,10 @@ const ManifestoPage = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <div className="inline-flex items-center gap-2 bg-primary-500/10 border border-primary-500/30 px-4 py-2 rounded-full mb-8">
-              <Award className="w-4 h-4 text-primary-500" />
-              <span className="text-primary-500 font-semibold text-sm">NOSSO PROPÓSITO</span>
+            <div className="inline-flex items-center gap-2.5 rounded-full border border-primary-400/40 bg-black/30 px-3.5 py-2 mb-8 shadow-[0_0_30px_rgba(255,215,0,0.08)] backdrop-blur-md">
+              <Award className="h-3.5 w-3.5 text-primary-400" aria-hidden="true" />
+              <span className="h-3 w-px bg-primary-400/40" aria-hidden="true" />
+              <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-white sm:text-xs">Nosso propósito</span>
             </div>
 
             <h2 className="text-3xl md:text-5xl font-bold mb-8 leading-tight">
