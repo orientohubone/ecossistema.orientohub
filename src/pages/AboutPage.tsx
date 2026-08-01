@@ -32,40 +32,6 @@ const AboutPage = () => {
           <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-primary-400/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1000ms' }} />
         </div>
 
-import { Helmet } from 'react-helmet-async';
-import { motion } from 'framer-motion';
-import {
-  Users,
-  Target,
-  Award,
-  Rocket,
-  Sparkles,
-  Zap,
-  Heart,
-  TrendingUp,
-  Shield,
-  Lightbulb,
-  User
-} from 'lucide-react';
-import fernandoSelecao6 from '../assets/fernando-selecao6.png';
-
-const AboutPage = () => {
-
-  return (
-    <>
-      <Helmet>
-        <title>Sobre Nós - Orientohub</title>
-        <meta name="description" content="Conheça a história, missão e valores do Orientohub. Estamos transformando a forma como startups são construídas no Brasil." />
-      </Helmet>
-
-      {/* Hero Section */}
-      <section className="relative min-h-[80vh] w-full overflow-hidden bg-gradient-to-br from-black via-gray-900 to-black flex items-center">
-        {/* Animated background elements */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary-500/20 rounded-full blur-3xl animate-pulse" />
-          <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-primary-400/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1000ms' }} />
-        </div>
-
         {/* Grid pattern overlay */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0" style={{
