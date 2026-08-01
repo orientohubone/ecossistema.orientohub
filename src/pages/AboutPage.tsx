@@ -32,6 +32,40 @@ const AboutPage = () => {
           <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-primary-400/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1000ms' }} />
         </div>
 
+import { Helmet } from 'react-helmet-async';
+import { motion } from 'framer-motion';
+import {
+  Users,
+  Target,
+  Award,
+  Rocket,
+  Sparkles,
+  Zap,
+  Heart,
+  TrendingUp,
+  Shield,
+  Lightbulb,
+  User
+} from 'lucide-react';
+import fernandoSelecao6 from '../assets/fernando-selecao6.png';
+
+const AboutPage = () => {
+
+  return (
+    <>
+      <Helmet>
+        <title>Sobre Nós - Orientohub</title>
+        <meta name="description" content="Conheça a história, missão e valores do Orientohub. Estamos transformando a forma como startups são construídas no Brasil." />
+      </Helmet>
+
+      {/* Hero Section */}
+      <section className="relative min-h-[80vh] w-full overflow-hidden bg-gradient-to-br from-black via-gray-900 to-black flex items-center">
+        {/* Animated background elements */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary-500/20 rounded-full blur-3xl animate-pulse" />
+          <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-primary-400/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1000ms' }} />
+        </div>
+
         {/* Grid pattern overlay */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0" style={{
@@ -40,22 +74,22 @@ const AboutPage = () => {
           }} />
         </div>
 
-        <div className="container-custom relative z-10 py-32">
+        <div className="container-custom relative z-10 py-16 sm:py-32">
           <div className="max-w-4xl mx-auto text-center">
             <motion.div
-              className="inline-flex items-center gap-2.5 rounded-full border border-primary-400/40 bg-black/30 px-3.5 py-2 shadow-[0_0_30px_rgba(255,215,0,0.08)] backdrop-blur-md mb-8"
+              className="inline-flex items-center gap-2 sm:gap-2.5 rounded-full border border-primary-400/40 bg-black/30 px-3 py-1.5 sm:px-3.5 sm:py-2 shadow-[0_0_30px_rgba(255,215,0,0.08)] backdrop-blur-md mb-6 sm:mb-8"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.2 }}
             >
-              <Rocket className="h-3.5 w-3.5 text-primary-400" aria-hidden="true" />
-              <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-white sm:text-xs">
+              <Rocket className="h-3.5 w-3.5 text-primary-400 shrink-0" aria-hidden="true" />
+              <span className="text-[10px] sm:text-xs font-semibold uppercase tracking-[0.12em] text-white">
                 Sobre o Orientohub
               </span>
             </motion.div>
 
             <motion.h1
-              className="text-5xl md:text-7xl font-bold mb-8 text-white leading-tight"
+              className="text-3xl xs:text-4xl sm:text-5xl md:text-7xl font-bold mb-6 sm:mb-8 text-white leading-tight px-2"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.3 }}
@@ -68,7 +102,7 @@ const AboutPage = () => {
             </motion.h1>
 
             <motion.p
-              className="text-xl md:text-2xl text-gray-300 mb-12 leading-relaxed max-w-3xl mx-auto"
+              className="text-base sm:text-xl md:text-2xl text-gray-300 mb-8 sm:mb-12 leading-relaxed max-w-3xl mx-auto px-2"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
@@ -79,33 +113,33 @@ const AboutPage = () => {
 
             {/* Evolution Message */}
             <motion.div
-              className="max-w-2xl mx-auto"
+              className="max-w-2xl mx-auto px-1 sm:px-0"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6 }}
             >
-              <div className="relative p-8 rounded-2xl bg-gradient-to-br from-primary-500/10 to-primary-600/5 backdrop-blur-sm border-2 border-primary-500/30 overflow-hidden">
+              <div className="relative p-5 sm:p-8 rounded-2xl bg-gradient-to-br from-primary-500/10 to-primary-600/5 backdrop-blur-sm border-2 border-primary-500/30 overflow-hidden">
                 {/* Animated background glow */}
                 <div className="absolute inset-0 bg-gradient-to-r from-primary-500/0 via-primary-500/10 to-primary-500/0 animate-pulse" />
 
-                <div className="relative z-10 text-center space-y-4">
-                  <div className="inline-flex items-center gap-2.5 rounded-full border border-primary-400/40 bg-black/30 px-3.5 py-2 shadow-[0_0_30px_rgba(255,215,0,0.08)] backdrop-blur-md mb-2">
-                    <Sparkles className="h-3.5 w-3.5 animate-pulse text-primary-400" aria-hidden="true" />
-                    <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-white sm:text-xs">EM CONSTRUÇÃO</span>
+                <div className="relative z-10 text-center space-y-3.5 sm:space-y-4">
+                  <div className="inline-flex items-center gap-2 rounded-full border border-primary-400/40 bg-black/30 px-3 py-1.5 sm:px-3.5 sm:py-2 shadow-[0_0_30px_rgba(255,215,0,0.08)] backdrop-blur-md mb-1">
+                    <Sparkles className="h-3.5 w-3.5 animate-pulse text-primary-400 shrink-0" aria-hidden="true" />
+                    <span className="text-[10px] sm:text-xs font-semibold uppercase tracking-[0.12em] text-white">EM CONSTRUÇÃO</span>
                   </div>
 
-                  <h3 className="text-2xl md:text-3xl font-bold text-white leading-tight">
+                  <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-white leading-tight">
                     Estamos evoluindo nosso ecossistema
                   </h3>
 
-                  <p className="text-lg text-gray-300 leading-relaxed">
+                  <p className="text-sm sm:text-lg text-gray-300 leading-relaxed">
                     Estamos construindo uma base sólida com metodologias comprovadas e MVPs conectados.
                     Em breve, estaremos 100% operacionais para transformar sua jornada empreendedora.
                   </p>
 
                   {/* Progress indicator */}
-                  <div className="pt-4">
-                    <div className="flex items-center justify-between text-sm text-gray-400 mb-2">
+                  <div className="pt-3 sm:pt-4">
+                    <div className="flex items-center justify-between text-xs sm:text-sm text-gray-400 mb-2">
                       <span>Progresso do Ecossistema</span>
                       <span className="text-primary-500 font-bold">Em desenvolvimento</span>
                     </div>
@@ -126,32 +160,32 @@ const AboutPage = () => {
       </section>
 
       {/* Mission Section */}
-      <section className="py-24 bg-white dark:bg-gray-900">
+      <section className="py-12 sm:py-24 bg-white dark:bg-gray-900">
         <div className="container-custom">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
               viewport={{ once: true }}
             >
-              <div className="inline-flex items-center gap-2.5 rounded-full border border-primary-400/40 bg-gray-950/90 px-3.5 py-2 shadow-[0_0_30px_rgba(255,215,0,0.08)] backdrop-blur-md mb-6">
-                <Target className="h-3.5 w-3.5 text-primary-400" aria-hidden="true" />
-                <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-white sm:text-xs">NOSSA MISSÃO</span>
+              <div className="inline-flex items-center gap-2 sm:gap-2.5 rounded-full border border-primary-400/40 bg-gray-950/90 px-3 py-1.5 sm:px-3.5 sm:py-2 shadow-[0_0_30px_rgba(255,215,0,0.08)] backdrop-blur-md mb-4 sm:mb-6">
+                <Target className="h-3.5 w-3.5 text-primary-400 shrink-0" aria-hidden="true" />
+                <span className="text-[10px] sm:text-xs font-semibold uppercase tracking-[0.12em] text-white">NOSSA MISSÃO</span>
               </div>
 
-              <h2 className="text-4xl md:text-5xl font-bold mb-6">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6">
                 Democratizar o acesso ao{' '}
                 <span className="text-primary-500">empreendedorismo</span>
               </h2>
 
-              <p className="text-lg text-gray-600 dark:text-gray-300 mb-8 leading-relaxed">
+              <p className="text-base sm:text-lg text-gray-600 dark:text-gray-300 mb-6 sm:mb-8 leading-relaxed">
                 Nossa missão é tornar o processo de construção de startups acessível para todos,
                 fornecendo metodologias comprovadas, ferramentas eficientes e uma comunidade
                 engajada que apoia o crescimento de cada empreendedor.
               </p>
 
-              <div className="space-y-4">
+              <div className="space-y-3.5 sm:space-y-4">
                 {[
                   { icon: Target, text: 'Metodologia estruturada e comprovada' },
                   { icon: Users, text: 'Comunidade ativa de empreendedores' },
@@ -160,17 +194,17 @@ const AboutPage = () => {
                 ].map((item, index) => (
                   <motion.div
                     key={index}
-                    className="flex items-start gap-4 group"
+                    className="flex items-start gap-3.5 sm:gap-4 group"
                     initial={{ opacity: 0, x: -20 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.1 }}
                     viewport={{ once: true }}
                   >
-                    <div className="flex-shrink-0 w-12 h-12 bg-primary-500/10 rounded-xl flex items-center justify-center group-hover:bg-primary-500/20 transition-colors">
-                      <item.icon className="w-6 h-6 text-primary-500" />
+                    <div className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 bg-primary-500/10 rounded-xl flex items-center justify-center group-hover:bg-primary-500/20 transition-colors">
+                      <item.icon className="w-5 h-5 sm:w-6 sm:h-6 text-primary-500" />
                     </div>
-                    <div className="pt-2">
-                      <p className="text-gray-700 dark:text-gray-300 font-medium">{item.text}</p>
+                    <div className="pt-1.5 sm:pt-2">
+                      <p className="text-sm sm:text-base text-gray-700 dark:text-gray-300 font-medium">{item.text}</p>
                     </div>
                   </motion.div>
                 ))}
@@ -178,7 +212,7 @@ const AboutPage = () => {
             </motion.div>
 
             <motion.div
-              className="relative"
+              className="relative mt-4 lg:mt-0"
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
@@ -189,25 +223,25 @@ const AboutPage = () => {
                 <img
                   src="https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
                   alt="Equipe Orientohub"
-                  className="w-full h-full object-cover"
+                  className="w-full h-auto max-h-[450px] object-cover"
                 />
               </div>
 
               {/* Floating card */}
               <motion.div
-                className="absolute -bottom-8 -left-8 bg-white dark:bg-gray-800 p-6 rounded-xl shadow-2xl border-2 border-primary-500/20 max-w-xs"
+                className="relative sm:absolute -bottom-4 sm:-bottom-8 left-0 sm:-left-8 mt-4 sm:mt-0 bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-xl shadow-2xl border-2 border-primary-500/20 w-full sm:max-w-xs"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5 }}
                 viewport={{ once: true }}
               >
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-primary-500 rounded-full flex items-center justify-center">
-                    <Rocket className="w-6 h-6 text-black" />
+                <div className="flex items-center gap-3.5 sm:gap-4">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-primary-500 rounded-full flex items-center justify-center shrink-0">
+                    <Rocket className="w-5 h-5 sm:w-6 sm:h-6 text-black" />
                   </div>
                   <div>
-                    <div className="text-2xl font-bold text-primary-500">500+</div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">Startups Aceleradas</div>
+                    <div className="text-xl sm:text-2xl font-bold text-primary-500">500+</div>
+                    <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Startups Aceleradas</div>
                   </div>
                 </div>
               </motion.div>
@@ -217,7 +251,7 @@ const AboutPage = () => {
       </section>
 
       {/* Values Section */}
-      <section className="py-24 bg-gradient-to-b from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 relative overflow-hidden">
+      <section className="py-12 sm:py-24 bg-gradient-to-b from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 relative overflow-hidden">
         {/* Background decoration */}
         <div className="absolute inset-0 opacity-5">
           <div className="absolute top-20 left-10 w-72 h-72 bg-primary-500 rounded-full blur-3xl" />
@@ -226,26 +260,26 @@ const AboutPage = () => {
 
         <div className="container-custom relative z-10">
           <motion.div
-            className="text-center max-w-3xl mx-auto mb-16"
+            className="text-center max-w-3xl mx-auto mb-10 sm:mb-16"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
             viewport={{ once: true }}
           >
-            <div className="inline-flex items-center gap-2.5 rounded-full border border-primary-400/40 bg-gray-950/90 px-3.5 py-2 shadow-[0_0_30px_rgba(255,215,0,0.08)] backdrop-blur-md mb-6">
-              <Heart className="h-3.5 w-3.5 text-primary-400" aria-hidden="true" />
-              <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-white sm:text-xs">NOSSOS VALORES</span>
+            <div className="inline-flex items-center gap-2 sm:gap-2.5 rounded-full border border-primary-400/40 bg-gray-950/90 px-3 py-1.5 sm:px-3.5 sm:py-2 shadow-[0_0_30px_rgba(255,215,0,0.08)] backdrop-blur-md mb-4 sm:mb-6">
+              <Heart className="h-3.5 w-3.5 text-primary-400 shrink-0" aria-hidden="true" />
+              <span className="text-[10px] sm:text-xs font-semibold uppercase tracking-[0.12em] text-white">NOSSOS VALORES</span>
             </div>
 
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6 px-2">
               Princípios que nos guiam
             </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-300">
+            <p className="text-base sm:text-xl text-gray-600 dark:text-gray-300 px-2">
               Os valores que norteiam nossas decisões e moldam nossa cultura todos os dias.
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-8">
             {[
               {
                 icon: Rocket,
@@ -291,24 +325,24 @@ const AboutPage = () => {
       </section>
 
       {/* Founder Section */}
-      <section className="py-24 bg-white dark:bg-gray-900">
+      <section className="py-12 sm:py-24 bg-white dark:bg-gray-900">
         <div className="container-custom">
           <motion.div
-            className="text-center max-w-3xl mx-auto mb-16"
+            className="text-center max-w-3xl mx-auto mb-10 sm:mb-16"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
             viewport={{ once: true }}
           >
-            <div className="inline-flex items-center gap-2.5 rounded-full border border-primary-400/40 bg-gray-950/90 px-3.5 py-2 shadow-[0_0_30px_rgba(255,215,0,0.08)] backdrop-blur-md mb-6">
-              <User className="h-3.5 w-3.5 text-primary-400" aria-hidden="true" />
-              <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-white sm:text-xs">FUNDADOR</span>
+            <div className="inline-flex items-center gap-2 sm:gap-2.5 rounded-full border border-primary-400/40 bg-gray-950/90 px-3 py-1.5 sm:px-3.5 sm:py-2 shadow-[0_0_30px_rgba(255,215,0,0.08)] backdrop-blur-md mb-4 sm:mb-6">
+              <User className="h-3.5 w-3.5 text-primary-400 shrink-0" aria-hidden="true" />
+              <span className="text-[10px] sm:text-xs font-semibold uppercase tracking-[0.12em] text-white">FUNDADOR</span>
             </div>
 
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6 px-2">
               Quem está por trás do Orientohub
             </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-300">
+            <p className="text-base sm:text-xl text-gray-600 dark:text-gray-300 px-2">
               Conheça a visão e a paixão que deu origem à plataforma.
             </p>
           </motion.div>
@@ -321,27 +355,27 @@ const AboutPage = () => {
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
           >
-            <div className="relative bg-gradient-to-br from-black via-gray-900 to-black p-12 rounded-3xl border-2 border-primary-500/30 shadow-2xl overflow-hidden">
+            <div className="relative bg-gradient-to-br from-black via-gray-900 to-black p-6 sm:p-12 rounded-3xl border-2 border-primary-500/30 shadow-2xl overflow-hidden">
               {/* Background decoration */}
               <div className="absolute inset-0 opacity-10">
                 <div className="absolute top-0 right-0 w-96 h-96 bg-primary-500 rounded-full blur-3xl" />
               </div>
 
               {/* Content */}
-              <div className="relative z-10 grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+              <div className="relative z-10 grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 items-center">
                 {/* Image */}
                 <div className="md:col-span-1 flex justify-center">
-                  <div className="relative group">
+                  <div className="relative group mb-4 md:mb-0">
                     <div className="absolute inset-0 bg-primary-500/35 rounded-[2rem] blur-2xl opacity-40 group-hover:opacity-60 transition-opacity duration-300" />
                     <img
                       src={fernandoSelecao6}
                       alt="Fernando Ramalho"
-                      className="relative w-56 h-72 md:w-64 md:h-80 rounded-[2rem] object-cover object-top border-4 border-primary-500/80 shadow-2xl"
+                      className="relative w-48 h-64 sm:w-56 sm:h-72 md:w-64 md:h-80 rounded-[2rem] object-cover object-top border-4 border-primary-500/80 shadow-2xl"
                     />
                     {/* Badge */}
-                    <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 overflow-hidden rounded-full border border-primary-300/70 bg-gradient-to-r from-primary-400 via-yellow-300 to-primary-500 px-5 py-2 text-black shadow-[0_10px_30px_rgba(255,215,0,0.35)] whitespace-nowrap">
+                    <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 overflow-hidden rounded-full border border-primary-300/70 bg-gradient-to-r from-primary-400 via-yellow-300 to-primary-500 px-4 py-1.5 sm:px-5 sm:py-2 text-black shadow-[0_10px_30px_rgba(255,215,0,0.35)] whitespace-nowrap">
                       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.35),transparent_60%)]" />
-                      <span className="relative text-xs font-extrabold uppercase tracking-[0.18em]">
+                      <span className="relative text-[10px] sm:text-xs font-extrabold uppercase tracking-[0.18em]">
                         Fundador
                       </span>
                     </div>
@@ -350,17 +384,17 @@ const AboutPage = () => {
 
                 {/* Info */}
                 <div className="md:col-span-2 text-center md:text-left">
-                  <h3 className="text-4xl font-bold text-white mb-4">
+                  <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-3 sm:mb-4">
                     Fernando Ramalho
                   </h3>
 
-                  <p className="text-lg text-gray-300 mb-6 leading-relaxed">
+                  <p className="text-sm sm:text-lg text-gray-300 mb-5 sm:mb-6 leading-relaxed">
                     Formado em Administração, Marketing, Inovação, Criatividade, Neurociência e Aprendizagem.
                     Apaixonado por transformar o ecossistema de startups através de metodologia e gamificação.
                   </p>
 
                   {/* Credentials/Tags */}
-                  <div className="flex flex-wrap gap-2 justify-center md:justify-start mb-6">
+                  <div className="flex flex-wrap gap-1.5 sm:gap-2 justify-center md:justify-start mb-5 sm:mb-6">
                     {[
                       'Administração',
                       'Marketing',
@@ -371,7 +405,7 @@ const AboutPage = () => {
                     ].map((tag, index) => (
                       <span
                         key={index}
-                        className="px-3 py-1 bg-primary-500/20 border border-primary-500/40 text-primary-500 rounded-full text-sm font-medium"
+                        className="px-2.5 py-1 bg-primary-500/20 border border-primary-500/40 text-primary-500 rounded-full text-xs sm:text-sm font-medium"
                       >
                         {tag}
                       </span>
@@ -379,11 +413,11 @@ const AboutPage = () => {
                   </div>
 
                   {/* Quote */}
-                  <div className="relative bg-white/5 border-l-4 border-primary-500 p-4 rounded-r-lg">
-                    <svg className="absolute top-2 left-2 w-6 h-6 text-primary-500/30" fill="currentColor" viewBox="0 0 24 24">
+                  <div className="relative bg-white/5 border-l-4 border-primary-500 p-3.5 sm:p-4 rounded-r-lg text-left">
+                    <svg className="absolute top-2 left-2 w-5 h-5 sm:w-6 sm:h-6 text-primary-500/30" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
                     </svg>
-                    <p className="text-gray-300 italic pl-6">
+                    <p className="text-gray-300 italic text-xs sm:text-base pl-5 sm:pl-6 leading-relaxed">
                       "Acredito que todo empreendedor merece acesso a ferramentas e metodologias que aumentem suas chances de sucesso. O Orientohub nasceu dessa missão."
                     </p>
                   </div>
@@ -395,7 +429,7 @@ const AboutPage = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="relative py-24 bg-gradient-to-br from-black via-gray-900 to-black overflow-hidden">
+      <section className="relative py-16 sm:py-24 bg-gradient-to-br from-black via-gray-900 to-black overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0" style={{
             backgroundImage: 'radial-gradient(circle at 2px 2px, #FFD700 1px, transparent 0)',
@@ -405,22 +439,22 @@ const AboutPage = () => {
 
         <div className="container-custom relative z-10">
           <motion.div
-            className="text-center max-w-3xl mx-auto"
+            className="text-center max-w-3xl mx-auto px-2"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6 text-white">
               Pronto para começar sua jornada?
             </h2>
-            <p className="text-xl text-gray-300 mb-8">
+            <p className="text-base sm:text-xl text-gray-300 mb-6 sm:mb-8">
               Junte-se a centenas de founders que já estão construindo suas startups com o Orientohub.
             </p>
             <a
               href="/cadastro"
-              className="inline-flex items-center gap-3 px-10 py-5 bg-primary-500 hover:bg-primary-600 text-black font-bold text-xl rounded-xl shadow-2xl shadow-primary-500/30 hover:shadow-primary-500/50 hover:scale-105 transition-all duration-300"
+              className="inline-flex w-full sm:w-auto items-center justify-center gap-3 px-8 sm:px-10 py-4 sm:py-5 bg-primary-500 hover:bg-primary-600 text-black font-bold text-lg sm:text-xl rounded-xl shadow-2xl shadow-primary-500/30 hover:shadow-primary-500/50 hover:scale-105 transition-all duration-300"
             >
-              <Rocket className="w-6 h-6" />
+              <Rocket className="w-5 h-5 sm:w-6 sm:h-6" />
               Comece Gratuitamente
             </a>
           </motion.div>
@@ -441,7 +475,7 @@ interface ValueCardProps {
 const ValueCard = ({ icon: Icon, title, description, delay }: ValueCardProps) => {
   return (
     <motion.div
-      className="group relative bg-white dark:bg-gray-800 p-8 rounded-2xl border-2 border-gray-200 dark:border-gray-700 hover:border-primary-500 dark:hover:border-primary-500 transition-all duration-300 hover:shadow-2xl hover:shadow-primary-500/10"
+      className="group relative bg-white dark:bg-gray-800 p-6 sm:p-8 rounded-2xl border-2 border-gray-200 dark:border-gray-700 hover:border-primary-500 dark:hover:border-primary-500 transition-all duration-300 hover:shadow-2xl hover:shadow-primary-500/10"
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
@@ -449,15 +483,15 @@ const ValueCard = ({ icon: Icon, title, description, delay }: ValueCardProps) =>
       whileHover={{ y: -8 }}
     >
       {/* Icon with black background */}
-      <div className="relative w-16 h-16 bg-black rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg">
+      <div className="relative w-12 h-12 sm:w-16 sm:h-16 bg-black rounded-xl flex items-center justify-center mb-4 sm:mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg">
         <div className="absolute inset-0 bg-primary-500/20 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-        <Icon className="relative w-8 h-8 text-primary-500" />
+        <Icon className="relative w-6 h-6 sm:w-8 sm:h-8 text-primary-500" />
       </div>
 
-      <h3 className="text-xl font-bold mb-3 group-hover:text-primary-500 transition-colors">
+      <h3 className="text-lg sm:text-xl font-bold mb-2 sm:mb-3 group-hover:text-primary-500 transition-colors">
         {title}
       </h3>
-      <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+      <p className="text-xs sm:text-base text-gray-600 dark:text-gray-400 leading-relaxed">
         {description}
       </p>
     </motion.div>
