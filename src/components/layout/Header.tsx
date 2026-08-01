@@ -84,21 +84,15 @@ const Header = () => {
   ];
 
   return (
-    <>
-      {/* Launch Banner */}
-      <div className="bg-gradient-to-r from-primary-500 to-primary-600 px-3 py-2 sm:px-4 sm:py-2.5">
+    <>      {/* Launch Banner */}
+      <div className="bg-gradient-to-r from-primary-500 to-primary-600 px-3 py-1.5 sm:px-4 sm:py-2">
         <div className="container-custom">
-          <div className="mx-auto flex max-w-4xl items-center justify-center gap-2 text-center text-[11px] font-semibold leading-tight text-black sm:gap-2.5 sm:text-sm sm:font-medium">
-            <span className="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-black/10">
-              <Rocket className="h-3.5 w-3.5 text-black" />
+          <div className="mx-auto flex max-w-4xl items-center justify-center gap-1.5 sm:gap-2.5 text-center text-[11px] sm:text-sm font-bold sm:font-semibold leading-tight text-black">
+            <span className="inline-flex h-5 w-5 sm:h-6 sm:w-6 shrink-0 items-center justify-center rounded-full bg-black/10">
+              <Rocket className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-black" />
             </span>
-            <span className="max-w-[18rem] sm:max-w-none">
-              <span className="sm:hidden">
-                Plataforma Pronta!
-                <br />
-                Lançamento Oficial em Breve
-              </span>
-              <span className="hidden sm:inline">Plataforma Pronta! Lançamento Oficial em Breve</span>
+            <span className="truncate max-w-[280px] xs:max-w-none">
+              Plataforma Pronta! Lançamento Oficial em Breve
             </span>
             <Sparkles className="hidden h-4 w-4 animate-pulse text-black/70 sm:block" />
           </div>
@@ -107,19 +101,19 @@ const Header = () => {
       
       <header className={`sticky top-0 z-50 transition-all duration-200 ${scrolled ? 'bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm shadow-sm' : 'bg-transparent dark:bg-[#14181f]/35'}`}>
         <div className="container-custom">
-          <div className="flex items-center justify-between h-16">
+          <div className="flex items-center justify-between h-14 sm:h-16">
             {/* Logo */}
             <div className="flex-shrink-0">
               <Link to="/" className="flex items-center">
                 <img 
                   src="/orientohub.png" 
                   alt="Orientohub" 
-                  className="h-7 w-auto dark:hidden"
+                  className="h-6 sm:h-7 w-auto dark:hidden"
                 />
                 <img 
                   src="/orientohub-dark.png" 
                   alt="Orientohub" 
-                  className="h-6 w-auto hidden dark:block"
+                  className="h-5 sm:h-6 w-auto hidden dark:block"
                 />
               </Link>
             </div>
@@ -215,10 +209,11 @@ const Header = () => {
             </div>
             
             {/* Mobile menu button */}
-            <div className="md:hidden">
+            <div className="md:hidden flex items-center gap-2">
               <button
                 onClick={toggleMenu}
-                className="text-gray-700 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400"
+                className="p-2 text-gray-700 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400 rounded-lg hover:bg-white/10 transition-colors"
+                aria-label="Abrir menu"
               >
                 {isOpen ? <X size={24} /> : <Menu size={24} />}
               </button>
@@ -235,20 +230,20 @@ const Header = () => {
               exit={{ opacity: 0, height: 0 }}
               className="md:hidden bg-white dark:bg-gray-900 border-t border-gray-100 dark:border-gray-800 shadow-2xl overflow-hidden"
             >
-              <div className="px-4 pt-4 pb-8 space-y-3 max-h-[calc(100vh-64px)] overflow-y-auto">
+              <div className="px-4 pt-3 pb-6 space-y-2.5 max-h-[calc(100vh-80px)] overflow-y-auto styled-scrollbar">
                 {navItems.map((item) => (
                   <div key={item.name}>
                     {item.subItems ? (
                       <div className="space-y-1">
                         <button
                           onClick={() => setActiveSubmenu(activeSubmenu === item.name ? null : item.name)}
-                          className="flex w-full items-center justify-between px-3 py-3 rounded-xl text-lg font-bold text-gray-800 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                          className="flex w-full items-center justify-between px-3 py-2.5 rounded-xl text-base font-bold text-gray-800 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-800/60 transition-colors"
                         >
-                          <div className="flex items-center gap-3">
-                            {item.icon && <item.icon className="w-5 h-5 text-primary-500" />}
+                          <div className="flex items-center gap-2.5">
+                            {item.icon && <item.icon className="w-4 h-4 text-primary-500" />}
                             {item.name}
                           </div>
-                          <ChevronDown className={`w-5 h-5 transition-transform duration-300 ${activeSubmenu === item.name ? 'rotate-180' : ''}`} />
+                          <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${activeSubmenu === item.name ? 'rotate-180' : ''}`} />
                         </button>
                         <AnimatePresence>
                           {activeSubmenu === item.name && (
@@ -256,15 +251,15 @@ const Header = () => {
                               initial={{ opacity: 0, height: 0 }}
                               animate={{ opacity: 1, height: 'auto' }}
                               exit={{ opacity: 0, height: 0 }}
-                              className="pl-11 space-y-1 overflow-hidden"
+                              className="pl-9 space-y-1 overflow-hidden"
                             >
                               {item.subItems.map((sub) => (
                                 <Link
                                   key={sub.name}
                                   to={sub.href}
-                                  className={`block px-3 py-2 text-base font-medium rounded-lg ${
+                                  className={`block px-3 py-2 text-sm font-medium rounded-lg ${
                                     location.pathname === sub.href
-                                      ? 'text-primary-500 bg-primary-500/5'
+                                      ? 'text-primary-500 bg-primary-500/10'
                                       : 'text-gray-600 dark:text-gray-400 hover:text-primary-500'
                                   }`}
                                   onClick={() => {
@@ -282,17 +277,17 @@ const Header = () => {
                     ) : (
                       <Link
                         to={item.href || '#'}
-                        className={`block px-3 py-3 rounded-xl text-lg font-bold transition-all ${
+                        className={`block px-3 py-2.5 rounded-xl text-base font-bold transition-all ${
                           location.pathname === item.href
-                            ? 'text-primary-500 bg-primary-500/5'
+                            ? 'text-primary-500 bg-primary-500/10'
                             : 'text-gray-800 dark:text-gray-100 hover:text-primary-500'
                         }`}
                         onClick={() => setIsOpen(false)}
                       >
-                        <div className="flex items-center gap-3">
-                          {item.name === t('nav.home') && <Layout className="w-5 h-5 text-primary-500" />}
-                          {item.name === t('nav.pricing') && <Sparkles className="w-5 h-5 text-primary-500" />}
-                          {item.name === 'Contato' && <MessageCircle className="w-5 h-5 text-primary-500" />}
+                        <div className="flex items-center gap-2.5">
+                          {item.name === t('nav.home') && <Layout className="w-4 h-4 text-primary-500" />}
+                          {item.name === t('nav.pricing') && <Sparkles className="w-4 h-4 text-primary-500" />}
+                          {item.name === 'Contato' && <MessageCircle className="w-4 h-4 text-primary-500" />}
                           {item.name}
                         </div>
                       </Link>
@@ -302,26 +297,20 @@ const Header = () => {
                 
                 <Link
                   to="/academy"
-                  className="flex items-center gap-3 px-4 py-3 rounded-xl font-bold bg-gradient-to-r from-primary-500/10 via-yellow-400/5 to-primary-500/10 border border-primary-500/20 text-primary-600 dark:text-primary-400 shadow-sm"
+                  className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl font-bold bg-gradient-to-r from-primary-500/15 via-yellow-400/10 to-primary-500/15 border border-primary-500/30 text-primary-600 dark:text-primary-400 shadow-sm"
                   onClick={() => setIsOpen(false)}
                 >
-                  <GraduationCap className="w-5 h-5" />
+                  <GraduationCap className="w-5 h-5 text-primary-500" />
                   Academy
                 </Link>
 
-                <div className="pt-4 mt-2 border-t border-gray-100 dark:border-gray-800 flex items-center justify-between px-3">
-                  <div className="flex items-center space-x-4">
-
-                    <button className="text-gray-700 dark:text-gray-300">
-                      <Globe size={22} />
-                    </button>
-                  </div>
+                <div className="pt-4 mt-2 border-t border-gray-100 dark:border-gray-800 flex flex-col gap-3 px-1">
                   {isAuthenticated ? (
-                    <Link to="/dashboard" className="btn-primary" onClick={() => setIsOpen(false)}>{t('common.dashboard')}</Link>
+                    <Link to="/dashboard" className="btn-primary w-full justify-center text-center py-2.5" onClick={() => setIsOpen(false)}>{t('common.dashboard')}</Link>
                   ) : (
-                    <div className="flex items-center space-x-2">
-                      <Link to="/entrar" className="btn-outline" onClick={() => setIsOpen(false)}>{t('common.signIn')}</Link>
-                      <Link to="/cadastro" className="btn-primary" onClick={() => setIsOpen(false)}>{t('common.signUp')}</Link>
+                    <div className="flex flex-col gap-2 w-full">
+                      <Link to="/entrar" className="btn-outline w-full justify-center text-center py-2.5" onClick={() => setIsOpen(false)}>{t('common.signIn')}</Link>
+                      <Link to="/cadastro" className="btn-primary w-full justify-center text-center py-2.5" onClick={() => setIsOpen(false)}>{t('common.signUp')}</Link>
                     </div>
                   )}
                 </div>

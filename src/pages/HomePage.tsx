@@ -192,34 +192,34 @@ const HomePage = () => {
       <div className="fixed inset-0 opacity-20 -z-50" style={heroBackgroundStyle} />
 
       {/* Hero */}
-      <section className="relative min-h-[100svh] w-full flex items-center">
-        <div className="relative z-10 container-custom pt-6 sm:pt-8 lg:pt-14 xl:pt-16 pb-0 flex items-center min-h-[100svh]">
+      <section className="relative min-h-[90vh] py-8 sm:py-14 lg:min-h-[100svh] w-full flex items-center">
+        <div className="relative z-10 container-custom pt-2 sm:pt-8 lg:pt-14 xl:pt-16 pb-0 flex items-center min-h-full">
           <motion.div
-            className="w-full max-w-4xl mx-auto -mt-2 sm:-mt-8 lg:-mt-4 xl:-mt-6 px-1 sm:px-0 text-center"
+            className="w-full max-w-4xl mx-auto px-1 sm:px-0 text-center"
             variants={containerVariants}
             initial="hidden"
             animate="visible"
           >
             <motion.div
-              className="flex justify-center mb-6 sm:mb-8"
+              className="flex justify-center mb-4 sm:mb-8"
               variants={itemVariants}
             >
-              <div className="inline-flex items-center gap-2.5 rounded-full border border-primary-400/40 bg-black/30 px-3.5 py-2 shadow-[0_0_30px_rgba(255,215,0,0.08)] backdrop-blur-md">
-                <Rocket className="h-3.5 w-3.5 text-primary-400" aria-hidden="true" />
-                <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-white sm:text-xs">
+              <div className="inline-flex items-center gap-2 rounded-full border border-primary-400/40 bg-black/40 px-3 py-1.5 sm:px-3.5 sm:py-2 shadow-[0_0_30px_rgba(255,215,0,0.08)] backdrop-blur-md">
+                <Rocket className="h-3.5 w-3.5 text-primary-400 shrink-0" aria-hidden="true" />
+                <span className="text-[10px] sm:text-xs font-semibold uppercase tracking-[0.12em] text-white">
                   Ecossistema de construção
                 </span>
               </div>
             </motion.div>
 
             <motion.h1
-              className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-center mb-6 tracking-tight leading-[1.08] flex flex-col items-center"
+              className="text-3xl xs:text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-center mb-4 sm:mb-6 tracking-tight leading-[1.1] sm:leading-[1.08] flex flex-col items-center"
               variants={itemVariants}
             >
-              <span className="block text-white mb-4 sm:mb-3">
+              <span className="block text-white mb-2 sm:mb-3">
                 <span className="block">Orientação e</span>
                 <span
-                  className="relative mx-auto mt-2 flex h-[1.35em] w-[15ch] items-center justify-center overflow-hidden text-center leading-[1.15] sm:w-[16ch]"
+                  className="relative mx-auto mt-1 sm:mt-2 flex h-[1.35em] w-[13ch] xs:w-[15ch] sm:w-[16ch] items-center justify-center overflow-hidden text-center leading-[1.15]"
                   aria-live="polite"
                 >
                   <AnimatePresence mode="wait" initial={false}>
@@ -239,19 +239,19 @@ const HomePage = () => {
             </motion.h1>
 
             <motion.p
-              className="text-xl sm:text-2xl text-gray-300 text-center max-w-3xl mx-auto mb-10 sm:mb-12 leading-relaxed"
+              className="text-base sm:text-xl md:text-2xl text-gray-300 text-center max-w-3xl mx-auto mb-8 sm:mb-12 leading-relaxed px-2"
               variants={itemVariants}
             >
               Da estratégia à execução: serviços, plataforma, MVPs e verticais conectados para transformar ideias em negócios.
             </motion.p>
 
             <motion.div
-              className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-4 w-full"
+              className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 sm:gap-4 w-full px-2 sm:px-0"
               variants={itemVariants}
             >
               <Link
                 to="/plataforma"
-                className="group inline-flex w-full sm:w-auto items-center justify-center gap-2 px-8 py-4 bg-primary-500 hover:bg-primary-600 text-black font-bold text-lg rounded-xl shadow-lg shadow-primary-500/25 hover:shadow-xl hover:shadow-primary-500/40 transition-all duration-300 hover:scale-105"
+                className="group inline-flex w-full sm:w-auto items-center justify-center gap-2 px-6 sm:px-8 py-3.5 sm:py-4 bg-primary-500 hover:bg-primary-600 text-black font-bold text-base sm:text-lg rounded-xl shadow-lg shadow-primary-500/25 hover:shadow-xl hover:shadow-primary-500/40 transition-all duration-300 hover:scale-105 active:scale-95"
               >
                 Conheça nossa plataforma
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -260,16 +260,14 @@ const HomePage = () => {
               <button
                 type="button"
                 onClick={() => setPresentationOpen(true)}
-                className="group inline-flex w-full sm:w-auto items-center justify-center gap-2 px-8 py-4 border-2 border-primary-500/50 hover:border-primary-500 hover:bg-primary-500/10 text-primary-500 font-bold text-lg rounded-xl backdrop-blur-sm transition-all duration-300"
+                className="group inline-flex w-full sm:w-auto items-center justify-center gap-2 px-6 sm:px-8 py-3.5 sm:py-4 border-2 border-primary-500/50 hover:border-primary-500 hover:bg-primary-500/10 text-primary-500 font-bold text-base sm:text-lg rounded-xl backdrop-blur-sm transition-all duration-300 active:scale-95"
               >
                 Veja como funciona
                 <MonitorPlay className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </button>
             </motion.div>
 
-
-
-            <div className="lg:hidden mt-10 sm:mt-12">
+            <div className="lg:hidden mt-8 sm:mt-12">
               <SectionDivider />
             </div>
           </motion.div>
@@ -282,47 +280,47 @@ const HomePage = () => {
 
       {presentationOpen && (
         <div
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 px-4 py-6 backdrop-blur-md"
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 p-2 sm:p-4 md:p-6 backdrop-blur-md"
           onClick={() => setPresentationOpen(false)}
         >
           <div
             ref={modalContentRef}
-            className="relative w-[min(98vw,1600px)] h-[min(95vh,980px)] overflow-hidden rounded-[32px] bg-gradient-to-b from-white/10 via-white/5 to-white/10 p-px shadow-[0_30px_120px_rgba(0,0,0,0.65)]"
+            className="relative w-[min(98vw,1600px)] h-[min(92vh,980px)] overflow-hidden rounded-2xl sm:rounded-[32px] bg-gradient-to-b from-white/10 via-white/5 to-white/10 p-px shadow-[0_30px_120px_rgba(0,0,0,0.65)]"
             onClick={(event) => event.stopPropagation()}
           >
-            <div className="flex h-full w-full flex-col overflow-hidden rounded-[31px] bg-[#0b0b0b]">
-              <div className="flex items-center justify-between border-b border-white/10 px-4 py-3 sm:px-5">
-                <div className="flex items-center gap-3">
-                  <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary-500/10 text-primary-500">
-                    <MonitorPlay className="h-5 w-5" />
+            <div className="flex h-full w-full flex-col overflow-hidden rounded-[15px] sm:rounded-[31px] bg-[#0b0b0b]">
+              <div className="flex items-center justify-between border-b border-white/10 px-3 py-2.5 sm:px-5 sm:py-3">
+                <div className="flex items-center gap-2.5">
+                  <div className="flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full bg-primary-500/10 text-primary-500 shrink-0">
+                    <MonitorPlay className="h-4 w-4 sm:h-5 sm:w-5" />
                   </div>
                   <div>
-                    <div className="text-sm font-semibold text-white">Apresentação OrientoHub</div>
-                    <div className="text-xs text-gray-400">Visualização do deck em tela central</div>
+                    <div className="text-xs sm:text-sm font-semibold text-white leading-tight">Apresentação OrientoHub</div>
+                    <div className="text-[10px] sm:text-xs text-gray-400 hidden xs:block">Visualização do deck em tela central</div>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1.5 sm:gap-2">
                   <button
                     type="button"
                     onClick={openFullscreen}
-                    className="inline-flex items-center gap-2 rounded-lg border border-white/10 px-3 py-2 text-sm font-semibold text-white transition-colors hover:border-primary-500 hover:bg-primary-500/10"
+                    className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 px-2.5 py-1.5 sm:px-3 sm:py-2 text-xs sm:text-sm font-semibold text-white transition-colors hover:border-primary-500 hover:bg-primary-500/10"
                   >
-                    <Maximize2 className="h-4 w-4" />
-                    Tela cheia
+                    <Maximize2 className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                    <span className="hidden sm:inline">Tela cheia</span>
                   </button>
                   <button
                     type="button"
                     onClick={() => setPresentationOpen(false)}
-                    className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-white/10 text-white transition-colors hover:border-primary-500 hover:bg-primary-500/10"
+                    className="inline-flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-lg border border-white/10 text-white transition-colors hover:border-primary-500 hover:bg-primary-500/10"
                     aria-label="Fechar apresentação"
                   >
-                    <X className="h-5 w-5" />
+                    <X className="h-4 w-4 sm:h-5 sm:w-5" />
                   </button>
                 </div>
               </div>
 
-              <div className="flex-1 overflow-hidden rounded-b-[31px] bg-black">
+              <div className="flex-1 overflow-hidden rounded-b-[15px] sm:rounded-b-[31px] bg-black">
                 <iframe
                   title="Apresentação OrientoHub"
                   src="/orientohub_pitch_deck_html.html"
@@ -338,20 +336,20 @@ const HomePage = () => {
       {/* Ecosystem overview */}
       <section className="relative pt-4 xl:pt-2 pb-8 overflow-hidden">
         <div className="container-custom relative z-10">
-          <div className="mb-11">
+          <div className="mb-8 sm:mb-11">
             <SectionHeader
               icon={Component}
               label="02 | Ecossistema"
               title="Do serviço ao ecossistema"
               description="A OrientoHub nasceu prestando serviços. Hoje, essa mesma raiz conecta o núcleo de serviços à plataforma, aos MVPs e às verticais que ampliam o ecossistema."
-              titleClassName="text-4xl md:text-5xl font-bold mb-6 text-gray-900 dark:text-white"
-              descriptionClassName="text-xl text-gray-600 dark:text-gray-300"
+              titleClassName="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6 text-gray-900 dark:text-white"
+              descriptionClassName="text-base sm:text-xl text-gray-600 dark:text-gray-300 px-2"
               containerClassName="max-w-4xl mx-auto"
             />
           </div>
 
           {expandedLayer ? (
-            <div className="max-w-6xl mx-auto space-y-5 md:space-y-6">
+            <div className="max-w-6xl mx-auto space-y-4 sm:space-y-6">
               <motion.div
                 className="w-full"
                 initial={{ opacity: 0, y: 10 }}
@@ -366,7 +364,7 @@ const HomePage = () => {
               </motion.div>
 
               <motion.div
-                className="grid grid-cols-1 lg:grid-cols-3 gap-5 md:gap-6"
+                className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6"
                 variants={containerVariants}
                 initial="hidden"
                 animate="visible"
@@ -382,7 +380,7 @@ const HomePage = () => {
             </div>
           ) : (
             <motion.div
-              className="grid grid-cols-1 lg:grid-cols-4 auto-rows-fr gap-5 md:gap-6 max-w-6xl mx-auto items-stretch"
+              className="grid grid-cols-1 lg:grid-cols-4 auto-rows-fr gap-4 sm:gap-6 max-w-6xl mx-auto items-stretch"
               variants={containerVariants}
               initial="hidden"
               whileInView="visible"
@@ -409,28 +407,28 @@ const HomePage = () => {
             icon={Users}
             label="03 — O Founder"
             title="Criado por quem vive o ecossistema"
-            titleClassName="text-4xl md:text-5xl font-bold mb-6 text-white"
+            titleClassName="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6 text-white"
           />
 
           <motion.div
-            className="max-w-2xl mx-auto bg-white/5 border border-white/10 rounded-2xl p-8 md:p-12 text-center shadow-xl backdrop-blur-sm hover:bg-white/10 transition-all"
+            className="max-w-2xl mx-auto bg-white/5 border border-white/10 rounded-2xl p-6 sm:p-8 md:p-12 text-center shadow-xl backdrop-blur-sm hover:bg-white/10 transition-all"
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             whileInView={{ opacity: 1, scale: 1, y: 0 }}
             viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.6 }}
           >
-            <h3 className="text-2xl md:text-3xl font-bold mb-4 text-white">
+            <h3 className="text-xl sm:text-2xl md:text-3xl font-bold mb-3 sm:mb-4 text-white">
               Fernando Ramalho
             </h3>
-            <p className="text-lg text-gray-300 mb-8 leading-relaxed">
+            <p className="text-sm sm:text-lg text-gray-300 mb-6 sm:mb-8 leading-relaxed">
               Empreendedor, inovador e construtor de ecossistemas. Fernando dedica sua vida a preparar a próxima geração de founders através de metodologias práticas, mentorias intensas e um compromisso genuíno com o sucesso de cada startup que passa pelo OrientoHub.
             </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 w-full">
               <a
                 href="https://fernandoramalhobuilder.com.br"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group inline-flex items-center gap-2 px-6 py-3 bg-primary-500 hover:bg-primary-600 text-black font-bold rounded-lg transition-all"
+                className="group inline-flex w-full sm:w-auto items-center justify-center gap-2 px-6 py-3.5 bg-primary-500 hover:bg-primary-600 text-black font-bold rounded-xl transition-all"
               >
                 Conheça Fernando
                 <ExternalLink className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -438,7 +436,7 @@ const HomePage = () => {
 
               <Link
                 to="/sobre"
-                className="group inline-flex items-center gap-2 px-6 py-3 border-2 border-primary-500/50 hover:border-primary-500 hover:bg-primary-500/10 text-primary-500 font-bold rounded-lg backdrop-blur-sm transition-all"
+                className="group inline-flex w-full sm:w-auto items-center justify-center gap-2 px-6 py-3.5 border-2 border-primary-500/50 hover:border-primary-500 hover:bg-primary-500/10 text-primary-500 font-bold rounded-xl backdrop-blur-sm transition-all"
               >
                 Saiba mais
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -457,12 +455,12 @@ const HomePage = () => {
             icon={Lightbulb}
             label="04 — Manifesto"
             title="Pense. Crie. Acelere."
-            titleClassName="text-5xl md:text-7xl font-bold mb-8 text-white leading-tight"
-            containerClassName="max-w-4xl mx-auto"
+            titleClassName="text-4xl sm:text-5xl md:text-7xl font-bold mb-6 sm:mb-8 text-white leading-tight"
+            containerClassName="max-w-4xl mx-auto px-2"
           />
 
           <motion.p
-            className="text-xl md:text-2xl text-gray-300 leading-relaxed mb-6 max-w-2xl mx-auto text-center"
+            className="text-lg sm:text-xl md:text-2xl text-gray-300 leading-relaxed mb-6 max-w-2xl mx-auto text-center px-2"
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.3 }}
@@ -472,7 +470,7 @@ const HomePage = () => {
           </motion.p>
 
           <motion.div
-            className="flex flex-col sm:flex-row items-center justify-center gap-4"
+            className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full px-2"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true, amount: 0.3 }}
@@ -480,7 +478,7 @@ const HomePage = () => {
           >
             <Link
               to="/manifesto"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-primary-500 hover:bg-primary-600 text-black font-bold rounded-lg transition-all"
+              className="inline-flex w-full sm:w-auto items-center justify-center gap-2 px-6 py-3.5 bg-primary-500 hover:bg-primary-600 text-black font-bold rounded-xl transition-all"
             >
               Leia o Manifesto Completo
               <ArrowRight className="w-4 h-4" />
@@ -494,19 +492,19 @@ const HomePage = () => {
       {/* Final actions */}
       <section className="relative pt-2 pb-8 overflow-hidden">
         <div className="container-custom relative z-10">
-          <div className="mb-14">
+          <div className="mb-10 sm:mb-14">
             <SectionHeader
               icon={ArrowRight}
               label="05 — Próximos Passos"
               title="Sua jornada começa aqui"
               description="Escolha como você quer explorar o OrientoHub e começar a transformar suas ideias em realidade"
-              titleClassName="text-4xl md:text-5xl font-bold mb-6 text-white"
-              descriptionClassName="text-xl text-gray-300"
+              titleClassName="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6 text-white"
+              descriptionClassName="text-base sm:text-xl text-gray-300 px-2"
             />
           </div>
 
           <motion.div
-            className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto mb-8"
+            className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6 max-w-4xl mx-auto mb-8 px-1 sm:px-0"
             variants={containerVariants}
             initial="hidden"
             whileInView="visible"
@@ -518,20 +516,20 @@ const HomePage = () => {
           </motion.div>
 
           <motion.div
-            className="text-center"
+            className="text-center px-2"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true, amount: 0.3 }}
             transition={{ delay: 0.3 }}
           >
-            <p className="text-gray-400 mb-6">Pronto para começar sua transformação?</p>
+            <p className="text-sm sm:text-base text-gray-400 mb-5 sm:mb-6">Pronto para começar sua transformação?</p>
             <Link
               to="/plataforma"
-              className="group inline-flex items-center gap-3 px-10 py-5 bg-primary-500 hover:bg-primary-600 text-black font-bold text-lg rounded-xl shadow-2xl shadow-primary-500/30 hover:shadow-primary-500/50 hover:scale-105 transition-all duration-300"
+              className="group inline-flex w-full sm:w-auto items-center justify-center gap-3 px-8 sm:px-10 py-4 sm:py-5 bg-primary-500 hover:bg-primary-600 text-black font-bold text-base sm:text-lg rounded-xl shadow-2xl shadow-primary-500/30 hover:shadow-primary-500/50 hover:scale-105 transition-all duration-300"
             >
-              <Sparkles className="w-6 h-6 group-hover:rotate-12 transition-transform" />
+              <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 group-hover:rotate-12 transition-transform" />
               Comece Grátis
-              <ArrowRight className="w-6 h-6 group-hover:translate-x-2 transition-transform" />
+              <ArrowRight className="w-5 h-5 sm:w-6 sm:h-6 group-hover:translate-x-2 transition-transform" />
             </Link>
           </motion.div>
         </div>
@@ -588,10 +586,10 @@ const EcosystemCard = ({ layer, compact = false, expanded = false, onToggleExpan
   const isVerticais = layer.number === '04';
   const canExpand = (isNucleus || isPlataforma || isMVPs || isVerticais) && Boolean(onToggleExpand);
   // Refined mobile paddings: more compact on small screens
-  const shellPadding = expanded ? 'p-5 sm:p-8 lg:p-10' : 'p-4 sm:p-5 md:p-6';
+  const shellPadding = expanded ? 'p-4 sm:p-8 lg:p-10' : 'p-4 sm:p-5 md:p-6';
   const is2ColumnLayout = expanded && isNucleus;
   const cardLayout = is2ColumnLayout
-    ? 'grid gap-6 lg:gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-center'
+    ? 'grid gap-5 lg:gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-center'
     : 'flex h-full flex-col';
 
   // Dynamic branding based on layer.brandColor
@@ -614,10 +612,10 @@ const EcosystemCard = ({ layer, compact = false, expanded = false, onToggleExpan
 
   return (
     <motion.div
-      className={`group relative overflow-hidden rounded-2xl border bg-white/90 dark:bg-gray-900/85 shadow-[0_12px_40px_rgba(0,0,0,0.06)] dark:shadow-none backdrop-blur-md transition-all duration-300 ${expanded
+      className={`group relative overflow-hidden rounded-2xl border bg-white/90 dark:bg-gray-900/85 shadow-[0_12px_40px_rgba(0,0,0,0.06)] dark:shadow-none backdrop-blur-md transition-all duration-300 active:scale-[0.99] ${expanded
           ? `border-${brandColor}-500/60 shadow-[0_28px_80px_rgba(0,0,0,0.16)]`
           : `border-gray-200/80 dark:border-gray-700/50 hover:border-${brandColor}-500 dark:hover:border-${brandColor}-500`
-        } ${shellPadding} h-full ${expanded ? 'min-h-[280px] sm:min-h-[320px]' : 'min-h-[270px] sm:min-h-[290px]'} ${canExpand || expanded ? 'cursor-pointer' : 'cursor-default'}`}
+        } ${shellPadding} h-full ${expanded ? 'min-h-[260px] sm:min-h-[320px]' : 'min-h-[250px] sm:min-h-[290px]'} ${canExpand || expanded ? 'cursor-pointer' : 'cursor-default'}`}
       variants={itemVariants}
       role={canExpand ? 'button' : undefined}
       tabIndex={canExpand ? 0 : undefined}
@@ -638,30 +636,30 @@ const EcosystemCard = ({ layer, compact = false, expanded = false, onToggleExpan
       <div className={`absolute inset-0 opacity-0 group-hover:opacity-10 bg-gradient-to-br ${layer.color} transition-opacity duration-300`} />
 
       <div className={`relative z-10 h-full ${cardLayout}`}>
-        <div className={expanded ? 'flex flex-col justify-between gap-5' : 'flex h-full flex-col'}>
-          <div className="flex items-center justify-between gap-4 mb-3">
+        <div className={expanded ? 'flex flex-col justify-between gap-4 sm:gap-5' : 'flex h-full flex-col'}>
+          <div className="flex items-center justify-between gap-4 mb-2 sm:mb-3">
             <span className={`${expanded ? 'text-3xl sm:text-5xl' : compact ? 'text-2xl' : 'text-3xl sm:text-4xl'} font-bold ${getStyle('faded')}`}>
               {layer.number}
             </span>
-            {!expanded && <Icon className={`${compact ? 'w-6 h-6' : 'w-7 h-7 sm:w-8 sm:h-8'} ${getStyle('text')} group-hover:scale-110 transition-transform`} />}
+            {!expanded && <Icon className={`${compact ? 'w-5 h-5' : 'w-6 h-6 sm:w-8 sm:h-8'} ${getStyle('text')} group-hover:scale-110 transition-transform`} />}
           </div>
 
           <div className={`${expanded && isNucleus ? 'max-w-2xl' : expanded ? 'w-full' : ''} ${isNucleus && !expanded ? 'max-w-xl' : ''}`}>
             {isNucleus && (
-              <span className={`inline-flex items-center gap-2 mb-3 text-[10px] sm:text-xs font-bold uppercase tracking-[0.18em] ${getStyle('text')}`}>
+              <span className={`inline-flex items-center gap-2 mb-2 sm:mb-3 text-[10px] sm:text-xs font-bold uppercase tracking-[0.18em] ${getStyle('text')}`}>
                 <span className={`h-1.5 w-1.5 rounded-full ${getStyle('bg')}`} />
                 Origem da OrientoHub
               </span>
             )}
-            <h3 className={`${expanded ? 'text-2xl sm:text-4xl' : compact ? 'text-lg sm:text-xl' : 'text-xl sm:text-2xl'} font-bold mb-2 sm:mb-3 text-gray-900 dark:text-white leading-tight`}>
+            <h3 className={`${expanded ? 'text-xl sm:text-4xl' : compact ? 'text-lg sm:text-xl' : 'text-xl sm:text-2xl'} font-bold mb-1.5 sm:mb-3 text-gray-900 dark:text-white leading-tight`}>
               {layer.title}
             </h3>
-            <p className={`${expanded ? 'text-sm sm:text-lg max-w-2xl' : compact ? 'text-xs sm:text-[0.95rem]' : 'text-sm sm:text-base text-gray-600 dark:text-gray-400 line-clamp-2'} mb-4 sm:mb-5 leading-relaxed`}>
+            <p className={`${expanded ? 'text-xs sm:text-lg max-w-2xl' : compact ? 'text-xs sm:text-[0.95rem]' : 'text-xs sm:text-base text-gray-600 dark:text-gray-400 line-clamp-2'} mb-3 sm:mb-5 leading-relaxed`}>
               {!expanded && layer.shortDescription ? layer.shortDescription : layer.description}
             </p>
 
             {isNucleus && !expanded && (
-              <div className="flex flex-wrap gap-1.5 mb-4 sm:mb-5" aria-label="Serviços do Núcleo">
+              <div className="flex flex-wrap gap-1.5 mb-3 sm:mb-5" aria-label="Serviços do Núcleo">
                 {['Estratégia', 'Inovação & IA', 'Construção & Growth'].map((service) => (
                   <span
                     key={service}
@@ -674,12 +672,12 @@ const EcosystemCard = ({ layer, compact = false, expanded = false, onToggleExpan
             )}
 
             {isNucleus && expanded ? (
-              <div className="flex flex-col gap-6">
-                <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+              <div className="flex flex-col gap-4 sm:gap-6">
+                <div className="grid gap-2.5 sm:gap-3 grid-cols-2 lg:grid-cols-4">
                   {['Estratégia', 'Inovação & IA', 'Marketing & Design', 'Construção'].map((item) => (
                     <div
                       key={item}
-                      className="rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-white/5 px-4 py-3 text-sm text-gray-700 dark:text-gray-200 font-medium text-center"
+                      className="rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-white/5 px-3 py-2.5 sm:px-4 sm:py-3 text-xs sm:text-sm text-gray-700 dark:text-gray-200 font-medium text-center"
                     >
                       {item}
                     </div>
@@ -690,15 +688,15 @@ const EcosystemCard = ({ layer, compact = false, expanded = false, onToggleExpan
                   href="https://fernandoramalhobuilder.com.br"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-primary-500 hover:bg-primary-600 text-black font-bold rounded-xl transition-all w-fit group shadow-lg shadow-primary-500/20 hover:shadow-primary-500/30"
+                  className="inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-3 bg-primary-500 hover:bg-primary-600 text-black font-bold rounded-xl transition-all w-full sm:w-fit group shadow-lg shadow-primary-500/20 hover:shadow-primary-500/30 text-sm"
                 >
                   Conheça as possibilidades
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </a>
               </div>
             ) : isPlataforma && expanded ? (
-              <div className="flex flex-col gap-5 mt-2">
-                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+              <div className="flex flex-col gap-4 sm:gap-5 mt-2">
+                <div className="grid grid-cols-2 xs:grid-cols-3 lg:grid-cols-5 gap-2.5 sm:gap-3">
                   {[
                     { id: 1, name: 'Ideação', icon: Lightbulb, color: 'from-blue-400 to-blue-600', bgColor: 'bg-blue-500/10' },
                     { id: 2, name: 'Validação', icon: Target, color: 'from-green-400 to-green-600', bgColor: 'bg-green-500/10' },
@@ -710,10 +708,10 @@ const EcosystemCard = ({ layer, compact = false, expanded = false, onToggleExpan
                     return (
                       <div
                         key={phase.name}
-                        className="p-3 rounded-xl border border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-sm flex flex-col items-center sm:items-start text-center sm:text-left gap-2"
+                        className="p-2.5 sm:p-3 rounded-xl border border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-sm flex flex-col items-center sm:items-start text-center sm:text-left gap-1.5 sm:gap-2"
                       >
-                        <div className={`w-8 h-8 sm:w-10 sm:h-10 ${phase.bgColor} rounded-lg flex items-center justify-center`}>
-                          <PhaseIcon className={`w-4 h-4 sm:w-5 sm:h-5 bg-gradient-to-br ${phase.color} bg-clip-text`} style={{ WebkitTextFillColor: 'transparent' }} />
+                        <div className={`w-7 h-7 sm:w-10 sm:h-10 ${phase.bgColor} rounded-lg flex items-center justify-center`}>
+                          <PhaseIcon className={`w-3.5 h-3.5 sm:w-5 sm:h-5 bg-gradient-to-br ${phase.color} bg-clip-text`} style={{ WebkitTextFillColor: 'transparent' }} />
                         </div>
                         <h4 className="font-bold text-[11px] sm:text-sm tracking-tight text-gray-900 dark:text-white leading-tight">{phase.name}</h4>
                       </div>
@@ -721,9 +719,9 @@ const EcosystemCard = ({ layer, compact = false, expanded = false, onToggleExpan
                   })}
                 </div>
                 
-                <div className="p-4 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800/50 dark:to-gray-800/80 rounded-xl border border-gray-200 dark:border-gray-700">
-                  <h4 className="text-gray-900 dark:text-white font-bold mb-1.5 flex items-center gap-2 text-sm sm:text-base">
-                    <Sparkles className="w-4 h-4 text-primary-500" />
+                <div className="p-3.5 sm:p-4 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800/50 dark:to-gray-800/80 rounded-xl border border-gray-200 dark:border-gray-700">
+                  <h4 className="text-gray-900 dark:text-white font-bold mb-1 flex items-center gap-2 text-xs sm:text-base">
+                    <Sparkles className="w-4 h-4 text-primary-500 shrink-0" />
                     Caminho Integrado
                   </h4>
                   <p className="text-gray-600 dark:text-gray-400 text-xs sm:text-base leading-relaxed">
@@ -732,8 +730,8 @@ const EcosystemCard = ({ layer, compact = false, expanded = false, onToggleExpan
                 </div>
               </div>
             ) : isMVPs && expanded ? (
-              <div className="flex flex-col gap-5 mt-2">
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
+              <div className="flex flex-col gap-4 sm:gap-5 mt-2">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-4">
                   {[
                     { title: "Humansys + BrainSys", type: "Gestão de Pessoas", status: "Ativo", icon: Brain, color: "text-blue-500", border: 'border-blue-500/20' },
                     { title: "Simples Metrics", type: "Growth & Analytics", status: "Ativo", icon: BarChart3, color: "text-emerald-500", border: 'border-emerald-500/20' },
@@ -744,19 +742,19 @@ const EcosystemCard = ({ layer, compact = false, expanded = false, onToggleExpan
                   ].map((mvp, idx) => {
                     const MvpIcon = mvp.icon;
                     return (
-                      <div key={idx} className={`p-4 sm:p-5 rounded-xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-800/80 shadow-sm hover:shadow-md transition-all flex flex-col h-full group`}>
-                        <div className="flex items-center justify-between mb-3 sm:mb-5">
-                          <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl flex items-center justify-center bg-gray-50 dark:bg-gray-900/50 border ${mvp.border}`}>
-                            <MvpIcon className={`w-5 h-5 sm:w-6 sm:h-6 ${mvp.color}`} />
+                      <div key={idx} className="p-3.5 sm:p-5 rounded-xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-800/80 shadow-sm hover:shadow-md transition-all flex flex-col h-full group">
+                        <div className="flex items-center justify-between mb-2.5 sm:mb-5">
+                          <div className={`w-9 h-9 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl flex items-center justify-center bg-gray-50 dark:bg-gray-900/50 border ${mvp.border}`}>
+                            <MvpIcon className={`w-4 h-4 sm:w-6 sm:h-6 ${mvp.color}`} />
                           </div>
-                          <span className={`text-[9px] sm:text-[10px] font-bold px-2 py-1 rounded-md uppercase tracking-wider ${mvp.status === 'Beta' ? 'bg-amber-100 dark:bg-amber-500/10 text-amber-700 dark:text-amber-400' : 'bg-primary-50 dark:bg-primary-500/10 text-primary-700 dark:text-primary-400'}`}>
+                          <span className={`text-[9px] sm:text-[10px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wider ${mvp.status === 'Beta' ? 'bg-amber-100 dark:bg-amber-500/10 text-amber-700 dark:text-amber-400' : 'bg-primary-50 dark:bg-primary-500/10 text-primary-700 dark:text-primary-400'}`}>
                             {mvp.status}
                           </span>
                         </div>
                         
                         <div className="mt-auto">
-                          <h4 className="font-bold text-[14px] sm:text-base text-gray-900 dark:text-white mb-0.5 sm:mb-1 leading-tight">{mvp.title}</h4>
-                          <span className="text-[12px] sm:text-[13px] font-medium text-gray-500 dark:text-gray-400">
+                          <h4 className="font-bold text-xs sm:text-base text-gray-900 dark:text-white mb-0.5 sm:mb-1 leading-tight">{mvp.title}</h4>
+                          <span className="text-[11px] sm:text-[13px] font-medium text-gray-500 dark:text-gray-400">
                             {mvp.type}
                           </span>
                         </div>
@@ -765,9 +763,9 @@ const EcosystemCard = ({ layer, compact = false, expanded = false, onToggleExpan
                   })}
                 </div>
                 
-                <div className="p-4 bg-gradient-to-br from-blue-50 to-blue-100/30 dark:from-blue-900/10 dark:to-transparent rounded-xl border border-blue-100 dark:border-gray-800">
-                  <h4 className="text-gray-900 dark:text-white font-bold mb-1 flex items-center gap-2 text-sm sm:text-base">
-                    <Sparkles className="w-4 h-4 text-blue-500" />
+                <div className="p-3.5 sm:p-4 bg-gradient-to-br from-blue-50 to-blue-100/30 dark:from-blue-900/10 dark:to-transparent rounded-xl border border-blue-100 dark:border-gray-800">
+                  <h4 className="text-gray-900 dark:text-white font-bold mb-1 flex items-center gap-2 text-xs sm:text-base">
+                    <Sparkles className="w-4 h-4 text-blue-500 shrink-0" />
                     Laboratório Prático
                   </h4>
                   <p className="text-gray-500 dark:text-gray-400 text-xs sm:text-sm leading-relaxed">
@@ -776,8 +774,8 @@ const EcosystemCard = ({ layer, compact = false, expanded = false, onToggleExpan
                 </div>
               </div>
             ) : isVerticais && expanded ? (
-              <div className="flex flex-col gap-5 mt-2">
-                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3 sm:gap-4">
+              <div className="flex flex-col gap-4 sm:gap-5 mt-2">
+                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-2.5 sm:gap-4">
                   {[
                     { title: "Oriento Podcast", desc: "Podcast com founders e parceiros.", status: "Em Breve", icon: Mic, color: "text-purple-500", border: 'border-purple-500/20' },
                     { title: "Oriento Academy", desc: "Cursos voltados à inovação.", status: "Em Breve", icon: GraduationCap, color: "text-amber-500", border: 'border-amber-500/20' },
@@ -786,26 +784,26 @@ const EcosystemCard = ({ layer, compact = false, expanded = false, onToggleExpan
                   ].map((vert, idx) => {
                     const VertIcon = vert.icon;
                     return (
-                      <div key={idx} className={`p-4 sm:p-5 rounded-xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-800/80 shadow-sm flex flex-col h-full group`}>
-                        <div className="flex items-center justify-between mb-3 sm:mb-5">
-                          <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl flex items-center justify-center bg-gray-50 dark:bg-gray-900/50 border ${vert.border}`}>
-                            <VertIcon className={`w-5 h-5 sm:w-6 sm:h-6 ${vert.color}`} />
+                      <div key={idx} className="p-3.5 sm:p-5 rounded-xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-800/80 shadow-sm flex flex-col h-full group">
+                        <div className="flex items-center justify-between mb-2.5 sm:mb-5">
+                          <div className={`w-9 h-9 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl flex items-center justify-center bg-gray-50 dark:bg-gray-900/50 border ${vert.border}`}>
+                            <VertIcon className={`w-4 h-4 sm:w-6 sm:h-6 ${vert.color}`} />
                           </div>
-                          <span className={`text-[9px] sm:text-[10px] font-bold px-2 py-1 rounded-md uppercase tracking-wider ${vert.status === 'Em Breve' ? 'bg-gray-100 dark:bg-gray-500/10 text-gray-600 dark:text-gray-400' : 'bg-primary-50 dark:bg-primary-500/10 text-primary-700 dark:text-primary-400'}`}>
+                          <span className={`text-[9px] sm:text-[10px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wider ${vert.status === 'Em Breve' ? 'bg-gray-100 dark:bg-gray-500/10 text-gray-600 dark:text-gray-400' : 'bg-primary-50 dark:bg-primary-500/10 text-primary-700 dark:text-primary-400'}`}>
                             {vert.status}
                           </span>
                         </div>
                         
                         <div className="mt-auto flex flex-col">
-                          <h4 className="font-bold text-[14px] sm:text-base text-gray-900 dark:text-white mb-1 leading-tight">{vert.title}</h4>
-                          <p className="text-[12px] sm:text-[13px] font-medium text-gray-500 dark:text-gray-400 leading-relaxed mb-3">
+                          <h4 className="font-bold text-xs sm:text-base text-gray-900 dark:text-white mb-1 leading-tight">{vert.title}</h4>
+                          <p className="text-[11px] sm:text-[13px] font-medium text-gray-500 dark:text-gray-400 leading-relaxed mb-2.5">
                             {vert.desc}
                           </p>
                           
                           {vert.subItems && (
-                            <div className="flex flex-wrap gap-1.5">
+                            <div className="flex flex-wrap gap-1">
                               {vert.subItems.map((item, itemIdx) => (
-                                <span key={itemIdx} className={`text-[9px] font-semibold px-2 py-1 bg-gray-50 dark:bg-gray-900/50 border ${vert.border} rounded-md text-gray-600 dark:text-gray-300`}>
+                                <span key={itemIdx} className={`text-[9px] font-semibold px-1.5 py-0.5 bg-gray-50 dark:bg-gray-900/50 border ${vert.border} rounded-md text-gray-600 dark:text-gray-300`}>
                                   {item}
                                 </span>
                               ))}
@@ -833,19 +831,19 @@ const EcosystemCard = ({ layer, compact = false, expanded = false, onToggleExpan
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Conheça as possibilidades de serviços do Núcleo"
-            className={`inline-flex items-center justify-center gap-2 px-5 py-3 mt-auto text-sm font-bold text-black ${getStyle('bg')} hover:opacity-90 rounded-xl shadow-lg ${getStyle('shadow')} transition-all duration-300 group-hover:-translate-y-1 w-fit`}
+            className={`inline-flex items-center justify-center gap-2 px-5 py-3 mt-auto text-sm font-bold text-black ${getStyle('bg')} hover:opacity-90 rounded-xl shadow-lg ${getStyle('shadow')} transition-all duration-300 group-hover:-translate-y-1 w-full sm:w-fit`}
             onClick={(event) => event.stopPropagation()}
           >
             Conheça as possibilidades <ExternalLink className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </a>
         ) : canExpand && !expanded ? (
-          <div className={`inline-flex items-center justify-center gap-2 px-6 py-3 mt-auto text-sm font-bold text-black ${getStyle('bg')} hover:opacity-90 rounded-xl shadow-lg ${getStyle('shadow')} transition-all duration-300 group-hover:-translate-y-1 w-fit`}>
+          <div className={`inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-3 mt-auto text-sm font-bold text-black ${getStyle('bg')} hover:opacity-90 rounded-xl shadow-lg ${getStyle('shadow')} transition-all duration-300 group-hover:-translate-y-1 w-full sm:w-fit`}>
             Ver detalhes <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </div>
         ) : layer.ctaLabel ? (
           <Link
             to={layer.href ?? '/ecossistema'}
-            className={`inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-bold text-black ${getStyle('bg')} hover:opacity-90 rounded-xl shadow-lg ${getStyle('shadow')} transition-all duration-300 hover:-translate-y-1 w-fit group/btn ${expanded ? 'mt-6' : 'mt-auto'}`}
+            className={`inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-3 text-sm font-bold text-black ${getStyle('bg')} hover:opacity-90 rounded-xl shadow-lg ${getStyle('shadow')} transition-all duration-300 hover:-translate-y-1 w-full sm:w-fit group/btn ${expanded ? 'mt-4 sm:mt-6' : 'mt-auto'}`}
             onClick={(e) => {
               if (canExpand) e.stopPropagation();
             }}
@@ -865,12 +863,12 @@ const QuickActionCard = ({ action }: { action: QuickAction }) => {
     <motion.div className="group relative" variants={itemVariants}>
       <Link
         to={action.link}
-        className="block h-full p-8 rounded-2xl border border-primary-500/30 bg-white/90 dark:bg-gray-900/85 shadow-[0_18px_50px_rgba(0,0,0,0.08)] backdrop-blur-md hover:bg-white/[0.98] dark:hover:bg-gray-900 transition-all duration-300 hover:border-primary-500"
+        className="block h-full p-5 sm:p-8 rounded-2xl border border-primary-500/30 bg-white/90 dark:bg-gray-900/85 shadow-[0_18px_50px_rgba(0,0,0,0.08)] backdrop-blur-md hover:bg-white/[0.98] dark:hover:bg-gray-900 transition-all duration-300 hover:border-primary-500 active:scale-[0.98]"
       >
-        <Icon className="w-8 h-8 text-[#FFD700] mb-4 group-hover:scale-110 transition-transform" />
-        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">{action.title}</h3>
-        <p className="text-gray-600 dark:text-gray-400 mb-6 leading-relaxed">{action.description}</p>
-        <span className="inline-flex items-center gap-2 text-[#FFD700] font-semibold group-hover:gap-3 transition-all">
+        <Icon className="w-7 h-7 sm:w-8 sm:h-8 text-[#FFD700] mb-3 sm:mb-4 group-hover:scale-110 transition-transform" />
+        <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white mb-2 sm:mb-3">{action.title}</h3>
+        <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 mb-4 sm:mb-6 leading-relaxed">{action.description}</p>
+        <span className="inline-flex items-center gap-2 text-sm sm:text-base text-[#FFD700] font-semibold group-hover:gap-3 transition-all">
           Ir agora <ArrowRight className="w-4 h-4" />
         </span>
       </Link>
