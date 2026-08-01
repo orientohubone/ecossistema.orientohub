@@ -65,26 +65,26 @@ const PlatformaPage = () => {
         </div>
 
         {/* Content */}
-        <div className="relative z-10 container-custom pt-32 pb-24">
+        <div className="relative z-10 container-custom pt-24 sm:pt-32 pb-16 sm:pb-24">
           <div className="max-w-5xl mx-auto">
             {/* Badge */}
             <motion.div
-              className="flex justify-center mb-8"
+              className="flex justify-center mb-6 sm:mb-8 px-2"
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <div className="group relative inline-flex items-center justify-center overflow-hidden rounded-full border border-primary-400/35 bg-white/6 px-5 py-2.5 text-primary-300 shadow-[0_10px_35px_rgba(255,215,0,0.12)] backdrop-blur-md">
+              <div className="group relative inline-flex items-center justify-center overflow-hidden rounded-full border border-primary-400/35 bg-white/6 px-3.5 py-1.5 sm:px-5 sm:py-2.5 text-primary-300 shadow-[0_10px_35px_rgba(255,215,0,0.12)] backdrop-blur-md max-w-full">
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.18),transparent_55%)] opacity-80" />
                 <div className="absolute inset-[1px] rounded-full bg-gradient-to-r from-black/70 via-gray-900/75 to-black/70" />
-                <div className="relative mr-3 flex h-7 w-7 items-center justify-center rounded-full border border-primary-400/30 bg-primary-500/15 shadow-[0_0_18px_rgba(255,215,0,0.2)]">
-                  <Sparkles className="h-3.5 w-3.5 flex-shrink-0 text-primary-400" />
+                <div className="relative mr-2 sm:mr-3 flex h-6 w-6 sm:h-7 sm:w-7 shrink-0 items-center justify-center rounded-full border border-primary-400/30 bg-primary-500/15 shadow-[0_0_18px_rgba(255,215,0,0.2)]">
+                  <Sparkles className="h-3 w-3 sm:h-3.5 sm:w-3.5 flex-shrink-0 text-primary-400" />
                 </div>
-                <span className="relative text-[11px] font-bold uppercase tracking-[0.22em] text-primary-400/80">
+                <span className="relative text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.16em] sm:tracking-[0.22em] text-primary-400/90 whitespace-nowrap">
                   Orientohub Plataforma
                 </span>
-                <span className="relative mx-3 h-1 w-1 rounded-full bg-primary-500/70" />
-                <span className="relative text-sm font-semibold text-center text-white/92">
+                <span className="hidden sm:inline-block relative mx-3 h-1 w-1 rounded-full bg-primary-500/70" />
+                <span className="hidden sm:inline relative text-sm font-semibold text-center text-white/92">
                   O hub para quem constrói o futuro das startups
                 </span>
               </div>
@@ -92,23 +92,23 @@ const PlatformaPage = () => {
 
             {/* Main heading */}
             <motion.h1
-              className="text-5xl sm:text-6xl lg:text-7xl font-bold text-center mb-6 tracking-tight"
+              className="text-3xl xs:text-4xl sm:text-6xl lg:text-7xl font-bold text-center mb-4 sm:mb-6 tracking-tight leading-tight px-2"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
             >
-              <span className="block text-white mb-2">
+              <span className="block text-white mb-1.5 sm:mb-2">
                 Construa sua startup
               </span>
               <RotatingText />
-              <span className="block text-white mt-2">
+              <span className="block text-white mt-1.5 sm:mt-2">
                 e diversão
               </span>
             </motion.h1>
 
             {/* Description */}
             <motion.p
-              className="text-xl sm:text-2xl text-gray-300 text-center max-w-3xl mx-auto mb-7 leading-relaxed"
+              className="text-base sm:text-xl md:text-2xl text-gray-300 text-center max-w-3xl mx-auto mb-6 sm:mb-7 leading-relaxed px-2"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
@@ -126,14 +126,14 @@ const PlatformaPage = () => {
 
             {/* CTA Buttons */}
             <motion.div
-              className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8"
+              className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 sm:gap-4 mb-6 sm:mb-8 px-2 sm:px-0 w-full"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.6 }}
             >
               <a
                 href="/cadastro"
-                className="group inline-flex items-center gap-2 px-8 py-4 bg-primary-500 hover:bg-primary-600 text-black font-bold text-lg rounded-lg shadow-lg shadow-primary-500/25 hover:shadow-xl hover:shadow-primary-500/30 transition-all duration-300"
+                className="group inline-flex w-full sm:w-auto items-center justify-center gap-2 px-6 sm:px-8 py-3.5 sm:py-4 bg-primary-500 hover:bg-primary-600 text-black font-bold text-base sm:text-lg rounded-xl shadow-lg shadow-primary-500/25 hover:shadow-xl hover:shadow-primary-500/30 transition-all duration-300 active:scale-95"
               >
                 <Rocket className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 Comece sua jornada
@@ -142,7 +142,7 @@ const PlatformaPage = () => {
 
               <Link
                 to="/contato"
-                className="group inline-flex items-center gap-2 px-8 py-4 border-2 border-primary-500/50 hover:border-primary-500 hover:bg-primary-500/10 text-primary-500 font-bold text-lg rounded-lg backdrop-blur-sm transition-all"
+                className="group inline-flex w-full sm:w-auto items-center justify-center gap-2 px-6 sm:px-8 py-3.5 sm:py-4 border-2 border-primary-500/50 hover:border-primary-500 hover:bg-primary-500/10 text-primary-500 font-bold text-base sm:text-lg rounded-xl backdrop-blur-sm transition-all active:scale-95"
               >
                 <MessageCircle className="w-5 h-5 group-hover:scale-110 transition-transform" />
                 Entre em contato
@@ -151,17 +151,17 @@ const PlatformaPage = () => {
 
             {/* Subtext */}
             <motion.p
-              className="text-center text-sm text-gray-400 flex items-center justify-center gap-2"
+              className="text-center text-xs sm:text-sm text-gray-400 flex items-center justify-center gap-2 px-2"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.8, delay: 0.8 }}
             >
-              <Zap className="w-4 h-4 text-primary-500" />
+              <Zap className="w-4 h-4 text-primary-500 shrink-0" />
               Comece gratuitamente, sem cartão de crédito
             </motion.p>
 
             {/* Feature cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-20 max-w-4xl mx-auto">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mt-12 sm:mt-20 max-w-4xl mx-auto px-1 sm:px-0">
               {[
                 {
                   icon: Sparkles,
@@ -184,20 +184,20 @@ const PlatformaPage = () => {
               ].map((feature, index) => (
                 <motion.div
                   key={index}
-                  className="group relative p-6 rounded-2xl border border-primary-500/20 bg-gray-900/50 backdrop-blur-sm hover:bg-primary-500/10 hover:border-primary-500/40 transition-all duration-300 hover:shadow-lg hover:shadow-primary-500/10"
+                  className="group relative p-5 sm:p-6 rounded-2xl border border-primary-500/20 bg-gray-900/50 backdrop-blur-sm hover:bg-primary-500/10 hover:border-primary-500/40 transition-all duration-300 hover:shadow-lg hover:shadow-primary-500/10"
                   initial={{ y: 15 }}
                   whileInView={{ y: 0 }}
                   viewport={{ once: true, amount: 0.3 }}
                   transition={{ duration: 0.4, delay: feature.delay * 0.3, ease: "easeOut" }}
                   whileHover={{ y: -5 }}
                 >
-                  <div className="w-12 h-12 rounded-xl bg-primary-500/20 flex items-center justify-center mb-4 group-hover:bg-primary-500/30 transition-colors">
-                    <feature.icon className="w-6 h-6 text-primary-500" />
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-primary-500/20 flex items-center justify-center mb-3 sm:mb-4 group-hover:bg-primary-500/30 transition-colors">
+                    <feature.icon className="w-5 h-5 sm:w-6 sm:h-6 text-primary-500" />
                   </div>
-                  <h3 className="text-lg font-semibold mb-2 text-white">
+                  <h3 className="text-base sm:text-lg font-semibold mb-1.5 sm:mb-2 text-white">
                     {feature.title}
                   </h3>
-                  <p className="text-sm text-gray-400">
+                  <p className="text-xs sm:text-sm text-gray-400">
                     {feature.description}
                   </p>
                 </motion.div>
@@ -208,20 +208,20 @@ const PlatformaPage = () => {
       </section>
 
       {/* Features Section */}
-      <section className="py-20 bg-white dark:bg-gray-900">
+      <section className="py-12 sm:py-20 bg-white dark:bg-gray-900">
         <div className="container-custom">
-          <div className="text-center max-w-3xl mx-auto mb-16">
+          <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-16">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
             >
-              <h2 className="text-3xl md:text-4xl font-bold mb-6">{t('home.features.title')}</h2>
-              <p className="text-xl text-gray-600 dark:text-gray-300">{t('home.features.subtitle')}</p>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6 px-2">{t('home.features.title')}</h2>
+              <p className="text-base sm:text-xl text-gray-600 dark:text-gray-300 px-2">{t('home.features.subtitle')}</p>
             </motion.div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-8">
             <FeatureCard
               icon={<Users className="w-8 h-8" />}
               title="Ecossistema Colaborativo"
@@ -263,7 +263,7 @@ const PlatformaPage = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="relative py-32 bg-gradient-to-br from-black via-gray-900 to-black overflow-hidden">
+      <section className="relative py-16 sm:py-32 bg-gradient-to-br from-black via-gray-900 to-black overflow-hidden">
         {/* Animated background elements */}
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary-500/20 rounded-full blur-3xl animate-pulse" />
@@ -280,7 +280,7 @@ const PlatformaPage = () => {
 
         <div className="container-custom relative z-10">
           <motion.div
-            className="relative overflow-hidden rounded-[2rem] border border-primary-500/20 bg-white/[0.04] px-6 py-14 text-center shadow-[0_20px_80px_rgba(0,0,0,0.35)] backdrop-blur-md max-w-5xl mx-auto md:px-12"
+            className="relative overflow-hidden rounded-2xl sm:rounded-[2rem] border border-primary-500/20 bg-white/[0.04] px-4 sm:px-6 py-10 sm:py-14 text-center shadow-[0_20px_80px_rgba(0,0,0,0.35)] backdrop-blur-md max-w-5xl mx-auto md:px-12"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -291,7 +291,7 @@ const PlatformaPage = () => {
 
             {/* Badge */}
             <motion.div
-              className="relative mb-8 inline-flex items-center gap-3 overflow-hidden rounded-full border border-primary-400/35 bg-white/6 px-5 py-2.5 text-primary-300 shadow-[0_10px_35px_rgba(255,215,0,0.12)] backdrop-blur-md"
+              className="relative mb-6 sm:mb-8 inline-flex items-center gap-2.5 sm:gap-3 overflow-hidden rounded-full border border-primary-400/35 bg-white/6 px-4 py-2 sm:px-5 sm:py-2.5 text-primary-300 shadow-[0_10px_35px_rgba(255,215,0,0.12)] backdrop-blur-md max-w-full"
               initial={{ opacity: 0, scale: 0.8 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
@@ -299,17 +299,17 @@ const PlatformaPage = () => {
             >
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.18),transparent_55%)] opacity-80" />
               <div className="absolute inset-[1px] rounded-full bg-gradient-to-r from-black/70 via-gray-900/75 to-black/70" />
-              <div className="relative flex h-7 w-7 items-center justify-center rounded-full border border-primary-400/30 bg-primary-500/15 shadow-[0_0_18px_rgba(255,215,0,0.2)]">
-                <Rocket className="h-3.5 w-3.5 text-primary-400" />
+              <div className="relative flex h-6 w-6 sm:h-7 sm:w-7 shrink-0 items-center justify-center rounded-full border border-primary-400/30 bg-primary-500/15 shadow-[0_0_18px_rgba(255,215,0,0.2)]">
+                <Rocket className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-primary-400" />
               </div>
-              <span className="relative text-primary-500 font-bold text-sm uppercase tracking-[0.2em]">
+              <span className="relative text-primary-500 font-bold text-xs sm:text-sm uppercase tracking-[0.16em] sm:tracking-[0.2em]">
                 Comece agora
               </span>
             </motion.div>
 
             {/* Title */}
             <motion.h2
-              className="relative text-4xl md:text-6xl font-bold mb-6 text-white leading-tight"
+              className="relative text-3xl sm:text-4xl md:text-6xl font-bold mb-4 sm:mb-6 text-white leading-tight"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -320,7 +320,7 @@ const PlatformaPage = () => {
 
             {/* Subtitle */}
             <motion.p
-              className="relative text-xl md:text-2xl text-gray-300 mb-12 leading-relaxed max-w-2xl mx-auto"
+              className="relative text-base sm:text-xl md:text-2xl text-gray-300 mb-8 sm:mb-12 leading-relaxed max-w-2xl mx-auto px-2"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -331,7 +331,7 @@ const PlatformaPage = () => {
 
             {/* CTA Button */}
             <motion.div
-              className="relative flex flex-col sm:flex-row items-center justify-center gap-4"
+              className="relative flex flex-col sm:flex-row items-center justify-center gap-4 w-full"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -339,24 +339,28 @@ const PlatformaPage = () => {
             >
               <Link
                 to="/cadastro"
-                className="group inline-flex items-center gap-3 px-10 py-5 bg-primary-500 hover:bg-primary-600 text-black font-bold text-xl rounded-xl shadow-2xl shadow-primary-500/30 hover:shadow-primary-500/50 hover:scale-105 transition-all duration-300"
+                className="group inline-flex w-full sm:w-auto items-center justify-center gap-3 px-8 sm:px-10 py-4 sm:py-5 bg-primary-500 hover:bg-primary-600 text-black font-bold text-lg sm:text-xl rounded-xl shadow-2xl shadow-primary-500/30 hover:shadow-primary-500/50 hover:scale-105 transition-all duration-300"
               >
-                <Sparkles className="w-6 h-6 group-hover:rotate-12 transition-transform" />
+                <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 group-hover:rotate-12 transition-transform" />
                 {t('home.cta.button')}
-                <ArrowRight className="w-6 h-6 group-hover:translate-x-2 transition-transform" />
+                <ArrowRight className="w-5 h-5 sm:w-6 sm:h-6 group-hover:translate-x-2 transition-transform" />
               </Link>
             </motion.div>
 
             {/* Additional info */}
             <motion.p
-              className="relative mt-12 text-sm text-gray-400 flex items-center justify-center gap-2"
+              className="relative mt-8 sm:mt-12 text-xs sm:text-sm text-gray-400 flex flex-wrap items-center justify-center gap-2 px-2"
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
               transition={{ delay: 0.8 }}
             >
-              <Zap className="w-4 h-4 text-primary-500" />
-              Grátis para começar • Sem cartão de crédito • Cancele quando quiser
+              <Zap className="w-4 h-4 text-primary-500 shrink-0" />
+              <span>Grátis para começar</span>
+              <span>•</span>
+              <span>Sem cartão de crédito</span>
+              <span>•</span>
+              <span>Cancele quando quiser</span>
             </motion.p>
           </motion.div>
         </div>

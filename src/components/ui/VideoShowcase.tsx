@@ -16,31 +16,31 @@ const VideoShowcase = ({ image, videoUrl, alt, playerOffsetX = '0px', playerOffs
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="w-full flex flex-col items-center justify-center py-10">
+    <div className="w-full flex flex-col items-center justify-center py-6 sm:py-10 px-1 sm:px-0">
       <div className="relative group max-w-5xl mx-auto w-full">
         {/* Depth glow backdrop */}
-        <div className="absolute -inset-10 -z-10">
-          <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/50 via-amber-300/30 to-transparent blur-3xl opacity-80" />
-          <div className="absolute inset-10 bg-yellow-300/20 blur-[120px]" />
+        <div className="absolute -inset-4 sm:-inset-10 -z-10 overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/40 via-amber-300/20 to-transparent blur-2xl sm:blur-3xl opacity-80" />
+          <div className="absolute inset-6 sm:inset-10 bg-yellow-300/15 blur-[60px] sm:blur-[120px]" />
         </div>
 
         {/* Container with animated border */}
-        <div className="relative rounded-3xl overflow-hidden">
+        <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden">
           <GlowBorder duration={3600} rx={28} ry={28} />
 
           {/* Inner content with padding for border */}
-          <div className="absolute inset-[3px] rounded-3xl bg-white dark:bg-gray-900" />
+          <div className="absolute inset-[2px] sm:inset-[3px] rounded-2xl sm:rounded-3xl bg-white dark:bg-gray-900" />
 
           {/* Image container */}
-          <div className="relative m-[3px] rounded-3xl overflow-hidden shadow-2xl">
+          <div className="relative m-[2px] sm:m-[3px] rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl">
             <img
               src={image}
               alt={alt || 'Demo'}
-              className="relative w-full h-auto object-cover rounded-3xl min-h-[420px] max-h-[600px] object-top"
+              className="relative w-full h-auto object-cover rounded-2xl sm:rounded-3xl min-h-0 sm:min-h-[380px] lg:min-h-[420px] max-h-[600px] object-top"
             />
             
             {/* Overlay gradient on hover */}
-            <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-3xl" />
+            <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl sm:rounded-3xl" />
 
             {/*
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
