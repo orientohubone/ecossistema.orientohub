@@ -479,10 +479,10 @@ const EcosystemPage = () => {
           </motion.div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
             <VerticalCard
-              logo="/orientocast-logo.png"
-              title="Oriento Podcast"
+              logo="/orientados-logo.png"
+              title="Orientados"
               emoji="🎙️"
-              description="Podcast com founders e parceiros para difundir ideias do ecossistema"
+              description="Cada conversa é uma oportunidade de construir uma ideia, transformar uma decisão e evoluir uma trajetória."
               features={["Episódios semanais", "Convidados especiais", "Insights exclusivos"]}
               status="active"
               delay={0.1}
