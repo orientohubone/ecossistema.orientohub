@@ -47,6 +47,7 @@ export default async function handler(request: VercelRequest, response: VercelRe
   const today = new Date().toISOString().slice(0, 10);
   const cycle = billing === 'annual' ? 'YEARLY' : 'MONTHLY';
   const amount = billing === 'annual' ? 970 : product.value;
+  let stage = 'criar checkout no Asaas';
 
   try {
     const asaasResponse = await fetch(`${asaasBaseUrl.replace(/\/$/, '')}/checkouts`, {
@@ -66,11 +67,20 @@ export default async function handler(request: VercelRequest, response: VercelRe
         subscription: { cycle, nextDueDate: today },
       }),
     });
-    const asaasData = await asaasResponse.json();
+    const rawAsaasBody = await asaasResponse.text();
+    let asaasData: any = {};
+    try {
+      asaasData = rawAsaasBody ? JSON.parse(rawAsaasBody) : {};
+    } catch {
+      asaasData = { message: rawAsaasBody };
+    }
     if (!asaasResponse.ok || !asaasData.url) {
-      return response.status(asaasResponse.status || 502).json({ message: asaasData.errors?.[0]?.description || asaasData.message || 'Não foi possível criar o checkout.' });
+      return response.status(asaasResponse.status || 502).json({
+        message: asaasData.errors?.[0]?.description || asaasData.message || 'O Asaas não retornou uma URL de checkout.',
+      });
     }
 
+    stage = 'registrar assinatura no Supabase';
     const admin = createClient(supabaseUrl, supabaseServiceRoleKey, { auth: { persistSession: false } });
     const { error: databaseError } = await admin.from('billing_subscriptions').insert({
       user_id: authData.user.id,
@@ -83,8 +93,10 @@ export default async function handler(request: VercelRequest, response: VercelRe
     if (databaseError) throw databaseError;
 
     return response.status(200).json({ checkoutUrl: asaasData.url });
-  } catch (error) {
+  } catch (error: any) {
     console.error('Erro ao criar checkout Asaas:', error);
-    return response.status(500).json({ message: 'Não foi possível iniciar o checkout. Tente novamente.' });
+    return response.status(500).json({
+      message: `Falha ao ${stage}: ${error?.message || 'erro inesperado'}`,
+    });
   }
 }
