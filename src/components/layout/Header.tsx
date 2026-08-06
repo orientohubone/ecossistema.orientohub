@@ -66,6 +66,7 @@ const Header = () => {
       icon: Layout,
       subItems: [
         { name: t('nav.ecosystem'), href: '/ecossistema' },
+        { name: 'Serviços', href: '/servicos' },
         { name: 'Plataforma', href: '/plataforma' },
         { name: 'Manifesto', href: '/manifesto' },
       ]

@@ -17,7 +17,6 @@ import {
   Shield,
   Zap,
   Network,
-  Code,
   Database,
   BookOpen,
   Briefcase,
@@ -371,45 +370,17 @@ const EcosystemPage = () => {
               ]}
             />
             <MVPCard
-              name="Simples Metrics"
-              description="Plataforma de marketing analítico focada em performance e growth para startups e negócios digitais."
-              focus="Growth & Analytics"
-              icon={<BarChart3 className="w-12 h-12 text-white" />}
-              color="from-green-500 to-emerald-500"
-              delay={0.2}
-              link="https://simplesmetrics.com.br"
-              status="active"
-              metrics={[
-                { label: 'Métricas', value: '100+' },
-                { label: 'Integrações', value: '20+' }
-              ]}
-            />
-            <MVPCard
-              name="Vo.ai"
-              description="Plataforma de convergência vocacional com testes de perfil e inteligência artificial para autoconhecimento."
-              focus="Educação & IA"
-              icon={<Compass className="w-12 h-12 text-white" />}
-              color="from-purple-500 to-pink-500"
-              delay={0.3}
-              link="https://vo.ai"
-              status="beta"
-              metrics={[
-                { label: 'Testes', value: '15k+' },
-                { label: 'Precisão', value: '94%' }
-              ]}
-            />
-            <MVPCard
-              name="Vibe Coding"
-              description="Stack de tecnologia com IA aplicada ao desenvolvimento, automação de código e produtividade para devs."
-              focus="Tech & Automação"
-              icon={<Code className="w-12 h-12 text-white" />}
-              color="from-orange-500 to-red-500"
+              name="Intentia"
+              description="Do diagnóstico à execução: estratégia completa para mídia B2B. Analise a prontidão do seu negócio, enriqueça insights com IA, compare-se com concorrentes e monte planos táticos por canal — tudo em uma plataforma."
+              focus="Estratégia para mídia B2B"
+              icon={<Target className="w-12 h-12 text-white" />}
+              color="from-[#ff571a] to-[#ff8a3d]"
               delay={0.4}
-              link="https://vibecodingstack.netlify.app/"
+              link="https://intentia.com.br"
               status="active"
               metrics={[
-                { label: 'Ferramentas', value: '30+' },
-                { label: 'Economia', value: '60%' }
+                { label: 'Diagnóstico', value: 'B2B' },
+                { label: 'Planos', value: 'Por canal' }
               ]}
             />
             <MVPCard
@@ -576,7 +547,7 @@ const EcosystemPage = () => {
             />
             <BusinessModelCard
               icon={Mic}
-              title="Branding via OrientoCast"
+              title="Branding através do Orientados!"
               description="Parcerias e patrocínios estratégicos"
               delay={0.3}
             />

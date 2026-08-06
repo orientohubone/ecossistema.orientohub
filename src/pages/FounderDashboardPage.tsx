@@ -415,12 +415,12 @@ const FounderDashboardPage = () => {
                                                 <div className="flex-1">
                                                     <div className="flex items-start justify-between mb-2">
                                                         <div>
-                                                            <h4 className="font-semibold text-gray-900 dark:text-white">v1.5.0 - Integração Stripe</h4>
+                                                            <h4 className="font-semibold text-gray-900 dark:text-white">v1.5.0 - Integração Asaas</h4>
                                                             <p className="text-sm text-gray-500 dark:text-gray-400">15 de Outubro, 2025</p>
                                                         </div>
                                                     </div>
                                                     <ul className="space-y-1 text-sm text-gray-600 dark:text-gray-400">
-                                                        <li>💳 Integração completa com Stripe</li>
+                                                        <li>💳 Integração completa com Asaas</li>
                                                         <li>📦 Sistema de planos e assinaturas</li>
                                                         <li>🔐 Checkout seguro e webhooks</li>
                                                     </ul>

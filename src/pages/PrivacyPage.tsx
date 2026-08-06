@@ -95,7 +95,7 @@ const PrivacyPage = () => {
           title: 'Prestadores de Serviços',
           items: [
             'Provedores de hospedagem em nuvem (AWS, Google Cloud)',
-            'Serviços de pagamento (Stripe, PagSeguro)',
+            'Serviços de pagamento (Asaas)',
             'Ferramentas de análise (Google Analytics)',
             'Serviços de e-mail marketing'
           ]

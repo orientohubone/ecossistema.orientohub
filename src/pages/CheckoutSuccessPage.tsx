@@ -72,7 +72,7 @@ const CheckoutSuccessPage = () => {
                             transition={{ delay: 0.3 }}
                             className="text-3xl md:text-4xl font-bold text-center mb-4"
                         >
-                            🎉 Pagamento Confirmado!
+                            🎉 Checkout recebido!
                         </motion.h1>
 
                         <motion.p
@@ -81,7 +81,7 @@ const CheckoutSuccessPage = () => {
                             transition={{ delay: 0.4 }}
                             className="text-center text-gray-600 dark:text-gray-400 mb-8"
                         >
-                            Sua assinatura foi ativada com sucesso
+                            Assim que o Asaas confirmar o pagamento, sua assinatura será ativada automaticamente.
                         </motion.p>
 
                         {/* Detalhes do Plano */}
@@ -132,9 +132,9 @@ const CheckoutSuccessPage = () => {
                             <div className="flex items-start gap-3 p-4 bg-gray-50 dark:bg-gray-900 rounded-xl">
                                 <Download className="w-5 h-5 text-primary-500 flex-shrink-0 mt-0.5" />
                                 <div>
-                                    <p className="font-semibold text-sm">Acesse o Dashboard</p>
+                                    <p className="font-semibold text-sm">Acompanhe pelo Dashboard</p>
                                     <p className="text-sm text-gray-600 dark:text-gray-400">
-                                        Comece a usar todos os recursos do seu plano
+                                        O acesso aos recursos premium será liberado após a confirmação do pagamento.
                                     </p>
                                 </div>
                             </div>

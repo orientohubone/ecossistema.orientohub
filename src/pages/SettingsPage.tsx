@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
@@ -47,6 +47,7 @@ import {
   Rocket
 } from 'lucide-react';
 import { useAuthStore } from '../stores/authStore';
+import { Link, useSearchParams } from 'react-router-dom';
 
 interface PlanFeature {
   name: string;
@@ -56,7 +57,7 @@ interface PlanFeature {
 interface Plan {
   id: string;
   name: string;
-  price: number;
+  price: number | string;
   period: string;
   description: string;
   features: PlanFeature[];
@@ -135,7 +136,9 @@ const SettingsPage = () => {
   }
   const { t } = useTranslation();
   const { user, logout } = useAuthStore();
-  const [activeTab, setActiveTab] = useState('profile');
+  const [searchParams] = useSearchParams();
+  const initialTab = searchParams.get('tab') === 'plan' ? 'plan' : 'profile';
+  const [activeTab, setActiveTab] = useState(initialTab);
   const [darkMode, setDarkMode] = useState(document.documentElement.classList.contains('dark'));
   const [showPassword, setShowPassword] = useState(false);
   const fieldClassName = "w-full px-4 py-2.5 border-2 border-gray-200 dark:border-gray-600 rounded-xl focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 focus:outline-none bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500";
@@ -144,11 +147,29 @@ const SettingsPage = () => {
   const [errorMessage, setErrorMessage] = useState('');
 
   // User data (mock - em produção viria do Supabase)
-  const currentPlan = 'free';
+  const [currentPlan, setCurrentPlan] = useState('free');
   const accountCreatedAt = '2024-01-15';
   const totalProjects = 5;
   const totalSolutions = 2;
   const totalPoints = 2850;
+
+  useEffect(() => {
+    if (!user) return;
+
+    const loadCurrentPlan = async () => {
+      const { data } = await supabase
+        .from('billing_subscriptions')
+        .select('plan')
+        .eq('user_id', user.id)
+        .eq('status', 'active')
+        .order('updated_at', { ascending: false })
+        .limit(1)
+        .maybeSingle();
+      setCurrentPlan(data?.plan || 'free');
+    };
+
+    loadCurrentPlan();
+  }, [user]);
 
   const plans: Plan[] = [
     {
@@ -171,7 +192,7 @@ const SettingsPage = () => {
     {
       id: 'pro',
       name: 'Pro',
-      price: 49.90,
+      price: 97,
       period: 'mês',
       description: 'Para founders sérios',
       popular: true,
@@ -189,8 +210,8 @@ const SettingsPage = () => {
     {
       id: 'enterprise',
       name: 'Enterprise',
-      price: 199.90,
-      period: 'mês',
+      price: 'Sob consulta',
+      period: '',
       description: 'Para equipes e aceleradoras',
       current: currentPlan === 'enterprise',
       features: [
@@ -615,10 +636,10 @@ const SettingsPage = () => {
                           </p>
                         </div>
                         {currentPlan !== 'enterprise' && (
-                          <button className="w-full shrink-0 px-5 py-3 sm:w-auto sm:px-6 bg-primary-500 hover:bg-primary-600 text-black font-bold rounded-xl transition-all flex items-center justify-center gap-2">
+                          <Link to="/planos" className="w-full shrink-0 px-5 py-3 sm:w-auto sm:px-6 bg-primary-500 hover:bg-primary-600 text-black font-bold rounded-xl transition-all flex items-center justify-center gap-2">
                             <TrendingUp className="w-5 h-5" />
                             Fazer Upgrade
-                          </button>
+                          </Link>
                         )}
                       </div>
                     </div>
@@ -652,8 +673,12 @@ const SettingsPage = () => {
                           <div className="text-center mb-6">
                             <h3 className="mb-2 text-lg font-bold lg:text-2xl">{plan.name}</h3>
                             <div className="flex items-baseline justify-center gap-1 mb-2">
-                              <span className="text-xl font-bold lg:text-4xl">R$ {plan.price.toFixed(2)}</span>
-                              <span className="text-xs text-gray-600 dark:text-gray-400 lg:text-sm">/{plan.period}</span>
+                              <span className="text-xl font-bold lg:text-4xl">
+                                {typeof plan.price === 'number'
+                                  ? `R$ ${plan.price.toFixed(2).replace('.', ',')}`
+                                  : plan.price}
+                              </span>
+                              {plan.period && <span className="text-xs text-gray-600 dark:text-gray-400 lg:text-sm">/{plan.period}</span>}
                             </div>
                             <p className="text-sm text-gray-600 dark:text-gray-400">{plan.description}</p>
                           </div>
@@ -673,17 +698,24 @@ const SettingsPage = () => {
                             ))}
                           </ul>
 
-                          <button
-                            disabled={plan.current}
-                            className={`w-full rounded-xl py-2.5 text-xs font-bold transition-all lg:py-3 lg:text-sm ${plan.current
-                                ? 'bg-gray-200 dark:bg-gray-700 text-gray-500 cursor-not-allowed'
-                                : plan.popular
-                                  ? 'bg-primary-500 hover:bg-primary-600 text-black'
-                                  : 'border-2 border-gray-300 dark:border-gray-600 hover:border-primary-500'
+                          {plan.current ? (
+                            <button
+                              disabled
+                              className="w-full cursor-not-allowed rounded-xl bg-gray-200 py-2.5 text-xs font-bold text-gray-500 transition-all dark:bg-gray-700 lg:py-3 lg:text-sm"
+                            >
+                              Plano Atual
+                            </button>
+                          ) : (
+                            <Link
+                              to={plan.id === 'enterprise' ? '/contato' : '/checkout?plan=pro&billing=monthly'}
+                              className={`block w-full rounded-xl py-2.5 text-center text-xs font-bold transition-all lg:py-3 lg:text-sm ${plan.popular
+                                ? 'bg-primary-500 text-black hover:bg-primary-600'
+                                : 'border-2 border-gray-300 dark:border-gray-600 hover:border-primary-500'
                               }`}
-                          >
-                            {plan.current ? 'Plano Atual' : 'Selecionar Plano'}
-                          </button>
+                            >
+                              {plan.id === 'enterprise' ? 'Falar com vendas' : 'Selecionar Plano'}
+                            </Link>
+                          )}
                         </div>
                       ))}
                     </div>

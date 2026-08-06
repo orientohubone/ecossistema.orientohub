@@ -28,6 +28,7 @@ import {
 } from 'lucide-react';
 import { useAuthStore } from '../stores/authStore';
 import ContactFab from '../components/layout/ContactFab';
+import { supabase } from '../config/supabase';
 
 const DashboardLayout = () => {
   const { t } = useTranslation();
@@ -178,7 +179,7 @@ const DashboardLayout = () => {
                 <div className="flex items-center gap-4">
                   <div className="hidden sm:flex items-center gap-3 text-sm">
                     <span className="text-gray-600 dark:text-gray-300">Plano: <strong className="ml-1 text-primary-600 dark:text-primary-400">Free</strong></span>
-                    <button className="px-3 py-1 bg-primary-500 hover:bg-primary-600 text-black rounded-md text-sm font-medium">Upgrade</button>
+                    <Link to="/planos" className="px-3 py-1 bg-primary-500 hover:bg-primary-600 text-black rounded-md text-sm font-medium">Upgrade</Link>
                   </div>
                   <div className="flex items-center gap-3"><UserMenu user={user} /></div>
                 </div>
@@ -435,6 +436,22 @@ const SidebarLink = ({ item, pathname, collapsed = false, onNavigate }: { item: 
 };
 
 const PlanCTA = ({ compact = false }: { compact?: boolean }) => {
+  const { user } = useAuthStore();
+  const [plan, setPlan] = useState('free');
+
+  useEffect(() => {
+    if (!user) return;
+    supabase
+      .from('billing_subscriptions')
+      .select('plan')
+      .eq('user_id', user.id)
+      .eq('status', 'active')
+      .order('updated_at', { ascending: false })
+      .limit(1)
+      .maybeSingle()
+      .then(({ data }) => setPlan(data?.plan || 'free'));
+  }, [user]);
+
   return compact ? (
     <div className="flex items-center justify-center p-2"><Crown className="w-5 h-5 text-yellow-400" /></div>
   ) : (
@@ -442,13 +459,13 @@ const PlanCTA = ({ compact = false }: { compact?: boolean }) => {
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-3">
           <Crown className="w-6 h-6 text-yellow-400" />
-          <div><p className="text-sm font-semibold">Plano Atual</p><p className="text-xs text-gray-500">Gratuito</p></div>
+          <div><p className="text-sm font-semibold">Plano Atual</p><p className="text-xs text-gray-500">{plan === 'pro' ? 'Pro' : plan === 'enterprise' ? 'Enterprise' : 'Gratuito'}</p></div>
         </div>
         <Sparkles className="w-5 h-5 text-primary-500" />
       </div>
       <div className="flex items-center gap-2">
-        <button className="flex-1 px-3 py-2 bg-primary-500 hover:bg-primary-600 text-black rounded-md text-sm font-medium">Upgrade</button>
-        <button className="px-3 py-2 border rounded-md text-sm">Detalhes</button>
+        <Link to="/planos" className="flex-1 px-3 py-2 bg-primary-500 hover:bg-primary-600 text-black rounded-md text-sm font-medium text-center">{plan === 'free' ? 'Upgrade' : 'Ver planos'}</Link>
+        <Link to="/dashboard/settings?tab=plan" className="px-3 py-2 border rounded-md text-sm">Detalhes</Link>
       </div>
     </div>
   );

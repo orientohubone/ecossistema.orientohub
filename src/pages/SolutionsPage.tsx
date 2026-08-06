@@ -648,7 +648,7 @@ const SolutionDetailsPage = memo(({ solution, onBack, onEdit, onDelete, getHealt
               <div className="p-10 bg-gray-50 dark:bg-gray-900 rounded-[2rem] border-2 border-dashed border-gray-200 dark:border-gray-700 text-center">
                 <BarChart2 className="w-12 h-12 text-gray-300 mx-auto mb-4" />
                 <h4 className="text-xl font-bold mb-2">Growth Dashboard Integrado</h4>
-                <p className="text-gray-500 text-sm max-w-md mx-auto leading-relaxed">Prepare sua solução para escala. Sincronização com Stripe e Google Analytics chegando em breve para automatizar seus resultados.</p>
+                <p className="text-gray-500 text-sm max-w-md mx-auto leading-relaxed">Prepare sua solução para escala. Sincronização com pagamentos e Google Analytics chegando em breve para automatizar seus resultados.</p>
               </div>
             </div>
           </div>

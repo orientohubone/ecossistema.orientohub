@@ -104,7 +104,7 @@ const PricingPage = () => {
     },
     {
       question: 'Quais formas de pagamento são aceitas?',
-      answer: 'Aceitamos cartões de crédito (Visa, Mastercard, American Express, Elo), PIX e boleto bancário para pagamentos no Brasil. Para planos Enterprise, também oferecemos faturamento.'
+      answer: 'A assinatura Pro é paga por cartão de crédito no checkout seguro do Asaas. Para o plano Enterprise, avaliamos as condições de faturamento com você.'
     },
     {
       question: 'Há taxa de cancelamento?',

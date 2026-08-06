@@ -1,369 +1,88 @@
-import { useState, useEffect } from 'react';
+import { FormEvent, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { useLocation, Link } from 'react-router-dom';
-import { Elements } from '@stripe/react-stripe-js';
-import { stripePromise } from '../lib/stripe';
-import { CheckoutForm } from '../components/CheckoutForm';
-import {
-  Lock,
-  Shield,
-  Check,
-  ArrowLeft,
-  Sparkles,
-  User,
-  Loader2,
-  AlertCircle
-} from 'lucide-react';
-
-const stripePublicKey = import.meta.env.VITE_STRIPE_PUBLIC_KEY || '';
-const isStripeLiveMode = stripePublicKey.startsWith('pk_live_');
+import { AlertCircle, ArrowLeft, Check, CreditCard, Loader2, Lock, Shield } from 'lucide-react';
+import { supabase } from '../config/supabase';
+import { useAuthStore } from '../stores/authStore';
 
 const CheckoutPage = () => {
   const location = useLocation();
-
-  const [clientSecret, setClientSecret] = useState<string | null>(null);
-  const [isLoadingPaymentIntent, setIsLoadingPaymentIntent] = useState(false);
-  const [paymentError, setPaymentError] = useState<string | null>(null);
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
+  const { user } = useAuthStore();
+  const params = useMemo(() => new URLSearchParams(location.search), [location.search]);
+  const plan = params.get('plan') === 'pro' ? 'pro' : 'pro';
+  const billing = params.get('billing') === 'annual' ? 'annual' : 'monthly';
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [form, setForm] = useState({
+    name: user?.user_metadata?.name || '',
+    email: user?.email || '',
+    cpfCnpj: '', phone: '', postalCode: '', address: '', addressNumber: '', complement: '', province: '', city: '',
   });
 
-  // Get plan and billing from URL params
-  const searchParams = new URLSearchParams(location.search);
-  const selectedPlan = searchParams.get('plan') || 'pro';
-  const billingPeriod = searchParams.get('billing') || 'monthly';
+  const amount = billing === 'annual' ? 970 : 97;
+  const cancelled = params.get('cancelled') === '1';
+  const expired = params.get('expired') === '1';
 
-  const plans = {
-    free: {
-      name: 'Free',
-      price: { monthly: 0, annual: 0 },
-      features: [],
-    },
-    pro: {
-      name: 'Pro',
-      price: { monthly: 97, annual: 970 },
-      features: [
-        'Frameworks avançados',
-        'Templates premium',
-        'Projetos ilimitados',
-        'Mentorias mensais',
-        'Integrações avançadas',
-      ],
-    },
-    enterprise: {
-      name: 'Enterprise',
-      price: { monthly: 'Custom', annual: 'Custom' },
-      features: [
-        'Tudo do plano Pro',
-        'Onboarding dedicado',
-        'Customer Success exclusivo',
-        'API personalizada',
-      ],
-    },
+  const update = (field: keyof typeof form, value: string) => setForm((current) => ({ ...current, [field]: value }));
+  const submit = async (event: FormEvent) => {
+    event.preventDefault();
+    setError(null);
+    setIsSubmitting(true);
+    try {
+      const { data: sessionData } = await supabase.auth.getSession();
+      if (!sessionData.session?.access_token) throw new Error('Sua sessão expirou. Entre novamente para continuar.');
+      const result = await fetch('/api/create-asaas-checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${sessionData.session.access_token}` },
+        body: JSON.stringify({ plan, billing, customer: form }),
+      });
+      const data = await result.json();
+      if (!result.ok || !data.checkoutUrl) throw new Error(data.message || 'Não foi possível iniciar o pagamento.');
+      window.location.assign(data.checkoutUrl);
+    } catch (submitError: any) {
+      setError(submitError.message || 'Não foi possível iniciar o pagamento.');
+      setIsSubmitting(false);
+    }
   };
-
-  const currentPlan = plans[selectedPlan as keyof typeof plans];
-  const isAnnual = billingPeriod === 'annual';
-  const price = currentPlan.price[isAnnual ? 'annual' : 'monthly'];
-  const displayPrice = typeof price === 'number' ? price : 0;
-  const savings = isAnnual && typeof price === 'number'
-    ? (currentPlan.price.monthly as number) * 12 - price
-    : 0;
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
-
-  // Criar PaymentIntent
-  useEffect(() => {
-    const createPaymentIntent = async () => {
-      if (!isStripeLiveMode) {
-        setClientSecret(null);
-        setPaymentError('Checkout disponível apenas em produção com chaves Stripe live.');
-        return;
-      }
-
-      if (!formData.name || !formData.email) return;
-
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(formData.email)) return;
-
-      setIsLoadingPaymentIntent(true);
-      setPaymentError(null);
-
-      try {
-        const response = await fetch('/api/create-payment-intent', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            plan: selectedPlan,
-            billing: billingPeriod,
-            email: formData.email,
-            name: formData.name,
-          }),
-        });
-
-        const contentType = response.headers.get('content-type') || '';
-        const isJsonResponse = contentType.includes('application/json');
-        const responseBody = isJsonResponse
-          ? await response.json()
-          : await response.text();
-
-        if (!response.ok) {
-          const apiMessage =
-            isJsonResponse && responseBody && typeof responseBody === 'object'
-              ? responseBody.message || responseBody.error
-              : '';
-
-          if (response.status === 404) {
-            throw new Error('API de pagamento não encontrada. Em ambiente local, execute com `vercel dev` em vez de apenas `vite`.');
-          }
-
-          throw new Error(apiMessage || 'Erro ao criar pagamento');
-        }
-
-        if (!isJsonResponse || !responseBody || typeof responseBody !== 'object') {
-          throw new Error('A API de pagamento respondeu em formato inválido.');
-        }
-
-        if (!responseBody.clientSecret) {
-          throw new Error(responseBody.message || 'A API não retornou clientSecret.');
-        }
-
-        setClientSecret(responseBody.clientSecret);
-      } catch (error: any) {
-        console.error('❌ Erro ao criar PaymentIntent:', error);
-        setPaymentError(error.message || 'Erro ao processar pagamento');
-      } finally {
-        setIsLoadingPaymentIntent(false);
-      }
-    };
-
-    const timeoutId = setTimeout(createPaymentIntent, 500);
-    return () => clearTimeout(timeoutId);
-  }, [formData.name, formData.email, selectedPlan, billingPeriod]);
 
   return (
     <>
-      <Helmet>
-        <title>Checkout - Orientohub</title>
-      </Helmet>
-
-      {/* Hero */}
-      <section className="relative min-h-[30vh] w-full overflow-hidden bg-gradient-to-br from-black via-gray-900 to-black">
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary-500/20 rounded-full blur-3xl animate-pulse" />
-        </div>
-
-        <div className="container-custom relative z-10 py-12">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-            <Link to="/planos" className="inline-flex items-center gap-2 text-gray-400 hover:text-primary-500 transition-colors mb-6">
-              <ArrowLeft className="w-4 h-4" />
-              Voltar para planos
-            </Link>
-
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-12 h-12 bg-primary-500/20 rounded-xl flex items-center justify-center">
-                <Lock className="w-6 h-6 text-primary-500" />
+      <Helmet><title>Checkout | OrientoHub</title></Helmet>
+      <section className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black py-10 text-white sm:py-16">
+        <div className="container-custom max-w-5xl">
+          <Link to="/planos" className="mb-8 inline-flex items-center gap-2 text-gray-300 transition hover:text-primary-400"><ArrowLeft className="h-4 w-4" />Voltar para planos</Link>
+          <div className="grid gap-6 lg:grid-cols-[0.85fr_1.15fr]">
+            <aside className="h-fit rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
+              <div className="mb-6 flex items-center gap-3"><span className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary-500/15 text-primary-400"><CreditCard className="h-5 w-5" /></span><div><h1 className="text-xl font-bold">OrientoHub Pro</h1><p className="text-sm text-gray-400">Assinatura {billing === 'annual' ? 'anual' : 'mensal'}</p></div></div>
+              <div className="border-y border-white/10 py-5"><p className="text-sm text-gray-400">Total</p><p className="mt-1 text-4xl font-bold text-primary-400">R$ {amount.toFixed(2).replace('.', ',')}</p><p className="text-sm text-gray-400">/{billing === 'annual' ? 'ano' : 'mês'}</p></div>
+              <ul className="mt-6 space-y-3 text-sm text-gray-300">{['Frameworks e templates premium', 'Projetos ilimitados', 'Mentorias mensais', 'Suporte prioritário'].map((feature) => <li key={feature} className="flex gap-2"><Check className="mt-0.5 h-4 w-4 shrink-0 text-primary-400" />{feature}</li>)}</ul>
+            </aside>
+            <motion.form initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} onSubmit={submit} className="rounded-2xl border border-white/10 bg-white p-6 text-gray-900 shadow-2xl sm:p-8">
+              <div className="mb-7"><div className="mb-2 flex items-center gap-2"><Lock className="h-5 w-5 text-primary-600" /><h2 className="text-xl font-bold">Continue no checkout seguro</h2></div><p className="text-sm text-gray-600">Seus dados serão usados para abrir o checkout hospedado pelo Asaas.</p></div>
+              {(cancelled || expired || error) && <div className="mb-5 flex gap-2 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-800"><AlertCircle className="h-5 w-5 shrink-0" />{error || (expired ? 'Este checkout expirou. Gere um novo para continuar.' : 'O pagamento foi cancelado. Você pode tentar novamente quando quiser.')}</div>}
+              <div className="grid gap-4 sm:grid-cols-2">
+                <Field label="Nome completo" value={form.name} onChange={(value) => update('name', value)} />
+                <Field label="E-mail" type="email" value={form.email} onChange={(value) => update('email', value)} />
+                <Field label="CPF ou CNPJ" value={form.cpfCnpj} onChange={(value) => update('cpfCnpj', value)} />
+                <Field label="Celular com DDD" value={form.phone} onChange={(value) => update('phone', value)} />
+                <Field label="CEP" value={form.postalCode} onChange={(value) => update('postalCode', value)} />
+                <Field label="Cidade" value={form.city} onChange={(value) => update('city', value)} />
+                <div className="sm:col-span-2"><Field label="Endereço" value={form.address} onChange={(value) => update('address', value)} /></div>
+                <Field label="Número" value={form.addressNumber} onChange={(value) => update('addressNumber', value)} />
+                <Field label="Bairro" value={form.province} onChange={(value) => update('province', value)} />
+                <div className="sm:col-span-2"><Field label="Complemento (opcional)" required={false} value={form.complement} onChange={(value) => update('complement', value)} /></div>
               </div>
-              <div>
-                <h1 className="text-3xl md:text-4xl font-bold text-white">Checkout Seguro</h1>
-                <p className="text-gray-400">Finalize sua assinatura</p>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Main Content */}
-      <section className="bg-gradient-to-b from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 py-12">
-        <div className="container-custom">
-          <div className="max-w-6xl mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              {/* Sidebar - Resumo */}
-              <motion.div className="lg:col-span-1" initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}>
-                <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl border-2 border-gray-200 dark:border-gray-700 shadow-xl sticky top-24">
-                  <div className="flex items-center gap-2 mb-6">
-                    <Sparkles className="w-5 h-5 text-primary-500" />
-                    <h2 className="text-xl font-bold">Resumo do Pedido</h2>
-                  </div>
-
-                  <div className="bg-gradient-to-r from-primary-500 to-primary-600 p-4 rounded-xl mb-6">
-                    <h3 className="text-lg font-bold text-black mb-1">{currentPlan.name}</h3>
-                    <p className="text-sm text-black/80">Cobrança {isAnnual ? 'anual' : 'mensal'}</p>
-                  </div>
-
-                  <div className="space-y-3 mb-6 pb-6 border-b border-gray-200 dark:border-gray-700">
-                    <div className="flex justify-between text-sm">
-                      <span className="text-gray-600 dark:text-gray-400">Plano {currentPlan.name}</span>
-                      <span className="font-semibold">R$ {displayPrice}</span>
-                    </div>
-
-                    {isAnnual && savings > 0 && (
-                      <div className="flex justify-between text-sm">
-                        <span className="text-green-600 dark:text-green-400">Desconto anual</span>
-                        <span className="font-semibold text-green-600 dark:text-green-400">-R$ {savings}</span>
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="flex justify-between items-center mb-6">
-                    <span className="text-lg font-bold">Total</span>
-                    <div className="text-right">
-                      <div className="text-3xl font-bold text-primary-500">R$ {displayPrice}</div>
-                      <div className="text-sm text-gray-500">/{isAnnual ? 'ano' : 'mês'}</div>
-                    </div>
-                  </div>
-
-                  {currentPlan.features && currentPlan.features.length > 0 && (
-                    <div className="space-y-2">
-                      <p className="text-sm font-semibold text-gray-600 dark:text-gray-400 mb-3">Incluído:</p>
-                      {currentPlan.features.slice(0, 5).map((feature, index) => (
-                        <div key={index} className="flex items-start gap-2 text-sm">
-                          <Check className="w-4 h-4 text-primary-500 flex-shrink-0 mt-0.5" />
-                          <span className="text-gray-700 dark:text-gray-300">{feature}</span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-
-                  <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
-                    <div className="flex items-center justify-center gap-4 text-xs text-gray-500">
-                      <div className="flex items-center gap-1">
-                        <Shield className="w-4 h-4 text-green-500" />
-                        <span>Pagamento Seguro</span>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <Lock className="w-4 h-4 text-green-500" />
-                        <span>SSL</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-
-              {/* Main - Formulário */}
-              <motion.div className="lg:col-span-2" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}>
-                <div className="bg-white dark:bg-gray-800 p-8 rounded-2xl border-2 border-gray-200 dark:border-gray-700 shadow-xl">
-                  {/* Informações Pessoais */}
-                  <div className="mb-8">
-                    <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
-                      <User className="w-5 h-5 text-primary-500" />
-                      Informações Pessoais
-                    </h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div>
-                        <label htmlFor="name" className="block text-sm font-medium mb-2">Nome completo *</label>
-                        <input
-                          type="text"
-                          id="name"
-                          name="name"
-                          required
-                          value={formData.name}
-                          onChange={handleInputChange}
-                          className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-900 border-2 border-gray-200 dark:border-gray-600 rounded-xl focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 focus:outline-none text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 transition-all"
-                          placeholder="João Silva"
-                        />
-                      </div>
-
-                      <div>
-                        <label htmlFor="email" className="block text-sm font-medium mb-2">E-mail *</label>
-                        <input
-                          type="email"
-                          id="email"
-                          name="email"
-                          required
-                          value={formData.email}
-                          onChange={handleInputChange}
-                          className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-900 border-2 border-gray-200 dark:border-gray-600 rounded-xl focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 focus:outline-none text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 transition-all"
-                          placeholder="joao@email.com"
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Dados de Pagamento */}
-                  <div>
-                    <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
-                      <Lock className="w-5 h-5 text-primary-500" />
-                      Dados de Pagamento
-                    </h3>
-
-                    {paymentError && (
-                      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="flex items-start gap-3 p-4 bg-red-50 dark:bg-red-900/20 border-2 border-red-200 dark:border-red-800 rounded-xl mb-6">
-                        <AlertCircle className="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
-                        <div>
-                          <p className="font-semibold text-red-900 dark:text-red-100 text-sm">Erro ao criar pagamento</p>
-                          <p className="text-red-700 dark:text-red-300 text-sm mt-1">{paymentError}</p>
-                        </div>
-                      </motion.div>
-                    )}
-
-                    {isLoadingPaymentIntent && (
-                      <div className="flex items-center justify-center gap-3 p-8 bg-gray-50 dark:bg-gray-900 rounded-xl border-2 border-gray-200 dark:border-gray-700">
-                        <Loader2 className="w-6 h-6 text-primary-500 animate-spin" />
-                        <span className="text-gray-600 dark:text-gray-400">Preparando pagamento seguro...</span>
-                      </div>
-                    )}
-
-                    {!isLoadingPaymentIntent && clientSecret && stripePromise && (
-                      <Elements
-                        stripe={stripePromise}
-                        options={{
-                          clientSecret,
-                          appearance: {
-                            theme: 'stripe',
-                            variables: {
-                              colorPrimary: '#FFD700',
-                              colorBackground: document.documentElement.classList.contains('dark') ? '#1f2937' : '#ffffff',
-                              colorText: document.documentElement.classList.contains('dark') ? '#f3f4f6' : '#1f2937',
-                              colorDanger: '#ef4444',
-                              fontFamily: 'system-ui, sans-serif',
-                              spacingUnit: '4px',
-                              borderRadius: '12px',
-                            },
-                            rules: {
-                              '.Input': {
-                                backgroundColor: document.documentElement.classList.contains('dark') ? '#111827' : '#f9fafb',
-                                border: `2px solid ${document.documentElement.classList.contains('dark') ? '#374151' : '#e5e7eb'}`,
-                                color: document.documentElement.classList.contains('dark') ? '#f3f4f6' : '#1f2937',
-                              },
-                              '.Input:focus': {
-                                borderColor: '#FFD700',
-                                boxShadow: '0 0 0 1px #FFD700',
-                              },
-                              '.Label': {
-                                color: document.documentElement.classList.contains('dark') ? '#9ca3af' : '#6b7280',
-                                fontWeight: '500',
-                              },
-                            },
-                          },
-                          // Ocultar branding "Powered by Stripe"
-                          loader: 'never',
-                        }}
-                      >
-                        <CheckoutForm amount={displayPrice} plan={selectedPlan} billing={billingPeriod} />
-                      </Elements>
-                    )}
-
-                    {!isLoadingPaymentIntent && !clientSecret && !paymentError && (
-                      <div className="text-center p-8 bg-gray-50 dark:bg-gray-900 rounded-xl border-2 border-gray-200 dark:border-gray-700">
-                        <User className="w-12 h-12 text-gray-400 mx-auto mb-3" />
-                        <p className="text-gray-600 dark:text-gray-400">Preencha seu nome e email para continuar</p>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </motion.div>
-            </div>
+              <button disabled={isSubmitting} className="mt-7 flex w-full items-center justify-center gap-2 rounded-xl bg-primary-500 px-5 py-4 font-bold text-black transition hover:bg-primary-400 disabled:cursor-wait disabled:opacity-60">{isSubmitting ? <><Loader2 className="h-5 w-5 animate-spin" />Abrindo checkout…</> : <>Ir para pagamento seguro <CreditCard className="h-5 w-5" /></>}</button>
+              <p className="mt-4 flex items-center justify-center gap-2 text-center text-xs text-gray-500"><Shield className="h-4 w-4 text-green-600" />O pagamento é processado pelo Asaas.</p>
+            </motion.form>
           </div>
         </div>
       </section>
     </>
   );
 };
+
+const Field = ({ label, value, onChange, type = 'text', required = true }: { label: string; value: string; onChange: (value: string) => void; type?: string; required?: boolean }) => <label className="block text-sm font-medium">{label}{required && ' *'}<input required={required} type={type} value={value} onChange={(event) => onChange(event.target.value)} className="mt-1.5 w-full rounded-xl border-2 border-gray-200 bg-gray-50 px-3 py-2.5 outline-none transition focus:border-primary-500" /></label>;
 
 export default CheckoutPage;

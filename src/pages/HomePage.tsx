@@ -2,7 +2,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Sparkles, Layers, Users, Target, Lightbulb, ExternalLink, Component, MonitorPlay, Maximize2, X, TrendingUp, Rocket, Brain, BarChart3, Compass, Code, GraduationCap, Mic, Briefcase, BookOpen } from 'lucide-react';
+import { ArrowRight, Sparkles, Layers, Users, Target, Lightbulb, ExternalLink, Component, MonitorPlay, Maximize2, X, TrendingUp, Rocket, Brain, GraduationCap, Mic, Briefcase, BookOpen } from 'lucide-react';
 import SectionDivider from '../components/SectionDivider';
 import type { ComponentType } from 'react';
 
@@ -684,15 +684,13 @@ const EcosystemCard = ({ layer, compact = false, expanded = false, onToggleExpan
                   ))}
                 </div>
                 
-                <a
-                  href="https://fernandoramalhobuilder.com.br"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <Link
+                  to="/servicos"
                   className="inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-3 bg-primary-500 hover:bg-primary-600 text-black font-bold rounded-xl transition-all w-full sm:w-fit group shadow-lg shadow-primary-500/20 hover:shadow-primary-500/30 text-sm"
                 >
                   Conheça as possibilidades
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </a>
+                </Link>
               </div>
             ) : isPlataforma && expanded ? (
               <div className="flex flex-col gap-4 sm:gap-5 mt-2">
@@ -734,9 +732,7 @@ const EcosystemCard = ({ layer, compact = false, expanded = false, onToggleExpan
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-4">
                   {[
                     { title: "Humansys + BrainSys", type: "Gestão de Pessoas", status: "Ativo", icon: Brain, color: "text-blue-500", border: 'border-blue-500/20' },
-                    { title: "Simples Metrics", type: "Growth & Analytics", status: "Ativo", icon: BarChart3, color: "text-emerald-500", border: 'border-emerald-500/20' },
-                    { title: "Vo.ai", type: "Educação & IA", status: "Beta", icon: Compass, color: "text-purple-500", border: 'border-purple-500/20' },
-                    { title: "Vibe Coding", type: "Tech & Automação", status: "Ativo", icon: Code, color: "text-orange-500", border: 'border-orange-500/20' },
+                    { title: "Intentia", type: "Estratégia completa para mídia B2B", status: "Ativo", icon: Target, color: "text-[#ff571a]", border: 'border-[#ff571a]/30' },
                     { title: "Forgether", type: "Educação Web3", status: "Beta", icon: GraduationCap, color: "text-teal-500", border: 'border-teal-500/20' },
                     { title: "Custfly", type: "Customer Intelligence", status: "Ativo", icon: Users, color: "text-indigo-500", border: 'border-indigo-500/20' }
                   ].map((mvp, idx) => {
@@ -777,7 +773,7 @@ const EcosystemCard = ({ layer, compact = false, expanded = false, onToggleExpan
               <div className="flex flex-col gap-4 sm:gap-5 mt-2">
                 <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-2.5 sm:gap-4">
                   {[
-                    { title: "Oriento Podcast", desc: "Podcast com founders e parceiros.", status: "Em Breve", icon: Mic, color: "text-purple-500", border: 'border-purple-500/20' },
+                    { title: "Orientados", desc: "Conversas que constroem.", status: "Em Breve", icon: Mic, color: "text-purple-500", border: 'border-purple-500/20' },
                     { title: "Oriento Academy", desc: "Cursos voltados à inovação.", status: "Em Breve", icon: GraduationCap, color: "text-amber-500", border: 'border-amber-500/20' },
                     { title: "Oriento Ventures", desc: "Fundo interno de investimento.", status: "Em Breve", icon: Briefcase, color: "text-gray-500", border: 'border-gray-500/20' },
                     { title: "Oriento Expertise", desc: "Conhecimento que gera resultado.", subItems: ["Consultoria", "Mentoria", "Workshops"], status: "Ativo", icon: BookOpen, color: "text-blue-500", border: 'border-blue-500/20' }
@@ -826,16 +822,14 @@ const EcosystemCard = ({ layer, compact = false, expanded = false, onToggleExpan
         )}
 
         {isNucleus && !expanded ? (
-          <a
-            href="https://fernandoramalhobuilder.com.br"
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            to="/servicos"
             aria-label="Conheça as possibilidades de serviços do Núcleo"
             className={`inline-flex items-center justify-center gap-2 px-5 py-3 mt-auto text-sm font-bold text-black ${getStyle('bg')} hover:opacity-90 rounded-xl shadow-lg ${getStyle('shadow')} transition-all duration-300 group-hover:-translate-y-1 w-full sm:w-fit`}
             onClick={(event) => event.stopPropagation()}
           >
-            Conheça as possibilidades <ExternalLink className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-          </a>
+            Conheça as possibilidades <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+          </Link>
         ) : canExpand && !expanded ? (
           <div className={`inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-3 mt-auto text-sm font-bold text-black ${getStyle('bg')} hover:opacity-90 rounded-xl shadow-lg ${getStyle('shadow')} transition-all duration-300 group-hover:-translate-y-1 w-full sm:w-fit`}>
             Ver detalhes <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />

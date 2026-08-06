@@ -14,6 +14,7 @@ import ManifestoPage from './pages/ManifestoPage';
 import GlossaryPage from './pages/GlossaryPage';
 import AboutPage from './pages/AboutPage';
 import EcosystemPage from './pages/EcosystemPage';
+import ServicesPage from './pages/ServicesPage';
 import AcademyPage from './pages/AcademyPage';
 import PricingPage from './pages/PricingPage';
 import CheckoutPage from './pages/CheckoutPage';
@@ -94,6 +95,8 @@ function App() {
           <Route path="manifesto" element={<ManifestoPage />} />
           <Route path="glossario" element={<GlossaryPage />} />
           <Route path="ecossistema" element={<EcosystemPage />} />
+          <Route path="/servicos" element={<ServicesPage />} />
+          <Route path="/serviços" element={<ServicesPage />} />
           <Route path="/academy" element={<AcademyPage />} />
           <Route path="/academy/login" element={<AcademyLoginPage />} />
           <Route path="planos" element={<PricingPage />} />
