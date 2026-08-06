@@ -35,15 +35,10 @@ export default async function handler(request: VercelRequest, response: VercelRe
   const { data: authData, error: authError } = await authClient.auth.getUser(token);
   if (authError || !authData.user) return response.status(401).json({ message: 'Sessão inválida.' });
 
-  const { plan, billing, customer } = request.body ?? {};
+  const { plan, billing } = request.body ?? {};
   const product = PLANS[plan as keyof typeof PLANS];
   if (!product || !['monthly', 'annual'].includes(billing)) {
     return response.status(400).json({ message: 'Plano ou ciclo de cobrança inválido.' });
-  }
-
-  const requiredFields = ['name', 'email', 'cpfCnpj', 'phone', 'postalCode', 'address', 'addressNumber', 'province', 'city'];
-  if (!customer || requiredFields.some((field) => !String(customer[field] ?? '').trim())) {
-    return response.status(400).json({ message: 'Preencha todos os dados obrigatórios para o pagamento.' });
   }
 
   const origin = getOrigin(request);
@@ -68,7 +63,6 @@ export default async function handler(request: VercelRequest, response: VercelRe
           expiredUrl: `${origin}/checkout?plan=${plan}&billing=${billing}&expired=1`,
         },
         items: [{ name: product.name, description: `Assinatura ${billing === 'annual' ? 'anual' : 'mensal'} do ${product.name}`, quantity: 1, value: amount }],
-        customerData: customer,
         subscription: { cycle, nextDueDate: today },
       }),
     });
