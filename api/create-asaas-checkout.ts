@@ -74,7 +74,8 @@ export default async function handler(request: VercelRequest, response: VercelRe
     } catch {
       asaasData = { message: rawAsaasBody };
     }
-    if (!asaasResponse.ok || !asaasData.url) {
+    const checkoutUrl = asaasData.link || asaasData.url;
+    if (!asaasResponse.ok || !checkoutUrl) {
       return response.status(asaasResponse.status || 502).json({
         message: asaasData.errors?.[0]?.description || asaasData.message || 'O Asaas não retornou uma URL de checkout.',
       });
@@ -92,7 +93,7 @@ export default async function handler(request: VercelRequest, response: VercelRe
     });
     if (databaseError) throw databaseError;
 
-    return response.status(200).json({ checkoutUrl: asaasData.url });
+    return response.status(200).json({ checkoutUrl });
   } catch (error: any) {
     console.error('Erro ao criar checkout Asaas:', error);
     return response.status(500).json({
