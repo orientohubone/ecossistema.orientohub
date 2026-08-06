@@ -15,11 +15,17 @@ export default async function handler(request: VercelRequest, response: VercelRe
   if (request.method !== 'POST') return response.status(405).json({ message: 'Método não permitido.' });
 
   const asaasApiKey = process.env.ASAAS_API_KEY;
-  const supabaseUrl = process.env.SUPABASE_URL;
-  const supabaseAnonKey = process.env.SUPABASE_ANON_KEY;
+  const supabaseUrl = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL;
+  const supabaseAnonKey = process.env.SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_ANON_KEY;
   const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  if (!asaasApiKey || !supabaseUrl || !supabaseAnonKey || !supabaseServiceRoleKey) {
-    return response.status(500).json({ message: 'Configuração de cobrança incompleta.' });
+  const missingConfiguration = [
+    !asaasApiKey && 'ASAAS_API_KEY',
+    !supabaseUrl && 'SUPABASE_URL',
+    !supabaseAnonKey && 'SUPABASE_ANON_KEY',
+    !supabaseServiceRoleKey && 'SUPABASE_SERVICE_ROLE_KEY',
+  ].filter(Boolean);
+  if (missingConfiguration.length) {
+    return response.status(500).json({ message: `Configuração de cobrança incompleta: ${missingConfiguration.join(', ')}.` });
   }
 
   const token = request.headers.authorization?.replace(/^Bearer\s+/i, '');
