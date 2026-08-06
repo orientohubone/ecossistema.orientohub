@@ -35,6 +35,10 @@ export default async function handler(request: VercelRequest, response: VercelRe
 
   if (payment.externalReference) {
     query = query.eq('external_reference', payment.externalReference);
+  } else if (payment.checkoutSession) {
+    // In Asaas Checkout recorrente, a referência pode ficar no checkout e não
+    // ser copiada para a cobrança gerada pela assinatura.
+    query = query.eq('asaas_checkout_id', payment.checkoutSession);
   } else if (payment.subscription) {
     query = query.eq('asaas_subscription_id', payment.subscription);
   } else {
