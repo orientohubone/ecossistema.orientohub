@@ -441,7 +441,8 @@ const PlanCTA = ({ compact = false }: { compact?: boolean }) => {
 
   useEffect(() => {
     if (!user) return;
-    supabase
+
+    const loadPlan = () => supabase
       .from('billing_subscriptions')
       .select('plan')
       .eq('user_id', user.id)
@@ -450,6 +451,18 @@ const PlanCTA = ({ compact = false }: { compact?: boolean }) => {
       .limit(1)
       .maybeSingle()
       .then(({ data }) => setPlan(data?.plan || 'free'));
+
+    const refreshWhenVisible = () => {
+      if (document.visibilityState === 'visible') loadPlan();
+    };
+
+    loadPlan();
+    window.addEventListener('focus', loadPlan);
+    document.addEventListener('visibilitychange', refreshWhenVisible);
+    return () => {
+      window.removeEventListener('focus', loadPlan);
+      document.removeEventListener('visibilitychange', refreshWhenVisible);
+    };
   }, [user]);
 
   return compact ? (

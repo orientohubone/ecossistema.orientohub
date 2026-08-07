@@ -3,11 +3,14 @@ import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
 import { useLocation, Link, useNavigate } from 'react-router-dom';
 import { CheckCircle, ArrowRight, Download, Mail, Sparkles } from 'lucide-react';
+import { supabase } from '../config/supabase';
+import { useAuthStore } from '../stores/authStore';
 
 const CheckoutSuccessPage = () => {
     const location = useLocation();
     const navigate = useNavigate();
-    const [countdown, setCountdown] = useState(10);
+    const { user } = useAuthStore();
+    const [activationStatus, setActivationStatus] = useState<'checking' | 'waiting' | 'active' | 'timeout'>('checking');
 
     const searchParams = new URLSearchParams(location.search);
     const plan = searchParams.get('plan') || 'pro';
@@ -20,21 +23,52 @@ const CheckoutSuccessPage = () => {
         enterprise: 'Enterprise',
     };
 
-    // Countdown para redirecionamento
     useEffect(() => {
-        const timer = setInterval(() => {
-            setCountdown((prev) => {
-                if (prev <= 1) {
-                    clearInterval(timer);
-                    navigate('/dashboard');
-                    return 0;
-                }
-                return prev - 1;
-            });
-        }, 1000);
+        if (!user) return;
 
-        return () => clearInterval(timer);
-    }, [navigate]);
+        let cancelled = false;
+        let redirectTimer: ReturnType<typeof setTimeout> | undefined;
+        const startedAt = Date.now();
+
+        const checkActivation = async () => {
+            const { data } = await supabase
+                .from('billing_subscriptions')
+                .select('id')
+                .eq('user_id', user.id)
+                .eq('plan', plan)
+                .eq('status', 'active')
+                .order('updated_at', { ascending: false })
+                .limit(1)
+                .maybeSingle();
+
+            if (cancelled) return true;
+            if (data) {
+                setActivationStatus('active');
+                redirectTimer = setTimeout(() => navigate('/dashboard', { replace: true }), 1500);
+                return true;
+            }
+
+            if (Date.now() - startedAt >= 45_000) {
+                setActivationStatus('timeout');
+                return true;
+            }
+
+            setActivationStatus('waiting');
+            return false;
+        };
+
+        const poll = async () => {
+            if (await checkActivation()) clearInterval(interval);
+        };
+        const interval = setInterval(poll, 2_500);
+        poll();
+
+        return () => {
+            cancelled = true;
+            clearInterval(interval);
+            if (redirectTimer) clearTimeout(redirectTimer);
+        };
+    }, [navigate, plan, user]);
 
     return (
         <>
@@ -81,7 +115,11 @@ const CheckoutSuccessPage = () => {
                             transition={{ delay: 0.4 }}
                             className="text-center text-gray-600 dark:text-gray-400 mb-8"
                         >
-                            Assim que o Asaas confirmar o pagamento, sua assinatura será ativada automaticamente.
+                            {activationStatus === 'active'
+                                ? 'Assinatura ativada! Você será direcionado ao Dashboard.'
+                                : activationStatus === 'timeout'
+                                    ? 'Ainda estamos aguardando a confirmação. Você pode abrir o Dashboard e atualizar a página em alguns instantes.'
+                                    : 'Confirmando a assinatura com o Asaas. Isso pode levar alguns segundos.'}
                         </motion.p>
 
                         {/* Detalhes do Plano */}
@@ -156,7 +194,7 @@ const CheckoutSuccessPage = () => {
                             </Link>
 
                             <p className="text-center text-sm text-gray-500 dark:text-gray-400">
-                                Redirecionando automaticamente em {countdown}s...
+                                {activationStatus === 'active' ? 'Redirecionando...' : 'Aguardando confirmação segura do pagamento...'}
                             </p>
                         </motion.div>
 
