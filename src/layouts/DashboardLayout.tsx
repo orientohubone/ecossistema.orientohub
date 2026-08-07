@@ -174,13 +174,10 @@ const DashboardLayout = () => {
                     <Search size={16} className="text-gray-500" />
                     <input type="search" placeholder="Buscar projetos, soluções, insights..." className="bg-transparent text-sm outline-none text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400" />
                   </div>
-                </div>
+                  </div>
 
                 <div className="flex items-center gap-4">
-                  <div className="hidden sm:flex items-center gap-3 text-sm">
-                    <span className="text-gray-600 dark:text-gray-300">Plano: <strong className="ml-1 text-primary-600 dark:text-primary-400">Free</strong></span>
-                    <Link to="/planos" className="px-3 py-1 bg-primary-500 hover:bg-primary-600 text-black rounded-md text-sm font-medium">Upgrade</Link>
-                  </div>
+                  <TopPlanBadge />
                   <div className="flex items-center gap-3"><UserMenu user={user} /></div>
                 </div>
               </div>
@@ -435,7 +432,7 @@ const SidebarLink = ({ item, pathname, collapsed = false, onNavigate }: { item: 
   );
 };
 
-const PlanCTA = ({ compact = false }: { compact?: boolean }) => {
+const useCurrentPlan = () => {
   const { user } = useAuthStore();
   const [plan, setPlan] = useState('free');
 
@@ -464,6 +461,26 @@ const PlanCTA = ({ compact = false }: { compact?: boolean }) => {
       document.removeEventListener('visibilitychange', refreshWhenVisible);
     };
   }, [user]);
+
+  return plan;
+};
+
+const TopPlanBadge = () => {
+  const plan = useCurrentPlan();
+  const label = plan === 'pro' ? 'Pro' : plan === 'enterprise' ? 'Enterprise' : 'Free';
+
+  return (
+    <div className="hidden sm:flex items-center gap-3 text-sm">
+      <span className="text-gray-600 dark:text-gray-300">Plano: <strong className="ml-1 text-primary-600 dark:text-primary-400">{label}</strong></span>
+      <Link to={plan === 'free' ? '/planos' : '/dashboard/settings?tab=plan'} className="px-3 py-1 bg-primary-500 hover:bg-primary-600 text-black rounded-md text-sm font-medium">
+        {plan === 'free' ? 'Upgrade' : 'Meu plano'}
+      </Link>
+    </div>
+  );
+};
+
+const PlanCTA = ({ compact = false }: { compact?: boolean }) => {
+  const plan = useCurrentPlan();
 
   return compact ? (
     <div className="flex items-center justify-center p-2"><Crown className="w-5 h-5 text-yellow-400" /></div>
