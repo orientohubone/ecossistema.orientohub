@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet-async';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import { 
   BarChart2, 
   CheckSquare, 
@@ -45,6 +46,7 @@ interface Framework {
 
 const FrameworksPage = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const [selectedFramework, setSelectedFramework] = useState<Framework | null>(null);
   const [showNewFrameworkModal, setShowNewFrameworkModal] = useState(false);
   const [showFrameworkModal, setShowFrameworkModal] = useState(false);
@@ -57,6 +59,13 @@ const FrameworksPage = () => {
   const [newFrameworkDescription, setNewFrameworkDescription] = useState('');
   const [newFrameworkType, setNewFrameworkType] = useState('canvas');
   const [initialNewFrameworkData, setInitialNewFrameworkData] = useState<any>(null);
+  const [, setProgressVersion] = useState(0);
+
+  useEffect(() => {
+    const refreshProgress = () => setProgressVersion((version) => version + 1);
+    window.addEventListener('orientohub:framework-progress-updated', refreshProgress);
+    return () => window.removeEventListener('orientohub:framework-progress-updated', refreshProgress);
+  }, []);
 
   const frameworks: Framework[] = [
     {
@@ -589,8 +598,9 @@ const FrameworksPage = () => {
   };
 
   const handleContinue = (framework: Framework) => {
-    setSelectedFramework(framework);
-    setShowFrameworkModal(true);
+    // Começar é uma jornada de trabalho, não uma prévia: abre em tela cheia.
+    sessionStorage.setItem('currentFramework', framework.name);
+    navigate(`/dashboard/frameworks/${framework.id}/game`);
   };
 
   const handleComments = (frameworkId: string) => {
@@ -633,7 +643,13 @@ const FrameworksPage = () => {
     return 'text-gray-500';
   };
 
-  const filteredFrameworks = frameworks.filter(framework => {
+  const frameworksWithProgress = frameworks.map((framework) => {
+    const savedValue = localStorage.getItem(`orientohub:framework-progress:${framework.id}`);
+    const saved = Number(savedValue);
+    return savedValue !== null && Number.isFinite(saved) ? { ...framework, progress: saved } : framework;
+  });
+
+  const filteredFrameworks = frameworksWithProgress.filter(framework => {
     const matchesSearch = framework.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          framework.description.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesSearch;
@@ -684,21 +700,21 @@ const FrameworksPage = () => {
             {[
               { 
                 label: 'Total de Frameworks', 
-                value: frameworks.length, 
+                value: frameworksWithProgress.length, 
                 icon: Layers, 
                 color: 'from-gray-600 to-gray-700', 
                 bgColor: 'bg-gray-500/10' 
               },
               { 
                 label: 'Em Progresso', 
-                value: frameworks.filter(f => f.progress > 0 && f.progress < 100).length, 
+                value: frameworksWithProgress.filter(f => f.progress > 0 && f.progress < 100).length, 
                 icon: TrendingUp, 
                 color: 'from-primary-400 to-primary-600', 
                 bgColor: 'bg-primary-500/10' 
               },
               { 
                 label: 'Concluídos', 
-                value: frameworks.filter(f => f.progress === 100).length, 
+                value: frameworksWithProgress.filter(f => f.progress === 100).length, 
                 icon: CheckSquare, 
                 color: 'from-green-500 to-green-600', 
                 bgColor: 'bg-green-500/10' 

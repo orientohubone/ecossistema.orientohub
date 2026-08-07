@@ -57,7 +57,6 @@ const ServicesPage = () => (
     </Helmet>
 
     <div className="relative overflow-hidden bg-gradient-to-br from-black via-gray-900 to-black text-white">
-      <div className="pointer-events-none absolute -right-32 -top-40 h-[32rem] w-[32rem] rounded-full border-[42px] border-primary-400/95" />
       <div className="pointer-events-none absolute inset-0 opacity-[0.12]" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, #facc15 1px, transparent 0)', backgroundSize: '40px 40px' }} />
 
       <section className="container-custom relative z-10 py-16 sm:py-20 lg:py-28">

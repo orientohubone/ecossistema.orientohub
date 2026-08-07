@@ -126,12 +126,6 @@ const quickActions: QuickAction[] = [
     link: '/contato',
     icon: Users,
   },
-  {
-    title: 'Acessar Projetos',
-    description: 'Veja cases de sucesso e histórias de empreendedores',
-    link: '/projetos',
-    icon: Target,
-  },
 ];
 
 const HomePage = () => {
@@ -395,6 +389,34 @@ const HomePage = () => {
               ))}
             </motion.div>
           )}
+
+          <motion.div
+            className="max-w-6xl mx-auto mt-6 sm:mt-8 rounded-2xl border border-[#b7ef09]/25 bg-[radial-gradient(ellipse_at_top_right,_rgba(6,50,12,0.62),_transparent_62%),linear-gradient(135deg,_#021709,_#000b03)] p-5 sm:p-7 flex flex-col lg:flex-row lg:items-center gap-5 sm:gap-7 shadow-[0_20px_50px_-28px_rgba(0,0,0,0.75)]"
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.45 }}
+          >
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-[#b7ef09]/35 bg-[#102719] p-2 shadow-[0_0_24px_rgba(183,239,9,0.16)]">
+              <img src="/orientamais-favicon.png" alt="Orienta+" className="h-full w-full rounded-lg object-contain" />
+            </div>
+            <div className="flex-1">
+              <div className="flex flex-wrap items-center gap-2">
+                <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#b7ef09]">Orienta+ · consultoria</p>
+                <span className="rounded-full border border-[#b7ef09]/35 bg-[#b7ef09]/12 px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-[0.12em] text-[#d4ff53]">100% gratuita</span>
+              </div>
+              <h3 className="mt-1 text-xl sm:text-2xl font-bold text-[#f3f7f0]">Ficou em dúvida sobre a nossa estrutura, serviços ou como operamos?</h3>
+              <p className="mt-2 text-sm sm:text-base leading-relaxed text-[#aab1a4]">Em vez de se perder entre páginas, camadas e possibilidades, converse com a gente. A Orienta+ é uma orientação gratuita para empreendedores encontrarem o próximo passo certo.</p>
+            </div>
+            <a
+              href="https://consultoria.orientohub.com.br"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-[#b7ef09] px-5 py-3 text-sm font-bold text-[#001005] transition hover:bg-[#c8fb27] hover:-translate-y-0.5"
+            >
+              Quero uma orientação <ExternalLink className="h-4 w-4" />
+            </a>
+          </motion.div>
         </div>
       </section>
 
@@ -504,7 +526,7 @@ const HomePage = () => {
           </div>
 
           <motion.div
-            className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6 max-w-4xl mx-auto mb-8 px-1 sm:px-0"
+            className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6 max-w-5xl mx-auto mb-8 px-1 sm:px-0"
             variants={containerVariants}
             initial="hidden"
             whileInView="visible"
@@ -857,11 +879,11 @@ const QuickActionCard = ({ action }: { action: QuickAction }) => {
     <motion.div className="group relative" variants={itemVariants}>
       <Link
         to={action.link}
-        className="block h-full p-5 sm:p-8 rounded-2xl border border-primary-500/30 bg-white/90 dark:bg-gray-900/85 shadow-[0_18px_50px_rgba(0,0,0,0.08)] backdrop-blur-md hover:bg-white/[0.98] dark:hover:bg-gray-900 transition-all duration-300 hover:border-primary-500 active:scale-[0.98]"
+        className="block h-full min-h-[220px] p-6 sm:p-9 rounded-2xl border border-primary-500/30 bg-white/90 dark:bg-gray-900/85 shadow-[0_18px_50px_rgba(0,0,0,0.08)] backdrop-blur-md hover:bg-white/[0.98] dark:hover:bg-gray-900 transition-all duration-300 hover:border-primary-500 active:scale-[0.98]"
       >
-        <Icon className="w-7 h-7 sm:w-8 sm:h-8 text-[#FFD700] mb-3 sm:mb-4 group-hover:scale-110 transition-transform" />
-        <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white mb-2 sm:mb-3">{action.title}</h3>
-        <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 mb-4 sm:mb-6 leading-relaxed">{action.description}</p>
+        <Icon className="w-8 h-8 sm:w-9 sm:h-9 text-[#FFD700] mb-4 sm:mb-5 group-hover:scale-110 transition-transform" />
+        <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-2 sm:mb-3">{action.title}</h3>
+        <p className="text-base sm:text-lg text-gray-600 dark:text-gray-400 mb-5 sm:mb-7 leading-relaxed">{action.description}</p>
         <span className="inline-flex items-center gap-2 text-sm sm:text-base text-[#FFD700] font-semibold group-hover:gap-3 transition-all">
           Ir agora <ArrowRight className="w-4 h-4" />
         </span>

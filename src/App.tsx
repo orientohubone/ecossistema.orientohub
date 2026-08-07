@@ -50,6 +50,7 @@ import { useAuthStore } from './stores/authStore';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import FounderRoute from './components/auth/FounderRoute';
 import FounderDashboardRoute from './components/auth/FounderDashboardRoute';
+import FeatureRoute from './components/auth/FeatureRoute';
 import ProtectedRouteSkeleton from './components/auth/ProtectedRouteSkeleton';
 
 const PublicLoadingFallback = () => (
@@ -122,13 +123,13 @@ function App() {
         >
           <Route index element={withProtectedSuspense(<DashboardPage />)} />
           <Route path="insights" element={withProtectedSuspense(<InsightsPage />)} />
-          <Route path="frameworks" element={withProtectedSuspense(<FrameworksPage />)} />
-          <Route path="frameworks/:id/game" element={withProtectedSuspense(<FrameworkGamePage />)} />
+          <Route path="frameworks" element={<FeatureRoute feature="frameworks_access" screen="frameworks">{withProtectedSuspense(<FrameworksPage />)}</FeatureRoute>} />
+          <Route path="frameworks/:id/game" element={<FeatureRoute feature="frameworks_access" screen="frameworks">{withProtectedSuspense(<FrameworkGamePage />)}</FeatureRoute>} />
           <Route path="projects" element={withProtectedSuspense(<ProjectsPage />)} />
           <Route path="projects/:projectId" element={withProtectedSuspense(<ProjectsPage />)} />
           <Route path="tarefas" element={withProtectedSuspense(<TasksPage />)} />
           <Route path="jornada" element={withProtectedSuspense(<JourneyPage />)} />
-          <Route path="academy" element={withProtectedSuspense(<OrientoAcademyPage />)} />
+          <Route path="academy" element={<FeatureRoute feature="academy_access" screen="academy">{withProtectedSuspense(<OrientoAcademyPage />)}</FeatureRoute>} />
           <Route
             path="pedagogico"
             element={(
@@ -138,7 +139,7 @@ function App() {
             )}
           />
           <Route path="solutions" element={withProtectedSuspense(<SolutionsPage />)} />
-          <Route path="community" element={withProtectedSuspense(<CommunityPage />)} />
+          <Route path="community" element={<FeatureRoute feature="premium_community" screen="community">{withProtectedSuspense(<CommunityPage />)}</FeatureRoute>} />
           <Route
             path="founder"
             element={(

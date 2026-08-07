@@ -1,7 +1,6 @@
 import { Fragment, useEffect, useRef } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { X, Gamepad, Download, Sparkles, BookOpen } from 'lucide-react';
-import html2canvas from 'html2canvas';
 import { jsPDF } from 'jspdf';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -49,16 +48,46 @@ const FrameworkModal = ({ isOpen, onClose, title, children }: FrameworkModalProp
       const content = document.getElementById('framework-content');
       if (!content) return;
 
-      const canvas = await html2canvas(content);
-      
-      const pdf = new jsPDF({
-        orientation: 'portrait',
-        unit: 'px',
-        format: [canvas.width, canvas.height]
+      const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+      const margin = 18;
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const pageHeight = pdf.internal.pageSize.getHeight();
+      const usableWidth = pageWidth - margin * 2;
+      let cursorY = 24;
+
+      const addPageIfNeeded = (height: number) => {
+        if (cursorY + height <= pageHeight - 18) return;
+        pdf.addPage();
+        cursorY = 20;
+      };
+      const write = (text: string, size = 11, style: 'normal' | 'bold' = 'normal', color: [number, number, number] = [55, 65, 81]) => {
+        pdf.setFont('helvetica', style); pdf.setFontSize(size); pdf.setTextColor(...color);
+        const lines = pdf.splitTextToSize(text.trim(), usableWidth);
+        addPageIfNeeded(lines.length * (size * 0.48) + 5);
+        pdf.text(lines, margin, cursorY);
+        cursorY += lines.length * (size * 0.48) + 5;
+      };
+
+      pdf.setFillColor(250, 204, 21); pdf.rect(0, 0, pageWidth, 8, 'F');
+      write('ORIENTOHUB  |  FRAMEWORK ESTRATÉGICO', 9, 'bold', [107, 114, 128]);
+      write(title, 22, 'bold', [17, 24, 39]);
+      write(`Guia de aplicação • Gerado em ${new Date().toLocaleDateString('pt-BR')}`, 9, 'normal', [107, 114, 128]);
+      cursorY += 5;
+
+      const elements = Array.from(content.querySelectorAll('h2, h3, h4, p, li'));
+      elements.forEach((element) => {
+        const text = element.textContent?.replace(/\s+/g, ' ').trim();
+        if (!text) return;
+        if (/^H[2-4]$/.test(element.tagName)) write(text, element.tagName === 'H2' ? 16 : 13, 'bold', [17, 24, 39]);
+        else write(`${element.tagName === 'LI' ? '• ' : ''}${text}`, 10.5);
       });
 
-      const imgData = canvas.toDataURL('image/png');
-      pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
+      const totalPages = pdf.getNumberOfPages();
+      for (let page = 1; page <= totalPages; page++) {
+        pdf.setPage(page); pdf.setFontSize(8); pdf.setTextColor(107, 114, 128);
+        pdf.text(`OrientoHub • ${title}`, margin, pageHeight - 10);
+        pdf.text(`${page}/${totalPages}`, pageWidth - margin, pageHeight - 10, { align: 'right' });
+      }
 
       pdf.save(`${title.toLowerCase().replace(/\s+/g, '-')}-template.pdf`);
     } catch (error) {
