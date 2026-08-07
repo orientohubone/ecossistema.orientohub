@@ -8,6 +8,7 @@ import { useFounderData } from '../hooks/useFounderData';
 import { Company } from '../types/founder';
 import DashboardPageSkeleton from '../components/ui/DashboardPageSkeleton';
 import { LeadsManagement } from '../components/founder/LeadsManagement';
+import { FeatureFlagsPanel } from '../components/founder/FeatureFlagsPanel';
 
 const FounderDashboardPage = () => {
     const [activeTab, setActiveTab] = useState('overview');
@@ -20,6 +21,7 @@ const FounderDashboardPage = () => {
         { id: 'reports', label: 'Relatórios', icon: FileText },
         { id: 'leads', label: 'Recebimentos', icon: Inbox },
         { id: 'versions', label: 'Versões', icon: GitBranch },
+        { id: 'flags', label: 'Feature Flags', icon: Activity },
     ];
 
     const handleExport = (data: Company[], filename: string) => {
@@ -143,6 +145,8 @@ const FounderDashboardPage = () => {
                                     </div>
                                 </div>
                             )}
+
+                            {activeTab === 'flags' && <FeatureFlagsPanel />}
 
                             {activeTab === 'revenue' && (
                                 <div className="space-y-6">

@@ -8,12 +8,8 @@ interface FounderDashboardRouteProps {
 const FounderDashboardRoute = ({ children }: FounderDashboardRouteProps) => {
     const { user } = useAuthStore();
 
-    // Verificar se é founder
-    // TODO: Adicionar campo 'role' no perfil do usuário no Supabase
-    // Por enquanto, verificar por email específico
-    const isFounder = user?.email === 'fersouluramal@gmail.com' ||
-        user?.email === 'fernandoluizsouzaramalho@gmail.com' ||
-        user?.user_metadata?.role === 'founder';
+    // Este painel é exclusivamente operacional. Metadados não concedem acesso.
+    const isFounder = user?.email?.toLowerCase() === 'fersouluramal@gmail.com';
 
     if (!isFounder) {
         return <Navigate to="/dashboard" replace />;
