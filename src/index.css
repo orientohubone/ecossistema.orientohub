@@ -90,12 +90,14 @@
 
   .route-skeleton-shell {
     animation: route-skeleton-reveal 180ms ease-out;
+    background: #0c121b;
   }
 
   .route-skeleton-block {
     position: relative;
     overflow: hidden;
-    @apply bg-gray-200/80 dark:bg-gray-700/80;
+    background: rgba(255, 215, 0, 0.12);
+    border: 1px solid rgba(255, 215, 0, 0.1);
   }
 
   .route-skeleton-block::after {
@@ -106,7 +108,7 @@
     background: linear-gradient(
       90deg,
       transparent 0%,
-      rgba(255, 255, 255, 0.42) 45%,
+      rgba(255, 235, 145, 0.55) 45%,
       transparent 100%
     );
     animation: route-skeleton-shimmer 1.1s ease-out infinite;
@@ -116,7 +118,7 @@
     background: linear-gradient(
       90deg,
       transparent 0%,
-      rgba(255, 255, 255, 0.14) 45%,
+      rgba(255, 225, 100, 0.3) 45%,
       transparent 100%
     );
   }

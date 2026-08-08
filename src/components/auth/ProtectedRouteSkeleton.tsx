@@ -4,9 +4,9 @@ const listRows = Array.from({ length: 5 });
 
 const ProtectedRouteSkeleton = () => {
   return (
-    <div className="route-skeleton-shell min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="route-skeleton-shell dark min-h-screen bg-[#0c121b] text-white">
       <div className="flex min-h-screen">
-        <aside className="hidden w-72 shrink-0 border-r border-gray-200/70 bg-white/90 px-4 py-4 dark:border-gray-700/80 dark:bg-gray-800/90 lg:flex lg:flex-col">
+        <aside className="hidden w-72 shrink-0 border-r border-[#273548] bg-[#101722] px-4 py-4 lg:flex lg:flex-col">
           <div className="mb-6 flex items-center gap-3">
             <div className="route-skeleton-block h-10 w-10 rounded-2xl" />
             <div className="space-y-2">
@@ -35,7 +35,7 @@ const ProtectedRouteSkeleton = () => {
         </aside>
 
         <div className="flex min-w-0 flex-1 flex-col">
-          <header className="border-b border-gray-200/70 bg-white/85 px-4 py-4 backdrop-blur-sm dark:border-gray-700/80 dark:bg-gray-800/85 sm:px-6 lg:px-8">
+          <header className="border-b border-[#273548] bg-[#101722] px-4 py-4 backdrop-blur-sm sm:px-6 lg:px-8">
             <div className="flex items-center justify-between gap-4">
               <div className="flex items-center gap-3">
                 <div className="route-skeleton-block h-10 w-10 rounded-xl lg:hidden" />

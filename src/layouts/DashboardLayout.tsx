@@ -262,16 +262,16 @@ const SidebarLink = ({ item, pathname, collapsed = false, onNavigate }: { item: 
       <Link
         to={item.href}
         onClick={onNavigate}
-        className={`group flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors
-          ${active ? 'bg-primary-500 text-[#0c121b] shadow-lg shadow-primary-500/15' :
-            'text-[#9ba9bc] hover:bg-[#151f2b] hover:text-white'}
+        className={`group flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors
+          ${active ? 'bg-primary-100 text-primary-900 dark:bg-primary-900/50 dark:text-primary-100' :
+            'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700'}
         `}
         aria-current={active ? 'page' : undefined}
       >
         {collapsed ? (
           <Tooltip.Root delayDuration={100}>
             <Tooltip.Trigger asChild>
-              <span className={`flex items-center justify-center w-6 h-6 rounded ${active ? 'text-primary-500' : 'text-gray-500 group-hover:text-gray-700 dark:group-hover:text-gray-300'}`}>{item.icon}</span>
+              <span className={`flex h-6 w-6 items-center justify-center rounded ${active ? 'text-primary-500' : 'text-gray-500 group-hover:text-gray-700 dark:group-hover:text-gray-300'}`}>{item.icon}</span>
             </Tooltip.Trigger>
             <Tooltip.Portal>
               <Tooltip.Content
@@ -290,7 +290,7 @@ const SidebarLink = ({ item, pathname, collapsed = false, onNavigate }: { item: 
           </Tooltip.Root>
         ) : (
           <>
-            <span className={`flex items-center justify-center w-6 h-6 rounded ${active ? 'text-primary-500' : 'text-gray-500 group-hover:text-gray-700 dark:group-hover:text-gray-300'}`}>{item.icon}</span>
+            <span className={`flex h-6 w-6 items-center justify-center rounded ${active ? 'text-primary-500' : 'text-gray-500 group-hover:text-gray-700 dark:group-hover:text-gray-300'}`}>{item.icon}</span>
             <span className="truncate flex-1">{item.name}</span>
             <span className="text-[10px] bg-primary-500/20 text-primary-700 dark:text-primary-400 px-1.5 py-0.5 rounded font-bold border border-primary-500/30">FOUNDER</span>
           </>
