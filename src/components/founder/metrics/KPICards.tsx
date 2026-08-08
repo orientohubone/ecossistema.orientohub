@@ -16,14 +16,14 @@ interface KPICardsProps {
 export const KPICards = ({ analytics }: KPICardsProps) => {
     return (
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-            <Card>
+            <Card className="border-emerald-400/20 bg-emerald-400/10">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-sm font-medium">
                         <MetricTooltip metric="mrr">
                             <span>MRR Total</span>
                         </MetricTooltip>
                     </CardTitle>
-                    <DollarSign className="h-4 w-4 text-gray-400" />
+                    <DollarSign className="h-4 w-4 text-emerald-300" />
                 </CardHeader>
                 <CardContent>
                     <div className="text-2xl font-bold text-white">
@@ -36,14 +36,14 @@ export const KPICards = ({ analytics }: KPICardsProps) => {
                 </CardContent>
             </Card>
 
-            <Card>
+            <Card className="border-primary-400/20 bg-primary-500/10">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-sm font-medium">
                         <MetricTooltip metric="arr">
                             <span>ARR Total</span>
                         </MetricTooltip>
                     </CardTitle>
-                    <BarChart3 className="h-4 w-4 text-gray-400" />
+                    <BarChart3 className="h-4 w-4 text-primary-300" />
                 </CardHeader>
                 <CardContent>
                     <div className="text-2xl font-bold text-white">
@@ -57,10 +57,10 @@ export const KPICards = ({ analytics }: KPICardsProps) => {
                 </CardContent>
             </Card>
 
-            <Card>
+            <Card className="border-violet-400/20 bg-violet-400/10">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-sm font-medium">Clientes Ativos</CardTitle>
-                    <Users className="h-4 w-4 text-gray-400" />
+                    <Users className="h-4 w-4 text-violet-300" />
                 </CardHeader>
                 <CardContent>
                     <div className="text-2xl font-bold text-white">
@@ -72,14 +72,14 @@ export const KPICards = ({ analytics }: KPICardsProps) => {
                 </CardContent>
             </Card>
 
-            <Card>
+            <Card className="border-amber-400/20 bg-amber-400/10">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-sm font-medium">
                         <MetricTooltip metric="health_score">
                             <span>Health Score</span>
                         </MetricTooltip>
                     </CardTitle>
-                    <Activity className="h-4 w-4 text-gray-400" />
+                    <Activity className="h-4 w-4 text-amber-300" />
                 </CardHeader>
                 <CardContent>
                     <div className="text-2xl font-bold text-white">

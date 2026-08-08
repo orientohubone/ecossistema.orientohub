@@ -22,8 +22,8 @@ const InterviewsList = ({ interviews, onUpdate }: InterviewsListProps) => {
   const [showForm, setShowForm] = useState(false);
   const [newInterview, setNewInterview] = useState<Partial<Interview>>({});
   const [currentInsight, setCurrentInsight] = useState('');
-  const fieldClassName = "w-full px-3 py-2.5 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 focus:outline-none transition-colors";
-  const compactFieldClassName = "px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 focus:outline-none transition-colors";
+  const fieldClassName = "w-full rounded-xl border border-[#34455a] bg-[#0c121b] px-3 py-2.5 text-white placeholder:text-[#718096] outline-none transition-colors focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20";
+  const compactFieldClassName = "rounded-lg border border-[#34455a] bg-[#0c121b] px-3 py-2 text-white outline-none transition-colors focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20";
 
   const handleAddInterview = () => {
     if (!newInterview.customerName || !newInterview.date) return;
@@ -87,10 +87,10 @@ const InterviewsList = ({ interviews, onUpdate }: InterviewsListProps) => {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h3 className="text-lg font-semibold">{t('interviews.title')}</h3>
+        <div><p className="text-xs font-semibold uppercase tracking-[0.15em] text-[#9ba9bc]">Voz do cliente</p><h3 className="text-lg font-semibold text-white">{t('interviews.title')}</h3></div>
         <button
           onClick={() => setShowForm(true)}
-          className="btn-primary"
+          className="inline-flex items-center rounded-xl bg-primary-500 px-4 py-2.5 text-sm font-bold text-[#0c121b] transition-colors hover:bg-primary-400"
         >
           <PlusCircle className="w-4 h-4 mr-2" />
           {t('interviews.new')}
@@ -98,7 +98,7 @@ const InterviewsList = ({ interviews, onUpdate }: InterviewsListProps) => {
       </div>
 
       {showForm && (
-        <div className="p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+        <div className="rounded-xl border border-[#273548] bg-[#151f2b] p-4">
           <div className="space-y-4">
             <input
               type="text"
@@ -129,7 +129,7 @@ const InterviewsList = ({ interviews, onUpdate }: InterviewsListProps) => {
               </button>
               <button
                 onClick={() => setShowForm(false)}
-                className="btn-secondary"
+                className="rounded-xl border border-[#34455a] px-4 py-2.5 text-sm font-medium text-[#d7e0ea] transition-colors hover:bg-[#0c121b]"
               >
                 {t('common.cancel')}
               </button>
@@ -140,19 +140,19 @@ const InterviewsList = ({ interviews, onUpdate }: InterviewsListProps) => {
 
       <div className="space-y-4">
         {interviews.length === 0 ? (
-          <div className="rounded-2xl border-2 border-dashed border-primary-300/70 bg-gradient-to-br from-primary-50 via-white to-blue-50 px-6 py-10 text-center dark:border-primary-700/60 dark:from-primary-950/30 dark:via-gray-800/70 dark:to-blue-950/20">
-            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary-100 text-primary-600 dark:bg-primary-900/50 dark:text-primary-300">
+          <div className="rounded-2xl border border-dashed border-primary-400/35 bg-[#151f2b] px-6 py-10 text-center">
+            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary-500/15 text-primary-300">
               <MessageSquare className="h-7 w-7" />
             </div>
-            <h4 className="mb-2 text-lg font-semibold text-gray-900 dark:text-white">
+            <h4 className="mb-2 text-lg font-semibold text-white">
               Vamos ouvir quem importa?
             </h4>
-            <p className="mx-auto mb-5 max-w-lg text-gray-600 dark:text-gray-400">
+            <p className="mx-auto mb-5 max-w-lg text-[#9ba9bc]">
               Agende uma conversa com um cliente e descubra sinais reais para orientar os próximos passos.
             </p>
             <button
               onClick={() => setShowForm(true)}
-              className="btn-primary inline-flex items-center"
+              className="inline-flex items-center rounded-xl bg-primary-500 px-4 py-2.5 text-sm font-bold text-[#0c121b] transition-colors hover:bg-primary-400"
             >
               Agendar primeira entrevista
               <ArrowRight className="ml-2 h-4 w-4" />
@@ -161,12 +161,12 @@ const InterviewsList = ({ interviews, onUpdate }: InterviewsListProps) => {
         ) : interviews.map((interview) => (
           <div
             key={interview.id}
-            className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-4"
+            className="rounded-xl border border-[#273548] bg-[#151f2b] p-4"
           >
             <div className="flex items-start justify-between mb-4">
               <div>
-                <h4 className="font-medium mb-1">{interview.customerName}</h4>
-                <div className="flex items-center text-sm text-gray-500">
+                <h4 className="mb-1 font-medium text-white">{interview.customerName}</h4>
+                <div className="flex items-center text-sm text-[#9ba9bc]">
                   <Calendar className="w-4 h-4 mr-1" />
                   {new Date(interview.date).toLocaleDateString()}
                 </div>
@@ -191,7 +191,7 @@ const InterviewsList = ({ interviews, onUpdate }: InterviewsListProps) => {
             {interview.script && (
               <div className="mb-4">
                 <h5 className="font-medium mb-2">{t('interviews.script')}</h5>
-                <div className="text-sm text-gray-600 dark:text-gray-300 whitespace-pre-line">
+                <div className="whitespace-pre-line text-sm text-[#9ba9bc]">
                   {interview.script}
                 </div>
               </div>
@@ -205,7 +205,7 @@ const InterviewsList = ({ interviews, onUpdate }: InterviewsListProps) => {
                     {Object.entries(interview.responses).map(([question, response]) => (
                       <div key={question} className="text-sm">
                         <div className="font-medium">{question}</div>
-                        <div className="text-gray-600 dark:text-gray-300">{response}</div>
+                        <div className="text-[#9ba9bc]">{response}</div>
                       </div>
                     ))}
                   </div>
@@ -217,7 +217,7 @@ const InterviewsList = ({ interviews, onUpdate }: InterviewsListProps) => {
                     {interview.insights.map((insight, index) => (
                       <div
                         key={index}
-                        className="text-sm text-gray-600 dark:text-gray-300 bg-gray-50 dark:bg-gray-700/50 p-2 rounded"
+                        className="rounded-lg border border-[#273548] bg-[#0c121b] p-2 text-sm text-[#d7e0ea]"
                       >
                         {insight}
                       </div>
@@ -237,7 +237,7 @@ const InterviewsList = ({ interviews, onUpdate }: InterviewsListProps) => {
                       />
                       <button
                         onClick={() => handleAddInsight(interview.id)}
-                        className="btn-secondary text-sm"
+                        className="rounded-lg border border-[#34455a] px-3 py-2 text-sm font-medium text-[#d7e0ea] transition-colors hover:bg-[#0c121b]"
                       >
                         {t('common.add')}
                       </button>

@@ -22,7 +22,7 @@ const ValidationChecklist = ({ project, onUpdate }: ValidationChecklistProps) =>
   const [showForm, setShowForm] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
-  const fieldClassName = "w-full px-3 py-2.5 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 focus:outline-none transition-colors";
+  const fieldClassName = "w-full rounded-xl border border-[#34455a] bg-[#0c121b] px-3 py-2.5 text-white placeholder:text-[#718096] outline-none transition-colors focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20";
 
   // Sincronizar hipóteses quando mudarem
   useEffect(() => {
@@ -93,10 +93,10 @@ const ValidationChecklist = ({ project, onUpdate }: ValidationChecklistProps) =>
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h3 className="text-lg font-semibold">{t('validation.title')}</h3>
+        <div><p className="text-xs font-semibold uppercase tracking-[0.15em] text-[#9ba9bc]">Aprendizado</p><h3 className="text-lg font-semibold text-white">{t('validation.title')}</h3></div>
         <button
           onClick={() => setShowForm(true)}
-          className="btn-primary"
+          className="inline-flex items-center rounded-xl bg-primary-500 px-4 py-2.5 text-sm font-bold text-[#0c121b] transition-colors hover:bg-primary-400"
         >
           <PlusCircle className="w-4 h-4 mr-2" />
           {t('validation.newHypothesis')}
@@ -104,7 +104,7 @@ const ValidationChecklist = ({ project, onUpdate }: ValidationChecklistProps) =>
       </div>
 
       {showForm && (
-        <div className="p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+        <div className="rounded-xl border border-[#273548] bg-[#151f2b] p-4">
           <textarea
             value={newHypothesis}
             onChange={(e) => setNewHypothesis(e.target.value)}
@@ -124,7 +124,7 @@ const ValidationChecklist = ({ project, onUpdate }: ValidationChecklistProps) =>
             <button
               onClick={() => setShowForm(false)}
               disabled={isSaving}
-              className="btn-secondary disabled:cursor-not-allowed disabled:opacity-50"
+              className="rounded-xl border border-[#34455a] px-4 py-2.5 text-sm font-medium text-[#d7e0ea] transition-colors hover:bg-[#0c121b] disabled:cursor-not-allowed disabled:opacity-50"
             >
               {t('common.cancel')}
             </button>
@@ -133,7 +133,7 @@ const ValidationChecklist = ({ project, onUpdate }: ValidationChecklistProps) =>
       )}
 
       {loading && hypotheses.length === 0 ? (
-        <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+        <div className="py-8 text-center text-[#9ba9bc]">
           Carregando hipóteses...
         </div>
       ) : (
@@ -142,10 +142,10 @@ const ValidationChecklist = ({ project, onUpdate }: ValidationChecklistProps) =>
             <div
               key={hypothesis.id}
               className={`
-                flex items-start p-4 rounded-lg
+                flex items-start rounded-xl border p-4
                 ${hypothesis.validated
-                  ? 'bg-green-50 dark:bg-green-900/20'
-                  : 'bg-gray-50 dark:bg-gray-700/50'
+                  ? 'border-emerald-400/25 bg-emerald-400/10'
+                  : 'border-[#273548] bg-[#151f2b]'
                 }
               `}
             >
@@ -157,22 +157,22 @@ const ValidationChecklist = ({ project, onUpdate }: ValidationChecklistProps) =>
                 {hypothesis.validated ? (
                   <CheckSquare className="w-5 h-5 text-green-600 dark:text-green-400" />
                 ) : (
-                  <Square className="w-5 h-5 text-gray-400" />
+                  <Square className="w-5 h-5 text-[#718096]" />
                 )}
               </button>
               <div className="flex-1">
-                <p className={hypothesis.validated ? 'text-green-800 dark:text-green-200' : ''}>
+                <p className={hypothesis.validated ? 'text-emerald-200' : 'text-white'}>
                   {hypothesis.statement}
                 </p>
                 {hypothesis.confidence > 0 && (
-                  <div className="mt-2 text-sm text-gray-500 dark:text-gray-400">
+                  <div className="mt-2 text-sm text-[#9ba9bc]">
                     Confiança: {hypothesis.confidence}%
                   </div>
                 )}
               </div>
               <button
                 onClick={() => handleDeleteHypothesis(hypothesis.id)}
-                className="ml-4 text-gray-400 hover:text-red-500"
+                className="ml-4 text-[#718096] transition-colors hover:text-red-300"
                 disabled={loading}
               >
                 <Trash2 className="w-4 h-4" />
@@ -180,12 +180,12 @@ const ValidationChecklist = ({ project, onUpdate }: ValidationChecklistProps) =>
             </div>
           ))}
           {hypotheses.length === 0 && (
-            <div className="rounded-2xl border-2 border-dashed border-primary-300/70 bg-gradient-to-br from-primary-50 via-white to-blue-50 px-6 py-10 text-center dark:border-primary-700/60 dark:from-primary-950/30 dark:via-gray-800/70 dark:to-blue-950/20">
+            <div className="rounded-2xl border border-dashed border-primary-400/35 bg-[#151f2b] px-6 py-10 text-center">
               <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary-500/15 shadow-sm">
-                <Lightbulb className="h-7 w-7 text-primary-500" />
+                <Lightbulb className="h-7 w-7 text-primary-300" />
               </div>
-              <h4 className="text-lg font-bold text-gray-900 dark:text-white">Vamos transformar uma ideia em aprendizado?</h4>
-              <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed text-gray-600 dark:text-gray-400">
+              <h4 className="text-lg font-bold text-white">Vamos transformar uma ideia em aprendizado?</h4>
+              <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed text-[#9ba9bc]">
                 Registre uma suposição importante sobre o seu projeto. Depois, você poderá testá-la, acompanhar a confiança e validar com evidências reais.
               </p>
               <button

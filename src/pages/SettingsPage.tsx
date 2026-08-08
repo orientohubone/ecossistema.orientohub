@@ -141,7 +141,7 @@ const SettingsPage = () => {
   const [activeTab, setActiveTab] = useState(initialTab);
   const [darkMode, setDarkMode] = useState(document.documentElement.classList.contains('dark'));
   const [showPassword, setShowPassword] = useState(false);
-  const fieldClassName = "w-full px-4 py-2.5 border-2 border-gray-200 dark:border-gray-600 rounded-xl focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 focus:outline-none bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500";
+  const fieldClassName = "w-full rounded-xl border border-[#34455a] bg-[#0c121b] px-4 py-3 text-white placeholder:text-[#718096] outline-none transition-colors focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20";
   const [isLoading, setIsLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -283,24 +283,25 @@ const SettingsPage = () => {
         <title>Configurações - Orientohub</title>
       </Helmet>
 
-      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
-        <div className="container-custom py-8">
+      <div className="dark min-h-screen bg-[#0c121b] text-white">
+        <div className="container-custom py-6 md:py-8">
           {/* Header */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mb-8"
+            className="mb-6 rounded-2xl border border-[#273548] bg-[#101722] p-5 md:p-6"
           >
             <div className="flex items-center gap-3 mb-2">
-              <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center">
-                <SettingsIcon className="w-6 h-6 text-white" />
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary-500/15">
+                <SettingsIcon className="w-6 h-6 text-primary-300" />
               </div>
               <div>
-                <h1 className="text-3xl font-bold flex items-center gap-2">
+                <p className="mb-1 text-xs font-semibold uppercase tracking-[0.16em] text-primary-300">Sua experiência</p>
+                <h1 className="flex items-center gap-2 text-2xl font-bold text-white md:text-3xl">
                   Configurações
                   <Sparkles className="w-6 h-6 text-primary-500" />
                 </h1>
-                <p className="text-gray-600 dark:text-gray-400">
+                <p className="text-[#9ba9bc]">
                   Gerencie sua conta e preferências
                 </p>
               </div>
@@ -333,7 +334,7 @@ const SettingsPage = () => {
           <div className="grid min-w-0 grid-cols-1 lg:grid-cols-4 gap-6">
             {/* Sidebar */}
             <div className="lg:col-span-1">
-              <div className="bg-white dark:bg-gray-800 rounded-2xl border-2 border-gray-200 dark:border-gray-700 p-4 sticky top-6">
+              <div className="sticky top-6 rounded-2xl border border-[#273548] bg-[#101722] p-3 md:p-4">
                 <nav className="space-y-1">
                   {tabs.map((tab) => {
                     const Icon = tab.icon;
@@ -342,8 +343,8 @@ const SettingsPage = () => {
                         key={tab.id}
                         onClick={() => setActiveTab(tab.id)}
                         className={`w-full flex items-center justify-between px-4 py-3 text-sm font-medium rounded-xl transition-all ${activeTab === tab.id
-                            ? 'bg-primary-500 text-white shadow-lg shadow-primary-500/30'
-                            : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+                            ? 'bg-primary-500 text-[#0c121b] shadow-lg shadow-primary-500/20'
+                            : 'text-[#9ba9bc] hover:bg-[#151f2b] hover:text-white'
                           }`}
                       >
                         <div className="flex items-center gap-3">
@@ -351,7 +352,7 @@ const SettingsPage = () => {
                           {tab.name}
                         </div>
                         {tab.badge && (
-                          <span className="px-2 py-0.5 bg-primary-100 dark:bg-primary-900/50 text-primary-700 dark:text-primary-300 text-xs font-bold rounded-full">
+                          <span className="rounded-full bg-primary-500/15 px-2 py-0.5 text-xs font-bold text-primary-200">
                             {tab.badge}
                           </span>
                         )}
@@ -361,21 +362,21 @@ const SettingsPage = () => {
                 </nav>
 
                 {/* Quick Stats */}
-                <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700 space-y-3">
+                <div className="mt-5 space-y-3 border-t border-[#273548] pt-5">
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-gray-600 dark:text-gray-400">Membro desde</span>
-                    <span className="font-medium">{new Date(accountCreatedAt).toLocaleDateString('pt-BR')}</span>
+                    <span className="text-[#9ba9bc]">Membro desde</span>
+                    <span className="font-medium text-white">{new Date(accountCreatedAt).toLocaleDateString('pt-BR')}</span>
                   </div>
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-gray-600 dark:text-gray-400">Projetos</span>
-                    <span className="font-medium">{totalProjects}</span>
+                    <span className="text-[#9ba9bc]">Projetos</span>
+                    <span className="font-medium text-white">{totalProjects}</span>
                   </div>
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-gray-600 dark:text-gray-400">Soluções</span>
-                    <span className="font-medium">{totalSolutions}</span>
+                    <span className="text-[#9ba9bc]">Soluções</span>
+                    <span className="font-medium text-white">{totalSolutions}</span>
                   </div>
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-gray-600 dark:text-gray-400">Pontos XP</span>
+                    <span className="text-[#9ba9bc]">Pontos XP</span>
                     <span className="font-medium text-primary-600 dark:text-primary-400">{totalPoints}</span>
                   </div>
                 </div>
@@ -384,7 +385,7 @@ const SettingsPage = () => {
 
             {/* Content */}
             <div className="min-w-0 lg:col-span-3">
-              <div className="bg-white dark:bg-gray-800 rounded-2xl border-2 border-gray-200 dark:border-gray-700 p-6">
+              <div className="rounded-2xl border border-[#273548] bg-[#101722] p-5 md:p-6">
                 {/* Profile Tab */}
                 {activeTab === 'profile' && (
                   <motion.div
@@ -393,8 +394,9 @@ const SettingsPage = () => {
                     className="space-y-6"
                   >
                     <div>
-                      <h2 className="text-2xl font-bold mb-2">Informações do Perfil</h2>
-                      <p className="text-gray-600 dark:text-gray-400">Atualize suas informações pessoais</p>
+                      <p className="mb-2 text-xs font-semibold uppercase tracking-[0.16em] text-primary-300">Identidade</p>
+                      <h2 className="mb-2 text-2xl font-bold text-white">Informações do Perfil</h2>
+                      <p className="text-[#9ba9bc]">Atualize suas informações pessoais</p>
                     </div>
 
                     {/* Avatar */}
@@ -427,7 +429,7 @@ const SettingsPage = () => {
                       </div>
                       <div>
                         <h3 className="font-bold text-lg">{user?.user_metadata?.name || user?.email?.split('@')[0]}</h3>
-                        <p className="text-gray-600 dark:text-gray-400">{user?.email}</p>
+                        <p className="text-[#9ba9bc]">{user?.email}</p>
                         <div className="flex items-center gap-2 mt-2">
                           <span className={`px-3 py-1 rounded-full text-xs font-bold ${currentPlan === 'free' ? 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300' :
                               currentPlan === 'pro' ? 'bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300' :
@@ -619,19 +621,20 @@ const SettingsPage = () => {
                     className="space-y-6"
                   >
                     <div>
-                      <h2 className="text-2xl font-bold mb-2">Planos e Assinatura</h2>
-                      <p className="text-gray-600 dark:text-gray-400">Escolha o melhor plano para você</p>
+                      <p className="mb-2 text-xs font-semibold uppercase tracking-[0.16em] text-primary-300">Assinatura</p>
+                      <h2 className="mb-2 text-2xl font-bold text-white">Planos e Assinatura</h2>
+                      <p className="text-[#9ba9bc]">Escolha o melhor plano para você</p>
                     </div>
 
                     {/* Current Plan */}
-                    <div className="p-5 sm:p-6 bg-gradient-to-br from-primary-50 to-primary-100 dark:from-primary-900/20 dark:to-primary-800/20 border-2 border-primary-200 dark:border-primary-800 rounded-xl">
+                    <div className="rounded-2xl border border-primary-400/25 bg-primary-500/10 p-5 sm:p-6">
                       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                         <div className="min-w-0">
                           <div className="flex items-center gap-2 mb-2">
                             <Crown className="w-6 h-6 text-primary-600 dark:text-primary-400" />
                             <h3 className="text-lg sm:text-xl font-bold break-words">Plano Atual: {plans.find(p => p.id === currentPlan)?.name}</h3>
                           </div>
-                          <p className="text-gray-700 dark:text-gray-300">
+                          <p className="text-primary-100/80">
                             {currentPlan === 'free' ? 'Upgrade para desbloquear recursos premium' : 'Obrigado por ser um membro premium!'}
                           </p>
                         </div>
@@ -650,10 +653,10 @@ const SettingsPage = () => {
                         <div
                           key={plan.id}
                           className={`relative min-w-0 p-3 lg:p-5 rounded-2xl border-2 transition-all ${plan.current
-                              ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20'
+                              ? 'border-primary-400 bg-primary-500/10'
                               : plan.popular
-                                ? 'border-primary-300 dark:border-primary-700 bg-white dark:bg-gray-800 shadow-xl'
-                                : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800'
+                                ? 'border-primary-400/35 bg-[#151f2b] shadow-xl'
+                                : 'border-[#273548] bg-[#151f2b]'
                             }`}
                         >
                           <div className="mb-3 flex min-h-7 items-center justify-center">
@@ -678,9 +681,9 @@ const SettingsPage = () => {
                                   ? `R$ ${plan.price.toFixed(2).replace('.', ',')}`
                                   : plan.price}
                               </span>
-                              {plan.period && <span className="text-xs text-gray-600 dark:text-gray-400 lg:text-sm">/{plan.period}</span>}
+                              {plan.period && <span className="text-xs text-[#9ba9bc] lg:text-sm">/{plan.period}</span>}
                             </div>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">{plan.description}</p>
+                            <p className="text-sm text-[#9ba9bc]">{plan.description}</p>
                           </div>
 
                           <ul className="space-y-3 mb-6">
@@ -689,9 +692,9 @@ const SettingsPage = () => {
                                 {feature.included ? (
                                   <CheckCircle className="mt-0.5 h-4 w-4 shrink-0 text-green-500 lg:h-5 lg:w-5" />
                                 ) : (
-                                  <XCircle className="mt-0.5 h-4 w-4 shrink-0 text-gray-300 dark:text-gray-600 lg:h-5 lg:w-5" />
+                                  <XCircle className="mt-0.5 h-4 w-4 shrink-0 text-[#536274] lg:h-5 lg:w-5" />
                                 )}
-                                <span className={`break-words ${feature.included ? '' : 'text-gray-400 dark:text-gray-500'}`}>
+                                <span className={`break-words ${feature.included ? 'text-[#d7e0ea]' : 'text-[#718096]'}`}>
                                   {feature.name}
                                 </span>
                               </li>
@@ -701,7 +704,7 @@ const SettingsPage = () => {
                           {plan.current ? (
                             <button
                               disabled
-                              className="w-full cursor-not-allowed rounded-xl bg-gray-200 py-2.5 text-xs font-bold text-gray-500 transition-all dark:bg-gray-700 lg:py-3 lg:text-sm"
+                              className="w-full cursor-not-allowed rounded-xl bg-[#0c121b] py-2.5 text-xs font-bold text-[#718096] transition-all lg:py-3 lg:text-sm"
                             >
                               Plano Atual
                             </button>
@@ -710,7 +713,7 @@ const SettingsPage = () => {
                               to={plan.id === 'enterprise' ? '/contato' : '/checkout?plan=pro&billing=monthly'}
                               className={`block w-full rounded-xl py-2.5 text-center text-xs font-bold transition-all lg:py-3 lg:text-sm ${plan.popular
                                 ? 'bg-primary-500 text-black hover:bg-primary-600'
-                                : 'border-2 border-gray-300 dark:border-gray-600 hover:border-primary-500'
+                                : 'border border-[#34455a] text-[#d7e0ea] hover:border-primary-400 hover:bg-primary-500/10'
                               }`}
                             >
                               {plan.id === 'enterprise' ? 'Falar com vendas' : 'Selecionar Plano'}

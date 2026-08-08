@@ -253,21 +253,15 @@ const DashboardPage = () => {
         <title>Dashboard - Orientohub</title>
       </Helmet>
 
-      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
+      <div className="min-h-screen bg-[#0c121b]">
         <div className="container-custom py-8 space-y-8">
           {/* Welcome Header */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="relative overflow-hidden bg-gradient-to-br from-black via-gray-900 to-black rounded-2xl p-8 border-2 border-primary-500/30"
+            className="overflow-hidden rounded-2xl border border-[#34455a] bg-[#101722] p-6 shadow-[0_16px_36px_rgba(0,0,0,0.2)] sm:p-8"
           >
-            {/* Background effects */}
-            <div className="absolute inset-0 opacity-20">
-              <div className="absolute top-0 right-0 w-64 h-64 bg-primary-500 rounded-full blur-3xl" />
-              <div className="absolute bottom-0 left-0 w-96 h-96 bg-primary-400 rounded-full blur-3xl" />
-            </div>
-
-            <div className="relative z-10 flex items-center justify-between">
+            <div className="flex items-center justify-between">
               <div className="flex items-center gap-6">
                 <div className="relative group">
                   {/* Avatar com efeito de hover e fallback melhorado */}
@@ -283,8 +277,8 @@ const DashboardPage = () => {
                         }}
                       />
                     ) : (
-                      <div className="w-20 h-20 bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center">
-                        <span className="text-2xl font-bold text-white">
+                      <div className="flex h-20 w-20 items-center justify-center bg-[#151f2b]">
+                        <span className="text-2xl font-bold text-primary-300">
                           {userData.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)}
                         </span>
                       </div>
@@ -304,14 +298,14 @@ const DashboardPage = () => {
                   {/* Saudação personalizada com base no horário */}
                   <div>
                     <h1 className="text-3xl font-bold text-white mb-2 flex items-center gap-2">
-                      {getGreeting()}, <span className="text-primary-400">{userData.name}</span>!
+                      {getGreeting()}, <span className="text-primary-300">{userData.name}</span>!
                     </h1>
                     {(() => {
                       const motivation = getMotivationalData(userData.level);
                       const MotivationIcon = motivation.icon;
                       return (
-                        <p className="text-gray-300 text-lg flex items-center gap-2">
-                          <MotivationIcon className="w-5 h-5 text-primary-500" />
+                        <p className="flex items-center gap-2 text-lg text-[#b8c4d4]">
+                          <MotivationIcon className="h-5 w-5 text-primary-300" />
                           {motivation.text}
                         </p>
                       );
@@ -325,9 +319,9 @@ const DashboardPage = () => {
                         <Star className="w-4 h-4 text-primary-500" />
                         <span className="text-white font-medium">Nível {userData.level}</span>
                       </span>
-                      <span className="text-primary-400 font-medium">{userData.currentXP} / {userData.nextLevelXP} XP</span>
+                      <span className="font-medium text-primary-300">{userData.currentXP} / {userData.nextLevelXP} XP</span>
                     </div>
-                    <div className="h-3 bg-gray-700 rounded-full overflow-hidden relative">
+                    <div className="relative h-3 overflow-hidden rounded-full bg-[#0c121b]">
                       <motion.div
                         initial={{ width: 0 }}
                         animate={{ width: `${xpPercentage}%` }}
@@ -348,12 +342,11 @@ const DashboardPage = () => {
               {/* Rank Card melhorado */}
               <div className="hidden lg:block">
                 <div className="relative group">
-                  <div className="absolute inset-0 bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-2xl blur-lg opacity-50 group-hover:opacity-70 transition-opacity" />
-                  <div className="relative bg-gradient-to-br from-yellow-400 to-yellow-600 p-6 rounded-2xl text-center shadow-2xl border border-yellow-300/20 transition-all duration-300 group-hover:scale-105">
+                  <div className="relative rounded-2xl border border-primary-400/30 bg-primary-400/10 p-6 text-center transition-all duration-300 group-hover:scale-105">
                     <div className="relative">
-                      <Crown className="w-12 h-12 text-black mx-auto mb-2 animate-pulse" />
-                      <p className="text-black font-bold text-lg">Rank {userData.rank}</p>
-                      <p className="text-black/80 text-sm">Top 10%</p>
+                      <Crown className="mx-auto mb-2 h-10 w-10 text-primary-300" />
+                      <p className="text-lg font-bold text-white">Rank {userData.rank}</p>
+                      <p className="text-sm text-[#b8c4d4]">Top 10%</p>
                     </div>
                   </div>
                 </div>
@@ -371,26 +364,25 @@ const DashboardPage = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
-                  className="bg-white dark:bg-gray-800 rounded-xl p-6 border-2 border-gray-200 dark:border-gray-700 hover:border-primary-500 transition-all duration-300 hover:shadow-xl group"
+                  className="group rounded-2xl border border-[#273548] bg-[#101722] p-5 shadow-[0_12px_28px_rgba(0,0,0,0.16)] transition-all duration-300 hover:-translate-y-1 hover:border-primary-400/70 hover:shadow-[0_20px_38px_rgba(0,0,0,0.28)]"
                 >
                   <div className="flex items-start justify-between mb-4">
-                    <div className={`w-12 h-12 ${stat.bgColor} rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform`}>
+                    <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-[#34455a] bg-[#0c121b] transition-transform group-hover:scale-105">
                       <Icon className={`w-6 h-6 ${
-                        stat.bgColor.includes('orange') ? 'text-orange-600' :
-                        stat.bgColor.includes('yellow') ? 'text-yellow-600' :
-                        stat.bgColor.includes('blue') ? 'text-blue-600' :
-                        stat.bgColor.includes('purple') ? 'text-purple-600' :
-                        'text-white'
+                        stat.bgColor.includes('orange') ? 'text-orange-300' :
+                        stat.bgColor.includes('yellow') ? 'text-yellow-300' :
+                        stat.bgColor.includes('blue') ? 'text-blue-300' :
+                        stat.bgColor.includes('purple') ? 'text-purple-300' : 'text-primary-300'
                       }`} />
                     </div>
                   </div>
-                  <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">
+                  <h3 className="mb-1 text-sm font-medium text-[#9ba9bc]">
                     {stat.label}
                   </h3>
-                  <p className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                  <p className="mb-2 text-2xl font-bold text-white">
                     {stat.value}
                   </p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                  <p className="text-xs text-[#718096]">
                     {stat.change}
                   </p>
                 </motion.div>
@@ -403,14 +395,14 @@ const DashboardPage = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
-            className="bg-white dark:bg-gray-800 rounded-2xl p-6 border-2 border-gray-200 dark:border-gray-700"
+            className="rounded-2xl border border-[#273548] bg-[#101722] p-6 shadow-[0_12px_28px_rgba(0,0,0,0.16)]"
           >
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold flex items-center gap-2">
-                <Rocket className="w-6 h-6 text-primary-500" />
+              <h2 className="flex items-center gap-2 text-2xl font-bold text-white">
+                <Rocket className="h-6 w-6 text-primary-300" />
                 Sua Jornada Empreendedora
               </h2>
-              <Link to="/dashboard/jornada" className="text-primary-500 hover:text-primary-600 font-medium text-sm flex items-center gap-1">
+              <Link to="/dashboard/jornada" className="flex items-center gap-1 text-sm font-medium text-primary-300 hover:text-primary-200">
                 Ver detalhes
                 <ChevronRight className="w-4 h-4" />
               </Link>
@@ -425,7 +417,7 @@ const DashboardPage = () => {
                       {/* Connector Line */}
                       {index < phases.length - 1 && (
                         <div className={`absolute top-6 left-1/2 w-full h-1 ${
-                          phase.completed ? 'bg-primary-500' : 'bg-gray-200 dark:bg-gray-700'
+                          phase.completed ? 'bg-primary-500' : 'bg-[#273548]'
                         }`} style={{ zIndex: 0 }} />
                       )}
 
@@ -435,10 +427,10 @@ const DashboardPage = () => {
                           ? 'bg-primary-500 border-primary-300 shadow-lg shadow-primary-500/50 scale-110' 
                           : phase.completed
                           ? 'bg-green-500 border-green-300'
-                          : 'bg-gray-200 dark:bg-gray-700 border-gray-300 dark:border-gray-600'
+                          : 'bg-[#151f2b] border-[#34455a]'
                       }`}>
                         <Icon className={`w-6 h-6 ${
-                          phase.active || phase.completed ? 'text-white' : 'text-gray-700 dark:text-gray-500'
+                          phase.active || phase.completed ? 'text-white' : 'text-[#718096]'
                         }`} />
                       </div>
 
@@ -448,7 +440,7 @@ const DashboardPage = () => {
                           ? 'text-primary-500' 
                           : phase.completed
                           ? 'text-green-600 dark:text-green-400'
-                          : 'text-gray-500 dark:text-gray-400'
+                          : 'text-[#718096]'
                       }`}>
                         {phase.name}
                       </p>
@@ -479,7 +471,7 @@ const DashboardPage = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5 }}
-                className="bg-white dark:bg-gray-800 rounded-2xl p-6 border-2 border-gray-200 dark:border-gray-700"
+                className="rounded-2xl border border-[#273548] bg-[#101722] p-6 shadow-[0_12px_28px_rgba(0,0,0,0.16)]"
               >
                 <div className="flex items-center justify-between mb-6">
                   <h2 className="text-2xl font-bold flex items-center gap-2">
@@ -500,8 +492,8 @@ const DashboardPage = () => {
                       transition={{ delay: 0.6 + index * 0.1 }}
                       className={`group p-4 rounded-xl border-2 transition-all duration-300 ${
                         task.completed
-                          ? 'bg-green-50 dark:bg-green-900/10 border-green-200 dark:border-green-800'
-                          : 'bg-gray-50 dark:bg-gray-700/50 border-gray-200 dark:border-gray-700 hover:border-primary-500'
+                          ? 'bg-emerald-400/5 border-emerald-400/25'
+                          : 'bg-[#0c121b] border-[#273548] hover:border-primary-400/70'
                       }`}
                     >
                       <div className="flex items-start gap-4">
@@ -518,7 +510,7 @@ const DashboardPage = () => {
                           <div className="flex items-start justify-between gap-4">
                             <div>
                               <h3 className={`font-semibold mb-1 ${
-                                task.completed ? 'line-through text-gray-500 dark:text-gray-400' : 'text-gray-900 dark:text-white'
+                                task.completed ? 'line-through text-[#718096]' : 'text-white'
                               }`}>
                                 {task.title}
                               </h3>
@@ -530,8 +522,8 @@ const DashboardPage = () => {
                                 }`}>
                                   {task.category}
                                 </span>
-                                <span className="text-gray-500 dark:text-gray-400 flex items-center gap-1">
-                                  <Zap className="w-3 h-3 text-primary-500" />
+                                <span className="flex items-center gap-1 text-[#9ba9bc]">
+                                  <Zap className="h-3 w-3 text-primary-300" />
                                   +{task.xp} XP
                                 </span>
                               </div>
@@ -550,11 +542,11 @@ const DashboardPage = () => {
                           {/* Progress Bar */}
                           {!task.completed && task.progress !== undefined && (
                             <div className="mt-3">
-                              <div className="flex items-center justify-between text-xs text-gray-600 dark:text-gray-400 mb-1">
+                              <div className="mb-1 flex items-center justify-between text-xs text-[#9ba9bc]">
                                 <span>Progresso</span>
                                 <span>{task.progress}%</span>
                               </div>
-                              <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                              <div className="h-2 overflow-hidden rounded-full bg-[#151f2b]">
                                 <div 
                                   className="h-full bg-primary-500 rounded-full transition-all duration-300"
                                   style={{ width: `${task.progress}%` }}
@@ -569,7 +561,7 @@ const DashboardPage = () => {
                 </div>
 
                 <button
-                  className="mt-4 w-full py-3 border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-xl text-gray-600 dark:text-gray-400 hover:border-primary-500 hover:text-primary-500 transition-all duration-300 font-medium"
+                  className="mt-4 w-full rounded-xl border border-dashed border-[#34455a] py-3 font-medium text-[#9ba9bc] transition-all duration-300 hover:border-primary-400 hover:text-primary-300"
                   onClick={() => navigate('/dashboard/tarefas')}
                 >
                   + Ver todas as tarefas
@@ -581,7 +573,7 @@ const DashboardPage = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.7 }}
-                className="bg-white dark:bg-gray-800 rounded-2xl p-6 border-2 border-gray-200 dark:border-gray-700"
+                className="rounded-2xl border border-[#273548] bg-[#101722] p-6 shadow-[0_12px_28px_rgba(0,0,0,0.16)]"
               >
                 <div className="flex items-center justify-between mb-6">
                   <h2 className="text-2xl font-bold flex items-center gap-2">
@@ -606,18 +598,18 @@ const DashboardPage = () => {
                       initial={{ opacity: 0, scale: 0.9 }}
                       animate={{ opacity: 1, scale: 1 }}
                       transition={{ delay: 0.8 + index * 0.1 }}
-                      className="group p-5 bg-gradient-to-br from-gray-50 to-white dark:from-gray-700/50 dark:to-gray-800/50 rounded-xl border-2 border-gray-200 dark:border-gray-700 hover:border-primary-500 transition-all duration-300 hover:shadow-lg cursor-pointer"
+                      className="group cursor-pointer rounded-xl border border-[#273548] bg-[#0c121b] p-5 transition-all duration-300 hover:border-primary-400/70 hover:bg-[#151f2b]"
                     >
                       <div className="flex items-start justify-between mb-3">
                         <div className="flex items-center gap-3">
-                          <div className="text-3xl">
-                            <FrameworkIcon />
+                          <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#34455a] bg-[#151f2b] text-primary-300">
+                            <FrameworkIcon className="h-5 w-5" />
                           </div>
                           <div>
-                            <h3 className="font-bold text-gray-900 dark:text-white group-hover:text-primary-500 transition-colors">
+                            <h3 className="font-bold text-white transition-colors group-hover:text-primary-300">
                               {framework.name}
                             </h3>
-                            <p className="text-xs text-gray-500 dark:text-gray-400">
+                            <p className="text-xs text-[#718096]">
                               {framework.lastUpdate}
                             </p>
                           </div>
@@ -631,10 +623,10 @@ const DashboardPage = () => {
 
                       <div className="space-y-2">
                         <div className="flex items-center justify-between text-sm">
-                          <span className="text-gray-600 dark:text-gray-400">{framework.status}</span>
-                          <span className="font-bold text-primary-500">{framework.progress}%</span>
+                          <span className="text-[#9ba9bc]">{framework.status}</span>
+                          <span className="font-bold text-primary-300">{framework.progress}%</span>
                         </div>
-                        <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                        <div className="h-3 overflow-hidden rounded-full bg-[#151f2b]">
                           <motion.div
                             className={`h-full rounded-full ${
                               framework.progress === 100 ? 'bg-green-500' : 'bg-gradient-to-r from-primary-400 to-primary-600'
@@ -647,7 +639,7 @@ const DashboardPage = () => {
                       </div>
 
                       <button
-                        className="mt-4 w-full py-2 bg-primary-500/10 hover:bg-primary-500 text-primary-600 hover:text-black rounded-lg font-medium transition-all duration-300 flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100"
+                        className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg bg-primary-500/10 py-2 font-medium text-primary-300 transition-all duration-300 hover:bg-primary-500 hover:text-black"
                         onClick={() => handleFrameworkClick(framework)}
                       >
                         <Play className="w-4 h-4" />
@@ -667,7 +659,7 @@ const DashboardPage = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.6 }}
-                className="bg-white dark:bg-gray-800 rounded-2xl p-6 border-2 border-gray-200 dark:border-gray-700"
+                className="rounded-2xl border border-[#273548] bg-[#101722] p-6 shadow-[0_12px_28px_rgba(0,0,0,0.16)]"
               >
                 <div className="flex items-center justify-between mb-6">
                   <h2 className="text-xl font-bold flex items-center gap-2">
@@ -725,11 +717,11 @@ const DashboardPage = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.8 }}
-                className="bg-gradient-to-br from-primary-500/10 to-primary-600/10 rounded-2xl p-6 border-2 border-primary-500/30"
+                className="rounded-2xl border border-primary-400/25 bg-[#101722] p-6 shadow-[0_12px_28px_rgba(0,0,0,0.16)]"
               >
                 <div className="flex items-center gap-2 mb-6">
                   <Sparkles className="w-5 h-5 text-primary-500" />
-                  <h2 className="text-xl font-bold">Recomendado pra Você</h2>
+                  <h2 className="text-xl font-bold text-white">Recomendado pra Você</h2>
                 </div>
 
                 <div className="space-y-3">
@@ -741,7 +733,7 @@ const DashboardPage = () => {
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.9 + index * 0.1 }}
-                        className="p-4 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700"
+                        className="rounded-xl border border-[#273548] bg-[#0c121b] p-4"
                       >
                         <div className="flex items-start gap-3 mb-3">
                           <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
@@ -756,8 +748,8 @@ const DashboardPage = () => {
                             }`} />
                           </div>
                           <div className="flex-1">
-                            <h4 className="font-semibold text-sm mb-1">{rec.title}</h4>
-                            <p className="text-xs text-gray-600 dark:text-gray-400">{rec.description}</p>
+                            <h4 className="mb-1 text-sm font-semibold text-white">{rec.title}</h4>
+                            <p className="text-xs text-[#9ba9bc]">{rec.description}</p>
                           </div>
                         </div>
                         <button
@@ -781,7 +773,7 @@ const DashboardPage = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.9 }}
-                className="bg-white dark:bg-gray-800 rounded-2xl p-6 border-2 border-gray-200 dark:border-gray-700"
+                className="rounded-2xl border border-[#273548] bg-[#101722] p-6 shadow-[0_12px_28px_rgba(0,0,0,0.16)]"
               >
                 <h2 className="text-xl font-bold flex items-center gap-2 mb-6">
                   <Activity className="w-5 h-5 text-primary-500" />
@@ -797,20 +789,20 @@ const DashboardPage = () => {
                         initial={{ opacity: 0, x: -10 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: 1.0 + index * 0.1 }}
-                        className="flex items-start gap-3 pb-4 border-b border-gray-200 dark:border-gray-700 last:border-0 last:pb-0"
+                        className="flex items-start gap-3 border-b border-[#273548] pb-4 last:border-0 last:pb-0"
                       >
                         <div className="w-8 h-8 bg-primary-500/10 rounded-full flex items-center justify-center flex-shrink-0">
                           <Icon className="w-4 h-4 text-primary-600 dark:text-primary-500" />
                         </div>
                         <div className="flex-1">
                           <p className="text-sm">
-                            <span className="text-gray-600 dark:text-gray-400">{activity.action}</span>
+                            <span className="text-[#9ba9bc]">{activity.action}</span>
                             {' '}
-                            <span className="font-semibold text-gray-900 dark:text-white">{activity.target}</span>
+                            <span className="font-semibold text-white">{activity.target}</span>
                           </p>
                           <div className="flex items-center gap-3 mt-1">
-                            <span className="text-xs text-gray-500 dark:text-gray-400">{activity.time}</span>
-                            <span className="text-xs text-primary-500 font-medium">+{activity.xp} XP</span>
+                            <span className="text-xs text-[#718096]">{activity.time}</span>
+                            <span className="text-xs font-medium text-primary-300">+{activity.xp} XP</span>
                           </div>
                         </div>
                       </motion.div>

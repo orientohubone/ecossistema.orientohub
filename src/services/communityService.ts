@@ -29,6 +29,18 @@ export interface CreateCommunityPostData {
   tags?: string[];
 }
 
+export interface CommunityComment {
+  id: string;
+  post_id: string;
+  author: {
+    name: string;
+    avatar: string;
+    role: string;
+  };
+  content: string;
+  created_at: string;
+}
+
 const initials = (name: string) => name.split(/\s+/).map(part => part[0]).join('').slice(0, 2).toUpperCase();
 
 const getCurrentUser = async () => {
@@ -128,5 +140,52 @@ export const communityService = {
     const { data, error } = await supabase.rpc('toggle_community_post_bookmark', { p_post_id: postId });
     if (error) throw error;
     return Boolean(data);
+  },
+
+  async listComments(postId: string): Promise<CommunityComment[]> {
+    const { data, error } = await supabase
+      .from('community_post_comments')
+      .select('*')
+      .eq('post_id', postId)
+      .order('created_at', { ascending: true });
+    if (error) throw error;
+    return (data || []).map((comment: any) => ({
+      id: comment.id,
+      post_id: comment.post_id,
+      author: {
+        name: comment.author_name,
+        avatar: comment.author_avatar || initials(comment.author_name),
+        role: comment.author_role || 'Membro',
+      },
+      content: comment.content,
+      created_at: comment.created_at,
+    }));
+  },
+
+  async createComment(postId: string, content: string): Promise<CommunityComment> {
+    const user = await getCurrentUser();
+    const metadata = user.user_metadata || {};
+    const name = metadata.name || metadata.full_name || user.email?.split('@')[0] || 'Membro';
+    const avatar = metadata.avatar_url || initials(name);
+    const { data, error } = await supabase
+      .from('community_post_comments')
+      .insert({
+        post_id: postId,
+        user_id: user.id,
+        author_name: name,
+        author_avatar: avatar,
+        author_role: metadata.role || 'Membro',
+        content: content.trim(),
+      })
+      .select('*')
+      .single();
+    if (error) throw error;
+    return {
+      id: data.id,
+      post_id: data.post_id,
+      author: { name: data.author_name, avatar: data.author_avatar || initials(data.author_name), role: data.author_role || 'Membro' },
+      content: data.content,
+      created_at: data.created_at,
+    };
   },
 };

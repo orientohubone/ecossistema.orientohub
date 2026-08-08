@@ -28,7 +28,7 @@ import {
   Target,
   Sparkles
 } from 'lucide-react';
-import { communityService } from '../services/communityService';
+import { communityService, type CommunityComment } from '../services/communityService';
 
 interface Post {
   id: string;
@@ -70,6 +70,7 @@ const CommunityPage = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [loadError, setLoadError] = useState<string | null>(null);
+  const [shareMessage, setShareMessage] = useState<string | null>(null);
 
   useEffect(() => {
     void loadCommunityData();
@@ -144,6 +145,24 @@ const CommunityPage = () => {
     setShowNewPostModal(false);
   };
 
+  const handleCommentAdded = (postId: string) => {
+    setPosts(currentPosts => currentPosts.map(post => post.id === postId ? { ...post, comments: post.comments + 1 } : post));
+  };
+
+  const handleSharePost = async (post: Post) => {
+    const url = `${window.location.origin}/dashboard/community?post=${post.id}`;
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: post.title, text: post.content.slice(0, 160), url });
+        return;
+      }
+      await navigator.clipboard.writeText(url);
+      setShareMessage('Link da publicação copiado.');
+    } catch (error) {
+      if ((error as Error).name !== 'AbortError') setShareMessage('Não foi possível compartilhar agora.');
+    }
+  };
+
   const totalLikes = posts.reduce((total, post) => total + post.likes, 0);
   const totalComments = posts.reduce((total, post) => total + post.comments, 0);
   const popularTags = Array.from(
@@ -173,7 +192,7 @@ const CommunityPage = () => {
         <title>Comunidade - Orientohub</title>
       </Helmet>
 
-      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
+      <div className="min-h-screen bg-[#0c121b]">
         <div className="container-custom py-8 space-y-8">
           {/* Header */}
           <motion.div
@@ -183,15 +202,16 @@ const CommunityPage = () => {
           >
             <div>
               <div className="flex items-center gap-3 mb-2">
-                <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center">
-                  <Users className="w-6 h-6 text-white" />
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-[#34455a] bg-[#151f2b]">
+                  <Users className="h-6 w-6 text-primary-300" />
                 </div>
                 <div>
-                  <h1 className="text-3xl font-bold flex items-center gap-2">
+                  <p className="mb-1 text-[11px] font-bold uppercase tracking-[0.16em] text-primary-300">Rede de founders</p>
+                  <h1 className="flex items-center gap-2 text-3xl font-bold text-white">
                     Comunidade
-                    <Heart className="w-6 h-6 text-purple-500" />
+                    <Heart className="h-6 w-6 text-primary-300" />
                   </h1>
-                  <p className="text-gray-600 dark:text-gray-400">
+                  <p className="text-[#9ba9bc]">
                     Conecte-se com outros founders e compartilhe conhecimento
                   </p>
                 </div>
@@ -200,7 +220,7 @@ const CommunityPage = () => {
 
             <button
               onClick={() => setShowNewPostModal(true)}
-              className="px-6 py-2.5 bg-purple-500 hover:bg-purple-600 text-white font-bold rounded-xl transition-all flex items-center gap-2 shadow-lg shadow-purple-500/30"
+              className="flex items-center gap-2 rounded-xl bg-primary-500 px-6 py-2.5 font-bold text-black transition-all hover:bg-primary-400"
             >
               <Plus className="w-5 h-5" />
               Nova Publicação
@@ -222,15 +242,15 @@ const CommunityPage = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.05 }}
-                  className="bg-white dark:bg-gray-800 rounded-xl p-6 border-2 border-gray-200 dark:border-gray-700 hover:border-purple-500 transition-all group"
+                  className="group rounded-2xl border border-[#273548] bg-[#101722] p-5 shadow-[0_12px_28px_rgba(0,0,0,0.16)] transition-all hover:-translate-y-1 hover:border-primary-400/70 hover:shadow-[0_20px_38px_rgba(0,0,0,0.28)]"
                 >
                   <div className="flex items-start justify-between mb-4">
-                    <div className={`w-12 h-12 ${stat.bgColor} rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform`}>
-                      <Icon className={`w-6 h-6 bg-gradient-to-br ${stat.color} bg-clip-text`} style={{ WebkitTextFillColor: 'transparent', backgroundClip: 'text' }} />
+                    <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-[#34455a] bg-[#0c121b] transition-transform group-hover:scale-105">
+                      <Icon className={`h-5 w-5 ${stat.bgColor.includes('blue') ? 'text-blue-300' : stat.bgColor.includes('purple') ? 'text-purple-300' : stat.bgColor.includes('green') ? 'text-emerald-300' : 'text-yellow-300'}`} />
                     </div>
                   </div>
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">{stat.label}</p>
-                  <p className="text-3xl font-bold">{stat.value}</p>
+                  <p className="mb-1 text-sm text-[#9ba9bc]">{stat.label}</p>
+                  <p className="text-3xl font-bold text-white">{stat.value}</p>
                 </motion.div>
               );
             })}
@@ -242,12 +262,18 @@ const CommunityPage = () => {
               <button onClick={() => void loadCommunityData()} className="font-semibold underline">Tentar novamente</button>
             </div>
           )}
+          {shareMessage && (
+            <div className="fixed bottom-5 right-5 z-50 rounded-xl border border-primary-400/25 bg-[#151f2b] px-4 py-3 text-sm font-medium text-primary-200 shadow-xl">
+              {shareMessage}
+              <button onClick={() => setShareMessage(null)} className="ml-3 text-[#9ba9bc] hover:text-white" aria-label="Fechar aviso"><X className="inline h-4 w-4" /></button>
+            </div>
+          )}
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Main Content */}
             <div className="lg:col-span-2 space-y-6">
               {/* Filters */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl p-4 border-2 border-gray-200 dark:border-gray-700">
+              <div className="rounded-2xl border border-[#273548] bg-[#101722] p-4 shadow-[0_12px_28px_rgba(0,0,0,0.16)]">
                 <div className="flex flex-col md:flex-row gap-4">
                   <div className="flex-1 relative">
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -256,7 +282,7 @@ const CommunityPage = () => {
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                       placeholder="Buscar discussões..."
-                      className="w-full pl-10 pr-4 py-2.5 border-2 border-gray-200 dark:border-gray-600 rounded-xl focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 focus:outline-none bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500"
+                      className="w-full rounded-xl border border-[#34455a] bg-[#0c121b] py-2.5 pl-10 pr-4 text-gray-100 outline-none transition focus:border-primary-400 focus:ring-2 focus:ring-primary-400/15 placeholder:text-[#718096]"
                     />
                   </div>
 
@@ -272,8 +298,8 @@ const CommunityPage = () => {
                         onClick={() => setSelectedCategory(category.id)}
                         className={`px-4 py-2 rounded-xl font-medium whitespace-nowrap transition-all ${
                           selectedCategory === category.id
-                            ? 'bg-purple-500 text-white'
-                            : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600'
+                            ? 'bg-primary-500 text-black'
+                            : 'border border-[#34455a] bg-[#151f2b] text-gray-300 hover:border-primary-400 hover:text-white'
                         }`}
                       >
                         {category.label}
@@ -297,6 +323,8 @@ const CommunityPage = () => {
                     index={index}
                     onLike={handleLikePost}
                     onBookmark={handleBookmarkPost}
+                    onCommentAdded={handleCommentAdded}
+                    onShare={handleSharePost}
                     getCategoryInfo={getCategoryInfo}
                   />
                 ))}
@@ -315,14 +343,14 @@ const CommunityPage = () => {
             {/* Sidebar */}
             <div className="space-y-6">
               {/* Top Members */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl p-6 border-2 border-gray-200 dark:border-gray-700">
+              <div className="rounded-2xl border border-[#273548] bg-[#101722] p-6 shadow-[0_12px_28px_rgba(0,0,0,0.16)]">
                 <div className="flex items-center gap-2 mb-4">
                   <Trophy className="w-5 h-5 text-yellow-500" />
-                  <h3 className="font-bold text-lg">Top Membros</h3>
+                  <h3 className="text-lg font-bold text-white">Top Membros</h3>
                 </div>
                 <div className="space-y-4">
                   {topMembers.map((member, index) => (
-                    <div key={member.id} className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-all cursor-pointer">
+                    <div key={member.id} className="flex cursor-pointer items-center gap-3 rounded-xl border border-[#273548] bg-[#0c121b] p-3 transition-all hover:border-[#4c6078] hover:bg-[#151f2b]">
                       <div className="relative">
                         <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold">
                           {member.avatar.startsWith('http') ? (
@@ -336,8 +364,8 @@ const CommunityPage = () => {
                         )}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="font-medium truncate">{member.name}</p>
-                        <p className="text-xs text-gray-600 dark:text-gray-400">{member.role}</p>
+                        <p className="truncate font-medium text-white">{member.name}</p>
+                        <p className="text-xs text-[#9ba9bc]">{member.role}</p>
                       </div>
                       <div className="text-right">
                         <div className="flex items-center gap-1 text-yellow-500">
@@ -351,8 +379,8 @@ const CommunityPage = () => {
               </div>
 
               {/* Quick Stats */}
-              <div className="bg-gradient-to-br from-purple-50 to-white dark:from-purple-900/20 dark:to-gray-800 rounded-xl p-6 border-2 border-purple-200 dark:border-purple-800">
-                <h3 className="font-bold text-lg mb-4">Sua Atividade</h3>
+              <div className="rounded-2xl border border-primary-400/20 bg-primary-400/[0.06] p-6">
+                <h3 className="mb-4 text-lg font-bold text-white">Sua Atividade</h3>
                 <div className="space-y-3">
                   {[
                     { label: 'Publicações', value: posts.length, icon: MessageSquare },
@@ -362,12 +390,12 @@ const CommunityPage = () => {
                   ].map((stat, i) => {
                     const Icon = stat.icon;
                     return (
-                      <div key={i} className="flex items-center justify-between p-3 bg-white/50 dark:bg-gray-700/50 rounded-lg">
+                      <div key={i} className="flex items-center justify-between rounded-lg border border-[#34455a] bg-[#0c121b] p-3">
                         <div className="flex items-center gap-2">
                           <Icon className="w-4 h-4 text-purple-500" />
-                          <span className="text-sm">{stat.label}</span>
+                          <span className="text-sm text-gray-300">{stat.label}</span>
                         </div>
-                        <span className="font-bold">{stat.value}</span>
+                        <span className="font-bold text-white">{stat.value}</span>
                       </div>
                     );
                   })}
@@ -375,13 +403,13 @@ const CommunityPage = () => {
               </div>
 
               {/* Tags Populares */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl p-6 border-2 border-gray-200 dark:border-gray-700">
-                <h3 className="font-bold text-lg mb-4">Tags Populares</h3>
+              <div className="rounded-2xl border border-[#273548] bg-[#101722] p-6 shadow-[0_12px_28px_rgba(0,0,0,0.16)]">
+                <h3 className="mb-4 text-lg font-bold text-white">Tags Populares</h3>
                 <div className="flex flex-wrap gap-2">
                   {(popularTags.length > 0 ? popularTags : ['Ainda sem tags']).map((tag) => (
                     <span
                       key={tag}
-                      className="px-3 py-1.5 bg-gray-100 dark:bg-gray-700 hover:bg-purple-100 dark:hover:bg-purple-900/30 hover:text-purple-600 dark:hover:text-purple-400 rounded-lg text-sm font-medium cursor-pointer transition-all"
+                      className="cursor-pointer rounded-lg border border-[#34455a] bg-[#0c121b] px-3 py-1.5 text-sm font-medium text-gray-300 transition-all hover:border-primary-400 hover:bg-primary-400/10 hover:text-primary-300"
                     >
                       #{tag}
                     </span>
@@ -409,12 +437,20 @@ interface PostCardProps {
   index: number;
   onLike: (id: string) => void;
   onBookmark: (id: string) => void;
+  onCommentAdded: (id: string) => void;
+  onShare: (post: Post) => void;
   getCategoryInfo: (category: Post['category']) => any;
 }
 
-const PostCard = ({ post, index, onLike, onBookmark, getCategoryInfo }: PostCardProps) => {
+const PostCard = ({ post, index, onLike, onBookmark, onCommentAdded, onShare, getCategoryInfo }: PostCardProps) => {
   const categoryInfo = getCategoryInfo(post.category);
   const CategoryIcon = categoryInfo.icon;
+  const [commentsOpen, setCommentsOpen] = useState(false);
+  const [comments, setComments] = useState<CommunityComment[]>([]);
+  const [commentText, setCommentText] = useState('');
+  const [commentsLoading, setCommentsLoading] = useState(false);
+  const [commentError, setCommentError] = useState<string | null>(null);
+  const [isSendingComment, setIsSendingComment] = useState(false);
   
   const getTimeAgo = (date: string) => {
     const now = new Date();
@@ -427,12 +463,43 @@ const PostCard = ({ post, index, onLike, onBookmark, getCategoryInfo }: PostCard
     return `${Math.floor(diffHours / 24)}d atrás`;
   };
 
+  const handleToggleComments = async () => {
+    const shouldOpen = !commentsOpen;
+    setCommentsOpen(shouldOpen);
+    if (!shouldOpen || comments.length) return;
+    try {
+      setCommentsLoading(true);
+      setCommentError(null);
+      setComments(await communityService.listComments(post.id));
+    } catch (error) {
+      setCommentError(error instanceof Error ? error.message : 'Não foi possível carregar os comentários.');
+    } finally {
+      setCommentsLoading(false);
+    }
+  };
+
+  const handleSendComment = async () => {
+    if (!commentText.trim() || isSendingComment) return;
+    try {
+      setIsSendingComment(true);
+      setCommentError(null);
+      const comment = await communityService.createComment(post.id, commentText);
+      setComments(current => [...current, comment]);
+      setCommentText('');
+      onCommentAdded(post.id);
+    } catch (error) {
+      setCommentError(error instanceof Error ? error.message : 'Não foi possível publicar o comentário.');
+    } finally {
+      setIsSendingComment(false);
+    }
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.05 }}
-      className="bg-white dark:bg-gray-800 rounded-xl p-6 border-2 border-gray-200 dark:border-gray-700 hover:border-purple-500 transition-all group"
+      className="group rounded-2xl border border-[#273548] bg-[#101722] p-5 shadow-[0_12px_28px_rgba(0,0,0,0.16)] transition-all hover:-translate-y-0.5 hover:border-primary-400/70 hover:shadow-[0_20px_38px_rgba(0,0,0,0.28)]"
     >
       {/* Author & Category */}
       <div className="flex items-start justify-between mb-4">
@@ -443,8 +510,8 @@ const PostCard = ({ post, index, onLike, onBookmark, getCategoryInfo }: PostCard
             ) : post.author.avatar}
           </div>
           <div>
-            <p className="font-medium">{post.author.name}</p>
-            <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+            <p className="font-medium text-white">{post.author.name}</p>
+            <div className="flex items-center gap-2 text-sm text-[#9ba9bc]">
               <span>{post.author.role}</span>
               <span>•</span>
               <span>{getTimeAgo(post.created_at)}</span>
@@ -458,43 +525,43 @@ const PostCard = ({ post, index, onLike, onBookmark, getCategoryInfo }: PostCard
       </div>
 
       {/* Content */}
-      <h3 className="text-xl font-bold mb-2 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors cursor-pointer">
+      <h3 className="mb-2 cursor-pointer text-xl font-bold text-white transition-colors group-hover:text-primary-300">
         {post.title}
       </h3>
-      <p className="text-gray-600 dark:text-gray-400 mb-4">
+      <p className="mb-4 text-[#9ba9bc]">
         {post.content}
       </p>
 
       {/* Tags */}
       <div className="flex flex-wrap gap-2 mb-4">
         {post.tags.map((tag) => (
-          <span key={tag} className="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-sm rounded-lg">
+          <span key={tag} className="rounded-lg border border-[#34455a] bg-[#0c121b] px-2 py-1 text-sm text-gray-300">
             #{tag}
           </span>
         ))}
       </div>
 
       {/* Actions */}
-      <div className="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-700">
+      <div className="flex items-center justify-between border-t border-[#273548] pt-4">
         <div className="flex items-center gap-4">
           <button
             onClick={() => onLike(post.id)}
             className={`flex items-center gap-2 px-3 py-1.5 rounded-lg transition-all ${
               post.isLiked
-                ? 'bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400'
-                : 'hover:bg-gray-100 dark:hover:bg-gray-700'
+                ? 'bg-red-400/10 text-red-300'
+                : 'text-gray-300 hover:bg-[#151f2b]'
             }`}
           >
             <Heart className={`w-4 h-4 ${post.isLiked ? 'fill-current' : ''}`} />
             <span className="text-sm font-medium">{post.likes}</span>
           </button>
 
-          <button className="flex items-center gap-2 px-3 py-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-all">
+          <button onClick={() => void handleToggleComments()} className="flex items-center gap-2 rounded-lg px-3 py-1.5 text-gray-300 transition-all hover:bg-[#151f2b]">
             <MessageCircle className="w-4 h-4" />
             <span className="text-sm font-medium">{post.comments}</span>
           </button>
 
-          <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
+          <div className="flex items-center gap-2 text-[#9ba9bc]">
             <Eye className="w-4 h-4" />
             <span className="text-sm">{post.views}</span>
           </div>
@@ -505,18 +572,29 @@ const PostCard = ({ post, index, onLike, onBookmark, getCategoryInfo }: PostCard
             onClick={() => onBookmark(post.id)}
             className={`p-2 rounded-lg transition-all ${
               post.isBookmarked
-                ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-600 dark:text-yellow-400'
-                : 'hover:bg-gray-100 dark:hover:bg-gray-700'
+                ? 'bg-yellow-400/10 text-yellow-300'
+                : 'text-gray-300 hover:bg-[#151f2b]'
             }`}
           >
             <Bookmark className={`w-4 h-4 ${post.isBookmarked ? 'fill-current' : ''}`} />
           </button>
 
-          <button className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-all">
+          <button onClick={() => void onShare(post)} aria-label="Compartilhar publicação" className="rounded-lg p-2 text-gray-300 transition-all hover:bg-[#151f2b]">
             <Share2 className="w-4 h-4" />
           </button>
         </div>
       </div>
+      {commentsOpen && (
+        <div className="mt-4 border-t border-[#273548] pt-4">
+          <div className="mb-3 flex items-center justify-between"><p className="text-sm font-bold text-white">Comentários</p><span className="text-xs text-[#9ba9bc]">{post.comments} no total</span></div>
+          {commentsLoading ? <p className="text-sm text-[#9ba9bc]">Carregando comentários...</p> : <div className="space-y-3">
+            {comments.map(comment => <div key={comment.id} className="rounded-xl border border-[#273548] bg-[#0c121b] p-3"><div className="flex items-center gap-2"><span className="flex h-6 w-6 items-center justify-center overflow-hidden rounded-full bg-[#151f2b] text-[10px] font-bold text-primary-300">{comment.author.avatar.startsWith('http') ? <img src={comment.author.avatar} alt="" className="h-full w-full object-cover" /> : comment.author.avatar}</span><span className="text-sm font-semibold text-white">{comment.author.name}</span><span className="text-xs text-[#718096]">{getTimeAgo(comment.created_at)}</span></div><p className="mt-2 text-sm leading-relaxed text-[#b8c4d4]">{comment.content}</p></div>)}
+            {comments.length === 0 && <p className="py-2 text-sm text-[#9ba9bc]">Seja a primeira pessoa a responder.</p>}
+          </div>}
+          <div className="mt-4 flex gap-2"><input value={commentText} onChange={(event) => setCommentText(event.target.value)} onKeyDown={(event) => { if (event.key === 'Enter' && !event.shiftKey) { event.preventDefault(); void handleSendComment(); } }} placeholder="Escreva um comentário..." className="min-w-0 flex-1 rounded-xl border border-[#34455a] bg-[#0c121b] px-3 py-2.5 text-sm text-white outline-none placeholder:text-[#718096] focus:border-primary-400" /><button onClick={() => void handleSendComment()} disabled={!commentText.trim() || isSendingComment} className="inline-flex items-center justify-center rounded-xl bg-primary-500 px-3 text-black transition hover:bg-primary-400 disabled:cursor-not-allowed disabled:opacity-40" aria-label="Enviar comentário"><Send className="h-4 w-4" /></button></div>
+          {commentError && <p className="mt-2 text-xs text-red-300">{commentError}</p>}
+        </div>
+      )}
     </motion.div>
   );
 };
@@ -534,7 +612,7 @@ const NewPostModal = ({ show, onClose, onSubmit }: NewPostModalProps) => {
   const [category, setCategory] = useState<Post['category']>('discussion');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
-  const fieldClassName = "w-full px-4 py-2.5 border-2 border-gray-200 dark:border-gray-600 rounded-xl focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 focus:outline-none bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500";
+  const fieldClassName = "w-full rounded-xl border border-[#34455a] bg-[#0c121b] px-4 py-3 text-sm text-gray-100 outline-none transition focus:border-primary-400 focus:ring-2 focus:ring-primary-400/15 placeholder:text-[#718096]";
 
   const handleSubmit = async () => {
     if (!title.trim() || !content.trim() || isSubmitting) return;
@@ -568,42 +646,43 @@ const NewPostModal = ({ show, onClose, onSubmit }: NewPostModalProps) => {
           animate={{ scale: 1, y: 0 }}
           exit={{ scale: 0.9, y: 20 }}
           onClick={(e) => e.stopPropagation()}
-          className="bg-white dark:bg-gray-800 rounded-2xl p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto border-2 border-gray-200 dark:border-gray-700"
+          className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl border border-[#34455a] bg-[#101722] p-6 shadow-2xl"
         >
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-purple-500/10 rounded-xl flex items-center justify-center">
-                <Plus className="w-6 h-6 text-purple-500" />
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-primary-400/25 bg-primary-400/10">
+                <Plus className="h-6 w-6 text-primary-300" />
               </div>
               <div>
-                <h2 className="text-2xl font-bold">Nova Publicação</h2>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
+                <p className="mb-1 text-[11px] font-bold uppercase tracking-[0.14em] text-primary-300">Compartilhe com a rede</p>
+                <h2 className="text-2xl font-bold text-white">Nova Publicação</h2>
+                <p className="text-sm text-[#9ba9bc]">
                   Compartilhe conhecimento com a comunidade
                 </p>
               </div>
             </div>
-            <button onClick={onClose} className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
-              <X className="w-5 h-5" />
+            <button onClick={onClose} className="rounded-lg p-2 text-gray-300 transition hover:bg-[#151f2b] hover:text-white">
+              <X className="h-5 w-5" />
             </button>
           </div>
 
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium mb-2">Categoria</label>
+              <label className="mb-2 block text-sm font-semibold text-gray-100">Categoria</label>
               <select
                 value={category}
                 onChange={(e) => setCategory(e.target.value as Post['category'])}
                 className={fieldClassName}
               >
-                <option value="discussion">💬 Discussão</option>
-                <option value="question">❓ Pergunta</option>
-                <option value="showcase">✨ Showcase</option>
-                <option value="announcement">⚡ Anúncio</option>
+                <option value="discussion">Discussão</option>
+                <option value="question">Pergunta</option>
+                <option value="showcase">Showcase</option>
+                <option value="announcement">Anúncio</option>
               </select>
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-2">Título</label>
+              <label className="mb-2 block text-sm font-semibold text-gray-100">Título</label>
               <input
                 type="text"
                 value={title}
@@ -614,7 +693,7 @@ const NewPostModal = ({ show, onClose, onSubmit }: NewPostModalProps) => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-2">Conteúdo</label>
+              <label className="mb-2 block text-sm font-semibold text-gray-100">Conteúdo</label>
               <textarea
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
@@ -624,20 +703,18 @@ const NewPostModal = ({ show, onClose, onSubmit }: NewPostModalProps) => {
               />
             </div>
 
-            <div className="flex gap-3 pt-6 border-t border-gray-200 dark:border-gray-700">
+            {submitError && <div className="rounded-xl border border-red-400/25 bg-red-400/10 px-4 py-3 text-sm text-red-200">{submitError}</div>}
+            <div className="flex gap-3 border-t border-[#273548] pt-6">
               <button
                 onClick={onClose}
-                className="flex-1 px-6 py-3 border-2 border-gray-300 dark:border-gray-600 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 font-medium"
+                className="flex-1 rounded-xl border border-[#34455a] bg-[#151f2b] px-6 py-3 font-medium text-gray-300 transition hover:border-[#4c6078] hover:text-white"
               >
                 Cancelar
               </button>
-              {submitError && (
-                <p className="absolute mt-14 text-sm text-red-600 dark:text-red-400">{submitError}</p>
-              )}
               <button
                 onClick={() => void handleSubmit()}
                 disabled={!title.trim() || !content.trim() || isSubmitting}
-                className="flex-1 px-6 py-3 bg-purple-500 hover:bg-purple-600 text-white font-bold rounded-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-primary-500 px-6 py-3 font-bold text-black transition hover:bg-primary-400 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 <Send className="w-5 h-5" />
                 {isSubmitting ? 'Publicando...' : 'Publicar'}

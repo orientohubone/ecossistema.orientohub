@@ -117,7 +117,7 @@ const TasksPage = () => {
   };
 
   const handleTaskClick = (task: any) => {
-    navigate(`/dashboard/projects/${task.projectId}`);
+    navigate(task.projectId ? `/dashboard/projects/${task.projectId}` : '/dashboard/projects');
   };
 
   const stats = {
@@ -132,7 +132,7 @@ const TasksPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
+    <div className="min-h-screen bg-[#0c121b]">
       <div className="container-custom py-8">
         {/* Header */}
         <motion.div
@@ -141,10 +141,11 @@ const TasksPage = () => {
           className="flex items-center justify-between mb-8"
         >
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+            <p className="mb-2 text-[11px] font-bold uppercase tracking-[0.16em] text-primary-300">Foco da execução</p>
+            <h1 className="mb-2 text-3xl font-bold text-white">
               Minhas Tarefas
             </h1>
-            <p className="text-gray-600 dark:text-gray-400">
+            <p className="text-[#9ba9bc]">
               Gerencie todas as tarefas dos seus projetos em um só lugar
             </p>
           </div>
@@ -163,15 +164,15 @@ const TasksPage = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
-              className="bg-white dark:bg-gray-800 rounded-xl p-6 border-2 border-gray-200 dark:border-gray-700"
+              className="rounded-2xl border border-[#273548] bg-[#101722] p-5 shadow-[0_12px_28px_rgba(0,0,0,0.16)] transition hover:-translate-y-1 hover:border-primary-400/70"
             >
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">{stat.label}</p>
-                  <p className="text-2xl font-bold text-gray-900 dark:text-white">{stat.value}</p>
+                  <p className="text-sm text-[#9ba9bc]">{stat.label}</p>
+                  <p className="text-2xl font-bold text-white">{stat.value}</p>
                 </div>
-                <div className={`w-12 h-12 bg-gradient-to-br ${stat.color} rounded-xl flex items-center justify-center`}>
-                  <CheckSquare className="w-6 h-6 text-white" />
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-[#34455a] bg-[#0c121b]">
+                  <CheckSquare className="h-5 w-5 text-primary-300" />
                 </div>
               </div>
             </motion.div>
@@ -183,7 +184,7 @@ const TasksPage = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          className="bg-white dark:bg-gray-800 rounded-xl p-6 border-2 border-gray-200 dark:border-gray-700 mb-8"
+          className="mb-8 rounded-2xl border border-[#273548] bg-[#101722] p-5 shadow-[0_12px_28px_rgba(0,0,0,0.16)]"
         >
           <div className="flex flex-col md:flex-row gap-4">
             <div className="flex-1">
@@ -194,14 +195,14 @@ const TasksPage = () => {
                   placeholder="Buscar tarefas..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 focus:outline-none"
+                  className="w-full rounded-xl border border-[#34455a] bg-[#0c121b] py-2.5 pl-10 pr-4 text-gray-100 outline-none placeholder:text-[#718096] focus:border-primary-400 focus:ring-2 focus:ring-primary-400/15"
                 />
               </div>
             </div>
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 focus:outline-none"
+              className="rounded-xl border border-[#34455a] bg-[#0c121b] px-4 py-2.5 text-gray-100 outline-none focus:border-primary-400"
             >
               <option value="all">Todos os status</option>
               <option value="todo">Pendentes</option>
@@ -211,7 +212,7 @@ const TasksPage = () => {
             <select
               value={priorityFilter}
               onChange={(e) => setPriorityFilter(e.target.value)}
-              className="px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 focus:outline-none"
+              className="rounded-xl border border-[#34455a] bg-[#0c121b] px-4 py-2.5 text-gray-100 outline-none focus:border-primary-400"
             >
               <option value="all">Todas as prioridades</option>
               <option value="high">Alta</option>
@@ -229,7 +230,7 @@ const TasksPage = () => {
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.5 + index * 0.05 }}
-              className="bg-white dark:bg-gray-800 rounded-xl p-6 border-2 border-gray-200 dark:border-gray-700 hover:border-primary-500 transition-all duration-300 cursor-pointer"
+              className="cursor-pointer rounded-2xl border border-[#273548] bg-[#101722] p-5 shadow-[0_12px_28px_rgba(0,0,0,0.16)] transition-all duration-300 hover:-translate-y-0.5 hover:border-primary-400/70 hover:bg-[#151f2b]"
               onClick={() => handleTaskClick(task)}
             >
               <div className="flex items-start gap-4">
@@ -240,10 +241,10 @@ const TasksPage = () => {
                 <div className="flex-1">
                   <div className="flex items-start justify-between mb-2">
                     <div className="flex-1">
-                      <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-1">
+                      <h3 className="mb-1 text-lg font-semibold text-white">
                         {task.title}
                       </h3>
-                      <p className="text-gray-600 dark:text-gray-400 mb-3">
+                      <p className="mb-3 text-[#9ba9bc]">
                         {task.description}
                       </p>
                     </div>
@@ -252,7 +253,7 @@ const TasksPage = () => {
                   <div className="flex flex-wrap items-center gap-3">
                     <div className="flex items-center gap-2">
                       {getTypeIcon(task.type)}
-                      <span className="text-sm text-gray-600 dark:text-gray-400">
+                      <span className="text-sm text-[#9ba9bc]">
                         {task.type === 'hypothesis' ? 'Hipótese' : task.type === 'experiment' ? 'Experimento' : 'Pesquisa'}
                       </span>
                     </div>
@@ -261,14 +262,14 @@ const TasksPage = () => {
                       {getPriorityLabel(task.priority)}
                     </span>
 
-                    <div className="flex items-center gap-1 text-sm text-gray-500 dark:text-gray-400">
+                    <div className="flex items-center gap-1 text-sm text-[#9ba9bc]">
                       <Calendar className="w-4 h-4" />
                       {new Date(task.dueDate).toLocaleDateString('pt-BR')}
                     </div>
 
                     <div className="flex items-center gap-2">
                       <div className="w-2 h-2 rounded-full bg-blue-500" />
-                      <span className="text-sm text-gray-600 dark:text-gray-400">
+                      <span className="text-sm text-[#9ba9bc]">
                         {task.projectName}
                       </span>
                     </div>
@@ -284,17 +285,17 @@ const TasksPage = () => {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="rounded-2xl border-2 border-dashed border-primary-300/70 bg-gradient-to-br from-primary-50 via-white to-blue-50 px-6 py-10 text-center dark:border-primary-700/60 dark:from-primary-950/30 dark:via-gray-800/70 dark:to-blue-950/20"
+            className="rounded-2xl border border-dashed border-[#34455a] bg-[#101722] px-6 py-10 text-center shadow-[0_12px_28px_rgba(0,0,0,0.16)]"
           >
-            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary-100 text-primary-600 dark:bg-primary-900/50 dark:text-primary-300">
+            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl border border-[#34455a] bg-[#0c121b] text-primary-300">
               <ListTodo className="h-7 w-7" />
             </div>
             {tasks.length === 0 ? (
               <>
-                <h3 className="mb-2 text-lg font-semibold text-gray-900 dark:text-white">
+                <h3 className="mb-2 text-lg font-semibold text-white">
                   Vamos transformar seus próximos passos em ação?
                 </h3>
-                <p className="mx-auto mb-5 max-w-lg text-gray-600 dark:text-gray-400">
+                <p className="mx-auto mb-5 max-w-lg text-[#9ba9bc]">
                   Crie uma tarefa dentro de um projeto para organizar sua validação e acompanhar o que precisa acontecer agora.
                 </p>
                 <button
@@ -307,10 +308,10 @@ const TasksPage = () => {
               </>
             ) : (
               <>
-                <h3 className="mb-2 text-lg font-semibold text-gray-900 dark:text-white">
+                <h3 className="mb-2 text-lg font-semibold text-white">
                   Nenhuma tarefa corresponde aos filtros
                 </h3>
-                <p className="text-gray-600 dark:text-gray-400">
+                <p className="text-[#9ba9bc]">
                   Ajuste a busca, o status ou a prioridade para encontrar suas tarefas.
                 </p>
               </>

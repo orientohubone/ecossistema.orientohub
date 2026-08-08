@@ -86,14 +86,14 @@ const DashboardLayout = () => {
 
   return (
     <Tooltip.Provider delayDuration={100}>
-      <div className="dashboard-shell flex h-screen">
+      <div className="dashboard-shell dark flex h-screen bg-[#0c121b] text-white">
         {/* Mobile Sidebar Overlay */}
         <AnimatePresence>
           {sidebarOpen && (
             <motion.aside initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-40 lg:hidden">
               <div className="absolute inset-0 bg-black/50" onClick={toggleSidebar} />
-              <motion.div initial={{ x: -320 }} animate={{ x: 0 }} exit={{ x: -320 }} transition={{ type: 'spring', stiffness: 300 }} className="relative w-72 max-w-xs h-full bg-white dark:bg-gray-800 shadow-2xl">
-                <div className="flex items-center justify-between p-4 border-b dark:border-gray-700">
+              <motion.div initial={{ x: -320 }} animate={{ x: 0 }} exit={{ x: -320 }} transition={{ type: 'spring', stiffness: 300 }} className="relative h-full w-72 max-w-xs border-r border-[#273548] bg-[#101722] shadow-2xl">
+                <div className="flex items-center justify-between border-b border-[#273548] p-4">
                   <div className="flex items-center gap-2">
                     <span className="text-lg font-bold text-primary-500 dark:hidden">Orientohub</span>
                     <img
@@ -102,7 +102,7 @@ const DashboardLayout = () => {
                       className="hidden dark:block h-6 w-auto"
                     />
                   </div>
-                  <button onClick={toggleSidebar} className="p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700"><X size={20} /></button>
+                  <button onClick={toggleSidebar} className="rounded-lg p-2 text-[#9ba9bc] hover:bg-[#151f2b] hover:text-white"><X size={20} /></button>
                 </div>
                 <div className="p-4 flex flex-col gap-4 overflow-y-auto h-[calc(100%-64px)]">
                   <SidebarHeader user={user} />
@@ -120,8 +120,8 @@ const DashboardLayout = () => {
         </AnimatePresence>
 
         {/* Desktop Sidebar */}
-        <aside className={`hidden lg:flex lg:flex-col ${collapsed ? 'w-20' : 'w-72'} transition-width duration-200 ease-in-out bg-white dark:bg-gray-800 border-r dark:border-gray-700`}>
-          <div className={`relative flex items-center h-16 border-b dark:border-gray-700 ${collapsed ? 'justify-start px-2' : 'justify-between px-4'}`}>
+        <aside className={`hidden lg:flex lg:flex-col ${collapsed ? 'w-20' : 'w-72'} border-r border-[#273548] bg-[#101722] transition-width duration-200 ease-in-out`}>
+          <div className={`relative flex h-16 items-center border-b border-[#273548] ${collapsed ? 'justify-start px-2' : 'justify-between px-4'}`}>
             <Link to="/" className={`flex items-center gap-3 ${collapsed ? 'justify-start w-12 h-12 flex-shrink-0' : ''}`}>
               {collapsed ? (
                 <>
@@ -144,13 +144,13 @@ const DashboardLayout = () => {
               )}
             </Link>
             <div className={`flex items-center gap-2 ${collapsed ? 'absolute right-2' : ''}`}>
-              <button onClick={toggleCollapse} title={collapsed ? 'Expandir' : 'Recolher'} className="p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700">
+              <button onClick={toggleCollapse} title={collapsed ? 'Expandir' : 'Recolher'} className="rounded-lg p-2 text-[#9ba9bc] hover:bg-[#151f2b] hover:text-white">
                 {collapsed ? <ChevronDown size={18} /> : <Menu size={18} />}
               </button>
             </div>
           </div>
 
-          <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-4">
+          <div className="flex flex-1 flex-col gap-4 overflow-y-auto p-4">
             <SidebarHeader user={user} collapsed={collapsed} />
             <SearchBox collapsed={collapsed} />
             <nav className="flex-1 space-y-1 mt-2">{navItems.map(item => <SidebarLink key={item.id} item={item} pathname={location.pathname} collapsed={collapsed} />)}</nav>
@@ -165,14 +165,14 @@ const DashboardLayout = () => {
         {/* Main content */}
         <div className="flex flex-col flex-1 overflow-hidden">
           {/* Top navbar */}
-          <header className="sticky top-0 z-20 bg-white dark:bg-gray-800 shadow-sm">
+          <header className="sticky top-0 z-20 border-b border-[#273548] bg-[#101722]/95 backdrop-blur-xl">
             <div className="w-full px-4 sm:px-6 lg:px-8">
               <div className="flex items-center justify-between h-16">
                 <div className="flex items-center gap-3">
-                  <button className="lg:hidden p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700" onClick={toggleSidebar}><Menu size={20} /></button>
-                  <div className="hidden md:flex items-center gap-3 bg-gray-100 dark:bg-gray-900 px-3 py-1 rounded-lg border border-transparent dark:border-gray-700">
-                    <Search size={16} className="text-gray-500" />
-                    <input type="search" placeholder="Buscar projetos, soluções, insights..." className="bg-transparent text-sm outline-none text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400" />
+                  <button className="rounded-lg p-2 text-[#9ba9bc] hover:bg-[#151f2b] hover:text-white lg:hidden" onClick={toggleSidebar}><Menu size={20} /></button>
+                  <div className="hidden items-center gap-3 rounded-xl border border-[#34455a] bg-[#0c121b] px-3 py-2 md:flex">
+                    <Search size={16} className="text-[#718096]" />
+                    <input type="search" placeholder="Buscar projetos, soluções, insights..." className="bg-transparent text-sm text-white outline-none placeholder:text-[#718096]" />
                   </div>
                   </div>
 
@@ -204,7 +204,7 @@ const DashboardLayout = () => {
 const SidebarHeader = ({ user, collapsed = false }: { user?: any; collapsed?: boolean }) => {
   return (
     <div className={`flex items-center gap-3 ${collapsed ? 'justify-center' : ''}`}>
-      <div className={`h-10 w-10 rounded-full overflow-hidden flex items-center justify-center text-black font-bold border-2 border-gray-200 dark:border-gray-600`}>
+      <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full border-2 border-primary-400/35 text-black font-bold">
       {user?.user_metadata?.avatar_url ? (
         <img
           src={user.user_metadata.avatar_url}
@@ -223,8 +223,8 @@ const SidebarHeader = ({ user, collapsed = false }: { user?: any; collapsed?: bo
     </div>
       {!collapsed && (
         <div className="flex-1">
-          <p className="text-sm font-medium text-gray-900 dark:text-white">{user?.user_metadata?.name || user?.email?.split('@')[0]}</p>
-          <p className="text-xs text-gray-500 dark:text-gray-400">Founder • {user?.user_metadata?.company || '—'}</p>
+          <p className="text-sm font-medium text-white">{user?.user_metadata?.name || user?.email?.split('@')[0]}</p>
+          <p className="text-xs text-[#9ba9bc]">Founder • {user?.user_metadata?.company || '—'}</p>
         </div>
       )}
     </div>
@@ -234,9 +234,9 @@ const SidebarHeader = ({ user, collapsed = false }: { user?: any; collapsed?: bo
 const SearchBox = ({ collapsed = false }: { collapsed?: boolean }) => {
   if (collapsed) return null;
   return (
-    <div className="flex items-center gap-2 bg-gray-100 dark:bg-gray-900 p-2 rounded-md border border-transparent dark:border-gray-700">
-      <Search size={16} className="text-gray-500" />
-      <input type="search" placeholder="Buscar..." className="bg-transparent outline-none text-sm text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 w-full" />
+    <div className="flex items-center gap-2 rounded-xl border border-[#34455a] bg-[#0c121b] p-2.5">
+      <Search size={16} className="text-[#718096]" />
+      <input type="search" placeholder="Buscar..." className="w-full bg-transparent text-sm text-white outline-none placeholder:text-[#718096]" />
     </div>
   );
 };
@@ -262,9 +262,9 @@ const SidebarLink = ({ item, pathname, collapsed = false, onNavigate }: { item: 
       <Link
         to={item.href}
         onClick={onNavigate}
-        className={`group flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-md transition-colors
-          ${active ? 'bg-primary-100 dark:bg-primary-900/50 text-primary-900 dark:text-primary-100' :
-            'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'}
+        className={`group flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors
+          ${active ? 'bg-primary-500 text-[#0c121b] shadow-lg shadow-primary-500/15' :
+            'text-[#9ba9bc] hover:bg-[#151f2b] hover:text-white'}
         `}
         aria-current={active ? 'page' : undefined}
       >
@@ -423,7 +423,7 @@ const SidebarLink = ({ item, pathname, collapsed = false, onNavigate }: { item: 
           </Tooltip.Portal>
         </Tooltip.Root>
       ) : (
-        <span className={`flex items-center justify-center w-6 h-6 rounded ${active ? 'text-primary-500' : 'text-gray-500 group-hover:text-gray-700 dark:group-hover:text-gray-300'}`}>{item.icon}</span>
+        <span className={`flex h-6 w-6 items-center justify-center rounded ${active ? 'text-[#0c121b]' : 'text-[#718096] group-hover:text-primary-300'}`}>{item.icon}</span>
       )}
       {!collapsed && <span className="truncate">{item.name}</span>}
     </Link>
@@ -469,8 +469,8 @@ const TopPlanBadge = () => {
 
   return (
     <div className="hidden sm:flex items-center gap-3 text-sm">
-      <span className="text-gray-600 dark:text-gray-300">Plano: <strong className="ml-1 text-primary-600 dark:text-primary-400">{label}</strong></span>
-      <Link to={plan === 'free' ? '/planos' : '/dashboard/settings?tab=plan'} className="px-3 py-1 bg-primary-500 hover:bg-primary-600 text-black rounded-md text-sm font-medium">
+      <span className="text-[#9ba9bc]">Plano: <strong className="ml-1 text-primary-300">{label}</strong></span>
+      <Link to={plan === 'free' ? '/planos' : '/dashboard/settings?tab=plan'} className="rounded-lg bg-primary-500 px-3 py-2 text-sm font-bold text-[#0c121b] hover:bg-primary-400">
         {plan === 'free' ? 'Upgrade' : 'Meu plano'}
       </Link>
     </div>
@@ -483,17 +483,17 @@ const PlanCTA = ({ compact = false }: { compact?: boolean }) => {
   return compact ? (
     <div className="flex items-center justify-center p-2"><Crown className="w-5 h-5 text-yellow-400" /></div>
   ) : (
-    <div className="p-3 bg-gradient-to-br from-primary-50 to-white dark:from-primary-900/20 dark:to-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
+    <div className="rounded-xl border border-primary-400/20 bg-primary-500/10 p-3">
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-3">
           <Crown className="w-6 h-6 text-yellow-400" />
-          <div><p className="text-sm font-semibold">Plano Atual</p><p className="text-xs text-gray-500">{plan === 'pro' ? 'Pro' : plan === 'enterprise' ? 'Enterprise' : 'Gratuito'}</p></div>
+          <div><p className="text-sm font-semibold text-white">Plano Atual</p><p className="text-xs text-primary-200/70">{plan === 'pro' ? 'Pro' : plan === 'enterprise' ? 'Enterprise' : 'Gratuito'}</p></div>
         </div>
         <Sparkles className="w-5 h-5 text-primary-500" />
       </div>
       <div className="flex items-center gap-2">
-        <Link to="/planos" className="flex-1 px-3 py-2 bg-primary-500 hover:bg-primary-600 text-black rounded-md text-sm font-medium text-center">{plan === 'free' ? 'Upgrade' : 'Ver planos'}</Link>
-        <Link to="/dashboard/settings?tab=plan" className="px-3 py-2 border rounded-md text-sm">Detalhes</Link>
+        <Link to="/planos" className="flex-1 rounded-lg bg-primary-500 px-3 py-2 text-center text-sm font-bold text-[#0c121b] hover:bg-primary-400">{plan === 'free' ? 'Upgrade' : 'Ver planos'}</Link>
+        <Link to="/dashboard/settings?tab=plan" className="rounded-lg border border-primary-400/25 px-3 py-2 text-sm text-primary-100 hover:bg-primary-500/10">Detalhes</Link>
       </div>
     </div>
   );
@@ -554,7 +554,7 @@ const DarkModeToggle = ({ collapsed = false }: { collapsed?: boolean }) => {
   return (
     <button
       onClick={toggleDarkMode}
-      className="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors w-full"
+      className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-[#9ba9bc] transition-colors hover:bg-[#151f2b] hover:text-white"
     >
       <span className="flex items-center justify-center w-5 h-5">
         {darkMode ? <Sun size={18} /> : <Moon size={18} />}
@@ -568,11 +568,11 @@ const DarkModeToggle = ({ collapsed = false }: { collapsed?: boolean }) => {
 };
 
 const LogoutButton = ({ onLogout, compact = false }: { onLogout: () => void; compact?: boolean }) => {
-  if (compact) return (<button onClick={onLogout} className="w-full p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"><LogOut size={18} /></button>);
+  if (compact) return (<button onClick={onLogout} className="w-full rounded-lg p-2 text-[#9ba9bc] hover:bg-red-400/10 hover:text-red-300"><LogOut size={18} /></button>);
   return (
-    <button onClick={onLogout} className="w-full flex items-center gap-3 px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700">
-      <LogOut size={16} className="text-gray-600 dark:text-gray-300" />
-      <span className="text-sm text-gray-700 dark:text-gray-300">Sair</span>
+    <button onClick={onLogout} className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 hover:bg-red-400/10">
+      <LogOut size={16} className="text-red-300" />
+      <span className="text-sm text-red-200">Sair</span>
     </button>
   );
 };
@@ -580,7 +580,7 @@ const LogoutButton = ({ onLogout, compact = false }: { onLogout: () => void; com
 const UserMenu = ({ user }: { user?: any }) => {
   return (
     <div className="flex items-center gap-3">
-      <div className="h-8 w-8 rounded-full overflow-hidden flex items-center justify-center text-black font-medium border border-gray-200 dark:border-gray-600">
+      <div className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-full border border-primary-400/35 text-black font-medium">
       {user?.user_metadata?.avatar_url ? (
         <img
           src={user.user_metadata.avatar_url}
@@ -598,8 +598,8 @@ const UserMenu = ({ user }: { user?: any }) => {
       </div>
     </div>
       <div className="hidden sm:flex flex-col text-sm">
-        <span className="text-gray-700 dark:text-gray-200">{user?.user_metadata?.name || user?.email?.split('@')[0]}</span>
-        <span className="text-xs text-gray-500 dark:text-gray-400">{user?.email}</span>
+        <span className="text-[#d7e0ea]">{user?.user_metadata?.name || user?.email?.split('@')[0]}</span>
+        <span className="text-xs text-[#718096]">{user?.email}</span>
       </div>
     </div>
   );

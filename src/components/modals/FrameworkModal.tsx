@@ -10,9 +10,10 @@ interface FrameworkModalProps {
   onClose: () => void;
   title: string;
   children: React.ReactNode;
+  enableGamification?: boolean;
 }
 
-const FrameworkModal = ({ isOpen, onClose, title, children }: FrameworkModalProps) => {
+const FrameworkModal = ({ isOpen, onClose, title, children, enableGamification = true }: FrameworkModalProps) => {
   const navigate = useNavigate();
   const contentRef = useRef<HTMLDivElement>(null);
 
@@ -163,15 +164,17 @@ const FrameworkModal = ({ isOpen, onClose, title, children }: FrameworkModalProp
                 {/* Action Buttons */}
                 <div className="bg-gray-50 dark:bg-gray-900/50 px-6 py-4 border-b border-gray-200 dark:border-gray-700">
                   <div className="flex flex-wrap gap-3">
-                    <motion.button
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      onClick={handleStartGamification}
-                      className="flex-1 min-w-[200px] flex items-center justify-center gap-2 px-4 py-3 bg-primary-500 hover:bg-primary-600 text-black rounded-xl font-bold transition-all shadow-lg shadow-primary-500/30"
-                    >
-                      <Gamepad className="w-5 h-5" />
-                      Modo Gamificado
-                    </motion.button>
+                    {enableGamification && (
+                      <motion.button
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        onClick={handleStartGamification}
+                        className="flex-1 min-w-[200px] flex items-center justify-center gap-2 px-4 py-3 bg-primary-500 hover:bg-primary-600 text-black rounded-xl font-bold transition-all shadow-lg shadow-primary-500/30"
+                      >
+                        <Gamepad className="w-5 h-5" />
+                        Modo Gamificado
+                      </motion.button>
+                    )}
                     
                     <motion.button
                       whileHover={{ scale: 1.02 }}
@@ -188,7 +191,7 @@ const FrameworkModal = ({ isOpen, onClose, title, children }: FrameworkModalProp
                     <div className="flex items-start gap-2">
                       <Sparkles className="w-5 h-5 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0" />
                       <div className="text-sm text-blue-800 dark:text-blue-200">
-                        <strong className="font-semibold">Dica:</strong> Use o modo gamificado para uma experiência interativa passo a passo, ou baixe o PDF para trabalhar offline.
+                        <strong className="font-semibold">Dica:</strong> {enableGamification ? 'Use o modo gamificado para uma experiência interativa passo a passo, ou baixe o PDF para trabalhar offline.' : 'Baixe o PDF para trabalhar offline ou compartilhe esta estrutura com o seu time.'}
                       </div>
                     </div>
                   </div>

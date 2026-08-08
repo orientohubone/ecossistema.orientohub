@@ -57,7 +57,7 @@ const FrameworkGamePage = () => {
   const frameworkNamesById: Record<string, string> = {
     'customer-development': 'Customer Development', 'design-thinking': 'Design Thinking', okrs: 'OKRs (Objectives and Key Results)', jtbd: 'Jobs to be Done',
     'safe-scrum': 'SAFe / Scrum / Agile', pmf: 'Product-Market Fit', bmc: 'Business Model Canvas', 'empathy-map': 'Mapa de Empatia',
-    'customer-journey': 'Jornada do Cliente', 'value-proposition': 'Value Proposition Canvas', 'lean-canvas': 'Lean Canvas',
+    'customer-journey': 'Jornada do Cliente', 'value-proposition': 'Proposta de Valor', 'lean-canvas': 'Lean Canvas',
   };
 
   // [Todo o código de getGameSteps permanece igual - mantendo a lógica de dados intacta]
@@ -146,10 +146,11 @@ const FrameworkGamePage = () => {
         { id: 2, title: 'Mapeie pontos de contato', description: 'Identifique ações, canais, emoções e fricções.', points: 50, challenge: 'Registre um ponto de atrito em cada etapa crítica.', instructions: 'Use dados de suporte, vendas e entrevistas para evitar suposições.' },
         { id: 3, title: 'Priorize melhorias', description: 'Escolha a oportunidade de maior impacto.', points: 60, challenge: 'Defina uma melhoria, métrica e responsável.', instructions: 'Dê preferência a fricções que afetam conversão, ativação ou retenção.' },
       ],
-      'Value Proposition Canvas': [
-        { id: 1, title: 'Perfil do cliente', description: 'Mapeie jobs, dores e ganhos do segmento escolhido.', points: 40, challenge: 'Liste três jobs, dores e ganhos relevantes.', instructions: 'Escreva na linguagem do cliente e use evidências de entrevistas quando possível.' },
-        { id: 2, title: 'Mapa de valor', description: 'Conecte produto, aliviadores de dor e criadores de ganho.', points: 50, challenge: 'Descreva como cada elemento da oferta se conecta ao perfil.', instructions: 'Evite características soltas. Cada item deve responder a uma dor ou ganho específico.' },
-        { id: 3, title: 'Teste de encaixe', description: 'Transforme a proposta em uma mensagem validável.', points: 60, challenge: 'Escreva uma proposta de valor e um experimento.', instructions: 'Teste a mensagem em uma página, anúncio, conversa ou proposta comercial e registre a resposta.' },
+      'Proposta de Valor': [
+        { id: 1, title: 'Entenda o perfil do cliente', description: 'Mapeie o que ele tenta realizar, suas dores e os ganhos esperados.', points: 35, challenge: 'Liste pelo menos três jobs, dores e ganhos de um segmento específico.', instructions: 'Reserve 15 minutos. Escolha apenas um público e escreva na linguagem dele, usando frases que apareceram em conversas reais sempre que possível.' },
+        { id: 2, title: 'Desenhe sua oferta de valor', description: 'Conecte produtos e serviços aos aliviadores de dor e criadores de ganho.', points: 45, challenge: 'Relacione cada elemento da sua oferta a uma dor ou ganho do cliente.', instructions: 'Evite listar funcionalidades soltas. Para cada item da oferta, responda claramente: qual dor ele reduz ou qual ganho ele torna possível?' },
+        { id: 3, title: 'Escreva a proposta central', description: 'Transforme o encaixe encontrado em uma mensagem simples e memorável.', points: 55, challenge: 'Escreva uma frase que una público, resultado e diferencial.', instructions: 'Use a estrutura: “Ajudamos [público] a [resultado] sem [principal obstáculo], por meio de [diferencial]”. Corte termos internos e deixe a frase fácil de repetir.' },
+        { id: 4, title: 'Valide com o mercado', description: 'Teste a mensagem e aprenda com a reação de clientes reais.', points: 65, challenge: 'Defina um teste e o sinal que mostrará se a mensagem funcionou.', instructions: 'Apresente a mensagem em uma conversa, página ou anúncio para pelo menos cinco pessoas do público. Registre as palavras que despertam perguntas, interesse ou objeções.' },
       ],
       'Lean Canvas': [
         { id: 1, title: 'Problema e cliente', description: 'Defina o problema prioritário e os early adopters.', points: 40, challenge: 'Liste três problemas e um segmento inicial.', instructions: 'Use linguagem de cliente e inclua alternativas já usadas hoje.' },
@@ -174,7 +175,7 @@ const FrameworkGamePage = () => {
       'Product-Market Fit': ['Exemplo: “Agências B2B com 5–30 pessoas que precisam organizar a operação comercial.”', 'Exemplo: “Retenção de 60% após 90 dias e pesquisa: pelo menos 40% ‘muito desapontados’ sem o produto.”', 'Exemplo: “Hipótese: um onboarding guiado aumenta ativação de 35% para 50% em 30 dias.”'],
       'Mapa de Empatia': ['Exemplo: “Persona: Marina, gerente de marketing em uma SaaS de 80 pessoas, pressionada por pipeline.”', 'Exemplo: “Ouve da diretoria que o CAC está alto; vê relatórios fragmentados; sente insegurança nas decisões.”', 'Exemplo: “Dor prioritária: falta de visão de canal; ganho: decidir investimento em minutos, não dias.”'],
       'Jornada do Cliente': ['Exemplo: “Descoberta → avaliação → demonstração → compra → onboarding → uso recorrente → indicação.”', 'Exemplo: “Na demonstração, o cliente espera dois dias por resposta e abandona o processo.”', 'Exemplo: “Melhoria: resposta em até 15 minutos; métrica: taxa de agendamento de demo.”'],
-      'Value Proposition Canvas': ['Exemplo: “Job: acompanhar entregas sem precisar ligar para o fornecedor; dor: falta de visibilidade.”', 'Exemplo: “Criador de ganho: alertas proativos; aliviador: timeline com previsão de entrega.”', 'Exemplo: “Mensagem: saiba o status do pedido antes de precisar perguntar.”'],
+      'Proposta de Valor': ['Exemplo: “Job: acompanhar entregas sem ligar para o fornecedor; dor: falta de visibilidade; ganho: sentir segurança sobre o prazo.”', 'Exemplo: “Aliviador: timeline com previsão de entrega; criador de ganho: alertas proativos antes de qualquer atraso.”', 'Exemplo: “Ajudamos gestores de compras a acompanhar entregas sem cobrar fornecedores, com alertas proativos e previsão confiável.”', 'Exemplo: “Teste: enviar a mensagem para 5 gestores de compras e considerar válido se 3 pedirem uma demonstração ou quiserem saber como funciona.”'],
       'Lean Canvas': ['Exemplo: “Problema: clínicas têm faltas altas; early adopter: clínicas particulares com agenda cheia.”', 'Exemplo: “Solução: confirmação automática; UVP: reduza faltas sem aumentar a equipe.”', 'Exemplo: “Canal inicial: parceria com software de gestão; métrica: taxa de consultas confirmadas.”'],
     };
     return examples[frameworkName]?.[stepIndex];

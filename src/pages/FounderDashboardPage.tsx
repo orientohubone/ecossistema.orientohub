@@ -74,8 +74,8 @@ const FounderDashboardPage = () => {
                 <meta name="description" content="Painel exclusivo do fundador para controle operacional completo" />
             </Helmet>
 
-            <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 dark:from-black dark:via-gray-900 dark:to-black">
-                <div className="container-custom py-8 space-y-8">
+            <div className="dark min-h-screen bg-[#0c121b] text-white">
+                <div className="container-custom space-y-6 py-6 md:py-8">
                     {/* Header */}
                     <DashboardHeader
                         onRefetch={refetch}
@@ -89,27 +89,20 @@ const FounderDashboardPage = () => {
                     {/* Tabs */}
                     <div className="space-y-6">
                         {/* Tab Navigation */}
-                        <div className="flex gap-2 border-b border-gray-200 dark:border-gray-800 overflow-x-auto pb-px">
+                        <div className="flex gap-2 overflow-x-auto rounded-xl border border-[#273548] bg-[#101722] p-2">
                             {tabs.map((tab) => {
                                 const Icon = tab.icon;
                                 return (
                                     <button
                                         key={tab.id}
                                         onClick={() => setActiveTab(tab.id)}
-                                        className={`flex items-center gap-2 px-4 py-3 font-semibold transition-all whitespace-nowrap relative ${activeTab === tab.id
-                                            ? 'text-primary-500'
-                                            : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                                        className={`relative flex items-center gap-2 rounded-lg px-4 py-3 text-sm font-semibold transition-all whitespace-nowrap ${activeTab === tab.id
+                                            ? 'bg-primary-500 text-[#0c121b] shadow-lg shadow-primary-500/15'
+                                            : 'text-[#9ba9bc] hover:bg-[#151f2b] hover:text-white'
                                             }`}
                                     >
                                         <Icon className="w-4 h-4" />
                                         {tab.label}
-                                        {activeTab === tab.id && (
-                                            <motion.div
-                                                layoutId="activeTab"
-                                                className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary-500"
-                                                transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-                                            />
-                                        )}
                                     </button>
                                 );
                             })}
@@ -125,18 +118,19 @@ const FounderDashboardPage = () => {
                         >
                             {activeTab === 'overview' && (
                                 <div className="grid gap-6">
-                                    <div className="bg-white dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800 rounded-xl p-6">
-                                        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Visão Geral</h3>
-                                        <p className="text-gray-600 dark:text-gray-400">
+                                    <div className="rounded-2xl border border-[#273548] bg-[#101722] p-6">
+                                        <p className="mb-2 text-xs font-semibold uppercase tracking-[0.15em] text-primary-300">Pulso da operação</p>
+                                        <h3 className="mb-2 text-xl font-bold text-white">Visão Geral</h3>
+                                        <p className="text-[#9ba9bc]">
                                             Dashboard completo com métricas de negócio, receita e engajamento.
                                         </p>
                                         <div className="mt-6 grid gap-4 md:grid-cols-2">
-                                            <div className="p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
-                                                <p className="text-sm text-gray-600 dark:text-gray-400">Total de Empresas</p>
-                                                <p className="text-2xl font-bold text-gray-900 dark:text-white">{companies.length}</p>
+                                            <div className="rounded-xl border border-[#273548] bg-[#151f2b] p-4">
+                                                <p className="text-sm text-[#9ba9bc]">Total de Empresas</p>
+                                                <p className="text-2xl font-bold text-white">{companies.length}</p>
                                             </div>
-                                            <div className="p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
-                                                <p className="text-sm text-gray-600 dark:text-gray-400">Receita Mensal</p>
+                                            <div className="rounded-xl border border-primary-400/20 bg-primary-500/10 p-4">
+                                                <p className="text-sm text-primary-200">Receita Mensal</p>
                                                 <p className="text-2xl font-bold text-primary-500">
                                                     R$ {analytics.revenue.total_mrr.toLocaleString('pt-BR')}
                                                 </p>
@@ -151,14 +145,15 @@ const FounderDashboardPage = () => {
                             {activeTab === 'revenue' && (
                                 <div className="space-y-6">
                                     {/* Revenue Overview */}
-                                    <div className="bg-white dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800 rounded-xl p-6">
-                                        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Análise de Receita</h3>
+                                    <div className="rounded-2xl border border-[#273548] bg-[#101722] p-6">
+                                        <p className="mb-2 text-xs font-semibold uppercase tracking-[0.15em] text-primary-300">Assinaturas</p>
+                                        <h3 className="mb-6 text-xl font-bold text-white">Análise de Receita</h3>
 
                                         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
                                             {/* MRR */}
-                                            <div className="p-4 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-lg border border-green-200 dark:border-green-800">
-                                                <p className="text-sm text-green-700 dark:text-green-400 font-medium mb-1">MRR Total</p>
-                                                <p className="text-3xl font-bold text-green-900 dark:text-green-100">
+                                            <div className="rounded-xl border border-emerald-400/20 bg-emerald-400/10 p-4">
+                                                <p className="mb-1 text-sm font-medium text-emerald-200">MRR Total</p>
+                                                <p className="text-3xl font-bold text-white">
                                                     R$ {analytics.revenue.total_mrr.toLocaleString('pt-BR')}
                                                 </p>
                                                 <p className="text-xs text-green-600 dark:text-green-400 mt-2">
@@ -167,9 +162,9 @@ const FounderDashboardPage = () => {
                                             </div>
 
                                             {/* ARR */}
-                                            <div className="p-4 bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
-                                                <p className="text-sm text-blue-700 dark:text-blue-400 font-medium mb-1">ARR Total</p>
-                                                <p className="text-3xl font-bold text-blue-900 dark:text-blue-100">
+                                            <div className="rounded-xl border border-primary-400/20 bg-primary-500/10 p-4">
+                                                <p className="mb-1 text-sm font-medium text-primary-200">ARR Total</p>
+                                                <p className="text-3xl font-bold text-white">
                                                     R$ {analytics.revenue.total_arr.toLocaleString('pt-BR')}
                                                 </p>
                                                 <p className="text-xs text-blue-600 dark:text-blue-400 mt-2">
@@ -178,9 +173,9 @@ const FounderDashboardPage = () => {
                                             </div>
 
                                             {/* LTV */}
-                                            <div className="p-4 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-lg border border-purple-200 dark:border-purple-800">
-                                                <p className="text-sm text-purple-700 dark:text-purple-400 font-medium mb-1">LTV Médio</p>
-                                                <p className="text-3xl font-bold text-purple-900 dark:text-purple-100">
+                                            <div className="rounded-xl border border-violet-400/20 bg-violet-400/10 p-4">
+                                                <p className="mb-1 text-sm font-medium text-violet-200">LTV Médio</p>
+                                                <p className="text-3xl font-bold text-white">
                                                     R$ {analytics.revenue.ltv.toLocaleString('pt-BR')}
                                                 </p>
                                                 <p className="text-xs text-purple-600 dark:text-purple-400 mt-2">
@@ -189,9 +184,9 @@ const FounderDashboardPage = () => {
                                             </div>
 
                                             {/* Churn */}
-                                            <div className="p-4 bg-gradient-to-br from-orange-50 to-red-50 dark:from-orange-900/20 dark:to-red-900/20 rounded-lg border border-orange-200 dark:border-orange-800">
-                                                <p className="text-sm text-orange-700 dark:text-orange-400 font-medium mb-1">Churn Rate</p>
-                                                <p className="text-3xl font-bold text-orange-900 dark:text-orange-100">
+                                            <div className="rounded-xl border border-orange-400/20 bg-orange-400/10 p-4">
+                                                <p className="mb-1 text-sm font-medium text-orange-200">Churn Rate</p>
+                                                <p className="text-3xl font-bold text-white">
                                                     {((analytics.customers.churned_customers / analytics.customers.active_customers) * 100).toFixed(1)}%
                                                 </p>
                                                 <p className="text-xs text-orange-600 dark:text-orange-400 mt-2">
@@ -201,15 +196,15 @@ const FounderDashboardPage = () => {
                                         </div>
 
                                         {/* Revenue Breakdown */}
-                                        <div className="mt-6 p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
-                                            <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">Distribuição de Receita por Plano</h4>
+                                        <div className="mt-6 rounded-xl border border-[#273548] bg-[#151f2b] p-4">
+                                            <h4 className="mb-3 text-sm font-semibold text-white">Distribuição de Receita por Plano</h4>
                                             <div className="space-y-2">
                                                 {['Starter', 'Pro', 'Business', 'Enterprise'].map((plan, idx) => {
                                                     const percentage = [15, 35, 30, 20][idx];
                                                     return (
                                                         <div key={plan} className="flex items-center gap-3">
                                                             <span className="text-sm text-gray-600 dark:text-gray-400 w-24">{plan}</span>
-                                                            <div className="flex-1 bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                                            <div className="h-2 flex-1 rounded-full bg-[#0c121b]">
                                                                 <div
                                                                     className="bg-primary-500 h-2 rounded-full transition-all duration-500"
                                                                     style={{ width: `${percentage}%` }}
@@ -226,18 +221,19 @@ const FounderDashboardPage = () => {
                             )}
 
                             {activeTab === 'engagement' && (
-                                <div className="bg-white dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800 rounded-xl p-6">
-                                    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Métricas de Engajamento</h3>
+                                <div className="rounded-2xl border border-[#273548] bg-[#101722] p-6">
+                                    <p className="mb-2 text-xs font-semibold uppercase tracking-[0.15em] text-primary-300">Adoção</p>
+                                    <h3 className="mb-4 text-xl font-bold text-white">Métricas de Engajamento</h3>
                                     <div className="grid gap-4 md:grid-cols-3 mt-6">
-                                        <div className="p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
-                                            <p className="text-sm text-gray-600 dark:text-gray-400">DAU</p>
-                                            <p className="text-2xl font-bold text-gray-900 dark:text-white">{analytics.engagement.daily_active_users}</p>
+                                        <div className="rounded-xl border border-[#273548] bg-[#151f2b] p-4">
+                                            <p className="text-sm text-[#9ba9bc]">DAU</p>
+                                            <p className="text-2xl font-bold text-white">{analytics.engagement.daily_active_users}</p>
                                         </div>
-                                        <div className="p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
+                                        <div className="rounded-xl border border-[#273548] bg-[#151f2b] p-4">
                                             <p className="text-sm text-gray-600 dark:text-gray-400">WAU</p>
                                             <p className="text-2xl font-bold text-gray-900 dark:text-white">{analytics.engagement.weekly_active_users}</p>
                                         </div>
-                                        <div className="p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
+                                        <div className="rounded-xl border border-[#273548] bg-[#151f2b] p-4">
                                             <p className="text-sm text-gray-600 dark:text-gray-400">MAU</p>
                                             <p className="text-2xl font-bold text-gray-900 dark:text-white">{analytics.engagement.monthly_active_users}</p>
                                         </div>

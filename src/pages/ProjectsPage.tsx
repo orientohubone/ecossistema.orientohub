@@ -405,7 +405,7 @@ const ProjectsPage = () => {
         <title>Meus Projetos - Orientohub</title>
       </Helmet>
 
-      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
+      <div className="min-h-screen bg-[#0c121b]">
         <div className="container-custom py-8 space-y-8">
           {/* Header */}
           <motion.div
@@ -415,15 +415,16 @@ const ProjectsPage = () => {
           >
             <div>
               <div className="flex items-center gap-3 mb-2">
-                <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center">
-                  <Lightbulb className="w-6 h-6 text-white" />
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-[#34455a] bg-[#151f2b]">
+                  <Lightbulb className="h-6 w-6 text-primary-300" />
                 </div>
                 <div>
-                  <h1 className="text-3xl font-bold flex items-center gap-2">
+                  <p className="mb-1 text-[11px] font-bold uppercase tracking-[0.16em] text-primary-300">Laboratório de validação</p>
+                  <h1 className="flex items-center gap-2 text-3xl font-bold text-white">
                     Meus Projetos
-                    <Brain className="w-6 h-6 text-blue-500" />
+                    <Brain className="h-6 w-6 text-primary-300" />
                   </h1>
-                  <p className="text-gray-600 dark:text-gray-400">
+                  <p className="text-[#9ba9bc]">
                     Valide suas ideias antes de construir
                   </p>
                 </div>
@@ -447,15 +448,15 @@ const ProjectsPage = () => {
             )}
 
             <div className="flex items-center gap-3">
-              <div className="px-4 py-2 bg-blue-50 dark:bg-blue-900/20 border-2 border-blue-200 dark:border-blue-800 rounded-xl">
-                <p className="text-sm text-blue-700 dark:text-blue-300 font-medium">
-                  💡 <strong>Projetos</strong> são ideias em validação. Quando validadas, vire <strong>Solução</strong>!
+              <div className="hidden rounded-xl border border-[#34455a] bg-[#151f2b] px-4 py-2 lg:block">
+                <p className="text-sm font-medium text-[#b8c4d4]">
+                  <strong className="text-primary-300">Projetos</strong> são ideias em validação. Quando validadas, viram <strong className="text-primary-300">Soluções</strong>.
                 </p>
               </div>
 
               <button
                 onClick={() => setShowAddModal(true)}
-                className="px-6 py-2.5 bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-xl transition-all flex items-center gap-2 shadow-lg shadow-blue-500/30"
+                className="flex items-center gap-2 rounded-xl bg-primary-500 px-6 py-2.5 font-bold text-black transition-all hover:bg-primary-400"
               >
                 <PlusCircle className="w-5 h-5" />
                 Novo Projeto
@@ -468,33 +469,34 @@ const ProjectsPage = () => {
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="text-center py-20"
+              className="rounded-2xl border border-[#273548] bg-[#101722] p-8 text-center shadow-[0_12px_28px_rgba(0,0,0,0.16)] sm:p-12"
             >
-              <div className="w-32 h-32 bg-gradient-to-br from-blue-500/20 to-blue-600/20 rounded-full flex items-center justify-center mx-auto mb-6">
-                <Lightbulb className="w-16 h-16 text-blue-500" />
+              <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-2xl border border-[#34455a] bg-[#0c121b]">
+                <Lightbulb className="h-9 w-9 text-primary-300" />
               </div>
-              <h2 className="text-2xl font-bold mb-4">Nenhum projeto criado</h2>
-              <p className="text-gray-600 dark:text-gray-400 mb-8 max-w-md mx-auto">
+              <p className="mb-2 text-[11px] font-bold uppercase tracking-[0.14em] text-primary-300">Seu ponto de partida</p>
+              <h2 className="mb-3 text-2xl font-bold text-white">Transforme uma ideia em aprendizado real</h2>
+              <p className="mx-auto mb-7 max-w-md text-sm leading-relaxed text-[#9ba9bc]">
                 Comece criando seu primeiro projeto de validação. Teste suas hipóteses, faça entrevistas e descubra se sua ideia tem mercado!
               </p>
               <button
                 onClick={() => setShowAddModal(true)}
-                className="px-8 py-4 bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-xl transition-all inline-flex items-center gap-2 shadow-lg shadow-blue-500/30"
+                className="inline-flex items-center gap-2 rounded-xl bg-primary-500 px-6 py-3 font-bold text-black transition-all hover:bg-primary-400"
               >
                 <Lightbulb className="w-5 h-5" />
                 Criar Primeiro Projeto
               </button>
 
               {/* Diferença entre Projeto e Solução */}
-              <div className="mt-12 max-w-4xl mx-auto">
-                <h3 className="text-lg font-bold mb-6">Qual a diferença?</h3>
+              <div className="mx-auto mt-10 max-w-4xl">
+                <h3 className="mb-5 text-lg font-bold text-white">Como funciona</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="p-6 bg-blue-50 dark:bg-blue-900/20 border-2 border-blue-200 dark:border-blue-800 rounded-xl text-left">
+                  <div className="rounded-2xl border border-[#34455a] bg-[#151f2b] p-5 text-left">
                     <div className="flex items-center gap-3 mb-4">
-                      <Lightbulb className="w-8 h-8 text-blue-500" />
-                      <h4 className="text-xl font-bold">Projeto</h4>
+                      <Lightbulb className="h-7 w-7 text-blue-300" />
+                      <h4 className="text-xl font-bold text-white">Projeto</h4>
                     </div>
-                    <ul className="space-y-2 text-sm">
+                    <ul className="space-y-2 text-sm text-[#b8c4d4]">
                       <li className="flex items-start gap-2">
                         <CheckCircle className="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0" />
                         <span>Validação de ideias e hipóteses</span>
@@ -518,12 +520,12 @@ const ProjectsPage = () => {
                     </ul>
                   </div>
 
-                  <div className="p-6 bg-primary-50 dark:bg-primary-900/20 border-2 border-primary-200 dark:border-primary-800 rounded-xl text-left">
+                  <div className="rounded-2xl border border-[#34455a] bg-[#151f2b] p-5 text-left">
                     <div className="flex items-center gap-3 mb-4">
-                      <Rocket className="w-8 h-8 text-primary-500" />
-                      <h4 className="text-xl font-bold">Solução</h4>
+                      <Rocket className="h-7 w-7 text-primary-300" />
+                      <h4 className="text-xl font-bold text-white">Solução</h4>
                     </div>
-                    <ul className="space-y-2 text-sm">
+                    <ul className="space-y-2 text-sm text-[#b8c4d4]">
                       <li className="flex items-start gap-2">
                         <CheckCircle className="w-4 h-4 text-primary-500 mt-0.5 flex-shrink-0" />
                         <span>Produto em desenvolvimento</span>
@@ -591,15 +593,15 @@ const ProjectsPage = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.05 }}
-                    className="bg-white dark:bg-gray-800 rounded-xl p-6 border-2 border-gray-200 dark:border-gray-700 hover:border-blue-500 transition-all group"
+                    className="group rounded-2xl border border-[#273548] bg-[#101722] p-5 shadow-[0_12px_28px_rgba(0,0,0,0.16)] transition-all duration-300 hover:-translate-y-1 hover:border-primary-400/70 hover:shadow-[0_20px_38px_rgba(0,0,0,0.28)]"
                   >
-                    <div className="flex items-start justify-between mb-4">
-                      <div className={`w-12 h-12 ${stat.bgColor} rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform`}>
-                        <Icon className={`w-6 h-6 bg-gradient-to-br ${stat.color} bg-clip-text`} style={{ WebkitTextFillColor: 'transparent', backgroundClip: 'text' }} />
+                    <div className="mb-4 flex items-start justify-between">
+                      <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-[#34455a] bg-[#0c121b] transition-transform group-hover:scale-105">
+                        <Icon className={`h-5 w-5 ${stat.bgColor.includes('blue') ? 'text-blue-300' : stat.bgColor.includes('purple') ? 'text-purple-300' : stat.bgColor.includes('green') ? 'text-emerald-300' : 'text-primary-300'}`} />
                       </div>
                     </div>
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">{stat.label}</p>
-                    <p className="text-3xl font-bold">{stat.value}</p>
+                    <p className="mb-1 text-sm text-[#9ba9bc]">{stat.label}</p>
+                    <p className="text-3xl font-bold text-white">{stat.value}</p>
                   </motion.div>
                 );
               })}
@@ -679,22 +681,18 @@ const ProjectCard = ({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.05 }}
-      className="group bg-white dark:bg-gray-800 rounded-2xl border-2 border-gray-200 dark:border-gray-700 hover:border-blue-500 overflow-hidden transition-all duration-300 hover:shadow-xl"
+      className="group overflow-hidden rounded-2xl border border-[#273548] bg-[#101722] shadow-[0_12px_28px_rgba(0,0,0,0.16)] transition-all duration-300 hover:-translate-y-1 hover:border-primary-400/70 hover:shadow-[0_20px_38px_rgba(0,0,0,0.28)]"
     >
       {/* Header */}
-      <div className="relative h-24 bg-gradient-to-br from-gray-100 via-gray-50 to-white dark:from-gray-700 dark:via-gray-800 dark:to-gray-900 overflow-hidden border-b-2 border-gray-200 dark:border-gray-700">
-        <div className="absolute inset-0 opacity-40">
-          <div className={`absolute top-0 right-0 w-64 h-64 bg-gradient-to-br ${stageInfo.color} rounded-full blur-3xl`} />
-        </div>
-        
-        <div className="relative z-10 p-4 flex items-start justify-between">
+      <div className="border-b border-[#273548] bg-[#151f2b]">
+        <div className="flex items-start justify-between p-4">
           <div className="flex items-center gap-3 min-w-0">
-            <div className={`w-11 h-11 ${stageInfo.bgColor} rounded-xl flex items-center justify-center shadow-lg flex-shrink-0`}>
-              <StageIcon className={`w-5 h-5 bg-gradient-to-br ${stageInfo.color} bg-clip-text`} style={{ WebkitTextFillColor: 'transparent', backgroundClip: 'text' }} />
+            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-[#34455a] bg-[#0c121b]">
+              <StageIcon className="h-5 w-5 text-primary-300" />
             </div>
             <div className="min-w-0">
-              <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-1 line-clamp-1">{project.name}</h3>
-              <span className={`inline-block bg-gradient-to-r ${stageInfo.color} text-white text-[11px] font-bold px-2.5 py-1 rounded-full shadow-lg`}>
+              <h3 className="mb-2 line-clamp-1 text-lg font-bold text-white">{project.name}</h3>
+              <span className="inline-block rounded-full border border-primary-400/25 bg-primary-400/10 px-2.5 py-1 text-[11px] font-bold text-primary-300">
                 {stageInfo.label}
               </span>
             </div>
@@ -703,19 +701,19 @@ const ProjectCard = ({
       </div>
 
       {/* Content */}
-      <div className="p-4 space-y-3.5">
-        <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
+      <div className="space-y-4 p-4">
+        <p className="line-clamp-2 text-sm leading-relaxed text-[#9ba9bc]">
           {project.description}
         </p>
 
         {/* Validation Health */}
-        <div className="flex items-center justify-between p-3 bg-gradient-to-br from-gray-50 to-white dark:from-gray-700/50 dark:to-gray-800/50 rounded-xl">
+        <div className="flex items-center justify-between rounded-xl border border-[#273548] bg-[#0c121b] p-3">
           <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 bg-white dark:bg-gray-900 rounded-full flex items-center justify-center">
+            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#151f2b]">
               <Target className={`w-4 h-4 ${getValidationHealthColor(validationScore)}`} />
             </div>
             <div>
-              <p className="text-xs text-gray-600 dark:text-gray-400">Status de Validacao</p>
+              <p className="text-xs text-[#9ba9bc]">Status de validação</p>
               <p className={`text-base font-bold ${getValidationHealthColor(validationScore)}`}>
                 {getValidationHealthLabel(validationScore)} ({validationScore}%)
               </p>
@@ -732,10 +730,10 @@ const ProjectCard = ({
           ].map((stat, i) => {
             const Icon = stat.icon;
             return (
-              <div key={i} className="text-center p-2.5 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+              <div key={i} className="rounded-xl border border-[#273548] bg-[#0c121b] p-2.5 text-center">
                 <Icon className={`w-4 h-4 ${stat.color} mx-auto mb-1`} />
-                <p className="text-[11px] text-gray-600 dark:text-gray-400 mb-1">{stat.label}</p>
-                <p className="text-base font-bold">{stat.value}</p>
+                <p className="mb-1 text-[11px] text-[#9ba9bc]">{stat.label}</p>
+                <p className="text-base font-bold text-white">{stat.value}</p>
               </div>
             );
           })}
@@ -744,12 +742,12 @@ const ProjectCard = ({
         {/* Progress */}
         <div>
           <div className="flex items-center justify-between text-sm mb-1.5">
-            <span className="text-gray-600 dark:text-gray-400">Progresso Geral</span>
-            <span className="font-bold text-blue-600 dark:text-blue-400">{project.progress}%</span>
+            <span className="text-[#9ba9bc]">Progresso geral</span>
+            <span className="font-bold text-primary-300">{project.progress}%</span>
           </div>
-          <div className="h-2.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+          <div className="h-2.5 overflow-hidden rounded-full bg-[#0c121b]">
             <motion.div
-              className="h-full bg-gradient-to-r from-blue-400 to-blue-600 rounded-full"
+              className="h-full rounded-full bg-gradient-to-r from-primary-400 to-primary-600"
               initial={{ width: 0 }}
               animate={{ width: `${project.progress}%` }}
               transition={{ duration: 1, delay: 0.2 + index * 0.05 }}
@@ -759,24 +757,24 @@ const ProjectCard = ({
 
         {/* Next Actions */}
         {project.tasks.filter(t => t.status !== 'done').length > 0 && (
-          <div className="p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl">
+          <div className="rounded-xl border border-blue-400/25 bg-blue-400/10 p-3">
             <div className="flex items-center gap-2 mb-1.5">
               <Clock className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-              <p className="text-sm font-medium text-blue-900 dark:text-blue-200">
-                Proximas Acoes
+              <p className="text-sm font-medium text-blue-200">
+                Próximas ações
               </p>
             </div>
-            <p className="text-xs text-blue-700 dark:text-blue-300">
+            <p className="text-xs text-blue-300">
               {project.tasks.filter(t => t.status !== 'done').length} tarefa{project.tasks.filter(t => t.status !== 'done').length > 1 ? 's' : ''} pendente{project.tasks.filter(t => t.status !== 'done').length > 1 ? 's' : ''}
             </p>
           </div>
         )}
 
         {/* Actions */}
-        <div className="flex gap-2 pt-3 border-t border-gray-200 dark:border-gray-700">
+        <div className="flex gap-2 border-t border-[#273548] pt-4">
           <button
             onClick={onViewDetails}
-            className="flex-1 px-3.5 py-2 bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium rounded-xl transition-all flex items-center justify-center gap-2"
+            className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-primary-500 px-3.5 py-2.5 text-sm font-bold text-black transition-all hover:bg-primary-400"
           >
             <Eye className="w-4 h-4" />
             Ver Detalhes
@@ -787,7 +785,7 @@ const ProjectCard = ({
               <button
                 onClick={onConvert}
                 aria-label={`Promover ${project.name} a solução`}
-                className="inline-flex items-center gap-1.5 px-2.5 py-2 bg-primary-100 dark:bg-primary-900/30 hover:bg-primary-200 dark:hover:bg-primary-900/50 text-primary-700 dark:text-primary-300 text-xs font-semibold rounded-xl transition-all"
+                className="inline-flex items-center gap-1.5 rounded-xl border border-primary-400/25 bg-primary-400/10 px-2.5 py-2 text-xs font-semibold text-primary-300 transition-all hover:bg-primary-400/18"
               >
                 <Rocket className="w-4 h-4" />
                 <span>Promover</span>
@@ -811,7 +809,7 @@ const ProjectCard = ({
           
           <button
             onClick={onDelete}
-            className="px-3 py-2 bg-red-100 dark:bg-red-900/30 hover:bg-red-200 dark:hover:bg-red-900/50 text-red-600 dark:text-red-400 rounded-xl transition-all"
+            className="rounded-xl border border-red-400/20 bg-red-400/10 px-3 py-2 text-red-300 transition-all hover:bg-red-400/18"
           >
             <Trash2 className="w-4 h-4" />
           </button>
@@ -1146,12 +1144,12 @@ const ProjectDetailsPage = ({
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
-      <div className="container-custom py-6 md:py-8 space-y-6">
+    <div className="dark min-h-screen bg-[#0c121b] text-white">
+      <div className="container-custom space-y-6 py-6 md:py-8">
         <div className="flex items-center justify-between gap-3">
           <button
             onClick={onBack}
-            className="inline-flex items-center gap-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+            className="inline-flex items-center gap-2 text-sm font-medium text-[#9ba9bc] transition-colors hover:text-primary-300"
           >
             <ArrowLeft className="w-4 h-4" />
             Voltar para projetos
@@ -1160,14 +1158,14 @@ const ProjectDetailsPage = ({
           <div className="flex items-center gap-2">
             <button
               onClick={handleOpenEdit}
-              className="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-blue-100 dark:bg-blue-900/30 hover:bg-blue-200 dark:hover:bg-blue-900/50 text-blue-600 dark:text-blue-400 transition-all"
+              className="inline-flex items-center gap-2 rounded-xl border border-[#34455a] bg-[#151f2b] px-3 py-2 text-primary-300 transition-all hover:border-primary-500/50 hover:bg-primary-500/10"
             >
               <Pencil className="w-4 h-4" />
               Editar projeto
             </button>
             <button
               onClick={onDelete}
-              className="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-red-100 dark:bg-red-900/30 hover:bg-red-200 dark:hover:bg-red-900/50 text-red-600 dark:text-red-400 transition-all"
+              className="inline-flex items-center gap-2 rounded-xl border border-red-400/25 bg-red-400/10 px-3 py-2 text-red-300 transition-all hover:bg-red-400/20"
             >
               <Trash2 className="w-4 h-4" />
               Excluir projeto
@@ -1178,30 +1176,31 @@ const ProjectDetailsPage = ({
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white dark:bg-gray-800 rounded-2xl w-full min-h-[calc(100vh-12rem)] overflow-hidden border-2 border-gray-200 dark:border-gray-700 flex flex-col"
+          className="flex min-h-[calc(100vh-12rem)] w-full flex-col overflow-hidden rounded-2xl border border-[#273548] bg-[#101722]"
         >
           {/* Header */}
-          <div className="relative min-h-[136px] bg-gradient-to-br from-gray-100 via-gray-50 to-white dark:from-gray-700 dark:via-gray-800 dark:to-gray-900 overflow-hidden border-b-2 border-gray-200 dark:border-gray-700">
-            <div className="absolute inset-0 opacity-40">
-              <div className={`absolute top-0 right-0 w-64 h-64 bg-gradient-to-br ${stageInfo.color} rounded-full blur-3xl`} />
+          <div className="relative min-h-[164px] overflow-hidden border-b border-[#273548] bg-[#151f2b]">
+            <div className="absolute inset-0 opacity-25">
+              <div className={`absolute -right-12 -top-16 h-64 w-64 rounded-full bg-gradient-to-br ${stageInfo.color} blur-3xl`} />
             </div>
             
             <div className="relative z-10 p-5 md:p-6 flex items-start justify-between gap-4">
               <div className="flex items-start gap-4 min-w-0">
-                <div className={`w-12 h-12 md:w-14 md:h-14 ${stageInfo.bgColor} rounded-xl flex items-center justify-center shadow-lg flex-shrink-0`}>
-                  <StageIcon className={`w-7 h-7 bg-gradient-to-br ${stageInfo.color} bg-clip-text`} style={{ WebkitTextFillColor: 'transparent', backgroundClip: 'text' }} />
+                <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl border border-primary-400/20 bg-primary-500/10 md:h-14 md:w-14">
+                  <StageIcon className="h-7 w-7 text-primary-300" />
                 </div>
                 <div className="min-w-0 flex-1">
-                  <h2 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-white mb-1 line-clamp-1">{localProject.name}</h2>
-                  <p className="text-sm md:text-base text-gray-600 dark:text-gray-400 line-clamp-2 max-w-4xl">{localProject.description}</p>
+                  <p className="mb-2 text-xs font-semibold uppercase tracking-[0.18em] text-primary-300">Projeto em {stageInfo.label}</p>
+                  <h2 className="mb-1 line-clamp-1 text-xl font-bold text-white md:text-2xl">{localProject.name}</h2>
+                  <p className="max-w-4xl line-clamp-2 text-sm text-[#9ba9bc] md:text-base">{localProject.description || 'Adicione uma descrição para manter o contexto da execução.'}</p>
                   <div className="mt-4 flex flex-wrap gap-2">
-                    <span className={`inline-flex items-center rounded-full bg-gradient-to-r ${stageInfo.color} text-white text-xs font-semibold px-3 py-1`}>
+                    <span className="inline-flex items-center rounded-full border border-primary-400/25 bg-primary-500/10 px-3 py-1 text-xs font-semibold text-primary-200">
                       {stageInfo.label}
                     </span>
-                    <span className="inline-flex items-center rounded-full bg-white/80 dark:bg-gray-800/80 text-gray-700 dark:text-gray-200 text-xs font-medium px-3 py-1 border border-gray-200 dark:border-gray-600">
+                    <span className="inline-flex items-center rounded-full border border-[#34455a] bg-[#0c121b]/75 px-3 py-1 text-xs font-medium text-[#d7e0ea]">
                       Progresso: {localProject.progress}%
                     </span>
-                    <span className="inline-flex items-center rounded-full bg-white/80 dark:bg-gray-800/80 text-gray-700 dark:text-gray-200 text-xs font-medium px-3 py-1 border border-gray-200 dark:border-gray-600">
+                    <span className="inline-flex items-center rounded-full border border-[#34455a] bg-[#0c121b]/75 px-3 py-1 text-xs font-medium text-[#d7e0ea]">
                       Validacao: {localProject.validation_score}%
                     </span>
                   </div>
@@ -1211,7 +1210,7 @@ const ProjectDetailsPage = ({
           </div>
 
           {/* Tabs */}
-          <div className="border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50 flex-shrink-0">
+          <div className="flex-shrink-0 border-b border-[#273548] bg-[#101722]">
             <div className="flex gap-1 p-2 overflow-x-auto">
               {[
                 { id: 'overview', label: 'Visão Geral', icon: BarChart2 },
@@ -1227,8 +1226,8 @@ const ProjectDetailsPage = ({
                     onClick={() => handleTabChange(tab.id as 'overview' | 'kanban' | 'validation' | 'experiments' | 'interviews')}
                     className={`flex items-center gap-2 px-4 py-3 rounded-xl font-medium transition-all whitespace-nowrap ${
                       activeTab === tab.id
-                        ? 'bg-blue-500 text-white shadow-lg'
-                        : 'hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300'
+                        ? 'bg-primary-500 text-[#0c121b] shadow-lg shadow-primary-500/15'
+                        : 'text-[#9ba9bc] hover:bg-[#151f2b] hover:text-white'
                     }`}
                   >
                     <Icon className="w-5 h-5" />
@@ -1240,47 +1239,47 @@ const ProjectDetailsPage = ({
           </div>
 
           {/* Content */}
-          <div className="flex-1 min-h-0 overflow-y-auto p-5 md:p-6">
+          <div className="min-h-0 flex-1 overflow-y-auto p-5 md:p-6">
             {activeTab === 'overview' && (
               <div className="space-y-5">
                 {/* Stats Grid */}
                 <div className="grid grid-cols-2 xl:grid-cols-4 gap-3">
                   {[
-                    { 
+                    {
                       label: 'Hipóteses Validadas', 
                       value: `${localProject.hypotheses.filter(h => h.validated).length}/${localProject.hypotheses.length}`, 
                       icon: CheckSquare,
-                      color: 'text-green-500',
-                      bgColor: 'bg-green-500/10'
+                      color: 'text-emerald-300',
+                      bgColor: 'bg-emerald-400/10 border-emerald-400/20'
                     },
                     { 
                       label: 'Experimentos', 
                       value: localProject.experiments.length, 
                       icon: FlaskConical,
-                      color: 'text-blue-500',
-                      bgColor: 'bg-blue-500/10'
+                      color: 'text-primary-300',
+                      bgColor: 'bg-primary-500/10 border-primary-400/20'
                     },
                     { 
                       label: 'Entrevistas', 
                       value: localProject.customer_interviews, 
                       icon: MessageSquare,
-                      color: 'text-purple-500',
-                      bgColor: 'bg-purple-500/10'
+                      color: 'text-violet-300',
+                      bgColor: 'bg-violet-400/10 border-violet-400/20'
                     },
                     { 
                       label: 'Tarefas Concluídas', 
                       value: `${localProject.tasks.filter(t => t.status === 'done').length}/${localProject.tasks.length}`, 
                       icon: CheckSquare,
-                      color: 'text-primary-500',
-                      bgColor: 'bg-primary-500/10'
+                      color: 'text-amber-300',
+                      bgColor: 'bg-amber-400/10 border-amber-400/20'
                     }
                   ].map((stat, i) => {
                     const Icon = stat.icon;
                     return (
-                      <div key={i} className={`p-3.5 ${stat.bgColor} rounded-xl text-center border-2 border-gray-200 dark:border-gray-700`}>
+                      <div key={i} className={`rounded-xl border p-3.5 text-center ${stat.bgColor}`}>
                         <Icon className={`w-5 h-5 ${stat.color} mx-auto mb-2`} />
-                        <p className="text-xl md:text-2xl font-bold mb-1">{stat.value}</p>
-                        <p className="text-xs text-gray-600 dark:text-gray-400">{stat.label}</p>
+                        <p className="mb-1 text-xl font-bold text-white md:text-2xl">{stat.value}</p>
+                        <p className="text-xs text-[#9ba9bc]">{stat.label}</p>
                       </div>
                     );
                   })}
@@ -1288,15 +1287,16 @@ const ProjectDetailsPage = ({
 
                 <div className="grid grid-cols-1 xl:grid-cols-[1.2fr_0.8fr] gap-4">
                   {/* Validation Health */}
-                  <div className="p-5 bg-gradient-to-br from-gray-50 to-white dark:from-gray-700/50 dark:to-gray-800/50 rounded-xl border-2 border-gray-200 dark:border-gray-700">
+                  <div className="rounded-xl border border-[#273548] bg-[#151f2b] p-5">
                     <div className="flex items-center justify-between gap-4">
                       <div>
-                        <h3 className="font-bold text-base md:text-lg mb-2">Saude da Validacao</h3>
+                        <p className="mb-2 text-xs font-semibold uppercase tracking-[0.15em] text-[#9ba9bc]">Sinal de aprendizado</p>
+                        <h3 className="mb-2 text-base font-bold text-white md:text-lg">Saúde da validação</h3>
                         <p className={`text-2xl md:text-3xl font-bold ${getValidationHealthColor(localProject.validation_score)}`}>
                           {getValidationHealthLabel(localProject.validation_score)} ({localProject.validation_score}%)
                         </p>
-                        <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
-                          Acompanhe o nivel de validacao do projeto e identifique rapidamente onde precisamos evoluir.
+                        <p className="mt-2 text-sm text-[#9ba9bc]">
+                          Acompanhe o nível de validação e identifique rapidamente onde evoluir.
                         </p>
                       </div>
                       <div className="w-24 h-24 md:w-28 md:h-28 flex-shrink-0">
@@ -1306,7 +1306,7 @@ const ProjectDetailsPage = ({
                             fill="none"
                             stroke="currentColor"
                             strokeWidth="3"
-                            className="text-gray-200 dark:text-gray-700"
+                            className="text-[#273548]"
                           />
                           <path
                             d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
@@ -1322,34 +1322,37 @@ const ProjectDetailsPage = ({
                   </div>
 
                   {/* Progress */}
-                  <div className="p-5 rounded-xl border-2 border-gray-200 dark:border-gray-700 bg-white/70 dark:bg-gray-800/60">
+                  <div className="rounded-xl border border-[#273548] bg-[#151f2b] p-5">
                     <div>
                       <div className="flex items-center justify-between mb-3">
-                        <h3 className="font-bold">Progresso Geral</h3>
-                        <span className="text-2xl font-bold text-blue-600 dark:text-blue-400">{localProject.progress}%</span>
+                        <div>
+                          <p className="mb-1 text-xs font-semibold uppercase tracking-[0.15em] text-[#9ba9bc]">Execução</p>
+                          <h3 className="font-bold text-white">Progresso geral</h3>
+                        </div>
+                        <span className="text-2xl font-bold text-primary-300">{localProject.progress}%</span>
                       </div>
-                      <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                      <div className="h-3 overflow-hidden rounded-full bg-[#0c121b]">
                         <div
-                          className="h-full bg-gradient-to-r from-blue-400 to-blue-600 rounded-full transition-all"
+                          className="h-full rounded-full bg-gradient-to-r from-primary-300 to-primary-500 transition-all"
                           style={{ width: `${localProject.progress}%` }}
                         />
                       </div>
                       <div className="grid grid-cols-2 gap-3 mt-4">
-                        <div className="rounded-xl bg-gray-50 dark:bg-gray-700/50 p-3">
-                          <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Hipoteses</p>
-                          <p className="font-semibold">{localProject.hypotheses.length}</p>
+                        <div className="rounded-xl border border-[#273548] bg-[#0c121b] p-3">
+                          <p className="mb-1 text-xs text-[#9ba9bc]">Hipóteses</p>
+                          <p className="font-semibold text-white">{localProject.hypotheses.length}</p>
                         </div>
-                        <div className="rounded-xl bg-gray-50 dark:bg-gray-700/50 p-3">
-                          <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Tarefas</p>
-                          <p className="font-semibold">{localProject.tasks.length}</p>
+                        <div className="rounded-xl border border-[#273548] bg-[#0c121b] p-3">
+                          <p className="mb-1 text-xs text-[#9ba9bc]">Tarefas</p>
+                          <p className="font-semibold text-white">{localProject.tasks.length}</p>
                         </div>
-                        <div className="rounded-xl bg-gray-50 dark:bg-gray-700/50 p-3">
-                          <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Experimentos</p>
-                          <p className="font-semibold">{localProject.experiments.length}</p>
+                        <div className="rounded-xl border border-[#273548] bg-[#0c121b] p-3">
+                          <p className="mb-1 text-xs text-[#9ba9bc]">Experimentos</p>
+                          <p className="font-semibold text-white">{localProject.experiments.length}</p>
                         </div>
-                        <div className="rounded-xl bg-gray-50 dark:bg-gray-700/50 p-3">
-                          <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Entrevistas</p>
-                          <p className="font-semibold">{localProject.customer_interviews}</p>
+                        <div className="rounded-xl border border-[#273548] bg-[#0c121b] p-3">
+                          <p className="mb-1 text-xs text-[#9ba9bc]">Entrevistas</p>
+                          <p className="font-semibold text-white">{localProject.customer_interviews}</p>
                         </div>
                       </div>
                     </div>
@@ -1413,20 +1416,20 @@ const ProjectDetailsPage = ({
                 initial={{ opacity: 0, y: 16, scale: 0.98 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: 16, scale: 0.98 }}
-                className="w-full max-w-lg rounded-2xl border-2 border-gray-200 bg-white p-6 shadow-2xl dark:border-gray-700 dark:bg-gray-800"
+                className="w-full max-w-lg rounded-2xl border border-[#34455a] bg-[#101722] p-6 shadow-2xl"
                 onClick={(event) => event.stopPropagation()}
               >
                 <div className="mb-6 flex items-start justify-between gap-4">
                   <div>
-                    <h3 className="text-xl font-bold text-gray-900 dark:text-white">Editar projeto</h3>
-                    <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                    <h3 className="text-xl font-bold text-white">Editar projeto</h3>
+                    <p className="mt-1 text-sm text-[#9ba9bc]">
                       Atualize as informações principais do projeto.
                     </p>
                   </div>
                   <button
                     type="button"
                     onClick={() => setIsEditing(false)}
-                    className="rounded-lg p-2 text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-700 dark:hover:text-white"
+                    className="rounded-lg p-2 text-[#9ba9bc] transition-colors hover:bg-[#151f2b] hover:text-white"
                     aria-label="Fechar edição"
                   >
                     <X className="h-5 w-5" />
@@ -1435,7 +1438,7 @@ const ProjectDetailsPage = ({
 
                 <div className="space-y-5">
                   <div>
-                    <label htmlFor="project-edit-name" className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
+                    <label htmlFor="project-edit-name" className="mb-2 block text-sm font-medium text-[#d7e0ea]">
                       Nome do projeto
                     </label>
                     <input
@@ -1443,13 +1446,13 @@ const ProjectDetailsPage = ({
                       type="text"
                       value={editForm.name}
                       onChange={(event) => setEditForm({ ...editForm, name: event.target.value })}
-                      className="w-full rounded-xl border-2 border-gray-200 bg-white px-4 py-2.5 text-gray-900 outline-none transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-gray-600 dark:bg-gray-900 dark:text-white"
+                      className="w-full rounded-xl border border-[#34455a] bg-[#0c121b] px-4 py-2.5 text-white outline-none transition-colors placeholder:text-[#718096] focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20"
                       autoFocus
                     />
                   </div>
 
                   <div>
-                    <label htmlFor="project-edit-description" className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
+                    <label htmlFor="project-edit-description" className="mb-2 block text-sm font-medium text-[#d7e0ea]">
                       Descrição
                     </label>
                     <textarea
@@ -1457,19 +1460,19 @@ const ProjectDetailsPage = ({
                       value={editForm.description}
                       onChange={(event) => setEditForm({ ...editForm, description: event.target.value })}
                       rows={4}
-                      className="w-full resize-y rounded-xl border-2 border-gray-200 bg-white px-4 py-2.5 text-gray-900 outline-none transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-gray-600 dark:bg-gray-900 dark:text-white"
+                      className="w-full resize-y rounded-xl border border-[#34455a] bg-[#0c121b] px-4 py-2.5 text-white outline-none transition-colors placeholder:text-[#718096] focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20"
                     />
                   </div>
 
                   <div>
-                    <label htmlFor="project-edit-stage" className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
+                    <label htmlFor="project-edit-stage" className="mb-2 block text-sm font-medium text-[#d7e0ea]">
                       Estágio atual
                     </label>
                     <select
                       id="project-edit-stage"
                       value={editForm.stage}
                       onChange={(event) => setEditForm({ ...editForm, stage: event.target.value as Project['stage'] })}
-                      className="w-full rounded-xl border-2 border-gray-200 bg-white px-4 py-2.5 text-gray-900 outline-none transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-gray-600 dark:bg-gray-900 dark:text-white"
+                      className="w-full rounded-xl border border-[#34455a] bg-[#0c121b] px-4 py-2.5 text-white outline-none transition-colors focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20"
                     >
                       <option value="ideation">Ideação</option>
                       <option value="validation">Validação</option>
@@ -1479,11 +1482,11 @@ const ProjectDetailsPage = ({
                     </select>
                   </div>
 
-                  <div className="flex gap-3 border-t border-gray-200 pt-5 dark:border-gray-700">
+                  <div className="flex gap-3 border-t border-[#273548] pt-5">
                     <button
                       type="button"
                       onClick={() => setIsEditing(false)}
-                      className="flex-1 rounded-xl border-2 border-gray-300 px-4 py-2.5 font-medium text-gray-700 transition-colors hover:bg-gray-100 dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-700"
+                      className="flex-1 rounded-xl border border-[#34455a] px-4 py-2.5 font-medium text-[#d7e0ea] transition-colors hover:bg-[#151f2b]"
                     >
                       Cancelar
                     </button>
@@ -1491,7 +1494,7 @@ const ProjectDetailsPage = ({
                       type="button"
                       onClick={handleSaveEdit}
                       disabled={!editForm.name.trim()}
-                      className="flex-1 rounded-xl bg-blue-500 px-4 py-2.5 font-bold text-white transition-colors hover:bg-blue-600 disabled:cursor-not-allowed disabled:opacity-50"
+                      className="flex-1 rounded-xl bg-primary-500 px-4 py-2.5 font-bold text-[#0c121b] transition-colors hover:bg-primary-400 disabled:cursor-not-allowed disabled:opacity-50"
                     >
                       Salvar alterações
                     </button>

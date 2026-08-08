@@ -39,30 +39,30 @@ const KanbanBoard = ({ tasks, onUpdate }: KanbanBoardProps) => {
     assignee: '',
     priority: 'medium' as const
   });
-  const fieldClassName = "w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 focus:outline-none transition-colors";
-  const compactFieldClassName = "px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 focus:outline-none transition-colors";
+  const fieldClassName = "w-full rounded-lg border border-[#34455a] bg-[#0c121b] px-3 py-2 text-white placeholder:text-[#718096] outline-none transition-colors focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20";
+  const compactFieldClassName = "rounded-lg border border-[#34455a] bg-[#0c121b] px-3 py-2 text-white outline-none transition-colors focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20";
 
   const columns = [
     { 
       id: 'todo', 
       title: 'A Fazer', 
       color: 'from-gray-500 to-gray-600',
-      bgColor: 'bg-gray-500/10',
-      borderColor: 'border-gray-300 dark:border-gray-600'
+      bgColor: 'bg-[#151f2b]',
+      borderColor: 'border-[#34455a]'
     },
     { 
       id: 'doing', 
       title: 'Fazendo', 
       color: 'from-blue-500 to-blue-600',
-      bgColor: 'bg-blue-500/10',
-      borderColor: 'border-blue-300 dark:border-blue-600'
+      bgColor: 'bg-primary-500/10',
+      borderColor: 'border-primary-400/25'
     },
     { 
       id: 'done', 
       title: 'Concluído', 
       color: 'from-green-500 to-green-600',
-      bgColor: 'bg-green-500/10',
-      borderColor: 'border-green-300 dark:border-green-600'
+      bgColor: 'bg-emerald-400/10',
+      borderColor: 'border-emerald-400/25'
     }
   ];
 
@@ -111,9 +111,9 @@ const KanbanBoard = ({ tasks, onUpdate }: KanbanBoardProps) => {
 
   const getPriorityColor = (priority: Task['priority']) => {
     const colors = {
-      low: 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400',
-      medium: 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400',
-      high: 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400'
+      low: 'border border-primary-400/20 bg-primary-500/10 text-primary-200',
+      medium: 'border border-amber-400/20 bg-amber-400/10 text-amber-200',
+      high: 'border border-red-400/20 bg-red-400/10 text-red-200'
     };
     return colors[priority];
   };
@@ -132,13 +132,14 @@ const KanbanBoard = ({ tasks, onUpdate }: KanbanBoardProps) => {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="text-lg font-bold">Quadro Kanban</h3>
-          <p className="text-sm text-gray-600 dark:text-gray-400">
+          <p className="text-xs font-semibold uppercase tracking-[0.15em] text-[#9ba9bc]">Execução</p>
+          <h3 className="text-lg font-bold text-white">Quadro Kanban</h3>
+          <p className="text-sm text-[#9ba9bc]">
             Gerencie suas tarefas de validação
           </p>
         </div>
         <div className="flex items-center gap-2 text-sm">
-          <span className="text-gray-600 dark:text-gray-400">
+          <span className="text-[#9ba9bc]">
             {tasks.filter(t => t.status === 'done').length} de {tasks.length} concluídas
           </span>
         </div>
@@ -149,9 +150,9 @@ const KanbanBoard = ({ tasks, onUpdate }: KanbanBoardProps) => {
         {columns.map((column) => (
           <div key={column.id} className="space-y-4">
             {/* Column Header */}
-            <div className={`p-4 ${column.bgColor} border-2 ${column.borderColor} rounded-xl`}>
+            <div className={`rounded-xl border ${column.borderColor} ${column.bgColor} p-4`}>
               <div className="flex items-center justify-between mb-2">
-                <h4 className="font-bold flex items-center gap-2">
+                <h4 className="flex items-center gap-2 font-bold text-white">
                   {column.title}
                   <span className={`px-2 py-0.5 text-xs rounded-full bg-gradient-to-r ${column.color} text-white`}>
                     {getTasksByStatus(column.id as Task['status']).length}
@@ -159,7 +160,7 @@ const KanbanBoard = ({ tasks, onUpdate }: KanbanBoardProps) => {
                 </h4>
                 <button
                   onClick={() => setShowAddTask(column.id as Task['status'])}
-                  className="p-1 hover:bg-white/50 dark:hover:bg-gray-700/50 rounded transition-colors"
+                  className="rounded p-1 text-[#9ba9bc] transition-colors hover:bg-[#0c121b] hover:text-white"
                 >
                   <Plus className="w-5 h-5" />
                 </button>
@@ -171,7 +172,7 @@ const KanbanBoard = ({ tasks, onUpdate }: KanbanBoardProps) => {
               <motion.div
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="p-4 bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-xl space-y-3"
+                className="space-y-3 rounded-xl border border-[#273548] bg-[#151f2b] p-4"
               >
                 <input
                   type="text"
@@ -208,13 +209,13 @@ const KanbanBoard = ({ tasks, onUpdate }: KanbanBoardProps) => {
                 <div className="flex gap-2">
                   <button
                     onClick={() => handleAddTask(column.id as Task['status'])}
-                    className="flex-1 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-medium transition-colors"
+                    className="flex-1 rounded-lg bg-primary-500 px-4 py-2 font-medium text-[#0c121b] transition-colors hover:bg-primary-400"
                   >
                     Adicionar
                   </button>
                   <button
                     onClick={() => setShowAddTask(null)}
-                    className="px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-lg transition-colors"
+                    className="rounded-lg border border-[#34455a] px-4 py-2 text-[#d7e0ea] transition-colors hover:bg-[#0c121b]"
                   >
                     Cancelar
                   </button>
@@ -245,15 +246,15 @@ const KanbanBoard = ({ tasks, onUpdate }: KanbanBoardProps) => {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="rounded-2xl border-2 border-dashed border-primary-300/70 bg-gradient-to-br from-primary-50 via-white to-blue-50 px-6 py-10 text-center dark:border-primary-700/60 dark:from-primary-950/30 dark:via-gray-800/70 dark:to-blue-950/20"
+          className="rounded-2xl border border-dashed border-primary-400/35 bg-[#151f2b] px-6 py-10 text-center"
         >
           <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary-100 text-primary-600 dark:bg-primary-900/50 dark:text-primary-300">
             <ListTodo className="h-7 w-7" />
           </div>
-          <h3 className="mb-2 text-lg font-semibold text-gray-900 dark:text-white">
+          <h3 className="mb-2 text-lg font-semibold text-white">
             Vamos organizar o próximo passo?
           </h3>
-          <p className="mx-auto mb-5 max-w-lg text-gray-600 dark:text-gray-400">
+          <p className="mx-auto mb-5 max-w-lg text-[#9ba9bc]">
             Transforme sua validação em ações claras e acompanhe cada tarefa até a conclusão.
           </p>
           <button
@@ -308,7 +309,7 @@ const TaskCard = ({
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.05 }}
-      className="group p-4 bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 hover:border-blue-500 rounded-xl transition-all cursor-pointer"
+      className="group cursor-pointer rounded-xl border border-[#273548] bg-[#151f2b] p-4 transition-all hover:border-primary-400/45 hover:bg-[#182331]"
     >
       {isEditing ? (
         <div className="space-y-3">
@@ -359,22 +360,22 @@ const TaskCard = ({
       ) : (
         <>
           <div className="flex items-start justify-between mb-3">
-            <h4 className="font-semibold text-sm flex-1 pr-2">{task.title}</h4>
+            <h4 className="flex-1 pr-2 text-sm font-semibold text-white">{task.title}</h4>
             <div className="relative">
               <button
                 onClick={() => setShowMenu(!showMenu)}
-                className="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded opacity-0 group-hover:opacity-100 transition-opacity"
+                className="rounded p-1 text-[#9ba9bc] opacity-0 transition-opacity hover:bg-[#0c121b] hover:text-white group-hover:opacity-100"
               >
                 <MoreVertical className="w-4 h-4" />
               </button>
               {showMenu && (
-                <div className="absolute right-0 top-8 bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-lg shadow-xl z-10 min-w-[150px]">
+                <div className="absolute right-0 top-8 z-10 min-w-[150px] rounded-lg border border-[#34455a] bg-[#101722] shadow-xl">
                   <button
                     onClick={() => {
                       setIsEditing(true);
                       setShowMenu(false);
                     }}
-                    className="w-full px-4 py-2 text-left text-sm hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-2"
+                  className="flex w-full items-center gap-2 px-4 py-2 text-left text-sm text-[#d7e0ea] hover:bg-[#151f2b]"
                   >
                     <Edit className="w-4 h-4" />
                     Editar
@@ -384,7 +385,7 @@ const TaskCard = ({
                       onDelete();
                       setShowMenu(false);
                     }}
-                    className="w-full px-4 py-2 text-left text-sm hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-2 text-red-600 dark:text-red-400"
+                  className="flex w-full items-center gap-2 px-4 py-2 text-left text-sm text-red-300 hover:bg-red-400/10"
                   >
                     <Trash2 className="w-4 h-4" />
                     Excluir
@@ -395,7 +396,7 @@ const TaskCard = ({
           </div>
 
           {task.description && (
-            <p className="text-sm text-gray-600 dark:text-gray-400 mb-3 line-clamp-2">
+            <p className="mb-3 line-clamp-2 text-sm text-[#9ba9bc]">
               {task.description}
             </p>
           )}
@@ -428,7 +429,7 @@ const TaskCard = ({
           </div>
 
           {/* Move buttons */}
-          <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+          <div className="mt-3 flex gap-2 border-t border-[#273548] pt-3 opacity-0 transition-opacity group-hover:opacity-100">
             {task.status !== 'todo' && (
               <button
                 onClick={() => onUpdate({ status: task.status === 'done' ? 'doing' : 'todo' })}

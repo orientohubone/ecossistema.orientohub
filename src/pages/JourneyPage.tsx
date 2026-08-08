@@ -87,9 +87,9 @@ const JourneyPage = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="dark min-h-screen bg-[#0c121b] text-white">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-black via-gray-900 to-black py-16 overflow-hidden">
+      <section className="relative overflow-hidden border-b border-[#273548] bg-[#101722] py-12 md:py-16">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0" style={{
             backgroundImage: 'radial-gradient(circle at 2px 2px, #FFD700 1px, transparent 0)',
@@ -97,15 +97,15 @@ const JourneyPage = () => {
           }}></div>
         </div>
 
-        <div className="w-full px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="container-custom relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="max-w-4xl"
           >
-            <div className="inline-flex items-center gap-1.5 bg-primary-500/20 border-2 border-primary-500/40 px-5 py-2 rounded-full mb-6 backdrop-blur-sm">
-              <Rocket className="w-4 h-4 text-primary-500 flex-shrink-0" />
-              <span className="text-primary-500 font-bold text-sm uppercase tracking-wide text-center">
+            <div className="mb-5 inline-flex items-center gap-1.5 rounded-full border border-primary-400/30 bg-primary-500/10 px-4 py-2 backdrop-blur-sm">
+              <Rocket className="h-4 w-4 flex-shrink-0 text-primary-300" />
+              <span className="text-center text-sm font-bold uppercase tracking-wide text-primary-300">
                 Sua Jornada
               </span>
             </div>
@@ -113,7 +113,7 @@ const JourneyPage = () => {
             <h1 className="text-4xl md:text-6xl font-bold text-white mb-4">
               Jornada Empreendedora
             </h1>
-            <p className="text-xl text-gray-300">
+            <p className="text-xl text-[#9ba9bc]">
               Acompanhe seu progresso e conquiste cada fase rumo ao sucesso
             </p>
           </motion.div>
@@ -125,15 +125,15 @@ const JourneyPage = () => {
             transition={{ delay: 0.2 }}
             className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8"
           >
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
-              <div className="flex items-center gap-2 text-primary-500 mb-2">
+            <div className="rounded-xl border border-[#34455a] bg-[#151f2b]/90 p-4 backdrop-blur-sm">
+              <div className="mb-2 flex items-center gap-2 text-primary-300">
                 <Star className="w-5 h-5" />
                 <span className="text-sm font-medium">XP Total</span>
               </div>
               <p className="text-2xl font-bold text-white">{totalXP}</p>
             </div>
 
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
+            <div className="rounded-xl border border-[#34455a] bg-[#151f2b]/90 p-4 backdrop-blur-sm">
               <div className="flex items-center gap-2 text-green-400 mb-2">
                 <CheckCircle2 className="w-5 h-5" />
                 <span className="text-sm font-medium">Missões</span>
@@ -141,7 +141,7 @@ const JourneyPage = () => {
               <p className="text-2xl font-bold text-white">{completedMissions}/{totalMissions}</p>
             </div>
 
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
+            <div className="rounded-xl border border-[#34455a] bg-[#151f2b]/90 p-4 backdrop-blur-sm">
               <div className="flex items-center gap-2 text-blue-400 mb-2">
                 <Target className="w-5 h-5" />
                 <span className="text-sm font-medium">Fases</span>
@@ -149,7 +149,7 @@ const JourneyPage = () => {
               <p className="text-2xl font-bold text-white">2/5</p>
             </div>
 
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
+            <div className="rounded-xl border border-[#34455a] bg-[#151f2b]/90 p-4 backdrop-blur-sm">
               <div className="flex items-center gap-2 text-yellow-400 mb-2">
                 <Trophy className="w-5 h-5" />
                 <span className="text-sm font-medium">Conquistas</span>
@@ -161,8 +161,8 @@ const JourneyPage = () => {
       </section>
 
       {/* Journey Timeline */}
-      <section className="py-12">
-        <div className="w-full px-4 sm:px-6 lg:px-8">
+      <section className="py-8 md:py-12">
+        <div className="container-custom">
           <div className="w-full">
             {/* Phase Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
@@ -178,10 +178,10 @@ const JourneyPage = () => {
                     onClick={() => !isLocked && setSelectedPhase(index)}
                     className={`relative p-6 rounded-2xl border-2 transition-all duration-300 text-left ${
                       selectedPhase === index
-                        ? 'border-primary-500 bg-primary-500/10 shadow-xl shadow-primary-500/20'
+                        ? 'border-primary-400 bg-primary-500/10 shadow-xl shadow-primary-500/10'
                         : isLocked
-                        ? 'border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-800 opacity-50 cursor-not-allowed'
-                        : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:border-primary-500'
+                        ? 'border-[#273548] bg-[#101722] opacity-50 cursor-not-allowed'
+                        : 'border-[#273548] bg-[#151f2b] hover:border-primary-400/50 hover:bg-[#182331]'
                     }`}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -190,12 +190,12 @@ const JourneyPage = () => {
                   >
                     {/* Status Badge */}
                     {isCompleted && (
-                      <div className="absolute -top-2 -right-2 w-8 h-8 bg-green-500 rounded-full flex items-center justify-center border-4 border-white dark:border-gray-900">
+                      <div className="absolute -right-2 -top-2 flex h-8 w-8 items-center justify-center rounded-full border-4 border-[#0c121b] bg-green-500">
                         <CheckCircle2 className="w-4 h-4 text-white" />
                       </div>
                     )}
                     {isActive && (
-                      <div className="absolute -top-2 -right-2 w-8 h-8 bg-primary-500 rounded-full flex items-center justify-center border-4 border-white dark:border-gray-900 animate-pulse">
+                      <div className="absolute -right-2 -top-2 flex h-8 w-8 animate-pulse items-center justify-center rounded-full border-4 border-[#0c121b] bg-primary-500">
                         <Zap className="w-4 h-4 text-black" />
                       </div>
                     )}
@@ -208,17 +208,17 @@ const JourneyPage = () => {
                       )}
                     </div>
 
-                    <h3 className="font-bold text-lg mb-2">{phase.name}</h3>
+                    <h3 className="mb-2 text-lg font-bold text-white">{phase.name}</h3>
 
                     {!isLocked && (
                       <>
-                        <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden mb-2">
+                        <div className="mb-2 h-2 overflow-hidden rounded-full bg-[#0c121b]">
                           <div 
                             className={`h-full bg-gradient-to-r ${phase.color} rounded-full transition-all duration-500`}
                             style={{ width: `${phase.progress}%` }}
                           />
                         </div>
-                        <p className="text-xs text-gray-600 dark:text-gray-400">
+                        <p className="text-xs text-[#9ba9bc]">
                           {phase.progress}% completo
                         </p>
                       </>
@@ -233,7 +233,7 @@ const JourneyPage = () => {
               key={selectedPhase}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="bg-white dark:bg-gray-800 rounded-2xl p-8 border-2 border-gray-200 dark:border-gray-700"
+              className="rounded-2xl border border-[#273548] bg-[#101722] p-5 md:p-8"
             >
               <div className="flex items-start justify-between mb-6">
                 <div>
@@ -246,7 +246,7 @@ const JourneyPage = () => {
                     </div>
                     <div>
                       <h2 className="text-3xl font-bold">{currentPhase.name}</h2>
-                      <p className="text-gray-600 dark:text-gray-400">{currentPhase.description}</p>
+                      <p className="text-[#9ba9bc]">{currentPhase.description}</p>
                     </div>
                   </div>
                 </div>
@@ -257,7 +257,7 @@ const JourneyPage = () => {
                       <Star className="w-5 h-5" />
                       <span className="font-bold text-xl">{currentPhase.xpEarned} XP</span>
                     </div>
-                    <p className="text-sm text-gray-500">conquistados</p>
+                    <p className="text-sm text-[#9ba9bc]">conquistados</p>
                   </div>
                 )}
               </div>
@@ -280,12 +280,12 @@ const JourneyPage = () => {
                       transition={{ delay: index * 0.1 }}
                       className={`flex flex-col rounded-xl border-2 transition-all duration-300 overflow-hidden ${
                         mission.completed
-                          ? 'border-green-500/30 bg-green-500/5'
+                          ? 'border-emerald-400/25 bg-emerald-400/10'
                           : currentPhase.status === 'locked'
-                          ? 'border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 opacity-50'
+                          ? 'border-[#273548] bg-[#151f2b] opacity-50'
                           : isExpanded 
-                          ? 'border-primary-500 shadow-xl shadow-primary-500/10 bg-white dark:bg-gray-800' 
-                          : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:border-primary-500/50 cursor-pointer'
+                          ? 'border-primary-400 shadow-xl shadow-primary-500/10 bg-[#151f2b]' 
+                          : 'border-[#273548] bg-[#151f2b] hover:border-primary-400/50 cursor-pointer'
                       }`}
                     >
                       <div 
@@ -319,7 +319,7 @@ const JourneyPage = () => {
                               {mission.title}
                             </p>
                             {currentPhase.status === 'in-progress' && !mission.completed && (
-                              <p className="text-sm text-primary-600 dark:text-primary-400 flex items-center gap-1 mt-1 font-medium">
+                              <p className="mt-1 flex items-center gap-1 text-sm font-medium text-primary-300">
                                 <Zap className="w-3 h-3" />
                                 Missão Ativa
                               </p>
@@ -367,10 +367,10 @@ const JourneyPage = () => {
                                     <a 
                                       key={tIndex}
                                       href={task.path}
-                                      className="flex justify-between items-center bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg p-3 hover:border-primary-500 transition-colors"
+                                      className="flex items-center justify-between rounded-lg border border-[#34455a] bg-[#151f2b] p-3 transition-colors hover:border-primary-400"
                                     >
-                                      <span className="text-sm font-medium">{task.name}</span>
-                                      <span className="text-xs bg-primary-500/10 text-primary-600 dark:text-primary-400 px-2 py-1 rounded">Fazer agora</span>
+                                      <span className="text-sm font-medium text-white">{task.name}</span>
+                                      <span className="rounded bg-primary-500/10 px-2 py-1 text-xs text-primary-200">Fazer agora</span>
                                     </a>
                                   ))}
                                 </div>
@@ -400,8 +400,8 @@ const JourneyPage = () => {
                             )}
                             
                             {(!mission.tasks || mission.tasks.length === 0) && (!mission.frameworks || mission.frameworks.length === 0) && (
-                              <div className="bg-white dark:bg-gray-700 rounded-lg p-4 text-center border border-gray-200 dark:border-gray-600 mt-2">
-                                <p className="text-sm text-gray-500">Nenhum atalho disponível para esta missão, use sua expertise para validá-la.</p>
+                              <div className="mt-2 rounded-lg border border-[#34455a] bg-[#151f2b] p-4 text-center">
+                                <p className="text-sm text-[#9ba9bc]">Nenhum atalho disponível para esta missão, use sua expertise para validá-la.</p>
                               </div>
                             )}
                           </div>
@@ -417,8 +417,8 @@ const JourneyPage = () => {
       </section>
 
       {/* Achievements Section */}
-      <section className="py-12 bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800">
-        <div className="w-full px-4 sm:px-6 lg:px-8">
+      <section className="border-t border-[#273548] bg-[#101722] py-12">
+        <div className="container-custom">
           <div className="w-full">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -430,8 +430,8 @@ const JourneyPage = () => {
                 <Trophy className="w-4 h-4 text-primary-500" />
                 <span className="text-primary-500 font-semibold text-sm">CONQUISTAS</span>
               </div>
-              <h2 className="text-3xl md:text-4xl font-bold mb-2">Suas Conquistas</h2>
-              <p className="text-gray-600 dark:text-gray-400">
+              <h2 className="mb-2 text-3xl font-bold text-white md:text-4xl">Suas Conquistas</h2>
+              <p className="text-[#9ba9bc]">
                 Badges e troféus conquistados ao longo da jornada
               </p>
             </motion.div>
@@ -448,8 +448,8 @@ const JourneyPage = () => {
                     transition={{ delay: index * 0.1 }}
                     className={`relative p-6 rounded-2xl border-2 text-center transition-all duration-300 ${
                       achievement.unlocked
-                        ? 'border-primary-500 bg-gradient-to-br from-primary-500/10 to-primary-600/5 hover:shadow-xl hover:shadow-primary-500/20'
-                        : 'border-gray-200 dark:border-gray-700 bg-gray-100 dark:bg-gray-800 opacity-50'
+                        ? 'border-primary-400/35 bg-primary-500/10 hover:shadow-xl hover:shadow-primary-500/10'
+                        : 'border-[#273548] bg-[#151f2b] opacity-50'
                     }`}
                   >
                     {achievement.unlocked && (
@@ -466,10 +466,10 @@ const JourneyPage = () => {
                       <Icon className={`w-8 h-8 ${achievement.unlocked ? 'text-white' : 'text-gray-500'}`} />
                     </div>
 
-                    <h3 className={`font-bold text-sm mb-1 ${achievement.unlocked ? '' : 'text-gray-500'}`}>
+                    <h3 className={`mb-1 text-sm font-bold ${achievement.unlocked ? 'text-white' : 'text-[#718096]'}`}>
                       {achievement.title}
                     </h3>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                    <p className="text-xs text-[#9ba9bc]">
                       {achievement.description}
                     </p>
 

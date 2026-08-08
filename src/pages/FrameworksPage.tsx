@@ -44,10 +44,24 @@ interface Framework {
   content?: string;
 }
 
+interface RecommendedTemplate {
+  id: string;
+  name: string;
+  description: string;
+  type: 'canvas' | 'matrix' | 'map';
+  content: string;
+}
+
+interface CustomFramework extends Framework {
+  type: string;
+  createdAt: string;
+}
+
 const FrameworksPage = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [selectedFramework, setSelectedFramework] = useState<Framework | null>(null);
+  const [selectedTemplate, setSelectedTemplate] = useState<RecommendedTemplate | null>(null);
   const [showNewFrameworkModal, setShowNewFrameworkModal] = useState(false);
   const [showFrameworkModal, setShowFrameworkModal] = useState(false);
   const [showComments, setShowComments] = useState<string | null>(null);
@@ -60,6 +74,14 @@ const FrameworksPage = () => {
   const [newFrameworkType, setNewFrameworkType] = useState('canvas');
   const [initialNewFrameworkData, setInitialNewFrameworkData] = useState<any>(null);
   const [, setProgressVersion] = useState(0);
+  const [customFrameworks, setCustomFrameworks] = useState<CustomFramework[]>(() => {
+    try {
+      const saved = localStorage.getItem('orientohub:custom-frameworks');
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
 
   useEffect(() => {
     const refreshProgress = () => setProgressVersion((version) => version + 1);
@@ -463,7 +485,7 @@ const FrameworksPage = () => {
   ];
 
   // Templates recomendados com dados completos
-  const recommendedTemplates = [
+  const recommendedTemplates: RecommendedTemplate[] = [
     {
       id: 'startup-enxuta',
       name: 'Startup Enxuta',
@@ -608,15 +630,23 @@ const FrameworksPage = () => {
   };
 
   const handleCreateFramework = () => {
-    const newFramework = {
+    const newFramework: CustomFramework = {
+      id: `custom-${Date.now()}`,
       name: newFrameworkName,
       description: newFrameworkDescription,
       type: newFrameworkType,
-      content: initialNewFrameworkData?.content || '',
+      content: initialNewFrameworkData?.content || `<h2>${newFrameworkName}</h2><p>${newFrameworkDescription}</p><h3>Como aplicar</h3><ol><li>Defina o objetivo que deseja alcançar.</li><li>Preencha o framework com o time.</li><li>Registre decisões e próximos passos.</li></ol>`,
+      progress: 0,
+      icon: FileText,
+      comments: 0,
       createdAt: new Date().toISOString(),
     };
-    
-    console.log('Novo framework criado:', newFramework);
+
+    setCustomFrameworks((current) => {
+      const updated = [newFramework, ...current];
+      localStorage.setItem('orientohub:custom-frameworks', JSON.stringify(updated));
+      return updated;
+    });
     
     setShowNewFrameworkModal(false);
     setNewFrameworkName('');
@@ -624,7 +654,14 @@ const FrameworksPage = () => {
     setNewFrameworkType('canvas');
     setInitialNewFrameworkData(null);
     
-    alert('Framework criado com sucesso!');
+  };
+
+  const handleDeleteCustomFramework = (id: string) => {
+    setCustomFrameworks((current) => {
+      const updated = current.filter((framework) => framework.id !== id);
+      localStorage.setItem('orientohub:custom-frameworks', JSON.stringify(updated));
+      return updated;
+    });
   };
 
   useEffect(() => {
@@ -783,7 +820,10 @@ const FrameworksPage = () => {
 
           {/* Templates Section */}
           <div className="mt-12">
-            <h2 className="text-xl font-bold mb-6">Templates Recomendados</h2>
+            <div className="mb-6">
+              <h2 className="text-xl font-bold text-white">Templates Recomendados</h2>
+              <p className="mt-1 text-sm text-[#9ba9bc]">Comece com uma estrutura pronta e adapte-a à realidade do seu negócio.</p>
+            </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {recommendedTemplates.map((template, index) => (
                 <TemplateCard
@@ -791,18 +831,7 @@ const FrameworksPage = () => {
                   template={template}
                   index={index}
                   onUseTemplate={handleNewFramework}
-                  onPreview={(template) => {
-                    setSelectedFramework({
-                      id: template.id,
-                      name: template.name,
-                      description: template.description,
-                      progress: 0,
-                      icon: FileText,
-                      comments: 0,
-                      content: template.content
-                    });
-                    setShowFrameworkModal(true);
-                  }}
+                  onPreview={setSelectedTemplate}
                 />
               ))}
             </div>
@@ -810,128 +839,50 @@ const FrameworksPage = () => {
 
           {/* Seção de Frameworks Personalizados */}
           <div className="mt-12">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-bold">Meus Frameworks Personalizados</h2>
-              <span className="text-sm text-gray-500 dark:text-gray-400 bg-yellow-50 dark:bg-yellow-900/20 px-3 py-1 rounded-lg">
-                Em breve
-              </span>
-            </div>
-            <div className="bg-gradient-to-br from-gray-50 to-white dark:from-gray-800 dark:to-gray-700/50 rounded-xl p-12 text-center border-2 border-dashed border-gray-300 dark:border-gray-600">
-              <div className="w-20 h-20 bg-primary-500/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <FileText className="w-10 h-10 text-primary-500" />
+            <div className="mb-6"><h2 className="text-xl font-bold">Meus Frameworks Personalizados</h2></div>
+            {customFrameworks.length ? (
+              <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
+                {customFrameworks.map((framework) => (
+                  <CustomFrameworkCard key={framework.id} framework={framework} onOpen={() => { setSelectedFramework(framework); setShowFrameworkModal(true); }} onDelete={() => handleDeleteCustomFramework(framework.id)} />
+                ))}
               </div>
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
-                Nenhum framework personalizado ainda
-              </h3>
-              <p className="text-gray-600 dark:text-gray-400 mb-6 max-w-md mx-auto">
-                Crie seus próprios frameworks personalizados usando os templates como base e adapte-os para suas necessidades específicas
-              </p>
-              <button 
-                onClick={() => handleNewFramework()}
-                className="px-6 py-3 bg-primary-500 hover:bg-primary-600 text-black font-bold rounded-xl transition-all inline-flex items-center gap-2 shadow-lg shadow-primary-500/30"
-              >
-                <Plus className="w-5 h-5" />
-                Criar Primeiro Framework
-              </button>
-            </div>
+            ) : (
+              <div className="overflow-hidden rounded-2xl border border-[#273548] bg-[#101722] p-6 shadow-[0_12px_28px_rgba(0,0,0,0.16)] sm:p-8">
+                <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+                  <div className="flex items-start gap-4">
+                    <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-[#34455a] bg-[#0c121b] text-primary-300"><FileText className="h-6 w-6" /></div>
+                    <div><p className="text-[11px] font-bold uppercase tracking-[0.14em] text-primary-300">Sua biblioteca</p><h3 className="mt-1 text-xl font-bold text-white">Crie um framework para o seu jeito de trabalhar</h3><p className="mt-2 max-w-xl text-sm leading-relaxed text-[#9ba9bc]">Registre processos próprios, transforme aprendizados em rotinas e mantenha uma estrutura que o seu time possa reutilizar.</p></div>
+                  </div>
+                  <button onClick={() => handleNewFramework()} className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-primary-500 px-5 py-3 text-sm font-bold text-black transition hover:bg-primary-400"><Plus className="h-4 w-4" /> Criar framework</button>
+                </div>
+                <div className="mt-6 grid gap-3 border-t border-[#273548] pt-5 sm:grid-cols-3">
+                  {['Comece por um template', 'Ajuste para o seu contexto', 'Use como referência do time'].map((step, index) => <div key={step} className="flex items-center gap-3 text-sm text-gray-300"><span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-[#1b2635] text-xs font-bold text-primary-300">{index + 1}</span>{step}</div>)}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
 
-      {/* New Framework Modal */}
-      <FrameworkModal
+      <TemplateSetupModal
         isOpen={showNewFrameworkModal}
+        template={initialNewFrameworkData}
+        name={newFrameworkName}
+        description={newFrameworkDescription}
+        type={newFrameworkType}
         onClose={() => setShowNewFrameworkModal(false)}
-        title={initialNewFrameworkData ? `Criar Framework: ${initialNewFrameworkData.name}` : "Novo Framework"}
-      >
-        <div className="space-y-4">
-          {initialNewFrameworkData && (
-            <div className="bg-primary-50 dark:bg-primary-900/20 p-4 rounded-lg border border-primary-200 dark:border-primary-800">
-              <h4 className="font-medium text-primary-800 dark:text-primary-200 mb-2">
-                📋 Template Selecionado: {initialNewFrameworkData.name}
-              </h4>
-              <p className="text-sm text-primary-700 dark:text-primary-300">
-                Este framework será criado baseado no template selecionado. Você pode personalizar os campos abaixo.
-              </p>
-            </div>
-          )}
-          
-          <div>
-            <label className="block text-sm font-medium mb-1">Nome do Framework</label>
-            <input
-              type="text"
-              value={newFrameworkName}
-              onChange={(e) => setNewFrameworkName(e.target.value)}
-              className="w-full px-3 py-2.5 border border-gray-300 dark:border-gray-600 rounded-xl shadow-sm focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 focus:outline-none bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500"
-              placeholder="Ex: Canvas de Validação"
-            />
-          </div>
-          
-          <div>
-            <label className="block text-sm font-medium mb-1">Descrição</label>
-            <textarea
-              rows={3}
-              value={newFrameworkDescription}
-              onChange={(e) => setNewFrameworkDescription(e.target.value)}
-              className="w-full px-3 py-2.5 border border-gray-300 dark:border-gray-600 rounded-xl shadow-sm focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 focus:outline-none bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500"
-              placeholder="Descreva o objetivo e uso do framework..."
-            />
-          </div>
-          
-          <div>
-            <label className="block text-sm font-medium mb-1">Tipo</label>
-            <select 
-              value={newFrameworkType}
-              onChange={(e) => setNewFrameworkType(e.target.value)}
-              className="w-full px-3 py-2.5 border border-gray-300 dark:border-gray-600 rounded-xl shadow-sm focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 focus:outline-none bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
-            >
-              <option value="canvas">Canvas</option>
-              <option value="map">Mapa</option>
-              <option value="matrix">Matriz</option>
-              <option value="checklist">Checklist</option>
-            </select>
-          </div>
-          
-          {initialNewFrameworkData && (
-            <div>
-              <label className="block text-sm font-medium mb-2">Preview do Conteúdo</label>
-              <div className="max-h-40 overflow-y-auto bg-gray-50 dark:bg-gray-700/50 p-3 rounded-md border">
-                <div 
-                  className="prose prose-sm dark:prose-invert max-w-none"
-                  dangerouslySetInnerHTML={{ __html: initialNewFrameworkData.content }}
-                />
-              </div>
-            </div>
-          )}
-          
-          <div className="flex justify-end space-x-3 pt-4">
-            <button
-              onClick={() => setShowNewFrameworkModal(false)}
-              className="px-6 py-2.5 border-2 border-gray-300 dark:border-gray-600 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 font-medium transition-all"
-            >
-              Cancelar
-            </button>
-            <button 
-              onClick={handleCreateFramework}
-              disabled={!newFrameworkName.trim() || !newFrameworkDescription.trim()}
-              className={`px-6 py-2.5 bg-primary-500 hover:bg-primary-600 text-black font-bold rounded-xl transition-all flex items-center gap-2 ${
-                !newFrameworkName.trim() || !newFrameworkDescription.trim() 
-                  ? 'opacity-50 cursor-not-allowed' 
-                  : ''
-              }`}
-            >
-              <Plus className="w-5 h-5" />
-              {initialNewFrameworkData ? 'Criar com Template' : 'Criar Framework'}
-            </button>
-          </div>
-        </div>
-      </FrameworkModal>
+        onNameChange={setNewFrameworkName}
+        onDescriptionChange={setNewFrameworkDescription}
+        onTypeChange={setNewFrameworkType}
+        onSubmit={handleCreateFramework}
+      />
 
       {/* Framework Details Modal */}
       <FrameworkModal
         isOpen={showFrameworkModal}
         onClose={() => setShowFrameworkModal(false)}
         title={selectedFramework?.name || ''}
+        enableGamification={!selectedFramework?.id.startsWith('custom-')}
       >
         {selectedFramework?.content ? (
           <div 
@@ -947,6 +898,15 @@ const FrameworksPage = () => {
           </div>
         )}
       </FrameworkModal>
+
+      <TemplatePreviewModal
+        template={selectedTemplate}
+        onClose={() => setSelectedTemplate(null)}
+        onUseTemplate={(template) => {
+          setSelectedTemplate(null);
+          handleNewFramework(template);
+        }}
+      />
     </>
   );
 };
@@ -968,22 +928,18 @@ const FrameworkCard = ({ framework, index, onContinue, onComments, getProgressCo
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.05 }}
-      className="group bg-white dark:bg-gray-800 rounded-2xl border-2 border-gray-200 dark:border-gray-700 hover:border-primary-500 overflow-hidden transition-all duration-300 hover:shadow-2xl"
+      className="group overflow-hidden rounded-2xl border border-[#273548] bg-[#101722] shadow-[0_12px_28px_rgba(0,0,0,0.16)] transition-all duration-300 hover:-translate-y-1 hover:border-primary-400/70 hover:shadow-[0_20px_38px_rgba(0,0,0,0.28)]"
     >
       {/* Header */}
-      <div className="relative h-32 bg-gradient-to-br from-gray-100 via-gray-50 to-white dark:from-gray-700 dark:via-gray-800 dark:to-gray-900 overflow-hidden border-b-2 border-gray-200 dark:border-gray-700">
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full blur-3xl" />
-        </div>
-        
-        <div className="relative z-10 p-6 flex items-start justify-between">
+      <div className="border-b border-[#273548] bg-[#151f2b]">
+        <div className="p-5 sm:p-6 flex items-start justify-between">
           <div className="flex items-center gap-4">
-            <div className="w-14 h-14 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl flex items-center justify-center shadow-lg border border-gray-200 dark:border-gray-700">
-              <Icon className="w-7 h-7 text-gray-700 dark:text-gray-300" />
+            <div className="flex h-14 w-14 items-center justify-center rounded-xl border border-[#34455a] bg-[#0c121b] shadow-inner shadow-black/20">
+              <Icon className="h-6 w-6 text-primary-300" />
             </div>
             <div>
-              <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-1">{framework.name}</h3>
-              <span className={`inline-block text-xs font-bold px-3 py-1 rounded-full ${getProgressColor(framework.progress)} bg-gray-100 dark:bg-gray-700`}>
+              <h3 className="mb-2 text-lg font-bold text-white">{framework.name}</h3>
+              <span className={`inline-block rounded-full border border-[#34455a] bg-[#0c121b] px-2.5 py-1 text-xs font-bold ${getProgressColor(framework.progress)}`}>
                 {framework.progress}% completo
               </span>
             </div>
@@ -992,18 +948,18 @@ const FrameworkCard = ({ framework, index, onContinue, onComments, getProgressCo
       </div>
 
       {/* Content */}
-      <div className="p-6 space-y-4">
-        <p className="text-gray-600 dark:text-gray-400 line-clamp-2 text-sm">
+      <div className="space-y-5 p-5 sm:p-6">
+        <p className="line-clamp-2 text-sm leading-relaxed text-[#9ba9bc]">
           {framework.description}
         </p>
 
         {/* Progress */}
         <div>
-          <div className="flex items-center justify-between text-sm mb-2">
-            <span className="text-gray-600 dark:text-gray-400">Progresso</span>
+          <div className="mb-2 flex items-center justify-between text-sm">
+            <span className="text-[#9ba9bc]">Progresso</span>
             <span className={`font-bold ${getProgressColor(framework.progress)}`}>{framework.progress}%</span>
           </div>
-          <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+          <div className="h-2 overflow-hidden rounded-full bg-[#0c121b]">
             <motion.div
               className={`h-full rounded-full ${
                 framework.progress >= 80 ? 'bg-gradient-to-r from-green-400 to-green-600' :
@@ -1019,10 +975,10 @@ const FrameworkCard = ({ framework, index, onContinue, onComments, getProgressCo
         </div>
 
         {/* Actions */}
-        <div className="flex gap-2 pt-4 border-t border-gray-200 dark:border-gray-700">
+        <div className="flex gap-2 border-t border-[#273548] pt-4">
           <button
             onClick={() => onContinue(framework)}
-            className="flex-1 px-4 py-2.5 bg-gray-900 dark:bg-white hover:bg-gray-800 dark:hover:bg-gray-100 text-white dark:text-black font-medium rounded-xl transition-all flex items-center justify-center gap-2"
+            className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-primary-500 px-4 py-2.5 font-bold text-black transition-all hover:bg-primary-400"
           >
             <Play className="w-4 h-4" />
             {framework.progress > 0 ? 'Continuar' : 'Começar'}
@@ -1030,7 +986,7 @@ const FrameworkCard = ({ framework, index, onContinue, onComments, getProgressCo
           
           <button
             onClick={() => onComments(framework.id)}
-            className="px-4 py-2.5 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-xl transition-all flex items-center gap-2"
+            className="flex items-center gap-2 rounded-xl border border-[#34455a] bg-[#1b2635] px-4 py-2.5 text-gray-300 transition-all hover:border-[#4c6078] hover:bg-[#233043]"
           >
             <MessageSquare className="w-4 h-4" />
             <span className="text-sm font-medium">{framework.comments}</span>
@@ -1041,53 +997,261 @@ const FrameworkCard = ({ framework, index, onContinue, onComments, getProgressCo
   );
 };
 
+const CustomFrameworkCard = ({ framework, onOpen, onDelete }: { framework: CustomFramework; onOpen: () => void; onDelete: () => void }) => (
+  <motion.article initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="group rounded-2xl border border-gray-200 bg-white p-5 shadow-sm transition hover:border-primary-400 hover:shadow-lg dark:border-gray-700 dark:bg-gray-800">
+    <div className="flex items-start justify-between gap-3">
+      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary-500/12 text-primary-500"><FileText className="h-5 w-5" /></div>
+      <button onClick={onDelete} aria-label={`Excluir ${framework.name}`} className="rounded-lg p-1.5 text-gray-400 opacity-0 transition hover:bg-red-500/10 hover:text-red-500 group-hover:opacity-100"><X className="h-4 w-4" /></button>
+    </div>
+    <p className="mt-5 text-[11px] font-bold uppercase tracking-[0.12em] text-primary-500">{framework.type}</p>
+    <h3 className="mt-1 text-lg font-bold text-gray-900 dark:text-white">{framework.name}</h3>
+    <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-gray-600 dark:text-gray-400">{framework.description}</p>
+    <div className="mt-5 flex items-center justify-between border-t border-gray-100 pt-4 dark:border-gray-700"><span className="text-xs text-gray-500">Criado em {new Date(framework.createdAt).toLocaleDateString('pt-BR')}</span><button onClick={onOpen} className="text-sm font-bold text-primary-500 transition hover:text-primary-400">Abrir estrutura</button></div>
+  </motion.article>
+);
+
+const TemplateSetupModal = ({
+  isOpen,
+  template,
+  name,
+  description,
+  type,
+  onClose,
+  onNameChange,
+  onDescriptionChange,
+  onTypeChange,
+  onSubmit,
+}: {
+  isOpen: boolean;
+  template: RecommendedTemplate | null;
+  name: string;
+  description: string;
+  type: string;
+  onClose: () => void;
+  onNameChange: (value: string) => void;
+  onDescriptionChange: (value: string) => void;
+  onTypeChange: (value: string) => void;
+  onSubmit: () => void;
+}) => {
+  const outline = template
+    ? Array.from(new DOMParser().parseFromString(template.content, 'text/html').querySelectorAll('h3')).map((heading) => heading.textContent?.trim()).filter(Boolean)
+    : [];
+  const canSubmit = name.trim().length > 0 && description.trim().length > 0;
+
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <motion.div className="fixed inset-0 z-[70] flex items-end justify-center bg-black/75 p-0 backdrop-blur-sm sm:items-center sm:p-5" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onMouseDown={onClose}>
+          <motion.div role="dialog" aria-modal="true" aria-labelledby="template-setup-title" className="max-h-[92vh] w-full max-w-3xl overflow-y-auto rounded-t-3xl border border-gray-700 bg-[#101722] shadow-2xl sm:rounded-3xl" initial={{ opacity: 0, y: 24, scale: 0.98 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 24, scale: 0.98 }} onMouseDown={(event) => event.stopPropagation()}>
+            <header className="flex items-start justify-between gap-4 border-b border-gray-700 bg-[#151f2b] px-6 py-6 sm:px-8">
+              <div>
+                <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-primary-300">{template ? 'Personalize antes de criar' : 'Novo framework'}</p>
+                <h2 id="template-setup-title" className="mt-1 text-2xl font-bold text-white">{template ? `Use o template ${template.name}` : 'Crie do seu jeito'}</h2>
+                <p className="mt-2 text-sm text-gray-400">{template ? 'A base já está pronta. Ajuste apenas o que fizer sentido para o seu contexto.' : 'Dê um nome, descreva o objetivo e escolha o formato.'}</p>
+              </div>
+              <button onClick={onClose} aria-label="Fechar criação de framework" className="rounded-xl p-2 text-gray-300 transition hover:bg-white/10 hover:text-white"><X className="h-5 w-5" /></button>
+            </header>
+
+            <div className="grid gap-5 p-5 sm:grid-cols-[1fr_0.75fr] sm:p-7">
+              <div className="space-y-5">
+                <div>
+                  <label className="mb-2 block text-sm font-semibold text-gray-100">Nome do framework</label>
+                  <input value={name} onChange={(event) => onNameChange(event.target.value)} placeholder="Ex.: Canvas de validação" className="w-full rounded-xl border border-gray-600 bg-[#0c121b] px-4 py-3 text-sm text-white outline-none transition placeholder:text-gray-500 focus:border-primary-400 focus:ring-2 focus:ring-primary-400/15" autoFocus />
+                </div>
+                <div>
+                  <label className="mb-2 block text-sm font-semibold text-gray-100">Para que ele serve?</label>
+                  <textarea value={description} onChange={(event) => onDescriptionChange(event.target.value)} rows={4} placeholder="Descreva em poucas linhas o resultado que este framework ajuda a alcançar." className="w-full resize-none rounded-xl border border-gray-600 bg-[#0c121b] px-4 py-3 text-sm leading-relaxed text-white outline-none transition placeholder:text-gray-500 focus:border-primary-400 focus:ring-2 focus:ring-primary-400/15" />
+                  <p className="mt-2 text-xs text-gray-500">Escreva pensando em quem vai usar o framework depois.</p>
+                </div>
+                <div>
+                  <label className="mb-2 block text-sm font-semibold text-gray-100">Formato de trabalho</label>
+                  <div className="grid grid-cols-2 gap-2">
+                    {[['canvas', 'Canvas'], ['map', 'Mapa'], ['matrix', 'Matriz'], ['checklist', 'Checklist']].map(([value, label]) => (
+                      <button key={value} type="button" onClick={() => onTypeChange(value)} className={`rounded-xl border px-3 py-2.5 text-sm font-medium transition ${type === value ? 'border-primary-400 bg-primary-400/12 text-primary-200' : 'border-gray-700 bg-[#0c121b] text-gray-400 hover:border-gray-500 hover:text-gray-200'}`}>{label}</button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <aside className="rounded-2xl border border-primary-400/20 bg-primary-400/[0.06] p-5">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary-400/15 text-primary-300"><FileText className="h-5 w-5" /></div>
+                <h3 className="mt-4 text-base font-bold text-white">{template ? 'O que vem na base' : 'Próximo passo'}</h3>
+                {template ? (
+                  <>
+                    <p className="mt-2 text-sm leading-relaxed text-gray-300">{template.description}</p>
+                    <div className="mt-4 space-y-2 border-t border-primary-400/15 pt-4">
+                      {outline.map((item, index) => <div key={item} className="flex gap-2 text-sm text-gray-300"><span className="font-bold text-primary-300">{String(index + 1).padStart(2, '0')}</span>{item}</div>)}
+                    </div>
+                  </>
+                ) : <p className="mt-2 text-sm leading-relaxed text-gray-300">Você poderá começar pelo formato escolhido e evoluir o conteúdo conforme aprende com o negócio.</p>}
+              </aside>
+            </div>
+
+            <footer className="flex flex-col-reverse gap-3 border-t border-gray-700 bg-[#0c121b] px-5 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-7">
+              <button onClick={onClose} className="rounded-xl px-4 py-3 text-sm font-semibold text-gray-300 transition hover:bg-white/8 hover:text-white">Cancelar</button>
+              <button onClick={onSubmit} disabled={!canSubmit} className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary-500 px-5 py-3 text-sm font-bold text-black transition hover:bg-primary-400 disabled:cursor-not-allowed disabled:opacity-40"><Plus className="h-4 w-4" />{template ? 'Criar a partir do template' : 'Criar framework'}</button>
+            </footer>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+};
+
+const TemplatePreviewModal = ({
+  template,
+  onClose,
+  onUseTemplate,
+}: {
+  template: RecommendedTemplate | null;
+  onClose: () => void;
+  onUseTemplate: (template: RecommendedTemplate) => void;
+}) => {
+  if (!template) return null;
+
+  const documentContent = new DOMParser().parseFromString(template.content, 'text/html');
+  const intro = documentContent.querySelector('p')?.textContent?.trim() || template.description;
+  const sections = Array.from(documentContent.querySelectorAll('h3')).map((heading) => {
+    const next = heading.nextElementSibling;
+    return {
+      title: heading.textContent?.trim() || '',
+      items: next ? Array.from(next.querySelectorAll('li')).map((item) => item.textContent?.trim() || '').filter(Boolean) : [],
+      ordered: next?.tagName === 'OL',
+    };
+  }).filter((section) => section.items.length > 0);
+
+  const [foundation, application] = sections;
+  const typeLabels: Record<RecommendedTemplate['type'], string> = {
+    canvas: 'Canvas estratégico',
+    matrix: 'Matriz de decisão',
+    map: 'Mapa de operação',
+  };
+
+  return (
+    <AnimatePresence>
+      <motion.div
+        className="fixed inset-0 z-[70] flex items-end justify-center bg-black/75 p-0 backdrop-blur-sm sm:items-center sm:p-5"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        onMouseDown={onClose}
+      >
+        <motion.div
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="template-preview-title"
+          className="max-h-[92vh] w-full max-w-5xl overflow-y-auto rounded-t-3xl border border-gray-700 bg-[#101722] shadow-2xl sm:rounded-3xl"
+          initial={{ opacity: 0, y: 24, scale: 0.98 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: 24, scale: 0.98 }}
+          onMouseDown={(event) => event.stopPropagation()}
+        >
+          <div className="relative overflow-hidden border-b border-gray-700/80 bg-[radial-gradient(circle_at_top_right,_rgba(250,204,21,0.2),_transparent_36%),linear-gradient(135deg,_#182432,_#101722)] px-6 py-7 sm:px-9">
+            <div className="absolute -right-12 -top-16 h-48 w-48 rounded-full border-[18px] border-primary-400/15" />
+            <div className="relative flex items-start justify-between gap-4">
+              <div className="min-w-0">
+                <div className="mb-3 flex flex-wrap items-center gap-2">
+                  <span className="rounded-full border border-primary-400/30 bg-primary-400/10 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.12em] text-primary-300">Prévia do template</span>
+                  <span className="rounded-full bg-white/8 px-3 py-1 text-xs font-medium text-gray-300">{typeLabels[template.type]}</span>
+                </div>
+                <h2 id="template-preview-title" className="text-2xl font-bold text-white sm:text-3xl">{template.name}</h2>
+                <p className="mt-2 max-w-2xl text-sm leading-relaxed text-gray-300 sm:text-base">{intro}</p>
+              </div>
+              <button onClick={onClose} aria-label="Fechar prévia" className="rounded-xl p-2 text-gray-300 transition hover:bg-white/10 hover:text-white">
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+          </div>
+
+          <div className="grid gap-5 p-5 sm:grid-cols-[1.1fr_0.9fr] sm:p-7">
+            <section className="rounded-2xl border border-gray-700 bg-[#0c121b] p-5 sm:p-6">
+              <div className="mb-5 flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary-400/12 text-primary-300"><Layout className="h-5 w-5" /></div>
+                <div><p className="text-sm font-bold text-white">{foundation?.title || 'O que você vai estruturar'}</p><p className="text-xs text-gray-400">Preencha com informações reais do seu negócio.</p></div>
+              </div>
+              <div className="grid gap-2 sm:grid-cols-2">
+                {(foundation?.items || []).map((item, index) => (
+                  <div key={item} className="flex gap-3 rounded-xl border border-gray-700/80 bg-gray-800/40 p-3">
+                    <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary-400/15 text-[11px] font-bold text-primary-300">{index + 1}</span>
+                    <span className="text-sm leading-snug text-gray-200">{item}</span>
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            <section className="rounded-2xl border border-gray-700 bg-[#0c121b] p-5 sm:p-6">
+              <div className="mb-5 flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-400/10 text-blue-300"><Play className="h-5 w-5" /></div>
+                <div><p className="text-sm font-bold text-white">{application?.title || 'Como aplicar'}</p><p className="text-xs text-gray-400">Comece simples e evolua a partir do aprendizado.</p></div>
+              </div>
+              <ol className="space-y-3">
+                {(application?.items || ['Escolha um problema ou oportunidade real para trabalhar.', 'Preencha o template com o time e registre as hipóteses.', 'Defina uma ação de validação antes de seguir para a próxima etapa.']).map((item, index) => (
+                  <li key={item} className="flex gap-3 text-sm leading-relaxed text-gray-300"><span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-blue-400/10 text-xs font-bold text-blue-300">{index + 1}</span>{item}</li>
+                ))}
+              </ol>
+            </section>
+          </div>
+
+          <div className="flex flex-col gap-3 border-t border-gray-700 bg-[#0c121b] px-5 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-7">
+            <p className="text-xs leading-relaxed text-gray-400">Ao usar o template, você poderá ajustar nome, descrição e formato antes de criar seu framework.</p>
+            <button onClick={() => onUseTemplate(template)} className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-primary-500 px-5 py-3 text-sm font-bold text-black transition hover:bg-primary-400">
+              <Plus className="h-4 w-4" /> Usar este template
+            </button>
+          </div>
+        </motion.div>
+      </motion.div>
+    </AnimatePresence>
+  );
+};
+
 // Template Card Component
 interface TemplateCardProps {
-  template: any;
+  template: RecommendedTemplate;
   index: number;
-  onUseTemplate: (template: any) => void;
-  onPreview: (template: any) => void;
+  onUseTemplate: (template: RecommendedTemplate) => void;
+  onPreview: (template: RecommendedTemplate) => void;
 }
 
 const TemplateCard = ({ template, index, onUseTemplate, onPreview }: TemplateCardProps) => {
   const getTypeColor = (type: string) => {
     const types: Record<string, any> = {
-      canvas: { bg: 'bg-blue-100 dark:bg-blue-900/30', text: 'text-blue-800 dark:text-blue-300', icon: '🎨' },
-      matrix: { bg: 'bg-green-100 dark:bg-green-900/30', text: 'text-green-800 dark:text-green-300', icon: '📊' },
-      map: { bg: 'bg-purple-100 dark:bg-purple-900/30', text: 'text-purple-800 dark:text-purple-300', icon: '🗺️' }
+      canvas: { bg: 'border border-blue-400/20 bg-blue-400/10', text: 'text-blue-300', icon: Layout },
+      matrix: { bg: 'border border-emerald-400/20 bg-emerald-400/10', text: 'text-emerald-300', icon: BarChart2 },
+      map: { bg: 'border border-purple-400/20 bg-purple-400/10', text: 'text-purple-300', icon: GitBranch }
     };
     return types[type] || types.canvas;
   };
 
   const typeInfo = getTypeColor(template.type);
+  const TypeIcon = typeInfo.icon;
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, delay: 0.3 + index * 0.1 }}
-      className="bg-gradient-to-br from-gray-50 to-white dark:from-gray-700/50 dark:to-gray-800/50 rounded-xl p-6 border-2 border-gray-200 dark:border-gray-700 hover:border-primary-500 transition-all group"
+      className="group rounded-2xl border border-[#273548] bg-[#101722] p-5 shadow-[0_12px_28px_rgba(0,0,0,0.16)] transition-all duration-300 hover:-translate-y-1 hover:border-primary-400/70 hover:shadow-[0_20px_38px_rgba(0,0,0,0.28)]"
     >
       <div className="flex items-center justify-between mb-3">
-        <h3 className="font-bold text-lg">{template.name}</h3>
-        <span className={`text-xs px-3 py-1.5 rounded-full font-medium ${typeInfo.bg} ${typeInfo.text}`}>
-          {typeInfo.icon} {template.type}
+        <h3 className="text-lg font-bold text-white">{template.name}</h3>
+        <span className={`inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full font-medium ${typeInfo.bg} ${typeInfo.text}`}>
+          <TypeIcon className="h-3.5 w-3.5" /> {template.type}
         </span>
       </div>
-      <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
+      <p className="mb-5 text-sm leading-relaxed text-[#9ba9bc]">
         {template.description}
       </p>
       <div className="flex gap-2">
         <button 
           onClick={() => onUseTemplate(template)}
-          className="flex-1 text-sm font-medium text-black bg-primary-500 hover:bg-primary-600 px-4 py-2.5 rounded-xl transition-all flex items-center justify-center gap-2"
+          className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-primary-500 px-4 py-2.5 text-sm font-bold text-black transition-all hover:bg-primary-400"
         >
           <Plus className="w-4 h-4" />
           Usar template
         </button>
         <button 
           onClick={() => onPreview(template)}
-          className="text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 px-4 py-2.5 rounded-xl transition-all flex items-center gap-2"
+          className="flex items-center gap-2 rounded-xl border border-[#34455a] bg-[#1b2635] px-4 py-2.5 text-sm font-medium text-gray-300 transition-all hover:border-[#4c6078] hover:bg-[#233043]"
         >
           <Eye className="w-4 h-4" />
           Preview
