@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Crown, TrendingUp, Users, DollarSign, Activity, FileText, GitBranch, Download, Inbox } from 'lucide-react';
+import { Crown, TrendingUp, Users, DollarSign, Activity, FileText, GitBranch, Download, Inbox, Calculator } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { DashboardHeader } from '../components/founder/DashboardHeader';
 import { KPICards } from '../components/founder/metrics/KPICards';
@@ -9,6 +9,7 @@ import { Company } from '../types/founder';
 import DashboardPageSkeleton from '../components/ui/DashboardPageSkeleton';
 import { LeadsManagement } from '../components/founder/LeadsManagement';
 import { FeatureFlagsPanel } from '../components/founder/FeatureFlagsPanel';
+import { PricingCalculator } from '../components/founder/PricingCalculator';
 
 const FounderDashboardPage = () => {
     const [activeTab, setActiveTab] = useState('overview');
@@ -22,6 +23,7 @@ const FounderDashboardPage = () => {
         { id: 'leads', label: 'Recebimentos', icon: Inbox },
         { id: 'versions', label: 'Versões', icon: GitBranch },
         { id: 'flags', label: 'Feature Flags', icon: Activity },
+        { id: 'pricing', label: 'Precificação', icon: Calculator },
     ];
 
     const handleExport = (data: Company[], filename: string) => {
@@ -141,6 +143,8 @@ const FounderDashboardPage = () => {
                             )}
 
                             {activeTab === 'flags' && <FeatureFlagsPanel />}
+
+                            {activeTab === 'pricing' && <PricingCalculator />}
 
                             {activeTab === 'revenue' && (
                                 <div className="space-y-6">

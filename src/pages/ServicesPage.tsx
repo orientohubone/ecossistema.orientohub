@@ -5,43 +5,25 @@ import {
   ArrowRight,
   Award,
   Bot,
-  Briefcase,
-  BarChart3,
   Clock3,
   Smile,
   Users,
-  Code2,
-  Lightbulb,
-  Megaphone,
-  Palette,
-  Rocket,
-  ShoppingCart,
   Sparkles,
   Target,
-  Globe2,
 } from 'lucide-react';
-import type { ComponentType } from 'react';
 import founderPhoto from '../assets/fenando-ramalho.jpg';
+import { serviceCatalog } from '../data/serviceCatalog';
+import { Briefcase, Rocket, BarChart3, Megaphone, Palette, Code2, Globe2, ShoppingCart } from 'lucide-react';
+import type { ComponentType } from 'react';
 
-type Service = {
-  title: string;
-  description: string;
-  icon: ComponentType<{ className?: string }>;
-  color: string;
+const serviceIcons: Record<string, ComponentType<{ className?: string }>> = {
+  estrategia: Briefcase, inovacao: Rocket, marketing: BarChart3, 'midia-paga': Megaphone,
+  design: Palette, 'vibe-coding': Code2, marcas: Award, dominio: Globe2, sites: Target, 'e-commerce': ShoppingCart,
 };
 
-const services: Service[] = [
-  { title: 'Estratégia', description: 'Planejamento de manobras táticas e visão clara de longo prazo.', icon: Briefcase, color: 'text-primary-400 border-primary-500/40 bg-primary-500/10' },
-  { title: 'Inovação', description: 'Criação de novos produtos e modelos para abrir caminho no seu mercado.', icon: Rocket, color: 'text-orange-400 border-orange-500/40 bg-orange-500/10' },
-  { title: 'Marketing', description: 'Posicionamento certo e construção de autoridade para sua marca.', icon: BarChart3, color: 'text-emerald-400 border-emerald-500/40 bg-emerald-500/10' },
-  { title: 'Mídia paga', description: 'Escala de verdade usando o poder dos algoritmos de anúncios.', icon: Megaphone, color: 'text-pink-400 border-pink-500/40 bg-pink-500/10' },
-  { title: 'Design', description: 'Design sistêmico que elimina fricção e acelera cada decisão.', icon: Palette, color: 'text-purple-400 border-purple-500/40 bg-purple-500/10' },
-  { title: 'Vibe coding', description: 'Desenvolvimento ágil usando inteligência artificial e LLMs.', icon: Code2, color: 'text-sky-400 border-sky-500/40 bg-sky-500/10' },
-  { title: 'Marcas', description: 'Registro no INPI, proteção e valorização da sua marca.', icon: Award, color: 'text-amber-400 border-amber-500/40 bg-amber-500/10' },
-  { title: 'Domínio', description: 'Gestão estratégica das suas propriedades digitais.', icon: Globe2, color: 'text-cyan-400 border-cyan-500/40 bg-cyan-500/10' },
-  { title: 'Sites', description: 'Sites institucionais e landing pages que convertem visita em cliente.', icon: Target, color: 'text-violet-400 border-violet-500/40 bg-violet-500/10' },
-  { title: 'E-commerce', description: 'Lojas virtuais completas com pagamento e frete integrados.', icon: ShoppingCart, color: 'text-green-400 border-green-500/40 bg-green-500/10' },
-];
+const serviceColors: Record<string, string> = {
+  primary: 'text-primary-400 border-primary-500/40 bg-primary-500/10', orange: 'text-orange-400 border-orange-500/40 bg-orange-500/10', emerald: 'text-emerald-400 border-emerald-500/40 bg-emerald-500/10', pink: 'text-pink-400 border-pink-500/40 bg-pink-500/10', violet: 'text-violet-400 border-violet-500/40 bg-violet-500/10', sky: 'text-sky-400 border-sky-500/40 bg-sky-500/10', amber: 'text-amber-400 border-amber-500/40 bg-amber-500/10', cyan: 'text-cyan-400 border-cyan-500/40 bg-cyan-500/10', green: 'text-green-400 border-green-500/40 bg-green-500/10',
+};
 
 const authorityIndicators = [
   { value: '60+', label: 'Empresas atendidas', icon: Smile },
@@ -83,17 +65,20 @@ const ServicesPage = () => (
         </motion.div>
 
         <div className="mx-auto mt-5 grid max-w-6xl grid-cols-1 gap-3 md:grid-cols-2">
-          {services.map((service, index) => {
-            const Icon = service.icon;
+          {serviceCatalog.map((service, index) => {
+            const Icon = serviceIcons[service.slug] || Sparkles;
             return (
-              <motion.article key={service.title} initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.1 }} transition={{ delay: index * 0.04 }} className="rounded-xl border border-white/5 bg-[#131820] p-5 transition hover:-translate-y-0.5 hover:border-white/15 sm:p-6">
+              <motion.article key={service.slug} initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.1 }} transition={{ delay: index * 0.04 }} className="group rounded-xl border border-white/5 bg-[#131820] transition hover:-translate-y-0.5 hover:border-primary-400/40">
+                <Link to={`/servicos/${service.slug}`} className="block p-5 sm:p-6">
                 <div className="flex gap-4">
-                  <span className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border ${service.color}`}><Icon className="h-5 w-5" /></span>
+                  <span className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border ${serviceColors[service.accent]}`}><Icon className="h-5 w-5" /></span>
                   <div>
                     <h2 className="text-lg font-bold sm:text-xl">{service.title}</h2>
                     <p className="mt-1 text-base leading-relaxed text-gray-400">{service.description}</p>
+                    <span className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-primary-300 transition group-hover:gap-2">Conhecer serviço <ArrowRight className="h-4 w-4" /></span>
                   </div>
                 </div>
+                </Link>
               </motion.article>
             );
           })}

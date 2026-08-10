@@ -15,6 +15,7 @@ import GlossaryPage from './pages/GlossaryPage';
 import AboutPage from './pages/AboutPage';
 import EcosystemPage from './pages/EcosystemPage';
 import ServicesPage from './pages/ServicesPage';
+import ServiceDetailPage from './pages/ServiceDetailPage';
 import AcademyPage from './pages/AcademyPage';
 import PricingPage from './pages/PricingPage';
 import CheckoutPage from './pages/CheckoutPage';
@@ -98,6 +99,8 @@ function App() {
           <Route path="ecossistema" element={<EcosystemPage />} />
           <Route path="/servicos" element={<ServicesPage />} />
           <Route path="/serviços" element={<ServicesPage />} />
+          <Route path="/servicos/:serviceSlug" element={<ServiceDetailPage />} />
+          <Route path="/serviços/:serviceSlug" element={<ServiceDetailPage />} />
           <Route path="/academy" element={<AcademyPage />} />
           <Route path="/academy/login" element={<AcademyLoginPage />} />
           <Route path="planos" element={<PricingPage />} />
