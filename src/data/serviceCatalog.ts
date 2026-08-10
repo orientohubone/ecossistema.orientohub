@@ -44,6 +44,14 @@ export const serviceCatalog: ServiceCatalogItem[] = [
     process: [{ title: 'Preparar', description: 'Organizamos oferta, rastreamento e páginas de destino.' }, { title: 'Ativar', description: 'Colocamos campanhas no ar com hipótese e critério.' }, { title: 'Otimizar', description: 'Ajustamos investimento com base no que realmente performa.' }],
   },
   {
+    slug: 'google-meu-negocio', title: 'Google Meu Negócio', eyebrow: 'Presença local que aparece',
+    description: 'Estruturação e gestão do seu perfil para ser encontrado por quem procura na sua região.',
+    hero: 'Transforme buscas locais em visitas, contatos e novas oportunidades.',
+    outcome: 'Organizamos sua presença no Google para transmitir confiança e tornar seu negócio mais fácil de encontrar.', accent: 'primary',
+    deliverables: ['Diagnóstico do Perfil da Empresa no Google', 'Otimização de categorias, serviços e informações', 'Plano de fotos, publicações e avaliações', 'Acompanhamento de visibilidade e ações locais'],
+    process: [{ title: 'Diagnosticar', description: 'Analisamos perfil, concorrência local e oportunidades de busca.' }, { title: 'Otimizar', description: 'Estruturamos todas as informações que ajudam clientes a escolher você.' }, { title: 'Evoluir', description: 'Criamos uma rotina de reputação e presença para manter o perfil relevante.' }],
+  },
+  {
     slug: 'design', title: 'Design', eyebrow: 'Experiências que fluem', description: 'Design sistêmico que elimina fricção e acelera cada decisão.', hero: 'Faça cada interação comunicar valor e facilitar escolhas.', outcome: 'Unimos estética, clareza e função para tornar sua marca e produto mais fáceis de usar.', accent: 'violet', deliverables: ['Identidade e sistemas visuais', 'Interfaces e fluxos digitais', 'Materiais para comunicação e vendas', 'Direção de design contínua'], process: [{ title: 'Entender', description: 'Conhecemos usuários, contexto e objetivo.' }, { title: 'Desenhar', description: 'Criamos soluções visuais com lógica de uso.' }, { title: 'Refinar', description: 'Evoluímos o sistema com consistência.' }],
   },
   {

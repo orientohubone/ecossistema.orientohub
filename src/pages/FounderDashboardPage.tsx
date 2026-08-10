@@ -10,9 +10,11 @@ import DashboardPageSkeleton from '../components/ui/DashboardPageSkeleton';
 import { LeadsManagement } from '../components/founder/LeadsManagement';
 import { FeatureFlagsPanel } from '../components/founder/FeatureFlagsPanel';
 import { PricingCalculator } from '../components/founder/PricingCalculator';
+import type { CrmClient } from '../services/crmService';
 
 const FounderDashboardPage = () => {
     const [activeTab, setActiveTab] = useState('overview');
+    const [proposalClient, setProposalClient] = useState<CrmClient | null>(null);
     const { analytics, companies, revenueChart, isLoading, error, refetch } = useFounderData();
 
     const tabs = [
@@ -20,7 +22,7 @@ const FounderDashboardPage = () => {
         { id: 'revenue', label: 'Receita', icon: DollarSign },
         { id: 'engagement', label: 'Engajamento', icon: TrendingUp },
         { id: 'reports', label: 'Relatórios', icon: FileText },
-        { id: 'leads', label: 'Recebimentos', icon: Inbox },
+        { id: 'leads', label: 'CRM', icon: Inbox },
         { id: 'versions', label: 'Versões', icon: GitBranch },
         { id: 'flags', label: 'Feature Flags', icon: Activity },
         { id: 'pricing', label: 'Precificação', icon: Calculator },
@@ -144,7 +146,7 @@ const FounderDashboardPage = () => {
 
                             {activeTab === 'flags' && <FeatureFlagsPanel />}
 
-                            {activeTab === 'pricing' && <PricingCalculator />}
+                            {activeTab === 'pricing' && <PricingCalculator client={proposalClient} />}
 
                             {activeTab === 'revenue' && (
                                 <div className="space-y-6">
@@ -332,7 +334,7 @@ const FounderDashboardPage = () => {
                             )}
 
                             {activeTab === 'leads' && (
-                                <LeadsManagement />
+                                <LeadsManagement onCreateProposal={(client) => { setProposalClient(client); setActiveTab('pricing'); }} />
                             )}
 
                             {activeTab === 'versions' && (

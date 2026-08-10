@@ -4,6 +4,7 @@ import html2canvas from 'html2canvas';
 import { Calculator, Clock3, Copy, Download, FileText, Plus, ReceiptText, Trash2 } from 'lucide-react';
 import { serviceCatalog } from '../../data/serviceCatalog';
 import ProposalDocument from './ProposalDocument';
+import type { CrmClient } from '../../services/crmService';
 
 type LineItem = { id: string; serviceSlug: string; hours: number; rate: number | null };
 type CalculatorState = {
@@ -29,7 +30,7 @@ const initialState: CalculatorState = {
 const money = (value: number) => value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 const numberOrZero = (value: string) => Math.max(0, Number(value) || 0);
 
-export const PricingCalculator = () => {
+export const PricingCalculator = ({ client }: { client?: CrmClient | null }) => {
   const [config, setConfig] = useState<CalculatorState>(() => {
     try { return { ...initialState, ...JSON.parse(localStorage.getItem('orientohub-pricing-calculator') || '{}') }; } catch { return initialState; }
   });
@@ -39,6 +40,10 @@ export const PricingCalculator = () => {
   const proposalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => { localStorage.setItem('orientohub-pricing-calculator', JSON.stringify(config)); }, [config]);
+  useEffect(() => {
+    if (!client) return;
+    setConfig((current) => ({ ...current, clientName: client.name, projectName: client.company ? `Direção para ${client.company}` : current.projectName, objective: client.demand || current.objective }));
+  }, [client?.id]);
 
   const totals = useMemo(() => {
     const labor = config.lines.reduce((sum, line) => sum + line.hours * (line.rate ?? config.hourlyRate), 0);

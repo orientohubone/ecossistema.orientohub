@@ -1,195 +1,52 @@
-import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { Mail, MessageSquare, Calendar, User, Building, Phone, Clock, Search, Trash2, Filter } from 'lucide-react';
-import { newsletterService, NewsletterSubscription } from '../../services/newsletterService';
-import { contactService, ContactMessage } from '../../services/contactService';
+import { useEffect, useMemo, useState } from 'react';
+import { Building2, ChevronRight, Mail, Plus, Search, Send, UserRound, X } from 'lucide-react';
+import { CrmClient, CrmStage, crmService } from '../../services/crmService';
 
-export const LeadsManagement = () => {
-  const [activeSubTab, setActiveSubTab] = useState<'newsletter' | 'contact'>('newsletter');
-  const [newsletterLeads, setNewsletterLeads] = useState<NewsletterSubscription[]>([]);
-  const [contactMessages, setContactMessages] = useState<ContactMessage[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
+const stages: { id: CrmStage; label: string; color: string }[] = [
+  { id: 'novo', label: 'Novos', color: 'border-sky-400/30 bg-sky-400/10 text-sky-200' },
+  { id: 'qualificando', label: 'Qualificando', color: 'border-violet-400/30 bg-violet-400/10 text-violet-200' },
+  { id: 'proposta', label: 'Proposta', color: 'border-amber-400/30 bg-amber-400/10 text-amber-200' },
+  { id: 'negociação', label: 'Negociação', color: 'border-orange-400/30 bg-orange-400/10 text-orange-200' },
+  { id: 'ganho', label: 'Ganhos', color: 'border-emerald-400/30 bg-emerald-400/10 text-emerald-200' },
+  { id: 'perdido', label: 'Perdidos', color: 'border-slate-400/30 bg-slate-400/10 text-slate-300' },
+];
 
-  const fetchData = async () => {
-    setIsLoading(true);
-    try {
-      const [news, contacts] = await Promise.all([
-        newsletterService.getAll(),
-        contactService.getAll()
-      ]);
-      setNewsletterLeads(news);
-      setContactMessages(contacts);
-    } catch (error) {
-      console.error('Erro ao buscar leads:', error);
-    } finally {
-      setIsLoading(false);
-    }
+export const LeadsManagement = ({ onCreateProposal }: { onCreateProposal: (client: CrmClient) => void }) => {
+  const [clients, setClients] = useState<CrmClient[]>([]);
+  const [selected, setSelected] = useState<CrmClient | null>(null);
+  const [draggedClient, setDraggedClient] = useState<CrmClient | null>(null);
+  const [notes, setNotes] = useState<{ id: string; body: string; created_at: string }[]>([]);
+  const [note, setNote] = useState('');
+  const [search, setSearch] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [newClient, setNewClient] = useState(false);
+  const [form, setForm] = useState({ name: '', email: '', phone: '', company: '', demand: '' });
+
+  const load = async () => { setLoading(true); try { setClients(await crmService.getClients()); } finally { setLoading(false); } };
+  useEffect(() => { load(); }, []);
+  useEffect(() => { if (selected) crmService.getNotes(selected.id).then(setNotes).catch(console.error); }, [selected?.id]);
+  const filtered = useMemo(() => clients.filter((client) => `${client.name} ${client.company || ''} ${client.email || ''}`.toLowerCase().includes(search.toLowerCase())), [clients, search]);
+
+  const updateStage = async (client: CrmClient, stage: CrmStage) => {
+    if (client.stage === stage) return;
+    const updated = await crmService.updateClient(client.id, { stage, last_contact_at: new Date().toISOString() });
+    setClients((current) => current.map((item) => item.id === updated.id ? updated : item));
+    setSelected(updated);
   };
+  const saveNote = async () => { if (!selected || !note.trim()) return; const created = await crmService.addNote(selected.id, note.trim()); setNotes((current) => [created, ...current]); setNote(''); };
+  const saveClient = async () => { if (!form.name.trim()) return; const created = await crmService.createClient(form); setClients((current) => [created, ...current]); setSelected(created); setForm({ name: '', email: '', phone: '', company: '', demand: '' }); setNewClient(false); };
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const filteredNewsletter = newsletterLeads.filter(lead => 
-    lead.email.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
-  const filteredContacts = contactMessages.filter(msg => 
-    msg.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    msg.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    msg.company?.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
-  return (
-    <div className="space-y-6">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div className="flex bg-gray-100 dark:bg-gray-800 p-1 rounded-xl w-fit">
-          <button
-            onClick={() => setActiveSubTab('newsletter')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-all ${
-              activeSubTab === 'newsletter'
-                ? 'bg-white dark:bg-gray-700 text-primary-500 shadow-sm'
-                : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'
-            }`}
-          >
-            <Mail className="w-4 h-4" />
-            Newsletter ({newsletterLeads.length})
-          </button>
-          <button
-            onClick={() => setActiveSubTab('contact')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-all ${
-              activeSubTab === 'contact'
-                ? 'bg-white dark:bg-gray-700 text-primary-500 shadow-sm'
-                : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'
-            }`}
-          >
-            <MessageSquare className="w-4 h-4" />
-            Mensagens ({contactMessages.length})
-          </button>
-        </div>
-
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-          <input
-            type="text"
-            placeholder="Buscar leads..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10 pr-4 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:border-primary-500 focus:outline-none w-full md:w-64 transition-all"
-          />
-        </div>
-      </div>
-
-      {isLoading ? (
-        <div className="flex items-center justify-center h-64">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500"></div>
-        </div>
-      ) : (
-        <div className="bg-white dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800 rounded-2xl overflow-hidden shadow-sm">
-          {activeSubTab === 'newsletter' ? (
-            <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse">
-                <thead>
-                  <tr className="bg-gray-50 dark:bg-gray-800/50 border-b border-gray-200 dark:border-gray-800">
-                    <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider">E-mail</th>
-                    <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider">Data de Inscrição</th>
-                    <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider text-right">Ações</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-200 dark:divide-gray-800">
-                  {filteredNewsletter.map((lead) => (
-                    <tr key={lead.id} className="hover:bg-gray-50/50 dark:hover:bg-gray-800/30 transition-colors">
-                      <td className="px-6 py-4">
-                        <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 rounded-full bg-primary-500/10 flex items-center justify-center">
-                            <Mail className="w-4 h-4 text-primary-500" />
-                          </div>
-                          <span className="font-medium text-gray-900 dark:text-white">{lead.email}</span>
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">
-                        {new Date(lead.created_at || '').toLocaleDateString('pt-BR', {
-                          day: '2-digit',
-                          month: 'long',
-                          year: 'numeric',
-                          hour: '2-digit',
-                          minute: '2-digit'
-                        })}
-                      </td>
-                      <td className="px-6 py-4 text-right">
-                        <button className="text-gray-400 hover:text-red-500 transition-colors p-2">
-                          <Trash2 className="w-4 h-4" />
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                  {filteredNewsletter.length === 0 && (
-                    <tr>
-                      <td colSpan={3} className="px-6 py-12 text-center text-gray-500">
-                        Nenhum lead de newsletter encontrado.
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
-            </div>
-          ) : (
-            <div className="divide-y divide-gray-200 dark:divide-gray-800">
-              {filteredContacts.map((msg) => (
-                <div key={msg.id} className="p-6 hover:bg-gray-50/50 dark:hover:bg-gray-800/30 transition-colors">
-                  <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 mb-4">
-                    <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 rounded-xl bg-primary-500/10 flex items-center justify-center flex-shrink-0">
-                        <User className="w-6 h-6 text-primary-500" />
-                      </div>
-                      <div>
-                        <h4 className="font-bold text-lg text-gray-900 dark:text-white leading-tight mb-1">{msg.name}</h4>
-                        <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-gray-500 dark:text-gray-400">
-                          <span className="flex items-center gap-1"><Mail className="w-3 h-3" /> {msg.email}</span>
-                          {msg.phone && <span className="flex items-center gap-1"><Phone className="w-3 h-3" /> {msg.phone}</span>}
-                          {msg.company && <span className="flex items-center gap-1"><Building className="w-3 h-3" /> {msg.company}</span>}
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex flex-col items-end gap-2">
-                      <span className="px-3 py-1 rounded-full text-xs font-bold bg-primary-500/10 text-primary-500 uppercase tracking-wider">
-                        {msg.subject}
-                      </span>
-                      <span className="flex items-center gap-1 text-xs text-gray-400">
-                        <Clock className="w-3 h-3" />
-                        {new Date(msg.created_at || '').toLocaleDateString('pt-BR')}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="bg-gray-50 dark:bg-gray-800/50 p-4 rounded-xl">
-                    <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap text-sm leading-relaxed">
-                      {msg.message}
-                    </p>
-                  </div>
-                  <div className="mt-4 flex justify-end gap-2">
-                    <button className="px-4 py-2 text-sm font-bold text-gray-500 hover:text-red-500 transition-colors flex items-center gap-2">
-                      <Trash2 className="w-4 h-4" />
-                      Arquivar
-                    </button>
-                    <a 
-                      href={`mailto:${msg.email}`}
-                      className="px-4 py-2 bg-primary-500 hover:bg-primary-600 text-black text-sm font-bold rounded-lg transition-all shadow-sm"
-                    >
-                      Responder por E-mail
-                    </a>
-                  </div>
-                </div>
-              ))}
-              {filteredContacts.length === 0 && (
-                <div className="px-6 py-12 text-center text-gray-500">
-                  Nenhuma mensagem de contato recebida.
-                </div>
-              )}
-            </div>
-          )}
-        </div>
-      )}
-    </div>
-  );
+  return <div className="space-y-5">
+    <div className="flex flex-col justify-between gap-4 md:flex-row md:items-end"><div><p className="text-xs font-semibold uppercase tracking-[.16em] text-primary-300">Relacionamento comercial</p><h3 className="mt-1 text-2xl font-bold text-white">CRM comercial</h3><p className="mt-1 max-w-2xl text-sm text-[#9ba9bc]">Contatos do site viram oportunidades. Arraste entre as etapas e abra o cliente somente quando precisar de contexto.</p></div><button onClick={() => setNewClient(true)} className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary-500 px-4 py-2.5 text-sm font-bold text-[#0c121b]"><Plus className="h-4 w-4" />Novo cliente</button></div>
+    <div className="relative"><Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#718096]" /><input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Buscar por pessoa, empresa ou e-mail" className="w-full rounded-xl border border-[#273548] bg-[#101722] py-3 pl-10 pr-4 text-sm text-white outline-none focus:border-primary-500" /></div>
+    {newClient && <div className="grid gap-3 rounded-2xl border border-primary-400/25 bg-primary-500/5 p-4 md:grid-cols-2"><input spellCheck={false} value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="Nome do contato *" className="rounded-xl border border-[#34455a] bg-[#0c121b] p-3 text-sm text-white" /><input spellCheck={false} value={form.company} onChange={(e) => setForm({ ...form, company: e.target.value })} placeholder="Empresa" className="rounded-xl border border-[#34455a] bg-[#0c121b] p-3 text-sm text-white" /><input spellCheck={false} value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} placeholder="E-mail" className="rounded-xl border border-[#34455a] bg-[#0c121b] p-3 text-sm text-white" /><input spellCheck={false} value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} placeholder="Telefone" className="rounded-xl border border-[#34455a] bg-[#0c121b] p-3 text-sm text-white" /><textarea spellCheck={false} value={form.demand} onChange={(e) => setForm({ ...form, demand: e.target.value })} placeholder="Demanda inicial" className="min-h-20 rounded-xl border border-[#34455a] bg-[#0c121b] p-3 text-sm text-white md:col-span-2" /><div className="flex gap-2 md:col-span-2"><button onClick={saveClient} className="rounded-xl bg-primary-500 px-4 py-2 text-sm font-bold text-[#0c121b]">Salvar cliente</button><button onClick={() => setNewClient(false)} className="rounded-xl border border-[#34455a] px-4 py-2 text-sm font-semibold text-[#d7e0ea]">Cancelar</button></div></div>}
+    {loading ? <div className="h-64 animate-pulse rounded-2xl bg-[#151f2b]" /> : <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">{stages.map((stage) => {
+      const stageClients = filtered.filter((client) => client.stage === stage.id);
+      return <div key={stage.id} onDragOver={(event) => event.preventDefault()} onDrop={() => { if (draggedClient) updateStage(draggedClient, stage.id); setDraggedClient(null); }} className={`min-h-[420px] rounded-2xl border p-2.5 transition ${draggedClient ? 'border-primary-400/45 bg-primary-500/5' : 'border-[#273548] bg-[#0c121b]/45'}`}>
+        <div className="mb-3 flex items-center justify-between px-1"><span className="text-xs font-bold uppercase tracking-[.12em] text-[#d7e0ea]">{stage.label}</span><span className={`rounded-md border px-2 py-0.5 text-[10px] font-bold ${stage.color}`}>{stageClients.length}</span></div>
+        <div className="space-y-2">{stageClients.map((client) => <button key={client.id} draggable onDragStart={() => setDraggedClient(client)} onDragEnd={() => setDraggedClient(null)} onClick={() => setSelected(client)} className={`w-full cursor-grab rounded-xl border p-3 text-left transition active:cursor-grabbing ${client.stage === 'novo' ? 'border-transparent bg-primary-500/15 hover:bg-primary-500/20' : 'border-[#273548] bg-[#101722] hover:border-[#41546b] hover:bg-[#151f2b]'}`}><div className="flex items-center gap-2.5"><span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${client.stage === 'novo' ? 'bg-primary-500 text-[#0c121b]' : 'bg-[#151f2b] text-primary-300'}`}>{client.company ? <Building2 className="h-4 w-4" /> : <UserRound className="h-4 w-4" />}</span><div className="min-w-0 flex-1"><p className="truncate text-sm font-bold text-white">{client.name}</p><p className="truncate text-xs text-[#9ba9bc]">{client.company || client.email || 'Sem empresa informada'}</p></div><ChevronRight className="h-4 w-4 shrink-0 text-[#718096]" /></div><div className="mt-3 flex justify-between gap-2 text-[11px] text-[#718096]"><span>{client.source === 'contato' ? 'Formulário' : 'Manual'}</span><span>{new Date(client.created_at).toLocaleDateString('pt-BR')}</span></div></button>)}{stageClients.length === 0 && <div className="rounded-xl border border-dashed border-[#34455a] px-3 py-6 text-center text-xs text-[#718096]">Arraste uma oportunidade para cá</div>}</div>
+      </div>;
+    })}</div>}
+    {selected && <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#05080d]/75 p-4 backdrop-blur-sm" onMouseDown={() => setSelected(null)}><aside className="max-h-[88vh] w-full max-w-xl overflow-y-auto rounded-2xl border border-[#34455a] bg-[#101722] p-5 shadow-2xl" onMouseDown={(event) => event.stopPropagation()}><div className="flex items-start justify-between gap-3"><div className="flex gap-3"><span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary-500/10 text-primary-300"><UserRound className="h-5 w-5" /></span><div><h4 className="font-bold text-white">{selected.name}</h4><p className="text-sm text-[#9ba9bc]">{selected.company || 'Cliente em potencial'}</p></div></div><button onClick={() => setSelected(null)} className="rounded-lg p-2 text-[#9ba9bc] hover:bg-[#151f2b] hover:text-white"><X className="h-4 w-4" /></button></div><div className="mt-5 space-y-2 text-sm text-[#d7e0ea]"><a className="flex items-center gap-2 hover:text-primary-300" href={`mailto:${selected.email || ''}`}><Mail className="h-4 w-4 text-primary-300" />{selected.email || 'E-mail não informado'}</a><p className="rounded-xl bg-[#151f2b] p-3 leading-relaxed text-[#9ba9bc]">{selected.demand || 'Sem demanda registrada.'}</p></div><label className="mt-4 block text-xs font-bold uppercase tracking-wide text-[#9ba9bc]">Etapa<select value={selected.stage} onChange={(e) => updateStage(selected, e.target.value as CrmStage)} className="mt-2 w-full rounded-xl border border-[#34455a] bg-[#0c121b] p-2.5 text-sm text-white">{stages.map((stage) => <option key={stage.id} value={stage.id}>{stage.label}</option>)}</select></label><button onClick={() => onCreateProposal(selected)} className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-primary-500 px-4 py-3 text-sm font-bold text-[#0c121b]"><Send className="h-4 w-4" />Criar proposta para este cliente</button><div className="mt-5 border-t border-[#273548] pt-4"><p className="text-xs font-bold uppercase tracking-wide text-[#9ba9bc]">Histórico da conversa</p><textarea spellCheck={false} value={note} onChange={(e) => setNote(e.target.value)} placeholder="Registre uma conversa, decisão ou próximo passo" className="mt-3 min-h-20 w-full rounded-xl border border-[#34455a] bg-[#0c121b] p-3 text-sm text-white" /><button onClick={saveNote} className="mt-2 text-sm font-bold text-primary-300">Salvar anotação</button><div className="mt-4 space-y-3">{notes.map((item) => <div key={item.id} className="rounded-xl bg-[#151f2b] p-3 text-sm text-[#d7e0ea]"><p>{item.body}</p><span className="mt-2 block text-xs text-[#718096]">{new Date(item.created_at).toLocaleString('pt-BR')}</span></div>)}</div></div></aside></div>}
+  </div>;
 };

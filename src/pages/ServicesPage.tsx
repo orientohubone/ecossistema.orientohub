@@ -13,11 +13,12 @@ import {
 } from 'lucide-react';
 import founderPhoto from '../assets/fenando-ramalho.jpg';
 import { serviceCatalog } from '../data/serviceCatalog';
-import { Briefcase, Rocket, BarChart3, Megaphone, Palette, Code2, Globe2, ShoppingCart } from 'lucide-react';
+import { Briefcase, Rocket, BarChart3, Megaphone, MapPin, Palette, Code2, Globe2, ShoppingCart } from 'lucide-react';
 import type { ComponentType } from 'react';
 
 const serviceIcons: Record<string, ComponentType<{ className?: string }>> = {
   estrategia: Briefcase, inovacao: Rocket, marketing: BarChart3, 'midia-paga': Megaphone,
+  'google-meu-negocio': MapPin,
   design: Palette, 'vibe-coding': Code2, marcas: Award, dominio: Globe2, sites: Target, 'e-commerce': ShoppingCart,
 };
 

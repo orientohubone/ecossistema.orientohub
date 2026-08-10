@@ -76,9 +76,9 @@ const ContactPage = () => {
     {
       icon: Mail,
       title: 'E-mail',
-      value: 'oriento.contato@pm.me',
+      value: 'fernando@orientohub.com.br',
       description: 'Respondemos em até 24h',
-      href: 'mailto:oriento.contato@pm.me'
+      href: 'mailto:fernando@orientohub.com.br'
     },
     {
       icon: Phone,
