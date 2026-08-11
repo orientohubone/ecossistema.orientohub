@@ -69,6 +69,8 @@ const Header = () => {
         { name: 'Serviços', href: '/servicos' },
         { name: 'Plataforma', href: '/plataforma' },
         { name: 'Manifesto', href: '/manifesto' },
+        { name: 'Infoprodutos', href: '#', isGroup: true },
+        { name: 'SoA — Share of Attention', href: '/soa' },
       ]
     },
     {
@@ -131,15 +133,10 @@ const Header = () => {
                       {/* Dropdown Desktop */}
                       <div className="absolute top-full left-0 mt-1 w-56 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-gray-100 dark:border-gray-700 p-2 transform origin-top scale-95 group-hover:scale-100 transition-transform">
-                          {item.subItems.map((sub) => (
-                            <Link
-                              key={sub.name}
-                              to={sub.href}
-                              onClick={handleNavClick}
-                              className="block px-4 py-2 text-sm rounded-lg text-gray-700 dark:text-gray-300 hover:bg-primary-500/10 hover:text-primary-600 dark:hover:text-primary-400 transition-all font-medium"
-                            >
-                              {sub.name}
-                            </Link>
+                          {item.subItems.map((sub) => sub.isGroup ? (
+                            <p key={sub.name} className="mt-2 border-t border-gray-100 px-4 pt-3 text-[10px] font-bold uppercase tracking-[0.16em] text-primary-500 dark:border-gray-700">{sub.name}</p>
+                          ) : (
+                            <Link key={sub.name} to={sub.href} onClick={handleNavClick} className="block px-4 py-2 text-sm rounded-lg text-gray-700 dark:text-gray-300 hover:bg-primary-500/10 hover:text-primary-600 dark:hover:text-primary-400 transition-all font-medium">{sub.name}</Link>
                           ))}
                         </div>
                       </div>
@@ -231,19 +228,10 @@ const Header = () => {
                               exit={{ opacity: 0, height: 0 }}
                               className="pl-9 space-y-1 overflow-hidden"
                             >
-                              {item.subItems.map((sub) => (
-                                <Link
-                                  key={sub.name}
-                                  to={sub.href}
-                                  className={`block px-3 py-2 text-sm font-medium rounded-lg ${
-                                    location.pathname === sub.href
-                                      ? 'text-primary-500 bg-primary-500/10'
-                                      : 'text-gray-600 dark:text-gray-400 hover:text-primary-500'
-                                  }`}
-                                  onClick={handleNavClick}
-                                >
-                                  {sub.name}
-                                </Link>
+                              {item.subItems.map((sub) => sub.isGroup ? (
+                                <p key={sub.name} className="mt-2 border-t border-gray-100 px-3 pt-3 text-[10px] font-bold uppercase tracking-[0.16em] text-primary-500 dark:border-gray-700">{sub.name}</p>
+                              ) : (
+                                <Link key={sub.name} to={sub.href} className={`block px-3 py-2 text-sm font-medium rounded-lg ${location.pathname === sub.href ? 'text-primary-500 bg-primary-500/10' : 'text-gray-600 dark:text-gray-400 hover:text-primary-500'}`} onClick={handleNavClick}>{sub.name}</Link>
                               ))}
                             </motion.div>
                           )}

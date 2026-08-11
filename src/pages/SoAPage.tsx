@@ -1,9 +1,13 @@
-import { useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
+import { Helmet } from 'react-helmet-async';
 import { Eye, Heart, Play, Users, Search, Beaker, TrendingUp, Target } from 'lucide-react';
 import SectionDivider from '../components/SectionDivider';
 
 const SoAPage = () => {
+  const guidePreviewRef = useRef<HTMLDivElement>(null);
+  const [guideZoom, setGuideZoom] = useState({ visible: false, x: 50, y: 50, left: 0, top: 0, backgroundSize: 1000 });
+
   useEffect(() => {
     // O script da Hotmart controla o modal. Os IDs evitam carregamento duplicado
     // no StrictMode e ao retornar para esta página.
@@ -23,6 +27,14 @@ const SoAPage = () => {
       document.body.appendChild(script);
     }
   }, []);
+
+  const handleGuideZoom = (event: React.MouseEvent<HTMLDivElement>) => {
+    const bounds = guidePreviewRef.current?.getBoundingClientRect();
+    if (!bounds) return;
+    const x = ((event.clientX - bounds.left) / bounds.width) * 100;
+    const y = ((event.clientY - bounds.top) / bounds.height) * 100;
+    setGuideZoom({ visible: true, x, y, left: event.clientX - bounds.left, top: event.clientY - bounds.top, backgroundSize: (bounds.width / 192) * 240 });
+  };
 
   const features = [
     {
@@ -91,7 +103,22 @@ const SoAPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#0c121b] text-white">
+    <>
+      <Helmet>
+        <title>SoA — Share of Attention | OrientoHub</title>
+        <meta name="description" content="Um guia estratégico e prático para conquistar mais atenção, relevância e resultados no Instagram." />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="SoA — Share of Attention" />
+        <meta property="og:description" content="O novo jogo da atenção no digital. Transforme publicações em relevância duradoura." />
+        <meta property="og:url" content="https://orientohub.com.br/soa" />
+        <meta property="og:image" content="https://orientohub.com.br/SoA.png" />
+        <meta property="og:image:alt" content="SoA — Share of Attention" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="SoA — Share of Attention" />
+        <meta name="twitter:description" content="O novo jogo da atenção no digital." />
+        <meta name="twitter:image" content="https://orientohub.com.br/SoA.png" />
+      </Helmet>
+      <div className="min-h-screen bg-[#0c121b] text-white">
       {/* Hero Section */}
       <section className="relative min-h-[80vh] py-8 sm:py-10 lg:min-h-[90vh] lg:py-12 xl:py-16 flex items-center overflow-hidden bg-[#0c121b]">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -293,7 +320,13 @@ const SoAPage = () => {
             <h2 className="mt-3 text-3xl font-bold text-white sm:text-4xl">Veja o que você vai encontrar no guia</h2>
             <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-gray-400 sm:text-lg">Um método visual e prático para transformar atenção em decisões melhores no Instagram.</p>
           </div>
-          <div className="mx-auto mt-10 max-w-4xl overflow-hidden rounded-2xl border border-primary-500/20 bg-white shadow-[0_24px_70px_rgba(0,0,0,0.35)]">
+          <div ref={guidePreviewRef} onMouseMove={handleGuideZoom} onMouseLeave={() => setGuideZoom((current) => ({ ...current, visible: false }))} className="relative mx-auto mt-10 hidden max-w-4xl cursor-crosshair lg:block">
+            <div className="overflow-hidden rounded-2xl border border-primary-500/20 bg-white shadow-[0_24px_70px_rgba(0,0,0,0.35)]">
+              <img src="/AMOSTRA%20GUIA.png" alt="Amostra do guia SoA: Share of Attention" className="block h-auto w-full" />
+            </div>
+            {guideZoom.visible && <div aria-hidden="true" className="pointer-events-none absolute z-10 h-48 w-48 rounded-full border-4 border-primary-300 shadow-[0_12px_36px_rgba(0,0,0,0.45)]" style={{ left: guideZoom.left, top: guideZoom.top, transform: 'translate(-50%, -50%)', backgroundImage: 'url(/AMOSTRA%20GUIA.png)', backgroundPosition: `${guideZoom.x}% ${guideZoom.y}%`, backgroundRepeat: 'no-repeat', backgroundSize: `${guideZoom.backgroundSize}%` }} />}
+          </div>
+          <div className="mx-auto mt-10 max-w-4xl overflow-hidden rounded-2xl border border-primary-500/20 bg-white shadow-[0_24px_70px_rgba(0,0,0,0.35)] lg:hidden">
             <img src="/AMOSTRA%20GUIA.png" alt="Amostra do guia SoA: Share of Attention" className="block h-auto w-full" />
           </div>
         </div>
@@ -349,7 +382,8 @@ const SoAPage = () => {
           </motion.div>
         </div>
       </section>
-    </div>
+      </div>
+    </>
   );
 };
 
