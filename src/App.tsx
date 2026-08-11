@@ -28,6 +28,7 @@ import BlogPostPage from './pages/BlogPostPage';
 import TermsPage from './pages/TermsPage';
 import PrivacyPage from './pages/PrivacyPage';
 import CookiesPage from './pages/CookiesPage';
+import SoAPage from './pages/SoAPage';
 import NotFoundPage from './pages/NotFoundPage';
 
 // Protected Pages
@@ -111,6 +112,7 @@ function App() {
           <Route path="termos" element={<TermsPage />} />
           <Route path="privacidade" element={<PrivacyPage />} />
           <Route path="cookies" element={<CookiesPage />} />
+          <Route path="soa" element={<SoAPage />} />
         </Route>
 
         <Route path="/entrar" element={<LoginPage />} />
