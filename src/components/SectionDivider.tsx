@@ -4,13 +4,20 @@ import type { FC } from 'react';
 interface SectionDividerProps {
   delay?: number;
   liftIntoHero?: boolean;
+  topSpacing?: 'tight' | 'normal' | 'loose';
 }
 
-const SectionDivider: FC<SectionDividerProps> = ({ delay = 0, liftIntoHero = false }) => {
+const SectionDivider: FC<SectionDividerProps> = ({ delay = 0, liftIntoHero = false, topSpacing = 'normal' }) => {
+  const spacingClasses = {
+    tight: 'mt-2 sm:mt-3 md:mt-4 mb-8 sm:mb-10 md:mb-12',
+    normal: 'my-8 sm:my-10 md:my-12',
+    loose: 'my-12 sm:my-16 md:my-20',
+  };
+
   return (
     <motion.div
       className={`relative py-6 flex flex-col items-center justify-center ${
-        liftIntoHero ? '-mt-12 sm:-mt-16 md:-mt-20 lg:-mt-24' : 'my-8 sm:my-10 md:my-12'
+        liftIntoHero ? '-mt-32 sm:-mt-48 md:-mt-64 lg:-mt-80' : spacingClasses[topSpacing]
       }`}
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
@@ -55,7 +62,9 @@ const SectionDivider: FC<SectionDividerProps> = ({ delay = 0, liftIntoHero = fal
             transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }}
           >
             <div className="flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-br from-[#FFD700] via-[#FFE45C] to-[#FFC400] text-black shadow-[0_0_16px_rgba(255,215,0,0.45)]">
-              <div className="h-1.5 w-1.5 rounded-full bg-black/80" />
+              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                <path d="M12 5v14M19 12l-7 7-7-7" />
+              </svg>
             </div>
           </motion.div>
         </div>

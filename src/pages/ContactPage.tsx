@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useSearchParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
 import { 
@@ -20,20 +21,35 @@ import {
   Building
 } from 'lucide-react';
 import { contactService } from '../services/contactService';
+import { CustomSelect } from '../components/CustomSelect';
 
 const ContactPage = () => {
   const { t } = useTranslation();
+  const [searchParams] = useSearchParams();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  
+  const serviceParam = searchParams.get('service');
+  const messageParam = searchParams.get('message');
   
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     phone: '',
     company: '',
-    subject: 'general',
-    message: ''
+    subject: serviceParam || 'general',
+    message: messageParam || ''
   });
+
+  useEffect(() => {
+    if (serviceParam || messageParam) {
+      setFormData(prev => ({
+        ...prev,
+        subject: serviceParam || prev.subject,
+        message: messageParam || prev.message
+      }));
+    }
+  }, [serviceParam, messageParam]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -98,6 +114,17 @@ const ContactPage = () => {
 
   const subjects = [
     { value: 'general', label: 'Assunto geral' },
+    { value: 'Estratégia', label: 'Estratégia' },
+    { value: 'Inovação', label: 'Inovação' },
+    { value: 'Marketing', label: 'Marketing' },
+    { value: 'Mídia paga', label: 'Mídia paga' },
+    { value: 'Google Meu Negócio', label: 'Google Meu Negócio' },
+    { value: 'Design', label: 'Design' },
+    { value: 'Vibe coding', label: 'Vibe coding' },
+    { value: 'Marcas', label: 'Marcas' },
+    { value: 'Domínio', label: 'Domínio' },
+    { value: 'Sites', label: 'Sites' },
+    { value: 'E-commerce', label: 'E-commerce' },
     { value: 'sales', label: 'Falar com vendas' },
     { value: 'support', label: 'Suporte técnico' },
     { value: 'partnership', label: 'Parcerias' },
@@ -155,9 +182,9 @@ const ContactPage = () => {
             </motion.div>
 
             <h1 className="text-5xl md:text-7xl font-bold mb-8 text-white leading-tight">
-              Vamos conversar sobre sua{' '}
+              Vamos conversar sobre seu{' '}
               <span className="bg-gradient-to-r from-primary-400 via-primary-500 to-primary-600 bg-clip-text text-transparent">
-                startup
+                negócio
               </span>
             </h1>
 
@@ -304,23 +331,13 @@ const ContactPage = () => {
                       </div>
 
                       <div>
-                        <label htmlFor="subject" className="block text-sm font-medium mb-2">
-                          Assunto *
-                        </label>
-                        <select
-                          id="subject"
-                          name="subject"
-                          required
+                        <CustomSelect
                           value={formData.subject}
-                          onChange={handleInputChange}
-                          className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-900 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:border-primary-500 focus:outline-none transition-all"
-                        >
-                          {subjects.map(subject => (
-                            <option key={subject.value} value={subject.value}>
-                              {subject.label}
-                            </option>
-                          ))}
-                        </select>
+                          onChange={(value) => handleInputChange({ target: { name: 'subject', value } } as any)}
+                          options={subjects}
+                          label="Assunto"
+                          required
+                        />
                       </div>
 
                       <div>
@@ -332,6 +349,7 @@ const ContactPage = () => {
                           name="message"
                           required
                           rows={6}
+                          spellCheck="false"
                           value={formData.message}
                           onChange={handleInputChange}
                           className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-900 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:border-primary-500 focus:outline-none transition-all resize-none"
@@ -405,7 +423,7 @@ const ContactPage = () => {
                       </div>
                       <div className="flex justify-between">
                         <span className="text-gray-600 dark:text-gray-400">Sábado</span>
-                        <span className="font-medium">10h - 14h</span>
+                        <span className="font-medium">Fechado</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-gray-600 dark:text-gray-400">Domingo</span>

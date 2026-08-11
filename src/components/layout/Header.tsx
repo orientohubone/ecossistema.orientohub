@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Menu, X, Globe, Sparkles, GraduationCap, Rocket, ChevronDown, Layout, Info, MessageCircle } from 'lucide-react';
+import { Menu, X, Sparkles, GraduationCap, Rocket, ChevronDown, Layout, Info, MessageCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuthStore } from '../../stores/authStore';
 
@@ -29,16 +29,16 @@ const Header = () => {
   const [scrolled, setScrolled] = useState(false);
   const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null);
 
+  const handleNavClick = () => {
+    window.scrollTo(0, 0);
+    setIsOpen(false);
+    setActiveSubmenu(null);
+  };
+
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
     setActiveSubmenu(null);
-  };
-  
-
-  
-  const changeLanguage = (lng: string) => {
-    i18n.changeLanguage(lng);
   };
 
   useEffect(() => {
@@ -135,6 +135,7 @@ const Header = () => {
                             <Link
                               key={sub.name}
                               to={sub.href}
+                              onClick={handleNavClick}
                               className="block px-4 py-2 text-sm rounded-lg text-gray-700 dark:text-gray-300 hover:bg-primary-500/10 hover:text-primary-600 dark:hover:text-primary-400 transition-all font-medium"
                             >
                               {sub.name}
@@ -146,6 +147,7 @@ const Header = () => {
                   ) : (
                     <Link
                       to={item.href || '#'}
+                      onClick={handleNavClick}
                       className={`text-sm font-medium transition-colors ${
                         location.pathname === item.href
                           ? 'text-primary-500'
@@ -159,6 +161,7 @@ const Header = () => {
               ))}
               <Link
                 to="/academy"
+                onClick={handleNavClick}
                 className={`group relative ml-2 inline-flex items-center gap-2 overflow-hidden rounded-full border px-5 py-2.5 font-bold transition-all duration-300 ${
                   location.pathname === '/academy'
                     ? 'border-primary-400 bg-gradient-to-r from-primary-500 via-yellow-400 to-primary-500 text-black shadow-[0_10px_30px_rgba(234,179,8,0.35)]'
@@ -173,38 +176,12 @@ const Header = () => {
             
             {/* Right side buttons */}
             <div className="hidden md:flex items-center space-x-4">
-              <div className="relative group">
-                <button className="flex items-center text-gray-700 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400">
-                  <Globe size={20} />
-                </button>
-                <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg py-1 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-                  <button
-                    onClick={() => changeLanguage('pt-BR')}
-                    className={`block px-4 py-2 text-sm w-full text-left ${
-                      i18n.language === 'pt-BR' ? 'text-primary-500' : 'text-gray-700 dark:text-gray-300'
-                    } hover:bg-gray-100 dark:hover:bg-gray-700`}
-                  >
-                    Português (BR)
-                  </button>
-                  <button
-                    onClick={() => changeLanguage('en-US')}
-                    className={`block px-4 py-2 text-sm w-full text-left ${
-                      i18n.language === 'en-US' ? 'text-primary-500' : 'text-gray-700 dark:text-gray-300'
-                    } hover:bg-gray-100 dark:hover:bg-gray-700`}
-                  >
-                    English (US)
-                  </button>
-                </div>
-              </div>
-              
-
-              
               {isAuthenticated ? (
-                <Link to="/dashboard" className="btn-primary">{t('common.dashboard')}</Link>
+                <Link to="/dashboard" onClick={handleNavClick} className="btn-primary">{t('common.dashboard')}</Link>
               ) : (
                 <div className="flex items-center space-x-2">
-                  <Link to="/entrar" className="btn-outline">{t('common.signIn')}</Link>
-                  <Link to="/cadastro" className="btn-primary">{t('common.signUp')}</Link>
+                  <Link to="/entrar" onClick={handleNavClick} className="btn-outline">{t('common.signIn')}</Link>
+                  <Link to="/cadastro" onClick={handleNavClick} className="btn-primary">{t('common.signUp')}</Link>
                 </div>
               )}
             </div>
@@ -263,10 +240,7 @@ const Header = () => {
                                       ? 'text-primary-500 bg-primary-500/10'
                                       : 'text-gray-600 dark:text-gray-400 hover:text-primary-500'
                                   }`}
-                                  onClick={() => {
-                                    setIsOpen(false);
-                                    setActiveSubmenu(null);
-                                  }}
+                                  onClick={handleNavClick}
                                 >
                                   {sub.name}
                                 </Link>
@@ -283,7 +257,7 @@ const Header = () => {
                             ? 'text-primary-500 bg-primary-500/10'
                             : 'text-gray-800 dark:text-gray-100 hover:text-primary-500'
                         }`}
-                        onClick={() => setIsOpen(false)}
+                        onClick={handleNavClick}
                       >
                         <div className="flex items-center gap-2.5">
                           {item.name === t('nav.home') && <Layout className="w-4 h-4 text-primary-500" />}
@@ -299,7 +273,7 @@ const Header = () => {
                 <Link
                   to="/academy"
                   className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl font-bold bg-gradient-to-r from-primary-500/15 via-yellow-400/10 to-primary-500/15 border border-primary-500/30 text-primary-600 dark:text-primary-400 shadow-sm"
-                  onClick={() => setIsOpen(false)}
+                  onClick={handleNavClick}
                 >
                   <GraduationCap className="w-5 h-5 text-primary-500" />
                   Academy
@@ -307,11 +281,11 @@ const Header = () => {
 
                 <div className="pt-4 mt-2 border-t border-gray-100 dark:border-gray-800 flex flex-col gap-3 px-1">
                   {isAuthenticated ? (
-                    <Link to="/dashboard" className="btn-primary w-full justify-center text-center py-2.5" onClick={() => setIsOpen(false)}>{t('common.dashboard')}</Link>
+                    <Link to="/dashboard" className="btn-primary w-full justify-center text-center py-2.5" onClick={handleNavClick}>{t('common.dashboard')}</Link>
                   ) : (
                     <div className="flex flex-col gap-2 w-full">
-                      <Link to="/entrar" className="btn-outline w-full justify-center text-center py-2.5" onClick={() => setIsOpen(false)}>{t('common.signIn')}</Link>
-                      <Link to="/cadastro" className="btn-primary w-full justify-center text-center py-2.5" onClick={() => setIsOpen(false)}>{t('common.signUp')}</Link>
+                      <Link to="/entrar" className="btn-outline w-full justify-center text-center py-2.5" onClick={handleNavClick}>{t('common.signIn')}</Link>
+                      <Link to="/cadastro" className="btn-primary w-full justify-center text-center py-2.5" onClick={handleNavClick}>{t('common.signUp')}</Link>
                     </div>
                   )}
                 </div>

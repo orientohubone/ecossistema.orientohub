@@ -87,7 +87,7 @@ const ecosystemLayers: EcosystemLayer[] = [
     color: 'from-blue-500 to-cyan-600',
     brandColor: 'blue',
     href: '/plataforma',
-    ctaLabel: 'Abrir',
+    ctaLabel: 'Gerencie seus projetos',
   },
   {
     number: '03',
@@ -98,7 +98,7 @@ const ecosystemLayers: EcosystemLayer[] = [
     color: 'from-green-500 to-emerald-600',
     brandColor: 'green',
     href: '/ecossistema#mvps',
-    ctaLabel: 'Explorar',
+    ctaLabel: 'Seja um cofounder',
   },
   {
     number: '04',
@@ -109,7 +109,7 @@ const ecosystemLayers: EcosystemLayer[] = [
     color: 'from-purple-500 to-pink-600',
     brandColor: 'purple',
     href: '/ecossistema#verticais',
-    ctaLabel: 'Explorar',
+    ctaLabel: 'Ver iniciativas',
   },
 ];
 
@@ -186,8 +186,8 @@ const HomePage = () => {
       <div className="fixed inset-0 opacity-20 -z-50" style={heroBackgroundStyle} />
 
       {/* Hero */}
-      <section className="relative min-h-[90vh] py-8 sm:py-14 lg:min-h-[100svh] w-full flex items-center">
-        <div className="relative z-10 container-custom pt-2 sm:pt-8 lg:pt-14 xl:pt-16 pb-0 flex items-center min-h-full">
+      <section className="relative min-h-[70vh] py-8 sm:py-10 lg:min-h-[80vh] w-full flex items-center">
+        <div className="relative z-10 container-custom pt-2 sm:pt-4 lg:pt-8 xl:pt-12 pb-0 flex items-center min-h-full">
           <motion.div
             className="w-full max-w-4xl mx-auto px-1 sm:px-0 text-center"
             variants={containerVariants}
@@ -201,7 +201,7 @@ const HomePage = () => {
               <div className="inline-flex items-center gap-2 rounded-full border border-primary-400/40 bg-black/40 px-3 py-1.5 sm:px-3.5 sm:py-2 shadow-[0_0_30px_rgba(255,215,0,0.08)] backdrop-blur-md">
                 <Rocket className="h-3.5 w-3.5 text-primary-400 shrink-0" aria-hidden="true" />
                 <span className="text-[10px] sm:text-xs font-semibold uppercase tracking-[0.12em] text-white">
-                  Ecossistema de construção
+                  Ecossistema de inovação
                 </span>
               </div>
             </motion.div>
@@ -262,14 +262,14 @@ const HomePage = () => {
             </motion.div>
 
             <div className="lg:hidden mt-8 sm:mt-12">
-              <SectionDivider />
+              <SectionDivider topSpacing="tight" />
             </div>
           </motion.div>
         </div>
       </section>
 
       <div className="hidden lg:block mt-0 xl:-mt-2">
-        <SectionDivider />
+        <SectionDivider topSpacing="tight" />
       </div>
 
       {presentationOpen && (
@@ -710,7 +710,7 @@ const EcosystemCard = ({ layer, compact = false, expanded = false, onToggleExpan
                   to="/servicos"
                   className="inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-3 bg-primary-500 hover:bg-primary-600 text-black font-bold rounded-xl transition-all w-full sm:w-fit group shadow-lg shadow-primary-500/20 hover:shadow-primary-500/30 text-sm"
                 >
-                  Conheça as possibilidades
+                  Contrate nossos serviços
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </Link>
               </div>
@@ -846,15 +846,15 @@ const EcosystemCard = ({ layer, compact = false, expanded = false, onToggleExpan
         {isNucleus && !expanded ? (
           <Link
             to="/servicos"
-            aria-label="Conheça as possibilidades de serviços do Núcleo"
+            aria-label="Contrate nossos serviços do Núcleo"
             className={`inline-flex items-center justify-center gap-2 px-5 py-3 mt-auto text-sm font-bold text-black ${getStyle('bg')} hover:opacity-90 rounded-xl shadow-lg ${getStyle('shadow')} transition-all duration-300 group-hover:-translate-y-1 w-full sm:w-fit`}
             onClick={(event) => event.stopPropagation()}
           >
-            Conheça as possibilidades <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            Contrate nossos serviços <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </Link>
         ) : canExpand && !expanded ? (
           <div className={`inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-3 mt-auto text-sm font-bold text-black ${getStyle('bg')} hover:opacity-90 rounded-xl shadow-lg ${getStyle('shadow')} transition-all duration-300 group-hover:-translate-y-1 w-full sm:w-fit`}>
-            Ver detalhes <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            {layer.ctaLabel ?? 'Ver detalhes'} <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </div>
         ) : layer.ctaLabel ? (
           <Link

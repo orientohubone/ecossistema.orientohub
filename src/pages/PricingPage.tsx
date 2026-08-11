@@ -232,7 +232,7 @@ const PricingPage = () => {
               {[
                 { icon: Shield, text: 'Pagamento Seguro' },
                 { icon: Zap, text: 'Ativação Instantânea' },
-                { icon: Users, text: '500+ Founders' },
+                { icon: Users, text: 'Seja Early Adopter' },
                 { icon: Star, text: '4.9/5 Avaliação' }
               ].map((badge, index) => (
                 <div key={index} className="flex flex-col items-center gap-2 p-4 bg-white dark:bg-gray-800 rounded-xl border-2 border-gray-200 dark:border-gray-700">

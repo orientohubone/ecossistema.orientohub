@@ -150,7 +150,7 @@ const Footer = () => {
   ];
 
   const contactInfo = [
-    { icon: Mail, text: 'oriento.contato@pm.me' },
+    { icon: Mail, text: 'fernando@orientohub.com.br' },
     { icon: Phone, text: '+55 (14) 99861-8547' },
     { icon: MapPin, text: 'Pompeia, Brasil' },
   ];
@@ -350,14 +350,6 @@ const Footer = () => {
               </div>
 
               <div className="flex items-center gap-6">
-                <select
-                  className="bg-gray-800/50 border border-gray-700 text-gray-400 text-sm rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all backdrop-blur-sm"
-                  defaultValue="pt-BR"
-                >
-                  <option value="pt-BR">🇧🇷 Português (BR)</option>
-                  <option value="en-US">🇺🇸 English (US)</option>
-                  <option value="es-ES">🇪🇸 Español (ES)</option>
-                </select>
 
                 <div className="flex items-center gap-2 text-gray-500 text-xs">
                   <Rocket className="w-4 h-4 text-primary-500" />
