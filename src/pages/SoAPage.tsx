@@ -133,11 +133,7 @@ const SoAPage = () => {
                   href="https://pay.hotmart.com/A107111484M?checkoutMode=2"
                   className="hotmart-fb hotmart__button-checkout inline-block"
                 >
-                  <img 
-                    src="https://static.hotmart.com/img/btn-buy-green.png" 
-                    alt="Comprar no Hotmart"
-                    className="h-12"
-                  />
+                  <img src="https://static.hotmart.com/img/btn-buy-green.png" alt="Comprar no Hotmart" className="h-12" />
                 </a>
                 <div className="text-sm text-gray-700 dark:text-gray-300 flex items-center gap-2">
                   <Target className="w-4 h-4 text-primary-600 dark:text-primary-400" />
@@ -338,11 +334,7 @@ const SoAPage = () => {
                 href="https://pay.hotmart.com/A107111484M?checkoutMode=2"
                 className="hotmart-fb hotmart__button-checkout inline-block"
               >
-                <img 
-                  src="https://static.hotmart.com/img/btn-buy-green.png" 
-                  alt="Comprar no Hotmart"
-                  className="h-14 mx-auto"
-                />
+                <img src="https://static.hotmart.com/img/btn-buy-green.png" alt="Comprar no Hotmart" className="mx-auto h-14" />
               </a>
             </div>
 
