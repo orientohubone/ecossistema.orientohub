@@ -73,6 +73,13 @@
   .dashboard-content > [class*='min-h-screen'] {
     background: var(--dashboard-surface) !important;
   }
+
+  /* A tela de Ideias usa main como raiz; mantenha-a na mesma superfície do
+     dashboard para não criar uma divisão de cor ao final do conteúdo. */
+  .dashboard-content > main {
+    min-height: 100vh;
+    background: var(--dashboard-surface) !important;
+  }
   
   .card {
     @apply bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden;

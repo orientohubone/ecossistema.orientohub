@@ -76,6 +76,7 @@ const DashboardLayout = () => {
     { id: 'dashboard', name: t('common.dashboard'), icon: <LayoutDashboard size={18} />, href: '/dashboard' },
     { id: 'insights', name: t('dashboard.insights'), icon: <BarChart2 size={18} />, href: '/dashboard/insights' },
     { id: 'frameworks', name: t('dashboard.frameworks'), icon: <FileText size={18} />, href: '/dashboard/frameworks' },
+    { id: 'ideas', name: 'Ideias', icon: <Sparkles size={18} />, href: '/dashboard/ideas' },
     { id: 'projects', name: t('projects.title'), icon: <Lightbulb size={18} />, href: '/dashboard/projects' },
     { id: 'academy', name: 'Oriento Academy', icon: <GraduationCap size={18} />, href: '/dashboard/academy', protected: true },
     { id: 'founder', name: 'Dashboard Founder', icon: <Crown size={18} />, href: '/dashboard/founder', protected: true, isFounder: true },

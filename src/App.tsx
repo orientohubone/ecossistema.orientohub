@@ -39,6 +39,7 @@ const InsightsPage = lazy(() => import('./pages/InsightsPage'));
 const FrameworksPage = lazy(() => import('./pages/FrameworksPage'));
 const FrameworkGamePage = lazy(() => import('./pages/FrameworkGamePage'));
 const ProjectsPage = lazy(() => import('./pages/ProjectsPage'));
+const IdeasPage = lazy(() => import('./pages/IdeasPage'));
 const JourneyPage = lazy(() => import('./pages/JourneyPage'));
 const SolutionsPage = lazy(() => import('./pages/SolutionsPage'));
 const CommunityPage = lazy(() => import('./pages/CommunityPage'));
@@ -131,6 +132,7 @@ function App() {
           <Route path="frameworks" element={<FeatureRoute feature="frameworks_access" screen="frameworks">{withProtectedSuspense(<FrameworksPage />)}</FeatureRoute>} />
           <Route path="frameworks/:id/game" element={<FeatureRoute feature="frameworks_access" screen="frameworks">{withProtectedSuspense(<FrameworkGamePage />)}</FeatureRoute>} />
           <Route path="projects" element={withProtectedSuspense(<ProjectsPage />)} />
+          <Route path="ideas" element={withProtectedSuspense(<IdeasPage />)} />
           <Route path="projects/:projectId" element={withProtectedSuspense(<ProjectsPage />)} />
           <Route path="tarefas" element={withProtectedSuspense(<TasksPage />)} />
           <Route path="jornada" element={withProtectedSuspense(<JourneyPage />)} />
