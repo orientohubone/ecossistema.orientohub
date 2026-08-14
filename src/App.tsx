@@ -132,7 +132,7 @@ function App() {
           <Route path="frameworks" element={<FeatureRoute feature="frameworks_access" screen="frameworks">{withProtectedSuspense(<FrameworksPage />)}</FeatureRoute>} />
           <Route path="frameworks/:id/game" element={<FeatureRoute feature="frameworks_access" screen="frameworks">{withProtectedSuspense(<FrameworkGamePage />)}</FeatureRoute>} />
           <Route path="projects" element={withProtectedSuspense(<ProjectsPage />)} />
-          <Route path="ideas" element={withProtectedSuspense(<IdeasPage />)} />
+          <Route path="ideas" element={<FeatureRoute feature="ideas_access" screen="ideas">{withProtectedSuspense(<IdeasPage />)}</FeatureRoute>} />
           <Route path="projects/:projectId" element={withProtectedSuspense(<ProjectsPage />)} />
           <Route path="tarefas" element={withProtectedSuspense(<TasksPage />)} />
           <Route path="jornada" element={withProtectedSuspense(<JourneyPage />)} />

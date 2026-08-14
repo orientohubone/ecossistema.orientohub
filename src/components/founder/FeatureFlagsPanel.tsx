@@ -11,7 +11,7 @@ const states: { value: RuleState; label: string }[] = [
   { value: 'enabled', label: 'Ativa' }, { value: 'disabled', label: 'Desativada' },
   { value: 'maintenance', label: 'Em manutenção' }, { value: 'development', label: 'Em desenvolvimento' }, { value: 'coming_soon', label: 'Em breve' },
 ];
-const screens = ['dashboard', 'projects', 'solutions', 'insights', 'academy', 'community'];
+const screens = ['dashboard', 'ideas', 'projects', 'solutions', 'insights', 'academy', 'community'];
 
 export const FeatureFlagsPanel = () => {
   const [flags, setFlags] = useState<FeatureFlag[]>([]);

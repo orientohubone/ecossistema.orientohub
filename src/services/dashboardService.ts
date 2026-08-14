@@ -1,6 +1,8 @@
 import { supabase } from '../config/supabase';
 import { projectsService, type ProjectWithRelations } from './projectsService';
 import { eventsService } from './eventsService';
+import { ideasService } from './ideasService';
+import { activityService } from './activityService';
 
 // Types para o dashboard
 export interface DashboardStats {
@@ -202,6 +204,8 @@ class DashboardService {
       const projectsWithRelations = await Promise.all(
         projects.slice(0, 5).map(project => projectsService.getById(project.id))
       );
+      const ideas = await ideasService.getAll().catch(() => []);
+      const persistedActivity = await activityService.getRecent(5).catch(() => []);
 
       // Calcular XP e nível
       const totalXP = this.calculateXP(projectsWithRelations);
@@ -272,6 +276,22 @@ class DashboardService {
           });
         });
       });
+      const activity: DashboardActivity[] = [];
+      persistedActivity.forEach((item) => activity.push({ id: item.id, action: item.action, target: item.target, xp: item.xp, time: new Date(item.created_at).toLocaleString('pt-BR'), icon: item.icon as any }));
+      ideas.slice(0, 4).forEach((idea) => {
+        activity.push({
+          id: `activity-idea-${idea.id}`,
+          action: idea.stage === 'capture' ? 'Registrou a ideia' : 'Avançou a ideia',
+          target: idea.title,
+          xp: idea.curation_score >= 50 ? 30 : 15,
+          time: new Date(idea.updated_at).toLocaleDateString('pt-BR'),
+          icon: 'Lightbulb' as any,
+        });
+      });
+
+      projectsWithRelations.slice(0, 3).forEach((project) => {
+        activity.push({ id: `activity-project-${project.id}`, action: 'Atualizou o projeto', target: project.name, xp: 20, time: new Date(project.updated_at).toLocaleDateString('pt-BR'), icon: 'Target' as any });
+      });
 
       // Frameworks (baseados em projetos)
       const frameworks: DashboardFramework[] = projectsWithRelations.map(project => ({
@@ -295,8 +315,7 @@ class DashboardService {
         avatar: event.mentor_avatar || eventsService.generateAvatar(event.mentor_name || 'Evento')
       }));
 
-      // Atividade recente
-      const activity: DashboardActivity[] = [];
+      // Atividade recente de experimentos
       projectsWithRelations.forEach(project => {
         project.experiments
           .filter(exp => exp.status === 'completed')

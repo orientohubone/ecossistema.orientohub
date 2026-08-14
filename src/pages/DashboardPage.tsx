@@ -230,7 +230,7 @@ const DashboardPage = () => {
         navigate('/dashboard/projects');
         break;
       case 'Começar agora':
-        navigate('/dashboard/frameworks');
+        navigate('/dashboard/ideas');
         break;
       case 'Ver progresso':
         navigate('/dashboard/jornada');
@@ -244,6 +244,7 @@ const DashboardPage = () => {
   const frameworks = dashboardData.frameworks;
   const upcomingEvents = dashboardData.events;
   const recentActivity = dashboardData.activity;
+  const visibleActivity = recentActivity.slice(0, 5);
   const recommendations = dashboardData.recommendations;
   const phases = dashboardData.phases;
 
@@ -768,50 +769,77 @@ const DashboardPage = () => {
                 </div>
               </motion.div>
 
-              {/* Recent Activity */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.9 }}
-                className="rounded-2xl border border-[#273548] bg-[#101722] p-6 shadow-[0_12px_28px_rgba(0,0,0,0.16)]"
-              >
-                <h2 className="text-xl font-bold flex items-center gap-2 mb-6">
-                  <Activity className="w-5 h-5 text-primary-500" />
-                  Atividade Recente
-                </h2>
-
-                <div className="space-y-4">
-                  {recentActivity.map((activity, index) => {
-                    const Icon = iconMap[activity.icon] || Award; // Fallback para Award
-                    return (
-                      <motion.div
-                        key={activity.id}
-                        initial={{ opacity: 0, x: -10 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 1.0 + index * 0.1 }}
-                        className="flex items-start gap-3 border-b border-[#273548] pb-4 last:border-0 last:pb-0"
-                      >
-                        <div className="w-8 h-8 bg-primary-500/10 rounded-full flex items-center justify-center flex-shrink-0">
-                          <Icon className="w-4 h-4 text-primary-600 dark:text-primary-500" />
-                        </div>
-                        <div className="flex-1">
-                          <p className="text-sm">
-                            <span className="text-[#9ba9bc]">{activity.action}</span>
-                            {' '}
-                            <span className="font-semibold text-white">{activity.target}</span>
-                          </p>
-                          <div className="flex items-center gap-3 mt-1">
-                            <span className="text-xs text-[#718096]">{activity.time}</span>
-                            <span className="text-xs font-medium text-primary-300">+{activity.xp} XP</span>
-                          </div>
-                        </div>
-                      </motion.div>
-                    );
-                  })}
-                </div>
-              </motion.div>
             </div>
           </div>
+
+          <motion.section
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.9 }}
+            className="mt-8 rounded-2xl border border-[#273548] bg-[#101722] p-5 shadow-[0_12px_28px_rgba(0,0,0,0.16)]"
+          >
+            <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+              <div className="flex items-center gap-2">
+                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary-500/10 text-primary-300">
+                  <Activity className="h-4 w-4" />
+                </div>
+                <div>
+                  <h2 className="text-base font-bold text-white">Atividade recente</h2>
+                  <p className="text-xs text-[#718096]">Os últimos avanços da sua jornada</p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => navigate('/dashboard/ideas')}
+                className="text-sm font-semibold text-primary-300 transition-colors hover:text-primary-200"
+              >
+                Ver ideias
+              </button>
+            </div>
+
+            {visibleActivity.length === 0 ? (
+              <div className="flex flex-col items-start justify-between gap-3 rounded-xl border border-dashed border-[#34455a] bg-[#0c121b] px-4 py-4 sm:flex-row sm:items-center">
+                <div>
+                  <p className="text-sm font-semibold text-white">Sua jornada começa por uma ideia</p>
+                  <p className="mt-1 text-xs text-[#9ba9bc]">Registre uma ideia, hipótese ou avanço para acompanhar sua evolução por aqui.</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => navigate('/dashboard/ideas')}
+                  className="shrink-0 rounded-lg bg-primary-500 px-3 py-2 text-sm font-bold text-black transition-colors hover:bg-primary-400"
+                >
+                  Registrar ideia
+                </button>
+              </div>
+            ) : (
+              <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
+                {visibleActivity.map((activity, index) => {
+                  const Icon = iconMap[activity.icon] || Award;
+                  return (
+                    <motion.div
+                      key={activity.id}
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 1 + index * 0.06 }}
+                      className="flex min-w-0 items-start gap-3 rounded-xl border border-[#273548] bg-[#0c121b] p-3"
+                    >
+                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary-500/10 text-primary-300">
+                        <Icon className="h-4 w-4" />
+                      </div>
+                      <div className="min-w-0">
+                        <p className="truncate text-sm font-semibold text-white">{activity.target}</p>
+                        <p className="mt-0.5 truncate text-xs text-[#9ba9bc]">{activity.action}</p>
+                        <div className="mt-2 flex items-center gap-2 text-xs">
+                          <span className="text-[#718096]">{activity.time}</span>
+                          <span className="font-semibold text-primary-300">+{activity.xp} XP</span>
+                        </div>
+                      </div>
+                    </motion.div>
+                  );
+                })}
+              </div>
+            )}
+          </motion.section>
         </div>
       </div>
     </>
