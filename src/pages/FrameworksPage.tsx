@@ -30,7 +30,8 @@ import {
   X,
   Sparkles,
   TrendingUp,
-  Layers
+  Layers,
+  ExternalLink
 } from 'lucide-react';
 import FrameworkModal from '../components/modals/FrameworkModal';
 
@@ -42,6 +43,7 @@ interface Framework {
   icon: any;
   comments: number;
   content?: string;
+  canvaUrl?: string;
 }
 
 interface RecommendedTemplate {
@@ -72,6 +74,7 @@ const FrameworksPage = () => {
   const [newFrameworkName, setNewFrameworkName] = useState('');
   const [newFrameworkDescription, setNewFrameworkDescription] = useState('');
   const [newFrameworkType, setNewFrameworkType] = useState('canvas');
+  const [newFrameworkCanvaUrl, setNewFrameworkCanvaUrl] = useState('');
   const [initialNewFrameworkData, setInitialNewFrameworkData] = useState<any>(null);
   const [, setProgressVersion] = useState(0);
   const [customFrameworks, setCustomFrameworks] = useState<CustomFramework[]>(() => {
@@ -609,11 +612,13 @@ const FrameworksPage = () => {
       setNewFrameworkName(template.name);
       setNewFrameworkDescription(template.description);
       setNewFrameworkType(template.type);
+      setNewFrameworkCanvaUrl('');
       setInitialNewFrameworkData(template);
     } else {
       setNewFrameworkName('');
       setNewFrameworkDescription('');
       setNewFrameworkType('canvas');
+      setNewFrameworkCanvaUrl('');
       setInitialNewFrameworkData(null);
     }
     setShowNewFrameworkModal(true);
@@ -636,6 +641,7 @@ const FrameworksPage = () => {
       description: newFrameworkDescription,
       type: newFrameworkType,
       content: initialNewFrameworkData?.content || `<h2>${newFrameworkName}</h2><p>${newFrameworkDescription}</p><h3>Como aplicar</h3><ol><li>Defina o objetivo que deseja alcançar.</li><li>Preencha o framework com o time.</li><li>Registre decisões e próximos passos.</li></ol>`,
+      canvaUrl: newFrameworkCanvaUrl.trim() || undefined,
       progress: 0,
       icon: FileText,
       comments: 0,
@@ -652,6 +658,7 @@ const FrameworksPage = () => {
     setNewFrameworkName('');
     setNewFrameworkDescription('');
     setNewFrameworkType('canvas');
+    setNewFrameworkCanvaUrl('');
     setInitialNewFrameworkData(null);
     
   };
@@ -669,6 +676,7 @@ const FrameworksPage = () => {
       setNewFrameworkName('');
       setNewFrameworkDescription('');
       setNewFrameworkType('canvas');
+      setNewFrameworkCanvaUrl('');
       setInitialNewFrameworkData(null);
     }
   }, [showNewFrameworkModal]);
@@ -870,10 +878,12 @@ const FrameworksPage = () => {
         name={newFrameworkName}
         description={newFrameworkDescription}
         type={newFrameworkType}
+        canvaUrl={newFrameworkCanvaUrl}
         onClose={() => setShowNewFrameworkModal(false)}
         onNameChange={setNewFrameworkName}
         onDescriptionChange={setNewFrameworkDescription}
         onTypeChange={setNewFrameworkType}
+        onCanvaUrlChange={setNewFrameworkCanvaUrl}
         onSubmit={handleCreateFramework}
       />
 
@@ -884,12 +894,7 @@ const FrameworksPage = () => {
         title={selectedFramework?.name || ''}
         enableGamification={!selectedFramework?.id.startsWith('custom-')}
       >
-        {selectedFramework?.content ? (
-          <div 
-            className="prose dark:prose-invert max-w-none"
-            dangerouslySetInnerHTML={{ __html: selectedFramework.content }}
-          />
-        ) : (
+        {selectedFramework?.content ? <div className="space-y-6"><div className="prose dark:prose-invert max-w-none" dangerouslySetInnerHTML={{ __html: selectedFramework.content }} />{selectedFramework.canvaUrl && <CanvaMaterialPreview url={selectedFramework.canvaUrl} />}</div> : (
           <div className="text-center py-12">
             <FileText className="w-16 h-16 text-gray-400 mx-auto mb-4" />
             <p className="text-gray-500 dark:text-gray-400">
@@ -1010,16 +1015,39 @@ const CustomFrameworkCard = ({ framework, onOpen, onDelete }: { framework: Custo
   </motion.article>
 );
 
+const getCanvaEmbedUrl = (url: string) => {
+  try {
+    const parsed = new URL(url);
+    if (!parsed.hostname.endsWith('canva.com')) return null;
+    return /[?&]embed(?:=|&|$)/.test(url) ? url : `${url}${url.includes('?') ? '&' : '?'}embed`;
+  } catch {
+    return null;
+  }
+};
+
+const CanvaMaterialPreview = ({ url }: { url: string }) => {
+  const embedUrl = getCanvaEmbedUrl(url);
+  return <section className="not-prose overflow-hidden rounded-2xl border border-primary-400/25 bg-[#101722]">
+    <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#273548] bg-[#151f2b] px-4 py-3">
+      <div><p className="text-sm font-bold text-white">Material complementar</p><p className="mt-0.5 text-xs text-[#9ba9bc]">Referência visual disponível no Canva.</p></div>
+      <a href={url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-lg bg-primary-500 px-3 py-2 text-xs font-bold text-black transition hover:bg-primary-400"><ExternalLink className="h-3.5 w-3.5" />Abrir no Canva</a>
+    </div>
+    {embedUrl ? <iframe src={embedUrl} title="Prévia do material no Canva" className="h-[430px] w-full bg-white" allowFullScreen /> : <div className="p-5 text-sm text-[#9ba9bc]">A prévia não está disponível para este link, mas o material pode ser aberto no Canva.</div>}
+  </section>;
+};
+
 const TemplateSetupModal = ({
   isOpen,
   template,
   name,
   description,
   type,
+  canvaUrl,
   onClose,
   onNameChange,
   onDescriptionChange,
   onTypeChange,
+  onCanvaUrlChange,
   onSubmit,
 }: {
   isOpen: boolean;
@@ -1027,10 +1055,12 @@ const TemplateSetupModal = ({
   name: string;
   description: string;
   type: string;
+  canvaUrl: string;
   onClose: () => void;
   onNameChange: (value: string) => void;
   onDescriptionChange: (value: string) => void;
   onTypeChange: (value: string) => void;
+  onCanvaUrlChange: (value: string) => void;
   onSubmit: () => void;
 }) => {
   const outline = template
@@ -1070,6 +1100,11 @@ const TemplateSetupModal = ({
                       <button key={value} type="button" onClick={() => onTypeChange(value)} className={`rounded-xl border px-3 py-2.5 text-sm font-medium transition ${type === value ? 'border-primary-400 bg-primary-400/12 text-primary-200' : 'border-gray-700 bg-[#0c121b] text-gray-400 hover:border-gray-500 hover:text-gray-200'}`}>{label}</button>
                     ))}
                   </div>
+                </div>
+                <div>
+                  <label className="mb-2 block text-sm font-semibold text-gray-100">Material complementar no Canva <span className="font-normal text-gray-500">(opcional)</span></label>
+                  <input value={canvaUrl} onChange={(event) => onCanvaUrlChange(event.target.value)} type="url" placeholder="Cole o link de visualização do Canva" className="w-full rounded-xl border border-gray-600 bg-[#0c121b] px-4 py-3 text-sm text-white outline-none transition placeholder:text-gray-500 focus:border-primary-400 focus:ring-2 focus:ring-primary-400/15" />
+                  <p className="mt-2 text-xs text-gray-500">O link ficará disponível como referência clicável para quem usar este framework.</p>
                 </div>
               </div>
 
