@@ -15,9 +15,9 @@ interface KPICardsProps {
 
 export const KPICards = ({ analytics }: KPICardsProps) => {
     return (
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-2 gap-3 sm:gap-6 md:grid-cols-2 lg:grid-cols-4">
             <Card className="border-emerald-400/20 bg-emerald-400/10">
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 p-4 pb-2 sm:p-6">
                     <CardTitle className="text-sm font-medium">
                         <MetricTooltip metric="mrr">
                             <span>MRR Total</span>
@@ -25,8 +25,8 @@ export const KPICards = ({ analytics }: KPICardsProps) => {
                     </CardTitle>
                     <DollarSign className="h-4 w-4 text-emerald-300" />
                 </CardHeader>
-                <CardContent>
-                    <div className="text-2xl font-bold text-white">
+                <CardContent className="p-4 pt-0 sm:p-6 sm:pt-0">
+                    <div className="text-xl font-bold text-white sm:text-2xl">
                         R$ {analytics.revenue.total_mrr.toLocaleString('pt-BR')}
                     </div>
                     <div className="flex items-center text-xs text-gray-400 mt-1">
@@ -37,7 +37,7 @@ export const KPICards = ({ analytics }: KPICardsProps) => {
             </Card>
 
             <Card className="border-primary-400/20 bg-primary-500/10">
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 p-4 pb-2 sm:p-6">
                     <CardTitle className="text-sm font-medium">
                         <MetricTooltip metric="arr">
                             <span>ARR Total</span>
@@ -45,8 +45,8 @@ export const KPICards = ({ analytics }: KPICardsProps) => {
                     </CardTitle>
                     <BarChart3 className="h-4 w-4 text-primary-300" />
                 </CardHeader>
-                <CardContent>
-                    <div className="text-2xl font-bold text-white">
+                <CardContent className="p-4 pt-0 sm:p-6 sm:pt-0">
+                    <div className="text-xl font-bold text-white sm:text-2xl">
                         R$ {analytics.revenue.total_arr.toLocaleString('pt-BR')}
                     </div>
                     <div className="text-xs text-gray-400 mt-1">
@@ -58,12 +58,12 @@ export const KPICards = ({ analytics }: KPICardsProps) => {
             </Card>
 
             <Card className="border-violet-400/20 bg-violet-400/10">
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 p-4 pb-2 sm:p-6">
                     <CardTitle className="text-sm font-medium">Clientes Ativos</CardTitle>
                     <Users className="h-4 w-4 text-violet-300" />
                 </CardHeader>
-                <CardContent>
-                    <div className="text-2xl font-bold text-white">
+                <CardContent className="p-4 pt-0 sm:p-6 sm:pt-0">
+                    <div className="text-xl font-bold text-white sm:text-2xl">
                         {analytics.customers.active_customers}
                     </div>
                     <div className="text-xs text-gray-400 mt-1">
@@ -73,7 +73,7 @@ export const KPICards = ({ analytics }: KPICardsProps) => {
             </Card>
 
             <Card className="border-amber-400/20 bg-amber-400/10">
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 p-4 pb-2 sm:p-6">
                     <CardTitle className="text-sm font-medium">
                         <MetricTooltip metric="health_score">
                             <span>Health Score</span>
@@ -81,8 +81,8 @@ export const KPICards = ({ analytics }: KPICardsProps) => {
                     </CardTitle>
                     <Activity className="h-4 w-4 text-amber-300" />
                 </CardHeader>
-                <CardContent>
-                    <div className="text-2xl font-bold text-white">
+                <CardContent className="p-4 pt-0 sm:p-6 sm:pt-0">
+                    <div className="text-xl font-bold text-white sm:text-2xl">
                         {analytics.health.avg_health_score}%
                     </div>
                     <div className="text-xs text-gray-400 mt-1">

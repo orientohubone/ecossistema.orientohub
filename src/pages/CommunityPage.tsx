@@ -193,7 +193,7 @@ const CommunityPage = () => {
       </Helmet>
 
       <div className="min-h-screen bg-[#0c121b]">
-        <div className="container-custom py-8 space-y-8">
+        <div className="container-custom space-y-5 py-4 sm:space-y-8 sm:py-8">
           {/* Header */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -201,13 +201,13 @@ const CommunityPage = () => {
             className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4"
           >
             <div>
-              <div className="flex items-center gap-3 mb-2">
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-[#34455a] bg-[#151f2b]">
-                  <Users className="h-6 w-6 text-primary-300" />
+              <div className="mb-2 flex items-start gap-3 sm:items-center">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-[#34455a] bg-[#151f2b] sm:h-12 sm:w-12">
+                  <Users className="h-5 w-5 text-primary-300 sm:h-6 sm:w-6" />
                 </div>
                 <div>
                   <p className="mb-1 text-[11px] font-bold uppercase tracking-[0.16em] text-primary-300">Rede de founders</p>
-                  <h1 className="flex items-center gap-2 text-3xl font-bold text-white">
+                  <h1 className="flex items-center gap-2 text-2xl font-bold text-white sm:text-3xl">
                     Comunidade
                     <Heart className="h-6 w-6 text-primary-300" />
                   </h1>
@@ -220,7 +220,7 @@ const CommunityPage = () => {
 
             <button
               onClick={() => setShowNewPostModal(true)}
-              className="flex items-center gap-2 rounded-xl bg-primary-500 px-6 py-2.5 font-bold text-black transition-all hover:bg-primary-400"
+              className="flex w-full items-center justify-center gap-2 rounded-xl bg-primary-500 px-6 py-2.5 font-bold text-black transition-all hover:bg-primary-400 sm:w-auto"
             >
               <Plus className="w-5 h-5" />
               Nova Publicação
@@ -228,7 +228,7 @@ const CommunityPage = () => {
           </motion.div>
 
           {/* Stats */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 gap-3 sm:gap-6 md:grid-cols-4">
             {[
               { label: 'Membros Ativos', value: topMembers.length, icon: Users, color: 'from-blue-500 to-blue-600', bgColor: 'bg-blue-500/10' },
               { label: 'Publicações', value: posts.length, icon: MessageSquare, color: 'from-purple-500 to-purple-600', bgColor: 'bg-purple-500/10' },
@@ -242,15 +242,15 @@ const CommunityPage = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.05 }}
-                  className="group rounded-2xl border border-[#273548] bg-[#101722] p-5 shadow-[0_12px_28px_rgba(0,0,0,0.16)] transition-all hover:-translate-y-1 hover:border-primary-400/70 hover:shadow-[0_20px_38px_rgba(0,0,0,0.28)]"
+                  className="group rounded-2xl border border-[#273548] bg-[#101722] p-4 shadow-[0_12px_28px_rgba(0,0,0,0.16)] transition-all hover:-translate-y-1 hover:border-primary-400/70 hover:shadow-[0_20px_38px_rgba(0,0,0,0.28)] sm:p-5"
                 >
                   <div className="flex items-start justify-between mb-4">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-[#34455a] bg-[#0c121b] transition-transform group-hover:scale-105">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#34455a] bg-[#0c121b] transition-transform group-hover:scale-105 sm:h-12 sm:w-12">
                       <Icon className={`h-5 w-5 ${stat.bgColor.includes('blue') ? 'text-blue-300' : stat.bgColor.includes('purple') ? 'text-purple-300' : stat.bgColor.includes('green') ? 'text-emerald-300' : 'text-yellow-300'}`} />
                     </div>
                   </div>
                   <p className="mb-1 text-sm text-[#9ba9bc]">{stat.label}</p>
-                  <p className="text-3xl font-bold text-white">{stat.value}</p>
+                  <p className="text-2xl font-bold text-white sm:text-3xl">{stat.value}</p>
                 </motion.div>
               );
             })}
@@ -269,12 +269,12 @@ const CommunityPage = () => {
             </div>
           )}
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 gap-5 sm:gap-8 lg:grid-cols-3">
             {/* Main Content */}
-            <div className="lg:col-span-2 space-y-6">
+            <div className="space-y-5 lg:col-span-2 sm:space-y-6">
               {/* Filters */}
               <div className="rounded-2xl border border-[#273548] bg-[#101722] p-4 shadow-[0_12px_28px_rgba(0,0,0,0.16)]">
-                <div className="flex flex-col md:flex-row gap-4">
+                <div className="flex flex-col gap-4">
                   <div className="flex-1 relative">
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                     <input
@@ -286,7 +286,7 @@ const CommunityPage = () => {
                     />
                   </div>
 
-                  <div className="flex gap-2 overflow-x-auto">
+                  <div className="grid grid-cols-2 gap-2 sm:grid-cols-4" role="tablist" aria-label="Filtrar publicações">
                     {[
                       { id: 'all', label: 'Todos' },
                       { id: 'discussion', label: 'Discussões' },
@@ -296,7 +296,9 @@ const CommunityPage = () => {
                       <button
                         key={category.id}
                         onClick={() => setSelectedCategory(category.id)}
-                        className={`px-4 py-2 rounded-xl font-medium whitespace-nowrap transition-all ${
+                        role="tab"
+                        aria-selected={selectedCategory === category.id}
+                        className={`min-w-0 rounded-xl px-3 py-2 text-sm font-medium transition-all sm:px-4 ${
                           selectedCategory === category.id
                             ? 'bg-primary-500 text-black'
                             : 'border border-[#34455a] bg-[#151f2b] text-gray-300 hover:border-primary-400 hover:text-white'
@@ -341,9 +343,9 @@ const CommunityPage = () => {
             </div>
 
             {/* Sidebar */}
-            <div className="space-y-6">
+            <div className="space-y-5 sm:space-y-6">
               {/* Top Members */}
-              <div className="rounded-2xl border border-[#273548] bg-[#101722] p-6 shadow-[0_12px_28px_rgba(0,0,0,0.16)]">
+              <div className="rounded-2xl border border-[#273548] bg-[#101722] p-4 shadow-[0_12px_28px_rgba(0,0,0,0.16)] sm:p-6">
                 <div className="flex items-center gap-2 mb-4">
                   <Trophy className="w-5 h-5 text-yellow-500" />
                   <h3 className="text-lg font-bold text-white">Top Membros</h3>
@@ -379,7 +381,7 @@ const CommunityPage = () => {
               </div>
 
               {/* Quick Stats */}
-              <div className="rounded-2xl border border-primary-400/20 bg-primary-400/[0.06] p-6">
+              <div className="rounded-2xl border border-primary-400/20 bg-primary-400/[0.06] p-4 sm:p-6">
                 <h3 className="mb-4 text-lg font-bold text-white">Sua Atividade</h3>
                 <div className="space-y-3">
                   {[
@@ -403,7 +405,7 @@ const CommunityPage = () => {
               </div>
 
               {/* Tags Populares */}
-              <div className="rounded-2xl border border-[#273548] bg-[#101722] p-6 shadow-[0_12px_28px_rgba(0,0,0,0.16)]">
+              <div className="rounded-2xl border border-[#273548] bg-[#101722] p-4 shadow-[0_12px_28px_rgba(0,0,0,0.16)] sm:p-6">
                 <h3 className="mb-4 text-lg font-bold text-white">Tags Populares</h3>
                 <div className="flex flex-wrap gap-2">
                   {(popularTags.length > 0 ? popularTags : ['Ainda sem tags']).map((tag) => (
@@ -499,33 +501,33 @@ const PostCard = ({ post, index, onLike, onBookmark, onCommentAdded, onShare, ge
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.05 }}
-      className="group rounded-2xl border border-[#273548] bg-[#101722] p-5 shadow-[0_12px_28px_rgba(0,0,0,0.16)] transition-all hover:-translate-y-0.5 hover:border-primary-400/70 hover:shadow-[0_20px_38px_rgba(0,0,0,0.28)]"
+      className="group rounded-2xl border border-[#273548] bg-[#101722] p-4 shadow-[0_12px_28px_rgba(0,0,0,0.16)] transition-all hover:-translate-y-0.5 hover:border-primary-400/70 hover:shadow-[0_20px_38px_rgba(0,0,0,0.28)] sm:p-5"
     >
       {/* Author & Category */}
-      <div className="flex items-start justify-between mb-4">
-        <div className="flex items-center gap-3">
+      <div className="mb-4 flex items-start justify-between gap-3">
+        <div className="flex min-w-0 items-center gap-3">
           <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold">
             {post.author.avatar.startsWith('http') ? (
               <img src={post.author.avatar} alt={post.author.name} className="h-full w-full rounded-full object-cover" />
             ) : post.author.avatar}
           </div>
-          <div>
-            <p className="font-medium text-white">{post.author.name}</p>
-            <div className="flex items-center gap-2 text-sm text-[#9ba9bc]">
+          <div className="min-w-0">
+            <p className="truncate font-medium text-white">{post.author.name}</p>
+            <div className="flex flex-wrap items-center gap-x-2 text-sm text-[#9ba9bc]">
               <span>{post.author.role}</span>
               <span>•</span>
               <span>{getTimeAgo(post.created_at)}</span>
             </div>
           </div>
         </div>
-        <span className={`${categoryInfo.color} text-white text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1`}>
+        <span className={`${categoryInfo.color} shrink-0 text-white text-xs font-bold px-2 py-1 rounded-full flex items-center gap-1 sm:px-3`}>
           <CategoryIcon className="w-3 h-3" />
           {categoryInfo.label}
         </span>
       </div>
 
       {/* Content */}
-      <h3 className="mb-2 cursor-pointer text-xl font-bold text-white transition-colors group-hover:text-primary-300">
+      <h3 className="mb-2 cursor-pointer text-lg font-bold text-white transition-colors group-hover:text-primary-300 sm:text-xl">
         {post.title}
       </h3>
       <p className="mb-4 text-[#9ba9bc]">
@@ -542,8 +544,8 @@ const PostCard = ({ post, index, onLike, onBookmark, onCommentAdded, onShare, ge
       </div>
 
       {/* Actions */}
-      <div className="flex items-center justify-between border-t border-[#273548] pt-4">
-        <div className="flex items-center gap-4">
+      <div className="flex flex-wrap items-center justify-between gap-2 border-t border-[#273548] pt-4">
+        <div className="flex items-center gap-1 sm:gap-4">
           <button
             onClick={() => onLike(post.id)}
             className={`flex items-center gap-2 px-3 py-1.5 rounded-lg transition-all ${

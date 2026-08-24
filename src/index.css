@@ -24,6 +24,7 @@
 
   body {
     @apply text-gray-900 dark:text-gray-100 antialiased;
+    overflow-x: hidden;
   }
   
   h1, h2, h3, h4, h5, h6 {
@@ -66,6 +67,18 @@
   .dashboard-content {
     min-height: 100%;
     background-color: var(--dashboard-surface);
+    overflow-x: clip;
+  }
+
+  @media (max-width: 639px) {
+    .dashboard-main {
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .dashboard-content .container-custom {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
   }
 
   /* Normaliza os shells das telas protegidas para que a superfície interna

@@ -255,15 +255,15 @@ const DashboardPage = () => {
       </Helmet>
 
       <div className="min-h-screen bg-[#0c121b]">
-        <div className="container-custom py-8 space-y-8">
+        <div className="container-custom space-y-5 py-4 sm:space-y-8 sm:py-8">
           {/* Welcome Header */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="overflow-hidden rounded-2xl border border-[#34455a] bg-[#101722] p-6 shadow-[0_16px_36px_rgba(0,0,0,0.2)] sm:p-8"
+            className="overflow-hidden rounded-2xl border border-[#34455a] bg-[#101722] p-4 shadow-[0_16px_36px_rgba(0,0,0,0.2)] sm:p-8"
           >
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-6">
+            <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex items-start gap-4 sm:items-center sm:gap-6">
                 <div className="relative group">
                   {/* Avatar com efeito de hover e fallback melhorado */}
                   <div className="relative overflow-hidden rounded-full border-4 border-primary-500 shadow-xl transition-all duration-300 group-hover:scale-105 group-hover:border-primary-400">
@@ -271,15 +271,15 @@ const DashboardPage = () => {
                       <img
                         src={userData.avatar}
                         alt={userData.name}
-                        className="w-20 h-20 object-cover"
+                        className="h-14 w-14 object-cover sm:h-20 sm:w-20"
                         onError={(e) => {
                           // Fallback para avatar gerado se a imagem falhar
                           e.currentTarget.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(userData.name)}&size=80&background=FFD700&color=000&bold=true&format=png`;
                         }}
                       />
                     ) : (
-                      <div className="flex h-20 w-20 items-center justify-center bg-[#151f2b]">
-                        <span className="text-2xl font-bold text-primary-300">
+                      <div className="flex h-14 w-14 items-center justify-center bg-[#151f2b] sm:h-20 sm:w-20">
+                        <span className="text-xl font-bold text-primary-300 sm:text-2xl">
                           {userData.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)}
                         </span>
                       </div>
@@ -295,18 +295,18 @@ const DashboardPage = () => {
                   <div className="absolute inset-0 rounded-full bg-primary-500/20 scale-0 group-hover:scale-100 transition-transform duration-300 -z-10" />
                 </div>
 
-                <div className="space-y-3">
+                <div className="min-w-0 flex-1 space-y-3">
                   {/* Saudação personalizada com base no horário */}
                   <div>
-                    <h1 className="text-3xl font-bold text-white mb-2 flex items-center gap-2">
+                    <h1 className="mb-2 text-2xl font-bold text-white sm:text-3xl">
                       {getGreeting()}, <span className="text-primary-300">{userData.name}</span>!
                     </h1>
                     {(() => {
                       const motivation = getMotivationalData(userData.level);
                       const MotivationIcon = motivation.icon;
                       return (
-                        <p className="flex items-center gap-2 text-lg text-[#b8c4d4]">
-                          <MotivationIcon className="h-5 w-5 text-primary-300" />
+                        <p className="flex items-start gap-2 text-sm leading-relaxed text-[#b8c4d4] sm:items-center sm:text-lg">
+                          <MotivationIcon className="mt-0.5 h-5 w-5 shrink-0 text-primary-300 sm:mt-0" />
                           {motivation.text}
                         </p>
                       );
@@ -314,8 +314,8 @@ const DashboardPage = () => {
                   </div>
 
                   {/* XP Bar melhorada */}
-                  <div className="max-w-md">
-                    <div className="flex items-center justify-between text-sm text-gray-400 mb-2">
+                  <div className="max-w-md pr-1">
+                    <div className="mb-2 flex items-center justify-between gap-3 text-xs text-gray-400 sm:text-sm">
                       <span className="flex items-center gap-2">
                         <Star className="w-4 h-4 text-primary-500" />
                         <span className="text-white font-medium">Nível {userData.level}</span>
@@ -356,7 +356,7 @@ const DashboardPage = () => {
           </motion.div>
 
           {/* Quick Stats */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 gap-3 sm:gap-6 md:grid-cols-2 lg:grid-cols-4">
             {quickStats.map((stat, index) => {
               const Icon = stat.icon;
               return (
@@ -365,11 +365,11 @@ const DashboardPage = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
-                  className="group rounded-2xl border border-[#273548] bg-[#101722] p-5 shadow-[0_12px_28px_rgba(0,0,0,0.16)] transition-all duration-300 hover:-translate-y-1 hover:border-primary-400/70 hover:shadow-[0_20px_38px_rgba(0,0,0,0.28)]"
+                  className="group rounded-2xl border border-[#273548] bg-[#101722] p-4 shadow-[0_12px_28px_rgba(0,0,0,0.16)] transition-all duration-300 hover:-translate-y-1 hover:border-primary-400/70 hover:shadow-[0_20px_38px_rgba(0,0,0,0.28)] sm:p-5"
                 >
                   <div className="flex items-start justify-between mb-4">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-[#34455a] bg-[#0c121b] transition-transform group-hover:scale-105">
-                      <Icon className={`w-6 h-6 ${
+                    <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#34455a] bg-[#0c121b] transition-transform group-hover:scale-105 sm:h-12 sm:w-12">
+                      <Icon className={`h-5 w-5 sm:h-6 sm:w-6 ${
                         stat.bgColor.includes('orange') ? 'text-orange-300' :
                         stat.bgColor.includes('yellow') ? 'text-yellow-300' :
                         stat.bgColor.includes('blue') ? 'text-blue-300' :
@@ -380,7 +380,7 @@ const DashboardPage = () => {
                   <h3 className="mb-1 text-sm font-medium text-[#9ba9bc]">
                     {stat.label}
                   </h3>
-                  <p className="mb-2 text-2xl font-bold text-white">
+                  <p className="mb-2 text-xl font-bold text-white sm:text-2xl">
                     {stat.value}
                   </p>
                   <p className="text-xs text-[#718096]">
@@ -396,11 +396,11 @@ const DashboardPage = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
-            className="rounded-2xl border border-[#273548] bg-[#101722] p-6 shadow-[0_12px_28px_rgba(0,0,0,0.16)]"
+            className="rounded-2xl border border-[#273548] bg-[#101722] p-4 shadow-[0_12px_28px_rgba(0,0,0,0.16)] sm:p-6"
           >
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="flex items-center gap-2 text-2xl font-bold text-white">
-                <Rocket className="h-6 w-6 text-primary-300" />
+            <div className="mb-5 flex items-start justify-between gap-3 sm:mb-6 sm:items-center">
+              <h2 className="flex items-center gap-2 text-lg font-bold text-white sm:text-2xl">
+                <Rocket className="h-5 w-5 shrink-0 text-primary-300 sm:h-6 sm:w-6" />
                 Sua Jornada Empreendedora
               </h2>
               <Link to="/dashboard/jornada" className="flex items-center gap-1 text-sm font-medium text-primary-300 hover:text-primary-200">
@@ -409,12 +409,12 @@ const DashboardPage = () => {
               </Link>
             </div>
 
-            <div className="relative">
-              <div className="flex items-center justify-between">
+            <div className="-mx-1 overflow-x-auto px-1 pb-2">
+              <div className="relative flex min-w-[440px] items-center justify-between sm:min-w-0">
                 {phases.map((phase, index) => {
                   const Icon = iconMap[phase.icon] || Lightbulb; // Fallback para Lightbulb
                   return (
-                    <div key={phase.id} className="flex flex-col items-center flex-1 relative">
+                    <div key={phase.id} className="relative flex flex-1 flex-col items-center">
                       {/* Connector Line */}
                       {index < phases.length - 1 && (
                         <div className={`absolute top-6 left-1/2 w-full h-1 ${
@@ -464,19 +464,19 @@ const DashboardPage = () => {
           </motion.div>
 
           {/* Main Content Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 gap-5 sm:gap-8 lg:grid-cols-3">
             {/* Left Column - Tasks & Frameworks */}
-            <div className="lg:col-span-2 space-y-8">
+            <div className="space-y-5 lg:col-span-2 sm:space-y-8">
               {/* Tasks */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5 }}
-                className="rounded-2xl border border-[#273548] bg-[#101722] p-6 shadow-[0_12px_28px_rgba(0,0,0,0.16)]"
+                className="rounded-2xl border border-[#273548] bg-[#101722] p-4 shadow-[0_12px_28px_rgba(0,0,0,0.16)] sm:p-6"
               >
-                <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-2xl font-bold flex items-center gap-2">
-                    <CheckSquare className="w-6 h-6 text-primary-500" />
+                <div className="mb-5 flex items-start justify-between gap-3 sm:mb-6 sm:items-center">
+                  <h2 className="flex items-center gap-2 text-lg font-bold sm:text-2xl">
+                    <CheckSquare className="h-5 w-5 shrink-0 text-primary-500 sm:h-6 sm:w-6" />
                     Tarefas Ativas
                   </h2>
                   <span className="text-sm text-gray-500 dark:text-gray-400">
@@ -497,7 +497,7 @@ const DashboardPage = () => {
                           : 'bg-[#0c121b] border-[#273548] hover:border-primary-400/70'
                       }`}
                     >
-                      <div className="flex items-start gap-4">
+                      <div className="flex items-start gap-3 sm:gap-4">
                         <div className="flex-shrink-0 mt-1">
                           <input
                             type="checkbox"
@@ -508,14 +508,14 @@ const DashboardPage = () => {
                         </div>
 
                         <div className="flex-1 min-w-0">
-                          <div className="flex items-start justify-between gap-4">
+                          <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
                             <div>
                               <h3 className={`font-semibold mb-1 ${
                                 task.completed ? 'line-through text-[#718096]' : 'text-white'
                               }`}>
                                 {task.title}
                               </h3>
-                              <div className="flex items-center gap-3 text-sm">
+                              <div className="flex flex-wrap items-center gap-2 text-sm sm:gap-3">
                                 <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${
                                   task.priority === 'high' ? 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400' :
                                   task.priority === 'medium' ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400' :
@@ -532,7 +532,7 @@ const DashboardPage = () => {
 
                             {!task.completed && (
                               <button
-                                className="px-4 py-2 bg-primary-500 hover:bg-primary-600 text-black text-sm font-medium rounded-lg opacity-0 group-hover:opacity-100 transition-opacity"
+                                className="w-full rounded-lg bg-primary-500 px-4 py-2 text-sm font-medium text-black transition-opacity hover:bg-primary-600 sm:w-auto sm:opacity-0 sm:group-hover:opacity-100"
                                 onClick={() => handleTaskClick(task)}
                               >
                                 Começar
@@ -574,11 +574,11 @@ const DashboardPage = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.7 }}
-                className="rounded-2xl border border-[#273548] bg-[#101722] p-6 shadow-[0_12px_28px_rgba(0,0,0,0.16)]"
+                className="rounded-2xl border border-[#273548] bg-[#101722] p-4 shadow-[0_12px_28px_rgba(0,0,0,0.16)] sm:p-6"
               >
-                <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-2xl font-bold flex items-center gap-2">
-                    <FileText className="w-6 h-6 text-primary-500" />
+                <div className="mb-5 flex items-start justify-between gap-3 sm:mb-6 sm:items-center">
+                  <h2 className="flex items-center gap-2 text-lg font-bold sm:text-2xl">
+                    <FileText className="h-5 w-5 shrink-0 text-primary-500 sm:h-6 sm:w-6" />
                     Frameworks em Andamento
                   </h2>
                   <button
@@ -654,13 +654,13 @@ const DashboardPage = () => {
             </div>
 
             {/* Right Column - Events, Activity & Recommendations */}
-            <div className="space-y-8">
+            <div className="space-y-5 sm:space-y-8">
               {/* Upcoming Events */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.6 }}
-                className="rounded-2xl border border-[#273548] bg-[#101722] p-6 shadow-[0_12px_28px_rgba(0,0,0,0.16)]"
+                className="rounded-2xl border border-[#273548] bg-[#101722] p-4 shadow-[0_12px_28px_rgba(0,0,0,0.16)] sm:p-6"
               >
                 <div className="flex items-center justify-between mb-6">
                   <h2 className="text-xl font-bold flex items-center gap-2">
@@ -718,7 +718,7 @@ const DashboardPage = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.8 }}
-                className="rounded-2xl border border-primary-400/25 bg-[#101722] p-6 shadow-[0_12px_28px_rgba(0,0,0,0.16)]"
+                className="rounded-2xl border border-primary-400/25 bg-[#101722] p-4 shadow-[0_12px_28px_rgba(0,0,0,0.16)] sm:p-6"
               >
                 <div className="flex items-center gap-2 mb-6">
                   <Sparkles className="w-5 h-5 text-primary-500" />
@@ -776,7 +776,7 @@ const DashboardPage = () => {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.9 }}
-            className="mt-8 rounded-2xl border border-[#273548] bg-[#101722] p-5 shadow-[0_12px_28px_rgba(0,0,0,0.16)]"
+            className="mt-5 rounded-2xl border border-[#273548] bg-[#101722] p-4 shadow-[0_12px_28px_rgba(0,0,0,0.16)] sm:mt-8 sm:p-5"
           >
             <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
               <div className="flex items-center gap-2">

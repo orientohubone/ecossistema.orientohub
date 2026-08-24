@@ -79,7 +79,7 @@ const FounderDashboardPage = () => {
             </Helmet>
 
             <div className="dark min-h-screen bg-[#0c121b] text-white">
-                <div className="container-custom space-y-6 py-6 md:py-8">
+                <div className="container-custom space-y-5 py-4 sm:space-y-6 sm:py-6 md:py-8">
                     {/* Header */}
                     <DashboardHeader
                         onRefetch={refetch}
@@ -91,16 +91,18 @@ const FounderDashboardPage = () => {
                     <KPICards analytics={analytics} />
 
                     {/* Tabs */}
-                    <div className="space-y-6">
+                    <div className="space-y-5 sm:space-y-6">
                         {/* Tab Navigation */}
-                        <div className="flex gap-2 overflow-x-auto rounded-xl border border-[#273548] bg-[#101722] p-2">
+                        <div className="grid grid-cols-2 gap-2 rounded-xl border border-[#273548] bg-[#101722] p-2 sm:grid-cols-4 xl:flex" role="tablist" aria-label="Seções do dashboard founder">
                             {tabs.map((tab) => {
                                 const Icon = tab.icon;
                                 return (
                                     <button
                                         key={tab.id}
                                         onClick={() => setActiveTab(tab.id)}
-                                        className={`relative flex items-center gap-2 rounded-lg px-4 py-3 text-sm font-semibold transition-all whitespace-nowrap ${activeTab === tab.id
+                                        role="tab"
+                                        aria-selected={activeTab === tab.id}
+                                        className={`relative flex min-w-0 items-center justify-center gap-2 rounded-lg px-3 py-2.5 text-sm font-semibold transition-all sm:px-4 sm:py-3 xl:flex-1 ${activeTab === tab.id
                                             ? 'bg-primary-500 text-[#0c121b] shadow-lg shadow-primary-500/15'
                                             : 'text-[#9ba9bc] hover:bg-[#151f2b] hover:text-white'
                                             }`}
@@ -122,7 +124,7 @@ const FounderDashboardPage = () => {
                         >
                             {activeTab === 'overview' && (
                                 <div className="grid gap-6">
-                                    <div className="rounded-2xl border border-[#273548] bg-[#101722] p-6">
+                                    <div className="rounded-2xl border border-[#273548] bg-[#101722] p-4 sm:p-6">
                                         <p className="mb-2 text-xs font-semibold uppercase tracking-[0.15em] text-primary-300">Pulso da operação</p>
                                         <h3 className="mb-2 text-xl font-bold text-white">Visão Geral</h3>
                                         <p className="text-[#9ba9bc]">
@@ -151,7 +153,7 @@ const FounderDashboardPage = () => {
                             {activeTab === 'revenue' && (
                                 <div className="space-y-6">
                                     {/* Revenue Overview */}
-                                    <div className="rounded-2xl border border-[#273548] bg-[#101722] p-6">
+                                    <div className="rounded-2xl border border-[#273548] bg-[#101722] p-4 sm:p-6">
                                         <p className="mb-2 text-xs font-semibold uppercase tracking-[0.15em] text-primary-300">Assinaturas</p>
                                         <h3 className="mb-6 text-xl font-bold text-white">Análise de Receita</h3>
 
@@ -159,7 +161,7 @@ const FounderDashboardPage = () => {
                                             {/* MRR */}
                                             <div className="rounded-xl border border-emerald-400/20 bg-emerald-400/10 p-4">
                                                 <p className="mb-1 text-sm font-medium text-emerald-200">MRR Total</p>
-                                                <p className="text-3xl font-bold text-white">
+                                                <p className="text-2xl font-bold text-white sm:text-3xl">
                                                     R$ {analytics.revenue.total_mrr.toLocaleString('pt-BR')}
                                                 </p>
                                                 <p className="text-xs text-green-600 dark:text-green-400 mt-2">
@@ -170,7 +172,7 @@ const FounderDashboardPage = () => {
                                             {/* ARR */}
                                             <div className="rounded-xl border border-primary-400/20 bg-primary-500/10 p-4">
                                                 <p className="mb-1 text-sm font-medium text-primary-200">ARR Total</p>
-                                                <p className="text-3xl font-bold text-white">
+                                                <p className="text-2xl font-bold text-white sm:text-3xl">
                                                     R$ {analytics.revenue.total_arr.toLocaleString('pt-BR')}
                                                 </p>
                                                 <p className="text-xs text-blue-600 dark:text-blue-400 mt-2">
@@ -181,7 +183,7 @@ const FounderDashboardPage = () => {
                                             {/* LTV */}
                                             <div className="rounded-xl border border-violet-400/20 bg-violet-400/10 p-4">
                                                 <p className="mb-1 text-sm font-medium text-violet-200">LTV Médio</p>
-                                                <p className="text-3xl font-bold text-white">
+                                                <p className="text-2xl font-bold text-white sm:text-3xl">
                                                     R$ {analytics.revenue.ltv.toLocaleString('pt-BR')}
                                                 </p>
                                                 <p className="text-xs text-purple-600 dark:text-purple-400 mt-2">
@@ -192,7 +194,7 @@ const FounderDashboardPage = () => {
                                             {/* Churn */}
                                             <div className="rounded-xl border border-orange-400/20 bg-orange-400/10 p-4">
                                                 <p className="mb-1 text-sm font-medium text-orange-200">Churn Rate</p>
-                                                <p className="text-3xl font-bold text-white">
+                                                <p className="text-2xl font-bold text-white sm:text-3xl">
                                                     {((analytics.customers.churned_customers / analytics.customers.active_customers) * 100).toFixed(1)}%
                                                 </p>
                                                 <p className="text-xs text-orange-600 dark:text-orange-400 mt-2">
@@ -227,7 +229,7 @@ const FounderDashboardPage = () => {
                             )}
 
                             {activeTab === 'engagement' && (
-                                <div className="rounded-2xl border border-[#273548] bg-[#101722] p-6">
+                                <div className="rounded-2xl border border-[#273548] bg-[#101722] p-4 sm:p-6">
                                     <p className="mb-2 text-xs font-semibold uppercase tracking-[0.15em] text-primary-300">Adoção</p>
                                     <h3 className="mb-4 text-xl font-bold text-white">Métricas de Engajamento</h3>
                                     <div className="grid gap-4 md:grid-cols-3 mt-6">
@@ -249,7 +251,7 @@ const FounderDashboardPage = () => {
 
                             {activeTab === 'reports' && (
                                 <div className="space-y-6">
-                                    <div className="bg-white dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800 rounded-xl p-6">
+                                    <div className="bg-white dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800 rounded-xl p-4 sm:p-6">
                                         <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Relatórios Disponíveis</h3>
 
                                         <div className="grid gap-4 md:grid-cols-2">
@@ -339,7 +341,7 @@ const FounderDashboardPage = () => {
 
                             {activeTab === 'versions' && (
                                 <div className="space-y-6">
-                                    <div className="bg-white dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800 rounded-xl p-6">
+                                    <div className="bg-white dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800 rounded-xl p-4 sm:p-6">
                                         <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Histórico de Versões</h3>
 
                                         <div className="space-y-4">

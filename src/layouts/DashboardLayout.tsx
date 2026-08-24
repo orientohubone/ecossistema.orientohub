@@ -93,7 +93,7 @@ const DashboardLayout = () => {
           {sidebarOpen && (
             <motion.aside initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-40 lg:hidden">
               <div className="absolute inset-0 bg-black/50" onClick={toggleSidebar} />
-              <motion.div initial={{ x: -320 }} animate={{ x: 0 }} exit={{ x: -320 }} transition={{ type: 'spring', stiffness: 300 }} className="relative h-full w-72 max-w-xs border-r border-[#273548] bg-[#101722] shadow-2xl">
+              <motion.div initial={{ x: -320 }} animate={{ x: 0 }} exit={{ x: -320 }} transition={{ type: 'spring', stiffness: 300 }} className="relative h-full w-[min(18rem,calc(100vw-2rem))] border-r border-[#273548] bg-[#101722] shadow-2xl">
                 <div className="flex items-center justify-between border-b border-[#273548] p-4">
                   <div className="flex items-center gap-2">
                     <span className="text-lg font-bold text-primary-500 dark:hidden">Orientohub</span>
@@ -177,7 +177,7 @@ const DashboardLayout = () => {
                   </div>
                   </div>
 
-                <div className="flex items-center gap-4">
+                <div className="flex shrink-0 items-center gap-2 sm:gap-4">
                   <TopPlanBadge />
                   <div className="flex items-center gap-3"><UserMenu user={user} /></div>
                 </div>
