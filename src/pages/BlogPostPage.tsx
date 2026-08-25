@@ -17,7 +17,8 @@ import {
   User,
   TrendingUp,
   Sparkles,
-  ChevronRight
+  ChevronRight,
+  Download
 } from 'lucide-react';
 
 interface BlogPost {
@@ -49,6 +50,75 @@ interface RelatedPost {
   readingTime: string;
 }
 
+const businessIdeaGroups = [
+  { title: 'Serviços digitais', ideas: ['Gestão de redes sociais', 'Edição de vídeos para Reels', 'Criação de artes para empresas', 'Fotografia para negócios', 'Criação de sites institucionais', 'Criação de landing pages', 'Gestão de anúncios locais', 'Consultoria de marketing', 'Produção de conteúdo', 'Assistente virtual'] },
+  { title: 'Serviços para empresas', ideas: ['Organização financeira', 'Cadastro de produtos', 'Implantação de ferramentas', 'Treinamentos empresariais', 'Prospecção comercial', 'Gestão de WhatsApp comercial', 'Criação de apresentações', 'Pesquisa de mercado', 'Organização de processos', 'Secretariado remoto'] },
+  { title: 'Serviços locais', ideas: ['Manutenção e limpeza de PCs', 'Instalação e configuração', 'Suporte tecnológico', 'Personalização de produtos', 'Impressão 3D sob encomenda', 'Manutenção residencial', 'Montagem de móveis', 'Jardinagem', 'Limpeza residencial', 'Higienização de estofados'] },
+  { title: 'Alimentação', ideas: ['Marmitas sob encomenda', 'Doces artesanais', 'Bolos caseiros', 'Salgados para festas', 'Kits de café da manhã', 'Cestas personalizadas', 'Temperos artesanais', 'Congelados caseiros', 'Delivery de sobremesas', 'Coffee break para empresas'] },
+  { title: 'Comércio e produtos', ideas: ['Brechó online', 'Revenda por catálogo digital', 'Loja de produtos personalizados', 'Papelaria personalizada', 'Produtos para festas', 'Acessórios para pets', 'Afiliado de produtos digitais', 'Produtos digitais próprios', 'Aulas particulares online', 'Consultoria na sua área'] },
+];
+
+const validationPrompts = [
+  'Converse com 10 potenciais clientes e ofereça uma entrega piloto para os primeiros 3.',
+  'Monte uma oferta simples, divulgue em grupos locais e meça quantos pedidos chegam em 7 dias.',
+  'Crie uma página ou portfólio enxuto e busque ao menos 5 conversas qualificadas antes de comprar equipamentos.',
+  'Peça um sinal ou pré-encomenda: intenção de compra vale mais que curtidas.',
+  'Teste com um único nicho e compare o retorno, o esforço e a margem de cada venda.',
+];
+
+const businessIdeasContent = () => {
+  const groupDescriptions = [
+    'Comece oferecendo conhecimento e execução com ferramentas que você já domina.',
+    'Resolva gargalos operacionais de pequenos negócios que precisam ganhar tempo e organizar vendas.',
+    'Aposte em demandas recorrentes da sua região e construa confiança pelo atendimento.',
+    'Produza sob encomenda para reduzir desperdício, estoque e risco no início.',
+    'Venda itens com curadoria, personalização ou conhecimento aplicado a um nicho específico.',
+  ];
+
+  const groups = businessIdeaGroups.map((group, groupIndex) => `
+    <section class="idea-section">
+      <div class="section-kicker">${String(groupIndex + 1).padStart(2, '0')} · segmento</div>
+      <h2>${group.title}</h2>
+      <p class="section-lead">${groupDescriptions[groupIndex]}</p>
+      <div class="idea-grid">
+        ${group.ideas.map((idea, index) => `
+          <article class="idea-card">
+            <span class="idea-number">${String(groupIndex * 10 + index + 1).padStart(2, '0')}</span>
+            <h3>${idea}</h3>
+            <div class="validation-box"><span>Validação rápida</span><p>${validationPrompts[index % validationPrompts.length]}</p></div>
+          </article>`).join('')}
+      </div>
+    </section>`).join('');
+
+  return `
+    <div class="article-intro">
+      <p class="lead">Começar um negócio com pouco dinheiro não significa começar sem método. A melhor ideia é aquela que você consegue testar cedo, vender em pequena escala e aprimorar com as conversas certas.</p>
+    </div>
+    <div class="highlight-box"><strong>Como usar este guia:</strong> escolha no máximo três ideias que combinem com suas habilidades, acesso a clientes e tempo disponível. Depois, valide uma por vez — sem investir em estoque, site caro ou estrutura antes de existir demanda.</div>
+    <h2>O filtro antes de escolher</h2>
+    <p>Use três perguntas para reduzir as opções: eu consigo conversar com esse público nesta semana? consigo entregar uma primeira versão com recursos que já tenho? alguém pagaria para resolver esse problema agora? Se uma ideia não passar por esse filtro, ela pode esperar.</p>
+    <div class="decision-grid">
+      <div><span>01</span><strong>Acesso</strong><p>Você sabe onde encontrar os primeiros potenciais clientes?</p></div>
+      <div><span>02</span><strong>Entrega</strong><p>Consegue realizar a primeira venda com os recursos que já possui?</p></div>
+      <div><span>03</span><strong>Demanda</strong><p>Existe um problema urgente o bastante para alguém pagar agora?</p></div>
+    </div>
+    <div class="article-marker"><span>50 possibilidades</span><p>Leia por segmento, salve as que têm mais fit e teste uma de cada vez.</p></div>
+    ${groups}
+    <h2>Transforme a ideia em um teste de 7 dias</h2>
+    <p>Defina um público específico, uma oferta inicial e uma meta simples: cinco conversas, três propostas ou uma pré-venda. Registre as objeções, o que desperta mais interesse e quanto as pessoas aceitam pagar. Esses dados mostram se você precisa ajustar o nicho, a promessa ou a entrega.</p>
+    <div class="test-plan"><div><span>Dia 1</span><strong>Escolha</strong><p>Defina público e promessa.</p></div><div><span>Dias 2–4</span><strong>Converse</strong><p>Busque cinco conversas reais.</p></div><div><span>Dias 5–7</span><strong>Ofereça</strong><p>Apresente uma proposta piloto.</p></div></div>
+    <blockquote>Não comece pela estrutura. Comece pela conversa, pela oferta e pelo primeiro cliente.</blockquote>
+    <div class="key-takeaways">
+      <h3>Próximo passo: encontre a ideia com mais fit</h3>
+      <ul>
+        <li>Escolha uma ideia com acesso fácil ao cliente, não apenas uma tendência.</li>
+        <li>Valide a demanda antes de comprar estoque ou contratar ferramentas.</li>
+        <li>Comece com uma oferta pequena, clara e fácil de testar.</li>
+        <li><a href="https://consultoria.orientohub.com.br" target="_blank" rel="noreferrer">Agende a Orienta+</a>: uma sessão gratuita para definir qual ideia tem mais fit com seu perfil e mercado.</li>
+      </ul>
+    </div>`;
+};
+
 const BlogPostPage = () => {
   const { slug } = useParams();
   const { t } = useTranslation();
@@ -62,7 +132,7 @@ const BlogPostPage = () => {
 
   useEffect(() => {
     // Mock post data
-    const mockPost: BlogPost = {
+    let mockPost: BlogPost = {
       id: '1',
       slug: 'validacao-problema-startup',
       title: 'Como validar o problema da sua startup em 5 passos',
@@ -130,6 +200,28 @@ const BlogPostPage = () => {
       comments: 45
     };
 
+    if (slug === '50-ideias-negocios-baixo-investimento') {
+      mockPost = {
+        id: '7',
+        slug: '50-ideias-negocios-baixo-investimento',
+        title: '50 ideias de negócios para começar com pouco dinheiro',
+        subtitle: 'Opções práticas para quem quer empreender com recursos limitados — organizadas por segmento e acompanhadas de um teste rápido para validar antes de investir.',
+        content: businessIdeasContent(),
+        coverImage: '/IDEIAS DE NEGÓCIO.png',
+        publishedAt: '2026-08-25',
+        readingTime: '16 min',
+        category: 'Ideias',
+        author: {
+          name: 'Fernando Ramalho',
+          avatar: '/fernando-ramalho.jpg',
+          role: 'CEO & Fundador da OrientoHub'
+        },
+        tags: ['Ideias de negócio', 'Baixo investimento', 'Empreendedorismo', 'Validação', 'Orienta+'],
+        likes: 0,
+        comments: 0
+      };
+    }
+
     const mockRelatedPosts: RelatedPost[] = [
       {
         id: '2',
@@ -164,17 +256,25 @@ const BlogPostPage = () => {
   }, [slug]);
 
   const handleShare = (platform: string) => {
-    const url = window.location.href;
-    const text = post?.title || '';
-    
+    if (!post) return;
+
+    const url = new URL(window.location.pathname, window.location.origin).toString();
+    const text = `${post.title}\n\n${post.subtitle}`;
+    const encodedUrl = encodeURIComponent(url);
+    const encodedText = encodeURIComponent(text);
     const shareUrls: { [key: string]: string } = {
-      twitter: `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`,
-      linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`,
-      facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`
+      twitter: `https://x.com/intent/post?text=${encodedText}&url=${encodedUrl}`,
+      linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}&summary=${encodedText}`,
+      facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}&quote=${encodedText}`
     };
 
     if (shareUrls[platform]) {
-      window.open(shareUrls[platform], '_blank', 'width=600,height=400');
+      const shareWindow = window.open(shareUrls[platform], '_blank', 'width=680,height=620');
+      if (shareWindow) {
+        shareWindow.opener = null;
+      } else {
+        window.location.assign(shareUrls[platform]);
+      }
     }
   };
 
@@ -192,8 +292,14 @@ const BlogPostPage = () => {
     );
   }
 
+  const isIdeasArticle = post.slug === '50-ideias-negocios-baixo-investimento';
+  const articleSections = isIdeasArticle
+    ? ['O filtro antes de escolher', 'Serviços digitais', 'Serviços para empresas', 'Serviços locais', 'Alimentação', 'Comércio e produtos', 'Transforme a ideia em um teste de 7 dias']
+    : ['Identifique seu público-alvo', 'Faça entrevistas qualitativas', 'Analise soluções existentes', 'Quantifique o problema', 'Teste a disposição para pagar'];
+
   return (
     <>
+      <style>{customStyles}</style>
       <Helmet>
         <title>{`${post.title} | Orientohub Blog`}</title>
         <meta name="description" content={post.subtitle} />
@@ -322,14 +428,24 @@ const BlogPostPage = () => {
               transition={{ duration: 0.8, delay: 0.2 }}
               style={{ opacity, scale }}
             >
-              <div className="relative rounded-2xl overflow-hidden shadow-2xl">
-                <div className="absolute inset-0 bg-gradient-to-br from-primary-500/20 to-transparent z-10" />
+              <div className={`relative overflow-hidden rounded-2xl shadow-2xl ${isIdeasArticle ? 'bg-[#f7f2e8] p-3 sm:p-4' : ''}`}>
+                {!isIdeasArticle && <div className="absolute inset-0 z-10 bg-gradient-to-br from-primary-500/20 to-transparent" />}
                 <img
                   src={post.coverImage}
                   alt={post.title}
-                  className="w-full h-full object-cover aspect-[4/3]"
+                  className={`w-full ${isIdeasArticle ? 'h-auto rounded-xl object-contain' : 'h-full aspect-[4/3] object-cover'}`}
                 />
               </div>
+              {isIdeasArticle && (
+                <a
+                  href={post.coverImage}
+                  download="50-ideias-de-negocios-orientohub.png"
+                  className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl border border-primary-400/40 bg-primary-500 px-4 py-3 text-sm font-bold text-[#0c121b] transition-colors hover:bg-primary-400"
+                >
+                  <Download className="h-4 w-4" />
+                  Baixar imagem com as 50 ideias
+                </a>
+              )}
             </motion.div>
           </div>
         </div>
@@ -466,21 +582,11 @@ const BlogPostPage = () => {
                   Neste artigo
                 </h3>
                 <nav className="space-y-3">
-                  <a href="#" className="block text-sm text-gray-600 dark:text-gray-400 hover:text-primary-500 transition-colors">
-                    → Identifique seu público-alvo
-                  </a>
-                  <a href="#" className="block text-sm text-gray-600 dark:text-gray-400 hover:text-primary-500 transition-colors">
-                    → Faça entrevistas qualitativas
-                  </a>
-                  <a href="#" className="block text-sm text-gray-600 dark:text-gray-400 hover:text-primary-500 transition-colors">
-                    → Analise soluções existentes
-                  </a>
-                  <a href="#" className="block text-sm text-gray-600 dark:text-gray-400 hover:text-primary-500 transition-colors">
-                    → Quantifique o problema
-                  </a>
-                  <a href="#" className="block text-sm text-gray-600 dark:text-gray-400 hover:text-primary-500 transition-colors">
-                    → Teste a disposição para pagar
-                  </a>
+                  {articleSections.map((section) => (
+                    <span key={section} className="block text-sm text-gray-600 dark:text-gray-400">
+                      → {section}
+                    </span>
+                  ))}
                 </nav>
               </div>
             </motion.aside>
@@ -698,6 +804,98 @@ const customStyles = `
     left: 0;
     color: #FFD700;
     font-weight: bold;
+  }
+
+  .article-marker {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 2.5rem 0 1.5rem;
+    padding: 1rem 1.25rem;
+    border: 1px solid rgba(202, 138, 4, 0.28);
+    border-radius: 1rem;
+    background: rgba(234, 179, 8, 0.07);
+  }
+
+  .article-marker span, .section-kicker, .validation-box span, .test-plan span {
+    color: #a16207;
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .article-marker p { margin: 0; font-size: 0.95rem; }
+
+  .decision-grid, .test-plan {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.875rem;
+    margin: 2rem 0 3rem;
+  }
+
+  .decision-grid > div, .test-plan > div {
+    padding: 1.25rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 1rem;
+    background: linear-gradient(145deg, #fff, #f8fafc);
+  }
+
+  .decision-grid span { color: #ca8a04; font-size: 0.75rem; font-weight: 800; }
+  .decision-grid strong, .test-plan strong { display: block; margin-top: 0.35rem; color: #111827; }
+  .decision-grid p, .test-plan p { margin: 0.35rem 0 0; font-size: 0.9rem; line-height: 1.5; }
+
+  .idea-section { margin: 4rem 0; }
+  .idea-section h2 { margin: 0.35rem 0 0.5rem !important; }
+  .section-lead { margin: 0 0 1.5rem !important; color: #6b7280 !important; }
+
+  .idea-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .idea-card {
+    position: relative;
+    min-height: 11.5rem;
+    padding: 1.35rem;
+    overflow: hidden;
+    border: 1px solid #e5e7eb;
+    border-radius: 1rem;
+    background: #fff;
+    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.05);
+  }
+
+  .idea-card:before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #eab308, #facc15);
+  }
+
+  .idea-number { display: block; margin-bottom: 0.9rem; color: #ca8a04; font-size: 0.75rem; font-weight: 900; letter-spacing: 0.1em; }
+  .idea-card h3 { margin: 0 0 1rem !important; font-size: 1.05rem !important; line-height: 1.35 !important; }
+  .validation-box { padding-top: 0.85rem; border-top: 1px solid #f1f5f9; }
+  .validation-box p { margin: 0.35rem 0 0 !important; color: #64748b !important; font-size: 0.84rem !important; line-height: 1.5 !important; }
+
+  .test-plan { margin-bottom: 2.5rem; }
+
+  .dark .article-marker, .dark .decision-grid > div, .dark .test-plan > div, .dark .idea-card {
+    border-color: #374151;
+    background: linear-gradient(145deg, #18212e, #111827);
+  }
+  .dark .article-marker { background: rgba(234, 179, 8, 0.08); }
+  .dark .decision-grid strong, .dark .test-plan strong { color: #f9fafb; }
+  .dark .section-lead, .dark .validation-box p { color: #aab5c4 !important; }
+  .dark .validation-box { border-color: #374151; }
+
+  @media (max-width: 640px) {
+    .decision-grid, .test-plan, .idea-grid { grid-template-columns: 1fr; }
+    .article-marker { align-items: flex-start; flex-direction: column; gap: 0.35rem; }
+    .idea-section { margin: 3rem 0; }
+    .idea-card { min-height: auto; padding: 1.2rem; }
+    .key-takeaways { padding: 1.5rem; }
   }
 `;
 

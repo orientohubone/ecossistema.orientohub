@@ -8,6 +8,7 @@ import {
   Clock, 
   ArrowRight, 
   Sparkles,
+  Lightbulb,
   TrendingUp,
   Rocket,
   Target,
@@ -44,10 +45,26 @@ const BlogPage = () => {
     { id: 'validacao', label: 'Validação', icon: Target },
     { id: 'mvp', label: 'MVP', icon: Rocket },
     { id: 'pitch', label: 'Pitch', icon: TrendingUp },
+    { id: 'ideias', label: 'Ideias', icon: Lightbulb },
   ];
 
   // Mock blog posts data
   const blogPosts: BlogPost[] = [
+    {
+      id: '7',
+      slug: '50-ideias-negocios-baixo-investimento',
+      title: '50 ideias de negócios para começar com pouco dinheiro',
+      excerpt: 'Ideias viáveis em serviços digitais, empresas, negócios locais, alimentação e produtos — cada uma com um critério simples para validar antes de investir.',
+      coverImage: '/IDEIAS DE NEGÓCIO.png',
+      publishedAt: '2026-08-25',
+      readingTime: '16 min',
+      category: 'ideias',
+      author: {
+        name: 'Fernando Ramalho',
+        avatar: '/fernando-ramalho.jpg'
+      },
+      views: 0
+    },
     {
       id: '1',
       slug: 'validacao-problema-startup',
@@ -468,7 +485,9 @@ const BlogPostCard = ({ post, delay }: BlogPostCardProps) => {
       ? Rocket
       : post.category === 'pitch'
         ? TrendingUp
-        : Sparkles;
+        : post.category === 'ideias'
+          ? Lightbulb
+          : Sparkles;
 
   return (
     <motion.article

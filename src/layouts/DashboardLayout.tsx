@@ -23,8 +23,6 @@ import {
   Save,
   Check,
   GraduationCap,
-  Moon,
-  Sun
 } from 'lucide-react';
 import { useAuthStore } from '../stores/authStore';
 import ContactFab from '../components/layout/ContactFab';
@@ -37,35 +35,20 @@ const DashboardLayout = () => {
   const { user, logout } = useAuthStore();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
-  const [darkMode, setDarkMode] = useState(
-    localStorage.getItem('theme') === 'dark' || 
-    (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)
-  );
 
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
   const toggleCollapse = () => setCollapsed(!collapsed);
 
-  const toggleDarkMode = () => {
-    const newDarkMode = !darkMode;
-    setDarkMode(newDarkMode);
-    
-    if (newDarkMode) {
-      document.documentElement.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
-    }
-  };
-
   useEffect(() => {
-    // Initialize dark mode
+    const darkMode = localStorage.getItem('theme') === 'dark' ||
+      (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches);
+
     if (darkMode) {
       document.documentElement.classList.add('dark');
     } else {
       document.documentElement.classList.remove('dark');
     }
-  }, [darkMode]);
+  }, []);
 
   const handleLogout = async () => {
     await logout();
@@ -110,7 +93,6 @@ const DashboardLayout = () => {
                   <SearchBox />
                   <nav className="space-y-1">{navItems.map(item => <SidebarLink key={item.id} item={item} pathname={location.pathname} onNavigate={() => setSidebarOpen(false)} />)}</nav>
                   <div className="mt-auto space-y-3">
-                <DarkModeToggle />
                 <PlanCTA compact />
                 <LogoutButton onLogout={handleLogout} />
               </div>
@@ -157,7 +139,6 @@ const DashboardLayout = () => {
             <nav className="flex-1 space-y-1 mt-2">{navItems.map(item => <SidebarLink key={item.id} item={item} pathname={location.pathname} collapsed={collapsed} />)}</nav>
             <div className="mt-4"><PlanCTA compact={collapsed} /></div>
             <div className="mt-auto">
-              <DarkModeToggle collapsed={collapsed} />
               <LogoutButton onLogout={handleLogout} compact={collapsed} />
             </div>
           </div>
@@ -497,74 +478,6 @@ const PlanCTA = ({ compact = false }: { compact?: boolean }) => {
         <Link to="/dashboard/settings?tab=plan" className="rounded-lg border border-primary-400/25 px-3 py-2 text-sm text-primary-100 hover:bg-primary-500/10">Detalhes</Link>
       </div>
     </div>
-  );
-};
-
-const DarkModeToggle = ({ collapsed = false }: { collapsed?: boolean }) => {
-  const [darkMode, setDarkMode] = useState(
-    localStorage.getItem('theme') === 'dark' || 
-    (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)
-  );
-
-  const toggleDarkMode = () => {
-    const newDarkMode = !darkMode;
-    setDarkMode(newDarkMode);
-    
-    if (newDarkMode) {
-      document.documentElement.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
-    }
-  };
-
-  useEffect(() => {
-    if (darkMode) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-  }, [darkMode]);
-
-  if (collapsed) {
-    return (
-      <Tooltip.Root delayDuration={100}>
-        <Tooltip.Trigger asChild>
-          <button
-            onClick={toggleDarkMode}
-            className="flex items-center justify-center w-10 h-10 rounded-lg text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-            title="Alternar tema"
-          >
-            {darkMode ? <Sun size={18} /> : <Moon size={18} />}
-          </button>
-        </Tooltip.Trigger>
-        <Tooltip.Portal>
-          <Tooltip.Content
-            side="right"
-            className="bg-gray-900 text-white px-2 py-1 rounded text-sm"
-            sideOffset={5}
-          >
-            Alternar tema
-          </Tooltip.Content>
-        </Tooltip.Portal>
-      </Tooltip.Root>
-    );
-  }
-
-  return (
-    <button
-      onClick={toggleDarkMode}
-      className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-[#9ba9bc] transition-colors hover:bg-[#151f2b] hover:text-white"
-    >
-      <span className="flex items-center justify-center w-5 h-5">
-        {darkMode ? <Sun size={18} /> : <Moon size={18} />}
-      </span>
-      <span>Tema</span>
-      <span className="text-xs text-gray-500 dark:text-gray-400 ml-auto">
-        {darkMode ? 'Escuro' : 'Claro'}
-      </span>
-    </button>
   );
 };
 

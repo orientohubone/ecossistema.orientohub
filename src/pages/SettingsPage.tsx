@@ -7,8 +7,6 @@ import {
   Bell,
   Lock,
   Globe,
-  Moon,
-  Sun,
   Crown,
   CreditCard,
   Shield,
@@ -139,7 +137,6 @@ const SettingsPage = () => {
   const [searchParams] = useSearchParams();
   const initialTab = searchParams.get('tab') === 'plan' ? 'plan' : 'profile';
   const [activeTab, setActiveTab] = useState(initialTab);
-  const [darkMode, setDarkMode] = useState(document.documentElement.classList.contains('dark'));
   const [showPassword, setShowPassword] = useState(false);
   const fieldClassName = "w-full rounded-xl border border-[#34455a] bg-[#0c121b] px-4 py-3 text-white placeholder:text-[#718096] outline-none transition-colors focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20";
   const [isLoading, setIsLoading] = useState(false);
@@ -236,19 +233,6 @@ const SettingsPage = () => {
     { id: 'integrations', name: 'Integrações', icon: LinkIcon, badge: null },
     { id: 'billing', name: 'Cobrança', icon: CreditCard, badge: null }
   ];
-
-  const toggleDarkMode = () => {
-    const newDarkMode = !darkMode;
-    setDarkMode(newDarkMode);
-
-    if (newDarkMode) {
-      document.documentElement.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
-    }
-  };
 
   const handleSave = async (message: string) => {
     setIsLoading(true);
@@ -914,26 +898,6 @@ const SettingsPage = () => {
                     <div>
                       <h2 className="text-2xl font-bold mb-2">Preferências</h2>
                       <p className="text-gray-600 dark:text-gray-400">Personalize sua experiência</p>
-                    </div>
-
-                    {/* Theme */}
-                    <div className="p-6 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
-                      <div className="flex items-center justify-between mb-4">
-                        <div>
-                          <h3 className="font-bold">Tema da Interface</h3>
-                          <p className="text-sm text-gray-600 dark:text-gray-400">Escolha entre modo claro ou escuro</p>
-                        </div>
-                        <button
-                          onClick={toggleDarkMode}
-                          className="p-3 bg-primary-500/10 hover:bg-primary-500/20 rounded-lg transition-colors"
-                        >
-                          {darkMode ? (
-                            <Sun className="w-6 h-6 text-primary-500" />
-                          ) : (
-                            <Moon className="w-6 h-6 text-primary-500" />
-                          )}
-                        </button>
-                      </div>
                     </div>
 
                     {/* Language */}
