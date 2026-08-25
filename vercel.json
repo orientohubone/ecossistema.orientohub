@@ -1,5 +1,6 @@
 {
   "rewrites": [
+    { "source": "/blog/50-ideias-negocios-baixo-investimento", "destination": "/blog/50-ideias-negocios-baixo-investimento/index.html" },
     { "source": "/(.*)", "destination": "/" }
   ]
 }

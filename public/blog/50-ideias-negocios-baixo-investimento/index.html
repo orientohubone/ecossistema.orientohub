@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="index, follow" />
+    <title>50 ideias de negócios para começar com pouco dinheiro | OrientoHub</title>
+    <meta name="description" content="50 ideias de negócios de baixo investimento, organizadas por segmento e com critérios simples para validar antes de investir." />
+    <link rel="canonical" href="https://orientohub.com.br/blog/50-ideias-negocios-baixo-investimento" />
+
+    <meta property="og:type" content="article" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:site_name" content="OrientoHub" />
+    <meta property="og:title" content="50 ideias de negócios para começar com pouco dinheiro" />
+    <meta property="og:description" content="Ideias viáveis para empreender com pouco investimento, organizadas por segmento e acompanhadas de validações rápidas." />
+    <meta property="og:url" content="https://orientohub.com.br/blog/50-ideias-negocios-baixo-investimento" />
+    <meta property="og:image" content="https://orientohub.com.br/IDEIAS%20DE%20NEG%C3%93CIO.png" />
+    <meta property="og:image:alt" content="50 ideias de negócios para começar com pouco dinheiro" />
+    <meta property="article:published_time" content="2026-08-25T00:00:00-03:00" />
+    <meta property="article:author" content="Fernando Ramalho" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="50 ideias de negócios para começar com pouco dinheiro" />
+    <meta name="twitter:description" content="50 ideias viáveis, organizadas por segmento, para testar antes de investir." />
+    <meta name="twitter:image" content="https://orientohub.com.br/IDEIAS%20DE%20NEG%C3%93CIO.png" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script>
+      // Carrega o bundle atual do Vite para visitantes humanos. Crawler de redes
+      // sociais lê os metadados acima sem depender da execução do React.
+      fetch('/index.html')
+        .then((response) => response.text())
+        .then((html) => {
+          const documentFromApp = new DOMParser().parseFromString(html, 'text/html');
+          const entry = documentFromApp.querySelector('script[type="module"]');
+          if (!entry) return;
+          const script = document.createElement('script');
+          script.type = 'module';
+          script.src = new URL(entry.getAttribute('src'), window.location.origin).toString();
+          document.body.appendChild(script);
+        });
+    </script>
+  </body>
+</html>

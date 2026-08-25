@@ -4,6 +4,12 @@
   environment = { NODE_VERSION = "20" }
 
 [[redirects]]
+  from = "/blog/50-ideias-negocios-baixo-investimento"
+  to = "/blog/50-ideias-negocios-baixo-investimento/index.html"
+  status = 200
+  force = true
+
+[[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
