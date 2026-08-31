@@ -13,13 +13,13 @@ import {
 } from 'lucide-react';
 import founderPhoto from '../assets/fenando-ramalho.jpg';
 import { serviceCatalog } from '../data/serviceCatalog';
-import { Briefcase, Rocket, BarChart3, Megaphone, MapPin, Palette, Code2, Globe2, ShoppingCart } from 'lucide-react';
+import { Briefcase, Rocket, BarChart3, Megaphone, MapPin, Palette, Code2, Globe2, ShoppingCart, Tags } from 'lucide-react';
 import type { ComponentType } from 'react';
 
 const serviceIcons: Record<string, ComponentType<{ className?: string }>> = {
   estrategia: Briefcase, inovacao: Rocket, marketing: BarChart3, 'midia-paga': Megaphone,
   'google-meu-negocio': MapPin,
-  design: Palette, 'vibe-coding': Code2, marcas: Award, dominio: Globe2, sites: Target, 'e-commerce': ShoppingCart,
+  design: Palette, 'vibe-coding': Code2, marcas: Award, naming: Tags, dominio: Globe2, sites: Target, 'e-commerce': ShoppingCart,
 };
 
 const serviceColors: Record<string, string> = {
@@ -31,6 +31,11 @@ const authorityIndicators = [
   { value: '200h+', label: 'De atendimento direto', icon: Clock3 },
   { value: '92%', label: 'De clientes satisfeitos', icon: Users },
 ];
+
+const formatPrice = (value: number) => value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+const getDiscountPercentage = (original: number, promotional: number) =>
+  Math.round(((original - promotional) / original) * 100);
 
 const ServicesPage = () => (
   <>
@@ -76,6 +81,36 @@ const ServicesPage = () => (
                   <div>
                     <h2 className="text-lg font-bold sm:text-xl">{service.title}</h2>
                     <p className="mt-1 text-base leading-relaxed text-gray-400">{service.description}</p>
+                    {service.pricing && (
+                      <div className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-1">
+                        {service.pricing.customText ? (
+                          <span className="text-xl font-bold text-primary-300">{service.pricing.customText}</span>
+                        ) : service.pricing.fixed !== undefined ? (
+                          <span className="text-xl font-bold text-primary-300">{formatPrice(service.pricing.fixed)}</span>
+                        ) : service.pricing.startingAt !== undefined ? (
+                          <>
+                            <span className="text-sm font-semibold text-gray-400">{service.pricing.startingAtLabel ?? 'A partir de'}</span>
+                            <span className="text-xl font-bold text-primary-300">{formatPrice(service.pricing.startingAt)}{service.pricing.suffix}</span>
+                          </>
+                        ) : service.pricing.original !== undefined && service.pricing.promotional !== undefined ? (
+                          <>
+                            <span className="text-sm text-gray-500 line-through">{formatPrice(service.pricing.original)}</span>
+                            <span className="text-xl font-bold text-primary-300">{formatPrice(service.pricing.promotional)}</span>
+                            <span className="rounded-full bg-emerald-400/15 px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-emerald-300">
+                              {getDiscountPercentage(service.pricing.original, service.pricing.promotional)}% OFF
+                            </span>
+                          </>
+                        ) : null}
+                        {service.pricing.note && (
+                          <span className="w-full text-xs font-medium text-gray-400">{service.pricing.note}</span>
+                        )}
+                        {service.pricing.alternative && (
+                          <span className="w-full text-sm font-semibold text-gray-300">
+                            {service.pricing.alternative.label}: <strong className="text-primary-300">{formatPrice(service.pricing.alternative.value)}</strong>
+                          </span>
+                        )}
+                      </div>
+                    )}
                     <span className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-primary-300 transition group-hover:gap-2">Conhecer serviço <ArrowRight className="h-4 w-4" /></span>
                   </div>
                 </div>

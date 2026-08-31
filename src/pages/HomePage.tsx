@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Sparkles, Layers, Users, Target, Lightbulb, ExternalLink, Component, MonitorPlay, Maximize2, X, TrendingUp, Rocket, Brain, GraduationCap, Mic, Briefcase, BookOpen } from 'lucide-react';
 import SectionDivider from '../components/SectionDivider';
+import IntegrationsSection from '../components/components';
 import type { ComponentType } from 'react';
 
 type IconType = ComponentType<{
@@ -271,6 +272,8 @@ const HomePage = () => {
       <div className="hidden lg:block mt-0 xl:-mt-2">
         <SectionDivider topSpacing="tight" />
       </div>
+
+      <IntegrationsSection />
 
       {presentationOpen && (
         <div
