@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
-import { GraduationCap, Sparkles, CheckCircle2, Users, BookOpen, Award, Star, Lightbulb, ArrowRight } from 'lucide-react';
+import { GraduationCap, Sparkles, BookOpen, Award, ArrowRight } from 'lucide-react';
 
 const AcademyPage = () => {
   return (
@@ -28,13 +28,15 @@ const AcademyPage = () => {
         <div className="container-custom relative z-10 py-32">
           <div className="max-w-4xl mx-auto text-center">
             <motion.div
-              className="inline-flex items-center gap-2 bg-primary-500/20 border-2 border-primary-500/40 px-5 py-2 rounded-full mb-8 backdrop-blur-sm"
+              className="mb-8 inline-flex items-center gap-2.5 rounded-full border border-primary-400/35 bg-black/45 px-4 py-2 shadow-[0_0_30px_rgba(250,204,21,0.12)] backdrop-blur-md"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.2 }}
             >
-              <GraduationCap className="w-5 h-5 text-primary-500 animate-bounce" style={{ animationDuration: '2.5s' }} />
-              <span className="text-primary-500 font-bold text-sm uppercase tracking-wide">
+              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-primary-500/15 ring-1 ring-primary-400/25">
+                <GraduationCap className="h-4 w-4 text-primary-400" />
+              </span>
+              <span className="text-xs font-bold uppercase tracking-[0.18em] text-primary-300">
                 Oriento Academy
               </span>
             </motion.div>
@@ -96,9 +98,11 @@ const AcademyPage = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <div className="inline-flex items-center gap-2 bg-primary-500/10 border border-primary-500/30 px-4 py-2 rounded-full mb-6">
-              <GraduationCap className="w-5 h-5 text-primary-500" />
-              <span className="text-primary-500 font-semibold text-sm">SOBRE</span>
+            <div className="mb-6 inline-flex items-center gap-2.5 rounded-full border border-primary-500/25 bg-primary-500/[0.08] px-4 py-2 shadow-sm shadow-primary-500/10 backdrop-blur-sm">
+              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary-500/15">
+                <GraduationCap className="h-3.5 w-3.5 text-primary-500" />
+              </span>
+              <span className="text-xs font-bold uppercase tracking-[0.18em] text-primary-500">Sobre a Academy</span>
             </div>
             <h2 className="text-4xl md:text-5xl font-bold mb-6">O que é a Oriento Academy?</h2>
             <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
@@ -153,9 +157,14 @@ const AcademyPage = () => {
                 Aprenda com os melhores.
               </span>
             </h2>
-            <div className="inline-block bg-primary-500/20 border-2 border-primary-500 px-8 py-4 rounded-xl backdrop-blur-sm mt-8">
-              <p className="text-2xl md:text-3xl font-bold text-primary-500">
-                Oriento Academy — onde founders se tornam referência.
+            <div className="relative mx-auto mt-8 max-w-3xl overflow-hidden rounded-2xl border border-primary-400/30 bg-gradient-to-r from-primary-500/[0.08] via-primary-500/[0.16] to-primary-500/[0.08] px-6 py-6 shadow-[0_0_45px_rgba(250,204,21,0.10)] backdrop-blur-md sm:px-10 sm:py-7">
+              <div className="pointer-events-none absolute inset-x-16 top-0 h-px bg-gradient-to-r from-transparent via-primary-300/80 to-transparent" />
+              <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-primary-400/25 bg-black/30 px-3 py-1.5">
+                <Sparkles className="h-3.5 w-3.5 text-primary-400" />
+                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary-300">Oriento Academy</span>
+              </div>
+              <p className="text-2xl font-bold leading-tight text-white sm:text-3xl md:text-4xl">
+                Onde founders se tornam <span className="text-primary-400">referência.</span>
               </p>
             </div>
             <div className="mt-16">

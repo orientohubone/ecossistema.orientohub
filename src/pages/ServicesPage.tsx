@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import founderPhoto from '../assets/fenando-ramalho.jpg';
 import { serviceCatalog } from '../data/serviceCatalog';
+import type { ServiceCatalogItem } from '../data/serviceCatalog';
 import { Briefcase, Rocket, BarChart3, Megaphone, MapPin, Palette, Code2, Globe2, ShoppingCart, Tags } from 'lucide-react';
 import type { ComponentType } from 'react';
 
@@ -36,6 +37,71 @@ const formatPrice = (value: number) => value.toLocaleString('pt-BR', { style: 'c
 
 const getDiscountPercentage = (original: number, promotional: number) =>
   Math.round(((original - promotional) / original) * 100);
+
+type ServicePricing = NonNullable<ServiceCatalogItem['pricing']>;
+type ServiceAccent = ServiceCatalogItem['accent'];
+
+const servicePriceColors: Record<ServiceAccent, { wrapper: string; glow: string; line: string; label: string; value: string }> = {
+  primary: { wrapper: 'border-primary-400/30 from-primary-500/[0.16] group-hover:border-primary-400/60', glow: 'bg-primary-400/15', line: 'via-primary-300/80', label: 'text-primary-300/75', value: 'text-primary-300' },
+  orange: { wrapper: 'border-orange-400/30 from-orange-500/[0.16] group-hover:border-orange-400/60', glow: 'bg-orange-400/15', line: 'via-orange-300/80', label: 'text-orange-300/75', value: 'text-orange-300' },
+  emerald: { wrapper: 'border-emerald-400/30 from-emerald-500/[0.16] group-hover:border-emerald-400/60', glow: 'bg-emerald-400/15', line: 'via-emerald-300/80', label: 'text-emerald-300/75', value: 'text-emerald-300' },
+  pink: { wrapper: 'border-pink-400/30 from-pink-500/[0.16] group-hover:border-pink-400/60', glow: 'bg-pink-400/15', line: 'via-pink-300/80', label: 'text-pink-300/75', value: 'text-pink-300' },
+  violet: { wrapper: 'border-violet-400/30 from-violet-500/[0.16] group-hover:border-violet-400/60', glow: 'bg-violet-400/15', line: 'via-violet-300/80', label: 'text-violet-300/75', value: 'text-violet-300' },
+  sky: { wrapper: 'border-sky-400/30 from-sky-500/[0.16] group-hover:border-sky-400/60', glow: 'bg-sky-400/15', line: 'via-sky-300/80', label: 'text-sky-300/75', value: 'text-sky-300' },
+  amber: { wrapper: 'border-amber-400/30 from-amber-500/[0.16] group-hover:border-amber-400/60', glow: 'bg-amber-400/15', line: 'via-amber-300/80', label: 'text-amber-300/75', value: 'text-amber-300' },
+  cyan: { wrapper: 'border-cyan-400/30 from-cyan-500/[0.16] group-hover:border-cyan-400/60', glow: 'bg-cyan-400/15', line: 'via-cyan-300/80', label: 'text-cyan-300/75', value: 'text-cyan-300' },
+  green: { wrapper: 'border-green-400/30 from-green-500/[0.16] group-hover:border-green-400/60', glow: 'bg-green-400/15', line: 'via-green-300/80', label: 'text-green-300/75', value: 'text-green-300' },
+};
+
+const ServicePriceTag = ({ pricing, accent }: { pricing: ServicePricing; accent: ServiceAccent }) => {
+  const colors = servicePriceColors[accent];
+
+  return (
+  <div className={`relative flex w-full shrink-0 flex-col justify-center overflow-hidden rounded-2xl border bg-gradient-to-br via-[#171b20] to-[#0c121b] p-4 shadow-[0_14px_35px_rgba(0,0,0,0.28)] transition duration-300 group-hover:shadow-[0_18px_40px_rgba(0,0,0,0.35)] sm:w-[180px] ${colors.wrapper}`}>
+    <div className={`pointer-events-none absolute -right-8 -top-10 h-24 w-24 rounded-full blur-2xl ${colors.glow}`} />
+    <span className={`absolute inset-x-5 top-0 h-px bg-gradient-to-r from-transparent to-transparent ${colors.line}`} />
+
+    {pricing.customText ? (
+      <>
+        <span className={`text-[10px] font-bold uppercase tracking-[0.18em] ${colors.label}`}>Investimento</span>
+        <strong className={`mt-1 text-2xl leading-tight ${colors.value}`}>{pricing.customText}</strong>
+      </>
+    ) : pricing.fixed !== undefined ? (
+      <>
+        <span className={`text-[10px] font-bold uppercase tracking-[0.18em] ${colors.label}`}>Investimento</span>
+        <strong className={`mt-1 text-2xl leading-tight ${colors.value}`}>{formatPrice(pricing.fixed)}</strong>
+      </>
+    ) : pricing.startingAt !== undefined ? (
+      <>
+        <span className={`text-[10px] font-bold uppercase tracking-[0.14em] ${colors.label}`}>{pricing.startingAtLabel ?? 'A partir de'}</span>
+        <strong className={`mt-1 whitespace-nowrap text-2xl leading-tight ${colors.value}`}>
+          {formatPrice(pricing.startingAt)}
+          {pricing.suffix && <small className={`mt-1 block text-xs font-bold uppercase tracking-[0.12em] ${colors.label}`}>{pricing.suffix}</small>}
+        </strong>
+      </>
+    ) : pricing.original !== undefined && pricing.promotional !== undefined ? (
+      <>
+        <div className="flex items-center justify-between gap-2">
+          <span className="text-xs text-gray-500 line-through">{formatPrice(pricing.original)}</span>
+          <span className="rounded-full border border-emerald-400/20 bg-emerald-400/10 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-emerald-300">
+            {getDiscountPercentage(pricing.original, pricing.promotional)}% OFF
+          </span>
+        </div>
+        <span className={`mt-1 text-[10px] font-bold uppercase tracking-[0.14em] ${colors.label}`}>Por apenas</span>
+        <strong className={`mt-0.5 text-2xl leading-tight ${colors.value}`}>{formatPrice(pricing.promotional)}</strong>
+      </>
+    ) : null}
+
+    {pricing.alternative && (
+      <div className="mt-3 border-t border-white/10 pt-3 text-xs text-gray-300">
+        <span className="block">{pricing.alternative.label}</span>
+        <strong className="mt-0.5 block text-base text-white">{formatPrice(pricing.alternative.value)}</strong>
+      </div>
+    )}
+    {pricing.note && <p className="mt-3 border-t border-white/10 pt-3 text-[10px] font-medium leading-relaxed text-gray-400">{pricing.note}</p>}
+  </div>
+  );
+};
 
 const ServicesPage = () => (
   <>
@@ -70,50 +136,21 @@ const ServicesPage = () => (
           </div>
         </motion.div>
 
-        <div className="mx-auto mt-5 grid max-w-6xl grid-cols-1 gap-3 md:grid-cols-2">
+        <div className="mx-auto mt-5 grid max-w-6xl grid-cols-1 gap-4 lg:grid-cols-2">
           {serviceCatalog.map((service, index) => {
             const Icon = serviceIcons[service.slug] || Sparkles;
             return (
-              <motion.article key={service.slug} initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.1 }} transition={{ delay: index * 0.04 }} className="group rounded-xl border border-white/5 bg-[#131820] transition hover:-translate-y-0.5 hover:border-primary-400/40">
-                <Link to={`/servicos/${service.slug}`} className="block p-5 sm:p-6">
-                <div className="flex gap-4">
-                  <span className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border ${serviceColors[service.accent]}`}><Icon className="h-5 w-5" /></span>
-                  <div>
+              <motion.article key={service.slug} initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.1 }} transition={{ delay: index * 0.04 }} className="group overflow-hidden rounded-2xl border border-white/[0.07] bg-[#131820] transition duration-300 hover:-translate-y-1 hover:border-primary-400/40 hover:shadow-[0_20px_50px_rgba(0,0,0,0.28)]">
+                <Link to={`/servicos/${service.slug}`} className="flex h-full flex-col gap-5 p-5 sm:flex-row sm:items-stretch sm:p-6">
+                  <div className="flex min-w-0 flex-1 gap-4">
+                    <span className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border ${serviceColors[service.accent]}`}><Icon className="h-5 w-5" /></span>
+                    <div className="flex min-w-0 flex-1 flex-col">
                     <h2 className="text-lg font-bold sm:text-xl">{service.title}</h2>
                     <p className="mt-1 text-base leading-relaxed text-gray-400">{service.description}</p>
-                    {service.pricing && (
-                      <div className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-1">
-                        {service.pricing.customText ? (
-                          <span className="text-xl font-bold text-primary-300">{service.pricing.customText}</span>
-                        ) : service.pricing.fixed !== undefined ? (
-                          <span className="text-xl font-bold text-primary-300">{formatPrice(service.pricing.fixed)}</span>
-                        ) : service.pricing.startingAt !== undefined ? (
-                          <>
-                            <span className="text-sm font-semibold text-gray-400">{service.pricing.startingAtLabel ?? 'A partir de'}</span>
-                            <span className="text-xl font-bold text-primary-300">{formatPrice(service.pricing.startingAt)}{service.pricing.suffix}</span>
-                          </>
-                        ) : service.pricing.original !== undefined && service.pricing.promotional !== undefined ? (
-                          <>
-                            <span className="text-sm text-gray-500 line-through">{formatPrice(service.pricing.original)}</span>
-                            <span className="text-xl font-bold text-primary-300">{formatPrice(service.pricing.promotional)}</span>
-                            <span className="rounded-full bg-emerald-400/15 px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-emerald-300">
-                              {getDiscountPercentage(service.pricing.original, service.pricing.promotional)}% OFF
-                            </span>
-                          </>
-                        ) : null}
-                        {service.pricing.note && (
-                          <span className="w-full text-xs font-medium text-gray-400">{service.pricing.note}</span>
-                        )}
-                        {service.pricing.alternative && (
-                          <span className="w-full text-sm font-semibold text-gray-300">
-                            {service.pricing.alternative.label}: <strong className="text-primary-300">{formatPrice(service.pricing.alternative.value)}</strong>
-                          </span>
-                        )}
-                      </div>
-                    )}
-                    <span className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-primary-300 transition group-hover:gap-2">Conhecer serviço <ArrowRight className="h-4 w-4" /></span>
+                    <span className="mt-auto inline-flex items-center gap-1 pt-4 text-sm font-semibold text-primary-300 transition group-hover:gap-2">Conhecer serviço <ArrowRight className="h-4 w-4" /></span>
+                    </div>
                   </div>
-                </div>
+                  {service.pricing && <ServicePriceTag pricing={service.pricing} accent={service.accent} />}
                 </Link>
               </motion.article>
             );
