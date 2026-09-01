@@ -29,6 +29,7 @@ import TermsPage from './pages/TermsPage';
 import PrivacyPage from './pages/PrivacyPage';
 import CookiesPage from './pages/CookiesPage';
 import SoAPage from './pages/SoAPage';
+import AssetsPage from './pages/AssetsPage';
 import NotFoundPage from './pages/NotFoundPage';
 
 // Protected Pages
@@ -114,6 +115,7 @@ function App() {
           <Route path="privacidade" element={<PrivacyPage />} />
           <Route path="cookies" element={<CookiesPage />} />
           <Route path="soa" element={<SoAPage />} />
+          <Route path="assets" element={<AssetsPage />} />
         </Route>
 
         <Route path="/entrar" element={<LoginPage />} />
