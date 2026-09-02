@@ -8,6 +8,9 @@ export interface CrmClient {
   email?: string | null;
   phone?: string | null;
   company?: string | null;
+  cnpj?: string | null;
+  address?: string | null;
+  services?: string[] | null;
   demand?: string | null;
   source: string;
   stage: CrmStage;
@@ -25,7 +28,7 @@ export const crmService = {
     if (error) throw error;
     return (data || []) as CrmClient[];
   },
-  async createClient(client: Pick<CrmClient, 'name' | 'email' | 'phone' | 'company' | 'demand'>) {
+  async createClient(client: Pick<CrmClient, 'name' | 'email' | 'phone' | 'company' | 'cnpj' | 'address' | 'services' | 'demand'>) {
     const { data, error } = await supabase.from('crm_clients').insert({ ...client, source: 'manual' }).select().single();
     if (error) throw error;
     return data as CrmClient;
@@ -34,6 +37,10 @@ export const crmService = {
     const { data, error } = await supabase.from('crm_clients').update({ ...updates, updated_at: new Date().toISOString() }).eq('id', id).select().single();
     if (error) throw error;
     return data as CrmClient;
+  },
+  async deleteClient(id: string) {
+    const { error } = await supabase.from('crm_clients').delete().eq('id', id);
+    if (error) throw error;
   },
   async getNotes(clientId: string) {
     const { data, error } = await supabase.from('crm_notes').select('*').eq('client_id', clientId).order('created_at', { ascending: false });
