@@ -7,7 +7,7 @@ import { KPICards } from '../components/founder/metrics/KPICards';
 import { useFounderData } from '../hooks/useFounderData';
 import { Company } from '../types/founder';
 import DashboardPageSkeleton from '../components/ui/DashboardPageSkeleton';
-import { LeadsManagement } from '../components/founder/LeadsManagement';
+import { CrmWorkspace } from '../components/founder/CrmWorkspace';
 import { FeatureFlagsPanel } from '../components/founder/FeatureFlagsPanel';
 import { PricingCalculator } from '../components/founder/PricingCalculator';
 import type { CrmClient } from '../services/crmService';
@@ -336,7 +336,7 @@ const FounderDashboardPage = () => {
                             )}
 
                             {activeTab === 'leads' && (
-                                <LeadsManagement onCreateProposal={(client) => { setProposalClient(client); setActiveTab('pricing'); }} />
+                                <CrmWorkspace onCreateProposal={(client) => { setProposalClient(client); setActiveTab('pricing'); }} />
                             )}
 
                             {activeTab === 'versions' && (

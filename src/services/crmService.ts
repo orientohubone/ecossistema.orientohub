@@ -21,6 +21,7 @@ export interface CrmClient {
 }
 
 export interface CrmNote { id: string; client_id: string; body: string; created_at: string; }
+export interface CrmTask { id: string; client_id: string; title: string; completed: boolean; sort_order: number; created_at: string; completed_at?: string | null; }
 
 export const crmService = {
   async getClients() {
@@ -51,5 +52,30 @@ export const crmService = {
     const { data, error } = await supabase.from('crm_notes').insert({ client_id: clientId, body }).select().single();
     if (error) throw error;
     return data as CrmNote;
+  },
+  async getTasks(clientId: string) {
+    const { data, error } = await supabase.from('crm_tasks').select('*').eq('client_id', clientId).order('sort_order', { ascending: true }).order('created_at', { ascending: true });
+    if (error) throw error;
+    return (data || []) as CrmTask[];
+  },
+  async addTask(clientId: string, title: string, sortOrder: number) {
+    const { data, error } = await supabase.from('crm_tasks').insert({ client_id: clientId, title, sort_order: sortOrder }).select().single();
+    if (error) throw error;
+    return data as CrmTask;
+  },
+  async toggleTask(id: string, completed: boolean) {
+    const { data, error } = await supabase.from('crm_tasks').update({ completed, completed_at: completed ? new Date().toISOString() : null }).eq('id', id).select().single();
+    if (error) throw error;
+    return data as CrmTask;
+  },
+  async deleteTask(id: string) {
+    const { error } = await supabase.from('crm_tasks').delete().eq('id', id);
+    if (error) throw error;
+  },
+  async reorderTasks(tasks: Pick<CrmTask, 'id' | 'sort_order'>[]) {
+    await Promise.all(tasks.map(async (task) => {
+      const { error } = await supabase.from('crm_tasks').update({ sort_order: task.sort_order }).eq('id', task.id);
+      if (error) throw error;
+    }));
   },
 };
