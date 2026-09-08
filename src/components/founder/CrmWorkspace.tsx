@@ -7,6 +7,7 @@ import {
   ChevronRight,
   Circle,
   Copy,
+  ExternalLink,
   GripVertical,
   Mail,
   MapPin,
@@ -31,6 +32,13 @@ const stages: { id: CrmStage; label: string; color: string }[] = [
 ];
 
 const emptyForm = { name: '', email: '', phone: '', company: '', cnpj: '', address: '', services: [] as string[], demand: '' };
+
+const activityWithLinks = (body: string) => body.split(/(https?:\/\/[^\s]+|www\.[^\s]+)/gi).map((part, index) => {
+  const isLink = /^(https?:\/\/|www\.)/i.test(part);
+  if (!isLink) return part;
+  const href = part.toLowerCase().startsWith('www.') ? `https://${part}` : part;
+  return <a key={`${part}-${index}`} href={href} target="_blank" rel="noopener noreferrer" className="break-all font-semibold text-primary-300 underline decoration-primary-400/40 underline-offset-2 transition hover:text-primary-200">{part}</a>;
+});
 
 export const CrmWorkspace = ({ onCreateProposal }: { onCreateProposal: (client: CrmClient) => void }) => {
   const [clients, setClients] = useState<CrmClient[]>([]);
@@ -206,7 +214,7 @@ export const CrmWorkspace = ({ onCreateProposal }: { onCreateProposal: (client: 
                 <p className="text-xs font-bold uppercase tracking-[.14em] text-primary-300">Dados comerciais</p>
                 <div className="mt-4 grid gap-3 text-sm text-[#d7e0ea] sm:grid-cols-2">
                   <p className="flex items-center gap-2"><Mail className="h-4 w-4 text-primary-300" />{selected.email || 'E-mail não informado'}</p>
-                  <p className="flex items-center gap-2"><Building2 className="h-4 w-4 text-primary-300" />{selected.cnpj ? `CNPJ ${selected.cnpj}` : 'CNPJ não informado'}</p>
+                  <div className="flex flex-wrap items-center gap-2"><span className="flex items-center gap-2"><Building2 className="h-4 w-4 text-primary-300" />{selected.cnpj ? `CNPJ ${selected.cnpj}` : 'CNPJ não informado'}</span><span className="flex items-center gap-1.5"><a href="https://solucoes.receita.fazenda.gov.br/Servicos/cnpjreva/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-md border border-primary-400/25 bg-primary-500/10 px-2 py-1 text-[10px] font-bold uppercase tracking-wide text-primary-200 transition hover:border-primary-400/60 hover:bg-primary-500/15">REDESIM<ExternalLink className="h-3 w-3" /></a><a href="https://www.cadesp.fazenda.sp.gov.br/(S(nqtk35dsb3k5pg5ispmnlj3k))/Pages/Cadastro/Consultas/ConsultaPublica/ConsultaPublica.aspx" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-md border border-sky-400/25 bg-sky-400/10 px-2 py-1 text-[10px] font-bold uppercase tracking-wide text-sky-200 transition hover:border-sky-400/60 hover:bg-sky-400/15">CADESP<ExternalLink className="h-3 w-3" /></a></span></div>
                   <p className="flex items-start gap-2 sm:col-span-2"><MapPin className="mt-0.5 h-4 w-4 shrink-0 text-primary-300" />{selected.address || 'Endereço não informado'}</p>
                 </div>
                 {Boolean(selected.services?.length) && <div className="mt-4 border-t border-[#273548] pt-4"><p className="text-xs font-bold uppercase tracking-wide text-[#718096]">Serviços de interesse</p><div className="mt-2 flex flex-wrap gap-2">{selected.services?.map((slug) => <span key={slug} className="rounded-lg border border-primary-400/20 bg-primary-500/10 px-2.5 py-1 text-xs font-semibold text-primary-200">{serviceCatalog.find((service) => service.slug === slug)?.title || slug}</span>)}</div></div>}
@@ -217,7 +225,7 @@ export const CrmWorkspace = ({ onCreateProposal }: { onCreateProposal: (client: 
                 <div className="flex items-center gap-2"><CalendarCheck2 className="h-5 w-5 text-primary-300" /><div><h3 className="font-bold text-white">Atividades realizadas</h3><p className="text-xs text-[#9ba9bc]">Registre contatos, reuniões, decisões e entregas.</p></div></div>
                 <textarea value={activity} onChange={(event) => setActivity(event.target.value)} placeholder="O que foi feito com este cliente?" className="mt-4 min-h-24 w-full rounded-xl border border-[#34455a] bg-[#0c121b] p-3 text-sm text-white outline-none focus:border-primary-400" />
                 <button onClick={saveActivity} className="mt-2 rounded-lg bg-primary-500 px-3 py-2 text-xs font-bold text-[#0c121b]">Registrar atividade</button>
-                <div className="mt-5 space-y-3 border-t border-[#273548] pt-4">{notes.map((item) => <article key={item.id} className="rounded-xl bg-[#151f2b] p-3"><p className="text-sm text-[#d7e0ea]">{item.body}</p><time className="mt-2 block text-xs text-[#718096]">{new Date(item.created_at).toLocaleString('pt-BR')}</time></article>)}{!notes.length && <p className="rounded-xl border border-dashed border-[#34455a] p-5 text-center text-xs text-[#718096]">Nenhuma atividade registrada.</p>}</div>
+                <div className="mt-5 space-y-3 border-t border-[#273548] pt-4">{notes.map((item) => <article key={item.id} className="rounded-xl bg-[#151f2b] p-3"><p className="whitespace-pre-wrap text-sm text-[#d7e0ea]">{activityWithLinks(item.body)}</p><time className="mt-2 block text-xs text-[#718096]">{new Date(item.created_at).toLocaleString('pt-BR')}</time></article>)}{!notes.length && <p className="rounded-xl border border-dashed border-[#34455a] p-5 text-center text-xs text-[#718096]">Nenhuma atividade registrada.</p>}</div>
               </section>
             </div>
 
