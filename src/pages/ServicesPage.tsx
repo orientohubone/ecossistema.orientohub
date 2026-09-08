@@ -28,7 +28,7 @@ const serviceColors: Record<string, string> = {
 };
 
 const authorityIndicators = [
-  { value: '60+', label: 'Empresas atendidas', icon: Smile },
+  { value: '100+', label: 'Empresas atendidas', icon: Smile },
   { value: '200h+', label: 'De atendimento direto', icon: Clock3 },
   { value: '92%', label: 'De clientes satisfeitos', icon: Users },
 ];
