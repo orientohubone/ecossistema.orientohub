@@ -16,6 +16,7 @@ export interface CrmClient {
   stage: CrmStage;
   estimated_value?: number | null;
   next_step?: string | null;
+  next_contact_on?: string | null;
   last_contact_at?: string | null;
   created_at: string;
 }
@@ -34,7 +35,7 @@ export const crmService = {
     if (error) throw error;
     return data as CrmClient;
   },
-  async updateClient(id: string, updates: Partial<Pick<CrmClient, 'stage' | 'estimated_value' | 'next_step' | 'demand' | 'last_contact_at'>>) {
+  async updateClient(id: string, updates: Partial<Pick<CrmClient, 'stage' | 'estimated_value' | 'next_step' | 'next_contact_on' | 'demand' | 'last_contact_at'>>) {
     const { data, error } = await supabase.from('crm_clients').update({ ...updates, updated_at: new Date().toISOString() }).eq('id', id).select().single();
     if (error) throw error;
     return data as CrmClient;

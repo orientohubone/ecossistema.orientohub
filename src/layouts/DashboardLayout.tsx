@@ -70,7 +70,7 @@ const DashboardLayout = () => {
 
   return (
     <Tooltip.Provider delayDuration={100}>
-      <div className="dashboard-shell dark flex h-screen bg-[#0c121b] text-white">
+      <div className="dashboard-shell dark flex h-dvh overflow-hidden bg-[#0c121b] text-white">
         {/* Mobile Sidebar Overlay */}
         <AnimatePresence>
           {sidebarOpen && (
@@ -145,9 +145,9 @@ const DashboardLayout = () => {
         </aside>
 
         {/* Main content */}
-        <div className="flex flex-col flex-1 overflow-hidden">
+        <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
           {/* Top navbar */}
-          <header className="sticky top-0 z-20 border-b border-[#273548] bg-[#101722]/95 backdrop-blur-xl">
+          <header className="sticky top-0 z-20 shrink-0 border-b border-[#273548] bg-[#101722]/95 backdrop-blur-xl">
             <div className="w-full px-4 sm:px-6 lg:px-8">
               <div className="flex items-center justify-between h-16">
                 <div className="flex items-center gap-3">
@@ -167,7 +167,7 @@ const DashboardLayout = () => {
           </header>
 
           {/* Page content */}
-          <motion.main className="dashboard-main min-w-0 flex-1 overflow-y-auto" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }}>
+          <motion.main className="dashboard-main relative min-h-0 min-w-0 flex-1 overflow-y-auto" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }}>
             <div>
               <div className="dashboard-content w-full px-4 sm:px-6 lg:px-8"><Outlet /></div>
             </div>
