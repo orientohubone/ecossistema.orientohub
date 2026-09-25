@@ -1,0 +1,51 @@
+export const sitePortfolio = [
+  {
+    name: 'Intentia',
+    domain: 'intentia.com.br',
+    url: 'https://intentia.com.br',
+    screenshot: '/sites/Site-intentia.png',
+    description: 'Inteligência estratégica para marketing B2B.',
+  },
+  {
+    name: 'Humansys',
+    domain: 'humansys.com.br',
+    url: 'https://humansys.com.br',
+    screenshot: '/sites/Site-humansys.png',
+    description: 'Cultura organizacional e gestão de pessoas com inteligência artificial.',
+  },
+  {
+    name: 'Intentia Studio',
+    domain: 'studio.intentia.com.br',
+    url: 'https://studio.intentia.com.br',
+    screenshot: '/sites/Site-intentiastudio.png',
+    description: 'Design e peças criativas para comunicação de marca e marketing.',
+  },
+  {
+    name: 'Forgether',
+    domain: 'forgether.vercel.app',
+    url: 'https://forgether.vercel.app',
+    screenshot: '/sites/Site-forgether.png',
+    description: 'Aprendizado gamificado para desenvolver habilidades em tecnologia.',
+  },
+  {
+    name: 'Fernando Ramalho',
+    domain: 'fernandoramalhobuilder.com.br',
+    url: 'https://fernandoramalhobuilder.com.br',
+    screenshot: '/sites/Site-fernandoramalho.png',
+    description: 'Site pessoal e portfólio de Fernando Ramalho, builder e estrategista de negócios.',
+  },
+  {
+    name: 'RadarTech',
+    domain: 'radartech.orientohub.com.br',
+    url: 'https://radartech.orientohub.com.br',
+    screenshot: '/sites/Site-radartech.png',
+    description: 'Radar de tendências e tecnologia para empresas que querem se manter à frente.',
+  },
+  {
+    name: 'Novera Psicologia',
+    domain: 'siteparapsicologa.orientohub.com.br',
+    url: 'https://siteparapsicologa.orientohub.com.br',
+    screenshot: '/sites/Site-noverapsicologia.png',
+    description: 'Site institucional para psicóloga com foco em acolhimento e conversão de novos pacientes.',
+  },
+];

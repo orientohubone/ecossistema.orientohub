@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { ArrowLeft, ArrowRight, BarChart3, Briefcase, CheckCircle2, Code2, Globe2, Megaphone, Palette, Rocket, ShoppingCart, Sparkles, Target, Award, Tags } from 'lucide-react';
 import type { ComponentType } from 'react';
 import { getServiceBySlug } from '../data/serviceCatalog';
+import SitePortfolio from '../components/SitePortfolio';
 
 const icons: Record<string, ComponentType<{ className?: string }>> = {
   estrategia: Briefcase, inovacao: Rocket, marketing: BarChart3, 'midia-paga': Megaphone,
@@ -104,6 +105,8 @@ const ServiceDetailPage = () => {
             </motion.div>
           </div>
         </section>
+
+        {service.slug === 'sites' && <SitePortfolio />}
 
         <section className="container-custom py-12 sm:py-16">
           <div className="grid gap-5 lg:grid-cols-[0.8fr_1.2fr]">
