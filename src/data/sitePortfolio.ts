@@ -48,4 +48,11 @@ export const sitePortfolio = [
     screenshot: '/sites/Site-noverapsicologia.png',
     description: 'Site institucional para psicóloga com foco em acolhimento e conversão de novos pacientes.',
   },
+  {
+    name: 'Consultoria OrientoHub',
+    domain: 'consultoria.orientohub.com.br',
+    url: 'https://consultoria.orientohub.com.br',
+    screenshot: '/sites/Site-consultoria.png',
+    description: 'Consultoria estratégica para negócios que querem crescer com direção e consistência.',
+  },
 ];

@@ -5,6 +5,7 @@ import { ArrowLeft, ArrowRight, BarChart3, Briefcase, CheckCircle2, Code2, Globe
 import type { ComponentType } from 'react';
 import { getServiceBySlug } from '../data/serviceCatalog';
 import SitePortfolio from '../components/SitePortfolio';
+import DomainPortfolio from '../components/DomainPortfolio';
 
 const icons: Record<string, ComponentType<{ className?: string }>> = {
   estrategia: Briefcase, inovacao: Rocket, marketing: BarChart3, 'midia-paga': Megaphone,
@@ -107,6 +108,7 @@ const ServiceDetailPage = () => {
         </section>
 
         {service.slug === 'sites' && <SitePortfolio />}
+        {service.slug === 'dominio' && <DomainPortfolio />}
 
         <section className="container-custom py-12 sm:py-16">
           <div className="grid gap-5 lg:grid-cols-[0.8fr_1.2fr]">
