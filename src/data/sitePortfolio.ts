@@ -1,5 +1,12 @@
 export const sitePortfolio = [
   {
+    name: 'Norcfit',
+    domain: 'norcfit.vercel.app',
+    url: 'https://norcfit.vercel.app',
+    screenshot: '/sites/Site-norcfit.png',
+    description: 'Plataforma fitness com foco em performance e experiência do usuário.',
+  },
+  {
     name: 'Intentia',
     domain: 'intentia.com.br',
     url: 'https://intentia.com.br',
