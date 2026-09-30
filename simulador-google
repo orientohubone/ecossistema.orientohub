@@ -1,0 +1,190 @@
+User prompt: ok agora para o serviço google meu negócio que tenho, hoje trabalho o valor de 249,00 pra criar o perfil, subir fotos, realizar as devidas atualizações pra tangibilizar a importancia eu pensei em criar um comparador probabilistico da marca via localização dada pelo usuário via cep por exemplo
+Response: A ideia de um comparador probabilístico por localização (CEP) é excelente para tangibilizar o valor desse serviço.
+No Google, as decisões locais são regidas por três pilares algorítmicos oficiais: Relevância, Distância e Proeminência. O maior obstáculo para vender o perfil por R$ 249,00 é que o empresário comum acha que basta "existir" para ser achado. Ele não entende que o Google exibe prioritariamente o Local Pack (apenas os 3 primeiros perfis em destaque no mapa), que costuma capturar de 70% a 80% das ligações e cliques locais.
+Aqui está como modelar a lógica desse comparador e transformá-lo em uma máquina de conversão na sua página.
+1. A Lógica Probabilística do Simulador
+O algoritmo não precisa rodar uma consulta pesada na API de mapas em tempo real para cada visitante. Você pode construir um Modelo Heurístico de Exposição Local baseado nos critérios reais de ranqueamento:
+[Inputs do Usuário]
+  ├── CEP / Bairro
+  ├── Segmento de Atuação (ex: Barbearia, Clínica, Oficina, Restaurante)
+  └── Status Atual ("Ainda não tenho", "Tenho mas está básico", "Não sei")
+           │
+           ▼
+[Motor Heurístico de Probabilidade]
+  • Fator Raio (Proximidade): Peso 30%
+  • Fator Relevância (Categoria correta + Atributos): Peso 35%
+  • Fator Proeminência (Fotos ativas + Verificação oficial): Peso 35%
+           │
+           ▼
+[Diagnóstico de Vulnerabilidade e Perda de Demanda]
+
+
+A Matriz de Pontuação (Score de Penetração Local):
+Cenário A (Sem perfil verificado ou inexistente):
+Probabilidade de aparição no Top 3 do bairro: < 5%.
+Diagnóstico: "Invisibilidade algorítmica total nas buscas por proximidade."
+Cenário B (Perfil criado pelo dono, sem fotos otimizadas e atributos incompletos):
+Probabilidade de aparição: 15% a 25%.
+Diagnóstico: "Perfil passivo. Perfis completos e atualizados recebem até 7x mais cliques e capturam as buscas antes do seu negócio."
+Cenário C (Perfil configurado, verificado e alimentado com fotos):
+Probabilidade projetada: 70% a 85% no raio direto de atendimento (1 a 5 km).
+2. O Que Mostrar na Tela para o Usuário
+Em vez de dar apenas uma nota abstrata (tipo "Nota 6/10"), entregue métricas de impacto no bolso:
+Índice de Captura Local:
+Uma barra comparativa mostrando a probabilidade dele ser escolhido por quem pesquisa no bairro hoje (Ex: 12%) versus o potencial após a otimização (Ex: 78%).
+Raio de Descoberta Eficaz:
+Mostrar que, sem otimização de categoria e fotos, o perfil mal é entregue a mais de 300 metros; com perfil completo, o raio se estende para bairros vizinhos.
+Alerta de Perda de Clientes:
+"No seu CEP e região circundante, ocorrem diariamente dezenas de buscas comerciais de alta intenção ('onde comprar', 'aberto agora', 'perto de mim'). Hoje, 100% dessa demanda está sendo absorvida pelos 3 concorrentes da sua área que possuem perfil ativo."
+3. A Ancoragem de R$ 249,00 (O Gancho de Venda)
+O preço de R$ 249,00 para configuração, envio de fotos e alinhamento do perfil é um investimento de pagamento único com retorno contínuo. O fechamento da ferramenta deve usar a lógica do custo de aquisição de clientes:
+O que o diagnóstico revela para o seu endereço:
+Estar fora do Top 3 do Google Maps custa clientes todos os dias para estabelecimentos próximos a você.
+Estruturação Completa de Presença Local:
+• Configuração e reivindicação oficial do perfil
+• Enquadramento na categoria primária correta (fator nº 1 de relevância)
+• Cadastro de horário preciso, serviços e canais de contato
+• Curadoria e envio do lote de fotos para elevar a confiança do algoritmo
+Investimento Único: R$ 249,00
+(Basta 1 a 2 novos clientes atraídos pelo mapa para a estruturação se pagar por completo).
+[ Quero Colocar Minha Empresa no Mapa ]
+4. Implementação Prática
+Front-end: Um campo simples de CEP com consulta rápida via API de CEP (como ViaCEP, que retorna bairro e cidade) + um seletor rápido de nicho.
+Efeito de Cálculo: O visitante digita o CEP XXXXX-XXX, escolhe a profissão, clica em "Calcular Visibilidade", a barra carrega uma animação rápida simulando a análise do raio comercial e exibe o card de diagnóstico já puxando o nome da cidade/bairro digitado.
+Quer que estruturemos os campos desse formulário e o texto exato do relatório que a ferramenta vai imprimir na tela?
+Sources
+Local SEO Ranking Factors 2026: The Complete Data Guide - Flento
+Local SEO Ranking Factors 2026 [Full Algorithm]
+
+User prompt: isso deixe no jeito tudo, pra depois voce me fornecer um md completo pronto pra subir lá
+Response: Aqui está a especificação completa em Markdown, estruturada com a camada de entrada, as regras de cálculo heurístico, os templates visuais de saída e o bloco de ancoragem comercial para R$ 249,00.
+# Simulador de Penetração e Visibilidade Local (Google Maps)
+*Documento de Especificação Técnica e Conteúdo para Página de Vendas*
+
+---
+
+## 1. Campos de Entrada (Formulário Front-End)
+
+```html
+<!-- Bloco de Input do Usuário -->
+<form id="simulador-gmn">
+  <!-- Campo 1: CEP -->
+  <label for="cep">CEP da Empresa:</label>
+  <input type="text" id="cep" name="cep" placeholder="00000-000" maxlength="9" required />
+  <span id="localizacao-detectada" class="text-muted"></span>
+
+  <!-- Campo 2: Segmento de Atuação -->
+  <label for="segmento">Nicho de Mercado:</label>
+  <select id="segmento" name="segmento" required>
+    <option value="" disabled selected>Selecione seu segmento...</option>
+    <option value="alimentacao">Alimentação (Restaurante, Bar, Cafeteria, Delivery)</option>
+    <option value="beleza_saude">Saúde & Estética (Clínica, Consultório, Barbearia, Salão)</option>
+    <option value="automotivo">Automotivo (Oficina, Centro Automotivo, Lava-rápido)</option>
+    <option value="servicos_locais">Serviços Especializados (Escritório, Imobiliária, Assistência)</option>
+    <option value="varejo_fisico">Comércio Varejista (Loja Física, Depósito, Empório)</option>
+  </select>
+
+  <!-- Campo 3: Nível de Presença Atual -->
+  <label for="status">Como sua empresa está hoje no Google?</label>
+  <select id="status" name="status" required>
+    <option value="nenhum">Ainda não possuo perfil cadastrado</option>
+    <option value="abandonado">Criei um perfil básico, mas nunca atualizei/subi fotos</option>
+    <option value="incompleto">Possuo perfil, mas não sei se está bem configurado</option>
+  </select>
+
+  <button type="submit" id="btn-calcular">Analisar Potencial de Captura Local</button>
+</form>
+
+
+2. Motor Heurístico de Cálculo (Lógica de Execução)
+O algoritmo combina os dados de localização (via API ViaCEP) aos pesos dos três fatores oficiais do algoritmo de busca local do Google: Relevância, Distância e Proeminência.
+Matriz de Pesos e Diagnóstico
+
+Status Selecionado
+Probabilidade Atual no Top 3
+Raio Útil de Descoberta
+Taxa de Fuga de Clientes
+Probabilidade Projetada (Otimizado)
+Não cadastrado
+< 2%
+0 metros
+100% da demanda absorvida por concorrentes
+70% a 85%
+Abandonado
+12% a 18%
+Até 350 metros
+82% das buscas desviam para perfis com fotos
+75% a 88%
+Incompleto
+25% a 35%
+Até 800 metros
+Perda frequente para perfis verificados e ativos
+80% a 90%
+
+Micro-Animação de Processamento (2,5 segundos)
+Antes de mostrar o card final, exiba estas mensagens dinâmicas:
+Mapeando densidade comercial no CEP [CEP_DIGITADO]...
+Calculando raio de cobertura para o segmento [SEGMENTO]...
+Processando índice de concorrência no Local Pack...
+3. Template do Diagnóstico de Saída (Exibição em Tela)
+Renderize os dados dinamicamente após o processamento, injetando o bairro e cidade retornados pela consulta do CEP:
+---
+### Diagnóstico de Presença Local: [BAIRRO], [CIDADE]
+
+**Segmento:** [NOME DO NICHO]  
+**Índice de Captura Atual:** [PROBABILIDADE_ATUAL]%  
+**Potencial de Cobertura com Otimização:** [PROBABILIDADE_PROJETADA]%
+
+---
+
+#### 1. Raio de Descoberta Comercial
+- **Cenário Atual:** Sua empresa tem alcance restrito a aproximadamente **[RAIO_ATUAL]** do ponto físico. Buscas realizadas em avenidas ou bairros vizinhos são desordenadamente entregues a estabelecimentos com fichas atualizadas.
+- **Cenário Otimizado:** Com categorias secundárias corretas e geolocalização de imagens, o raio de relevância se expande para **3 a 7 km**, cobrindo os principais eixos de fluxo do município.
+
+#### 2. Comportamento do Consumidor no Bairro
+- Perfis que contêm fotos recentes de boa qualidade e dados de horário precisos recebem até **7x mais solicitações de rota** e **4x mais ligações diretas** pelo Google Maps.
+- A cada 10 pessoas que pesquisam pelo seu serviço na sua região, **[TAXA_FUGA]%** tomam a decisão entre os 3 primeiros perfis em destaque (*Google Local Pack*).
+
+---
+
+
+4. Bloco de Oferta e Fechamento (Gatilho de R$ 249,00)
+Insira este bloco exatamente abaixo do card de diagnóstico:
+---
+
+### Coloque sua marca no radar de quem já está procurando pelo seu serviço
+
+Estar invisível no mapa custa vendas todos os dias para estabelecimentos próximos a você. A estruturação profissional do seu perfil resolve os três pilares que o algoritmo exige para priorizar a sua empresa nas pesquisas da região.
+
+**Serviço de Estruturação e Ativação de Perfil:**
+* **Reivindicação e Verificação Oficial:** Regularização da posse da empresa junto ao Google.
+* **Alinhamento de Categorias & Atributos:** Definição precisa da categoria primária e secundárias para ativar relevância máxima.
+* **Curadoria e Upload Estruturado de Imagens:** Fotos da fachada, interior e catálogo aplicadas de acordo com as diretrizes do buscador.
+* **Canais de Contato e Horários:** Integração de WhatsApp, links diretos, área de atendimento e horários operacionais sem ruído.
+
+> **Investimento Único: R$ 249,00** *(Sem cobranças recorrentes)*  
+> *Basta 1 novo cliente atraído pelo mapa para pagar integralmente o serviço.*
+
+[ ATIVAR MEU PERFIL NO GOOGLE AGORA ]
+*(Link configurado: `[seusite.com/contato?origem=simulador-gmn&cep=](https://seusite.com/contato?origem=simulador-gmn&cep=)[CEP]&nicho=[SEGMENTO]`)*
+
+
+5. Script de Integração (Passagem Dinâmica para Contato)
+Insira o script abaixo no botão de conversão para pré-carregar os dados na página de destino:
+document.querySelector('#btn-ativar').addEventListener('click', function(e) {
+  e.preventDefault();
+  
+  const cep = document.querySelector('#cep').value;
+  const segmento = document.querySelector('#segmento').value;
+  const bairro = document.querySelector('#localizacao-detectada').textContent;
+  
+  const urlDestino = `/contato?origem=simulador-gmn` +
+                     `&cep=${encodeURIComponent(cep)}` +
+                     `&bairro=${encodeURIComponent(bairro)}` +
+                     `&segmento=${encodeURIComponent(segmento)}` +
+                     `&servico=google-meu-negocio-249`;
+                     
+  window.location.href = urlDestino;
+});
+
+

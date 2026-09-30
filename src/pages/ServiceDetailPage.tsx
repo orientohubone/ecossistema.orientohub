@@ -6,6 +6,8 @@ import type { ComponentType } from 'react';
 import { getServiceBySlug } from '../data/serviceCatalog';
 import SitePortfolio from '../components/SitePortfolio';
 import DomainPortfolio from '../components/DomainPortfolio';
+import NamingGenerator from '../components/NamingGenerator';
+import LocalSearchSimulator from '../components/LocalSearchSimulator';
 
 const icons: Record<string, ComponentType<{ className?: string }>> = {
   estrategia: Briefcase, inovacao: Rocket, marketing: BarChart3, 'midia-paga': Megaphone,
@@ -109,6 +111,8 @@ const ServiceDetailPage = () => {
 
         {service.slug === 'sites' && <SitePortfolio />}
         {service.slug === 'dominio' && <DomainPortfolio />}
+        {service.slug === 'naming' && <NamingGenerator />}
+        {service.slug === 'google-meu-negocio' && <LocalSearchSimulator />}
 
         <section className="container-custom py-12 sm:py-16">
           <div className="grid gap-5 lg:grid-cols-[0.8fr_1.2fr]">

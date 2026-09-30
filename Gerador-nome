@@ -1,0 +1,100 @@
+Esta é a estrutura de lógica em camadas para o prompt do agente no Antigravity, desenhada para emular um motor de linguística computacional e explicitar o rigor metodológico ao usuário.
+Arquitetura do Prompt (System Instructions)
+
+
+
+Markdown
+Você é o Motor Simbólico de Naming da Intentia/OrientoHub. Sua função não é adivinhar nomes aleatórios, mas aplicar regras formais de morfologia, etimologia e semântica estrutural para construir opções viáveis de marca a partir de um briefing condensado.
+
+DIRETRIZES DE PROCESSAMENTO:
+1. Decomposição Semântica: Extraia os conceitos nucleares do input (Atributo Principal + Atributo Secundário + Território de Atuação).
+2. Mapeamento Morfológico: Identifique radicais greco-latinos, étimos anglo-saxões ou morfemas evocativos associados a esses conceitos.
+3. Aplicação das Fórmulas Construtivas (Gere exatamente 3 rotas distintas):
+   - ROTA 1: Aglutinação / Portmanteau (Fusão silábica balanceada de dois conceitos).
+   - ROTA 2: Neologismo Derivacional (Radical etimológico + Sufixo de funcionalidade/abstração como -is, -or, -ex, -um, -ia).
+   - ROTA 3: Deslocamento Semântico Metatópico (Conceito de domínio cruzado: física, arquitetura, botânica ou navegação aplicada ao nicho).
+4. Restrição de Saída: Não use clichês vazios de IA (ex: "Omni-", "Tech-", "Smart-"). Priorize fluidez fonética e legibilidade em português.
+
+ESTRUTURA OBRIGATÓRIA DA RESPOSTA:
+Para cada uma das 3 rotas, entregue estritamente neste padrão:
+
+---
+### Opção [N]: [NOME CRIADO]
+- **Técnica:** [Aglutinação / Derivação / Deslocamento Semântico]
+- **Fórmula Morfológica:** [Ex: Radical A (significado) + Sufixo B (sensação/função)]
+- **Racional Semântico:** [Explicação em 2 linhas de como o nome ancora o posicionamento]
+- **Índice Fonético:** [Ex: Dissílabo paroxítono, consoantes plosivas para autoridade]
+---
+
+BLOCO FINAL OBRIGATÓRIO (Gatilho de Conversão):
+Inclua um aviso técnico padronizado:
+"⚠️ **Diagnóstico de Viabilidade**: Nomes construídos morfologicamente reduzem atrito fonético, mas exigem checagem de anterioridade na base do INPI (marcas idênticas e colidência fonética na Classe Nice correspondente) para garantir exclusividade e registro legal."
+
+
+Variáveis de Entrada do Briefing
+No fluxo do Antigravity, defina as variáveis de entrada que o usuário deve preencher (via formulário ou chat inicial):
+{{nicho_mercado}}: Ex: "Consultoria financeira para pequenos produtores rurais"
+{{atributos_chave}}: Ex: "Solidez, modernidade, clareza operacional"
+{{estetica_sonora}}: Ex: "Sóbrio, curto, sem estrangeirismos difíceis"
+Exemplo de Resposta Gerada pelo Motor
+Para testar a saída no Antigravity com o nicho de Software de Gestão Odontológica:
+Opção 1: Odontus
+Técnica: Derivação Neológica
+Fórmula Morfológica: Odonto- (raiz grega: dente) + -us (desinência latina: estabilidade/instituição)
+Racional Semântico: Remete à autoridade clínica sem parecer burocrático, ancorando confiança técnica instantânea.
+Índice Fonético: Trissílabo paroxítono com terminação suave.
+Opção 2: Valenta
+Técnica: Deslocamento Semântico Metatópico
+Fórmula Morfológica: Derivado de Valência (química/vínculo forte)
+Racional Semântico: Move o foco da ferramenta para a capacidade de retenção e organização dos dados clínicos.
+Índice Fonético: Consoantes líquidas intercaladas, alta memorabilidade.
+⚠️ Diagnóstico de Viabilidade: Nomes construídos morfologicamente reduzem atrito fonético, mas exigem checagem de anterioridade na base do INPI (marcas idênticas e colidência fonética na Classe Nice correspondente) para garantir exclusividade e registro legal.
+Você pretende disponibilizar esse gerador como um webhook/API direto em uma landing page ou como um fluxo interativo no chat?
+
+
+Para rodar direto na página de vendas como ferramenta de atração e conversão, o gerador precisa equilibrar baixa fricção na entrada, alto valor percebido no processamento e uma ponte clara para a contratação dos R$ 350,00.
+1. UX do Formulário (Entrada Mínima)
+Não sobrecarregue o visitante com um briefing longo logo de início. Reduza a entrada a 3 campos objetivos:
+O que sua empresa faz? (Ex.: Clínica odontológica de estética avançada)
+Sensação que deseja transmitir? (Ex.: Autoridade, precisão e sofisticação)
+Tipo de sonoridade: (Select simples: Curto e direto, Clássico e imponente, ou Moderno e abstrato)
+2. O Efeito de "Esforço Percebido" (Loading State)
+Se a resposta aparecer instantaneamente, o visitante acha que é um sorteador aleatório de palavras. Crie um delay artificial de 2 a 3 segundos no front-end alternando pequenos status enquanto o backend processa:
+⏳ Decompondo conceitos semânticos...
+⏳ Mapeando étimos greco-latinos...
+⏳ Avaliando padrões fonéticos...
+Isso reforça visualmente que existe uma regra metodológica acontecendo nos bastidores.
+3. Ajuste do Prompt para Resposta em JSON
+Para renderizar cards visuais elegantes na sua página (em vez de um bloco de texto Markdown solto), configure o agente no Antigravity para retornar estritamente um schema JSON:
+
+
+
+JSON
+{
+  "opcoes": [
+    {
+      "nome": "Odontus",
+      "tecnica": "Derivação Neológica",
+      "formula": "Radical Odonto- + Sufixo -us",
+      "racional": "Transmite autoridade técnica clínica com ancoragem clássica.",
+      "fonetica": "Dissílabo paroxítono, dicção firme."
+    }
+  ]
+}
+
+
+No front-end, você renderiza cada item em um card limpo, destacando o Nome em destaque e a Fórmula logo abaixo como um selo técnico.
+4. O Gancho de Conversão (Abaixo dos Resultados)
+Logo após os 3 cards, insira o bloco de ancoragem que vende o serviço manual:
+Gostou de alguma das direções?
+Um bom nome é apenas 20% do processo. O maior risco de uma marca é investir em identidade visual e fachada para depois ser notificado por colidência fonética ou marca idêntica no INPI.
+Serviço Completo de Naming & Viabilidade:
+• Briefing aprofundado de posicionamento
+• Busca formal de anterioridade na base do INPI (Classes Nice)
+• Relatório de risco jurídico e viabilidade de registro
+• R$ 350,00 — Proteja seu negócio antes de registrar o domínio.
+[ Contratar Análise e Criação Completa ]
+5. Medidas Técnicas de Proteção
+Como a chamada ficará pública no front-end:
+Rate Limiting: Trave por IP ou cookie local (ex.: máximo de 3 gerações por visitante a cada 24 horas) para evitar consumo excessivo da sua API.
+Sanitização de Input: Limite o campo de texto a no máximo 100 caracteres para evitar injeção de prompt ou uso indevido do seu backend.

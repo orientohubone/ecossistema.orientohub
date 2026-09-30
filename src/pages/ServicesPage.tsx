@@ -147,7 +147,25 @@ const ServicesPage = () => (
                     <div className="flex min-w-0 flex-1 flex-col">
                     <h2 className="text-lg font-bold sm:text-xl">{service.title}</h2>
                     <p className="mt-1 text-base leading-relaxed text-gray-400">{service.description}</p>
-                    <span className="mt-auto inline-flex items-center gap-1 pt-4 text-sm font-semibold text-primary-300 transition group-hover:gap-2">Conhecer serviço <ArrowRight className="h-4 w-4" /></span>
+                    
+                    {service.slug === 'google-meu-negocio' && (
+                      <div className="mt-4 relative group/badge overflow-hidden rounded-full border border-primary-500/40 bg-gradient-to-r from-primary-500/20 via-yellow-400/10 to-primary-500/20 shadow-[0_8px_24px_rgba(234,179,8,0.12)] transition-all duration-300 hover:border-primary-400 hover:shadow-[0_12px_32px_rgba(234,179,8,0.25)]">
+                        <span className="absolute inset-[1px] rounded-full bg-[#131820] transition-colors duration-300 group-hover/badge:bg-[#131820]/40" />
+                        <div className="relative flex w-fit items-center gap-2 px-3.5 py-1.5 text-[10px] font-bold uppercase tracking-widest text-primary-300">
+                          <Sparkles className="h-3.5 w-3.5 text-primary-400" /> Experimente nosso simulador
+                        </div>
+                      </div>
+                    )}
+                    {service.slug === 'naming' && (
+                      <div className="mt-4 relative group/badge overflow-hidden rounded-full border border-primary-500/40 bg-gradient-to-r from-primary-500/20 via-yellow-400/10 to-primary-500/20 shadow-[0_8px_24px_rgba(234,179,8,0.12)] transition-all duration-300 hover:border-primary-400 hover:shadow-[0_12px_32px_rgba(234,179,8,0.25)]">
+                        <span className="absolute inset-[1px] rounded-full bg-[#131820] transition-colors duration-300 group-hover/badge:bg-[#131820]/40" />
+                        <div className="relative flex w-fit items-center gap-2 px-3.5 py-1.5 text-[10px] font-bold uppercase tracking-widest text-primary-300">
+                          <Sparkles className="h-3.5 w-3.5 text-primary-400" /> Experimente nosso gerador
+                        </div>
+                      </div>
+                    )}
+
+                    <span className="mt-auto inline-flex items-center gap-1 pt-5 text-sm font-semibold text-primary-300 transition group-hover:gap-2">Conhecer serviço <ArrowRight className="h-4 w-4" /></span>
                     </div>
                   </div>
                   {service.pricing && <ServicePriceTag pricing={service.pricing} accent={service.accent} />}
