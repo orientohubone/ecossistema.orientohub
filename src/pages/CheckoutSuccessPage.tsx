@@ -24,7 +24,10 @@ const CheckoutSuccessPage = () => {
     };
 
     useEffect(() => {
-        if (!user) return;
+        if (!user) {
+            const loginTimer = setTimeout(() => navigate('/entrar', { replace: true, state: { from: { pathname: '/dashboard' }, email: sessionStorage.getItem('checkoutEmail') || '' } }), 3500);
+            return () => clearTimeout(loginTimer);
+        }
 
         let cancelled = false;
         let redirectTimer: ReturnType<typeof setTimeout> | undefined;
@@ -116,7 +119,7 @@ const CheckoutSuccessPage = () => {
                             className="text-center text-gray-600 dark:text-gray-400 mb-8"
                         >
                             {!user
-                                ? 'Recebemos seu retorno do Mercado Pago. A confirmação e os dados da assinatura serão enviados ao e-mail informado.'
+                                ? 'Pagamento recebido. Você será direcionado para entrar e acessar o painel.'
                                 : activationStatus === 'active'
                                 ? 'Assinatura ativada! Você será direcionado ao Dashboard.'
                                 : activationStatus === 'timeout'

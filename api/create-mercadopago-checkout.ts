@@ -27,7 +27,7 @@ export default async function handler(request: VercelRequest, response: VercelRe
   const supabaseUrl = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL;
   const supabaseAnonKey = process.env.SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_ANON_KEY;
   const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  const { plan, billing, email } = request.body ?? {};
+  const { plan, billing, email, newUserId } = request.body ?? {};
 
   if (plan !== 'pro' || !['monthly', 'annual'].includes(billing)) {
     return response.status(400).json({ message: 'Plano ou ciclo de cobrança inválido.' });
@@ -51,10 +51,19 @@ export default async function handler(request: VercelRequest, response: VercelRe
     const { data } = await auth.auth.getUser(token);
     userId = data.user?.id ?? null;
   }
+  if (!userId && typeof newUserId === 'string') {
+    const admin = createClient(supabaseUrl!, serviceRoleKey!, { auth: { persistSession: false } });
+    const { data, error } = await admin.auth.admin.getUserById(newUserId);
+    if (error || data.user?.email?.toLowerCase() !== email.trim().toLowerCase()) {
+      return response.status(401).json({ message: 'Não foi possível validar a conta criada.' });
+    }
+    userId = data.user.id;
+  }
+  if (!userId) return response.status(401).json({ message: 'Crie sua conta ou faça login antes de continuar.' });
 
   const cycle = billing as BillingCycle;
   const offer = OFFERS[cycle];
-  const externalReference = `orientohub:${userId || 'guest'}:pro:${cycle}:${Date.now()}`;
+  const externalReference = `orientohub:${userId}:pro:${cycle}:${Date.now()}`;
   const origin = getOrigin(request);
 
   try {

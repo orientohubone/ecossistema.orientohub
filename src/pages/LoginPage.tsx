@@ -24,7 +24,7 @@ const LoginPage = () => {
   const location = useLocation();
   const { login, isLoading, error, connectionStatus, resendConfirmationEmail, initAuth } = useAuthStore();
 
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState(() => location.state?.email || '');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);

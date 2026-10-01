@@ -2,7 +2,7 @@ import { FormEvent, useEffect, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { AlertCircle, ArrowLeft, ArrowRight, Check, CreditCard, Loader2, Lock, Mail, Shield, Sparkles } from 'lucide-react';
+import { AlertCircle, ArrowLeft, ArrowRight, Check, CreditCard, Eye, EyeOff, Loader2, Lock, Mail, Shield, Sparkles, User } from 'lucide-react';
 import { supabase } from '../config/supabase';
 
 const CheckoutPage = () => {
@@ -13,6 +13,12 @@ const CheckoutPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [email, setEmail] = useState('');
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+  const [name, setName] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [acceptTerms, setAcceptTerms] = useState(false);
 
   const amount = billing === 'annual' ? 970 : 97;
   const cancelled = params.get('cancelled') === '1';
@@ -21,6 +27,7 @@ const CheckoutPage = () => {
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
       if (data.session?.user.email) setEmail(data.session.user.email);
+      setIsAuthenticated(Boolean(data.session));
     });
   }, []);
 
@@ -29,14 +36,35 @@ const CheckoutPage = () => {
     setError(null);
     setIsSubmitting(true);
     try {
-      const { data: sessionData } = await supabase.auth.getSession();
+      let { data: sessionData } = await supabase.auth.getSession();
+      let newUserId: string | undefined;
+
+      if (!sessionData.session) {
+        if (!name.trim()) throw new Error('Informe seu nome completo.');
+        if (password.length < 6) throw new Error('A senha deve ter no mínimo 6 caracteres.');
+        if (password !== confirmPassword) throw new Error('As senhas não coincidem.');
+        if (!acceptTerms) throw new Error('Você precisa aceitar os Termos de Serviço e a Política de Privacidade.');
+
+        const { data: signupData, error: signupError } = await supabase.auth.signUp({
+          email: email.trim().toLowerCase(),
+          password,
+          options: { data: { name: name.trim() } },
+        });
+        if (signupError) throw signupError;
+        if (!signupData.user || signupData.user.identities?.length === 0) {
+          throw new Error('Este e-mail já possui uma conta. Faça login antes de continuar.');
+        }
+        newUserId = signupData.user.id;
+        sessionData = { session: signupData.session };
+      }
+
       const result = await fetch('/api/create-mercadopago-checkout', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           ...(sessionData.session?.access_token ? { Authorization: `Bearer ${sessionData.session.access_token}` } : {}),
         },
-        body: JSON.stringify({ plan, billing, email }),
+        body: JSON.stringify({ plan, billing, email, newUserId }),
       });
       const contentType = result.headers.get('content-type') || '';
       const data = contentType.includes('application/json') ? await result.json() : {};
@@ -44,6 +72,7 @@ const CheckoutPage = () => {
         throw new Error('A API de pagamento não está disponível neste ambiente. Use “vercel dev” ou publique o projeto na Vercel.');
       }
       if (!result.ok || !data.checkoutUrl) throw new Error(data.message || 'Não foi possível iniciar o pagamento.');
+      sessionStorage.setItem('checkoutEmail', email.trim().toLowerCase());
       window.location.assign(data.checkoutUrl);
     } catch (submitError: any) {
       setError(submitError.message || 'Não foi possível iniciar o pagamento.');
@@ -85,7 +114,8 @@ const CheckoutPage = () => {
             <motion.form initial={{ opacity: 0, x: 18 }} animate={{ opacity: 1, x: 0 }} onSubmit={submit} className="border-t border-white/10 bg-white p-6 text-gray-950 sm:p-10 lg:border-l lg:border-t-0">
               <div className="mb-7 flex items-center gap-3"><span className="flex h-11 w-11 items-center justify-center rounded-xl bg-gray-950 text-primary-400"><CreditCard className="h-5 w-5" /></span><div><h2 className="text-xl font-bold">Resumo do pedido</h2><p className="text-sm text-gray-500">Assinatura {billing === 'annual' ? 'anual' : 'mensal'}</p></div></div>
               <div className="space-y-4 rounded-2xl border border-gray-200 bg-gray-50 p-5"><div className="flex justify-between"><span className="text-gray-600">OrientoHub Pro</span><span className="font-semibold">R$ {amount.toFixed(2).replace('.', ',')}</span></div><div className="flex justify-between border-t border-gray-200 pt-4 text-lg font-bold"><span>Total</span><span>R$ {amount.toFixed(2).replace('.', ',')}</span></div><p className="text-xs text-gray-500">Renovação automática a cada {billing === 'annual' ? 'ano' : 'mês'}. Cancele quando quiser.</p></div>
-              <label className="mt-5 block text-sm font-semibold text-gray-700">E-mail da assinatura<div className="mt-2 flex items-center gap-2 rounded-xl border border-gray-300 bg-white px-3 focus-within:border-primary-500 focus-within:ring-1 focus-within:ring-primary-500"><Mail className="h-4 w-4 text-gray-400" /><input type="email" required autoComplete="email" value={email} onChange={(event) => setEmail(event.target.value)} placeholder="voce@empresa.com" className="w-full border-0 bg-transparent py-3 outline-none" /></div></label>
+              {isAuthenticated === false && <div className="mt-5 space-y-4 rounded-2xl border border-gray-200 p-4"><p className="text-sm font-bold">Crie sua conta para acessar o painel</p><label className="block text-sm font-semibold text-gray-700">Nome completo<div className="mt-2 flex items-center gap-2 rounded-xl border border-gray-300 px-3 focus-within:border-primary-500"><User className="h-4 w-4 text-gray-400" /><input required autoComplete="name" value={name} onChange={(event) => setName(event.target.value)} className="w-full py-3 outline-none" /></div></label><label className="block text-sm font-semibold text-gray-700">Senha<div className="mt-2 flex items-center gap-2 rounded-xl border border-gray-300 px-3 focus-within:border-primary-500"><Lock className="h-4 w-4 text-gray-400" /><input type={showPassword ? 'text' : 'password'} required minLength={6} autoComplete="new-password" value={password} onChange={(event) => setPassword(event.target.value)} className="w-full py-3 outline-none" /><button type="button" onClick={() => setShowPassword((value) => !value)} aria-label={showPassword ? 'Ocultar senha' : 'Mostrar senha'}>{showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}</button></div></label><label className="block text-sm font-semibold text-gray-700">Confirmar senha<input type="password" required minLength={6} autoComplete="new-password" value={confirmPassword} onChange={(event) => setConfirmPassword(event.target.value)} className="mt-2 w-full rounded-xl border border-gray-300 px-3 py-3 outline-none focus:border-primary-500" /></label><label className="flex items-start gap-2 text-xs font-normal text-gray-600"><input type="checkbox" required checked={acceptTerms} onChange={(event) => setAcceptTerms(event.target.checked)} className="mt-0.5" /><span>Li e concordo com os <Link className="font-semibold underline" to="/termos">Termos de Serviço</Link> e a <Link className="font-semibold underline" to="/privacidade">Política de Privacidade</Link>.</span></label><p className="text-xs text-gray-500">Já possui conta? <Link to="/entrar" className="font-semibold text-gray-950 underline">Entre antes de contratar</Link>.</p></div>}
+              <label className="mt-5 block text-sm font-semibold text-gray-700">E-mail da assinatura<div className="mt-2 flex items-center gap-2 rounded-xl border border-gray-300 bg-white px-3 focus-within:border-primary-500 focus-within:ring-1 focus-within:ring-primary-500"><Mail className="h-4 w-4 text-gray-400" /><input type="email" required readOnly={isAuthenticated === true} autoComplete="email" value={email} onChange={(event) => setEmail(event.target.value)} placeholder="voce@empresa.com" className="w-full border-0 bg-transparent py-3 outline-none read-only:text-gray-500" /></div></label>
               {(cancelled || expired || error) && <div role="alert" className="mt-5 flex gap-2 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-800"><AlertCircle className="h-5 w-5 shrink-0" /><span>{error || (expired ? 'Este checkout expirou. Gere um novo para continuar.' : 'O pagamento foi cancelado. Você pode tentar novamente.')}</span></div>}
               <button disabled={isSubmitting} className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-primary-400 px-5 py-4 font-bold text-black transition hover:bg-primary-300 disabled:cursor-wait disabled:opacity-60">{isSubmitting ? <><Loader2 className="h-5 w-5 animate-spin" />Preparando checkout...</> : <>Continuar para pagamento <ArrowRight className="h-5 w-5" /></>}</button>
               <p className="mt-4 flex items-center justify-center gap-2 text-center text-xs text-gray-500"><Lock className="h-4 w-4 text-green-600" />Checkout criptografado e processado pelo Mercado Pago.</p>
