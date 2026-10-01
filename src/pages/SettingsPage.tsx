@@ -142,6 +142,7 @@ const SettingsPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [isCancellingSubscription, setIsCancellingSubscription] = useState(false);
 
   // User data (mock - em produção viria do Supabase)
   const [currentPlan, setCurrentPlan] = useState('free');
@@ -167,6 +168,29 @@ const SettingsPage = () => {
 
     loadCurrentPlan();
   }, [user]);
+
+  const cancelSubscription = async () => {
+    if (!window.confirm('Deseja cancelar sua assinatura Pro? O acesso premium será encerrado e não haverá novas cobranças.')) return;
+    setIsCancellingSubscription(true);
+    setErrorMessage('');
+    setSuccessMessage('');
+    try {
+      const { data } = await supabase.auth.getSession();
+      if (!data.session?.access_token) throw new Error('Sua sessão expirou. Entre novamente para cancelar.');
+      const result = await fetch('/api/cancel-mercadopago-subscription', {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${data.session.access_token}` },
+      });
+      const body = await result.json();
+      if (!result.ok) throw new Error(body.message || 'Não foi possível cancelar a assinatura.');
+      setCurrentPlan('free');
+      setSuccessMessage(body.message);
+    } catch (error) {
+      setErrorMessage(error instanceof Error ? error.message : 'Não foi possível cancelar a assinatura.');
+    } finally {
+      setIsCancellingSubscription(false);
+    }
+  };
 
   const plans: Plan[] = [
     {
@@ -706,6 +730,16 @@ const SettingsPage = () => {
                         </div>
                       ))}
                     </div>
+                    {currentPlan === 'pro' && (
+                      <div className="rounded-2xl border border-red-500/25 bg-red-500/5 p-5">
+                        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                          <div><h3 className="font-bold text-white">Cancelar assinatura</h3><p className="mt-1 text-sm text-[#9ba9bc]">Cancele online a qualquer momento. Nenhuma nova cobrança será realizada.</p></div>
+                          <button type="button" onClick={cancelSubscription} disabled={isCancellingSubscription} className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl border border-red-500/50 px-4 py-2.5 text-sm font-bold text-red-300 transition hover:bg-red-500/10 disabled:opacity-50">
+                            {isCancellingSubscription ? <RefreshCw className="h-4 w-4 animate-spin" /> : <XCircle className="h-4 w-4" />}{isCancellingSubscription ? 'Cancelando...' : 'Cancelar assinatura'}
+                          </button>
+                        </div>
+                      </div>
+                    )}
                   </motion.div>
                 )}
 

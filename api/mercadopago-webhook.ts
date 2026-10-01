@@ -33,7 +33,7 @@ export default async function handler(request: VercelRequest, response: VercelRe
   if (!dataId || !validSignature(request, dataId)) return response.status(401).json({ message: 'Assinatura inválida.' });
 
   const topic = String(first(request.query.type) || request.body?.type || '');
-  if (!['subscription_preapproval', 'preapproval'].includes(topic)) return response.status(204).end();
+  if (!['subscription_preapproval', 'preapproval'].includes(topic)) return response.status(200).json({ received: true });
 
   const accessToken = process.env.MERCADOPAGO_ACCESS_TOKEN;
   const supabaseUrl = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL;
@@ -55,5 +55,5 @@ export default async function handler(request: VercelRequest, response: VercelRe
     console.error('Erro ao sincronizar assinatura Mercado Pago:', error);
     return response.status(500).json({ message: 'Erro ao sincronizar assinatura.' });
   }
-  return response.status(204).end();
+  return response.status(200).json({ received: true });
 }
