@@ -8,6 +8,11 @@ import SitePortfolio from '../components/SitePortfolio';
 import DomainPortfolio from '../components/DomainPortfolio';
 import NamingGenerator from '../components/NamingGenerator';
 import LocalSearchSimulator from '../components/LocalSearchSimulator';
+import StrategyServicePage from './StrategyServicePage';
+import InnovationServicePage from './InnovationServicePage';
+import MarketingServicePage from './MarketingServicePage';
+import PaidMediaServicePage from './PaidMediaServicePage';
+import GoogleBusinessServicePage from './GoogleBusinessServicePage';
 
 const icons: Record<string, ComponentType<{ className?: string }>> = {
   estrategia: Briefcase, inovacao: Rocket, marketing: BarChart3, 'midia-paga': Megaphone,
@@ -35,6 +40,11 @@ const ServiceDetailPage = () => {
   const { serviceSlug } = useParams();
   const service = getServiceBySlug(serviceSlug);
   if (!service) return <Navigate to="/servicos" replace />;
+  if (service.slug === 'estrategia') return <StrategyServicePage service={service} />;
+  if (service.slug === 'inovacao') return <InnovationServicePage service={service} />;
+  if (service.slug === 'marketing') return <MarketingServicePage service={service} />;
+  if (service.slug === 'midia-paga') return <PaidMediaServicePage service={service} />;
+  if (service.slug === 'google-meu-negocio') return <GoogleBusinessServicePage service={service} />;
 
   const Icon = icons[service.slug] || Sparkles;
   const accent = accentClasses[service.accent];

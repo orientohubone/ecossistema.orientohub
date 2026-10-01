@@ -1,5 +1,5 @@
-import { Suspense, lazy, useEffect, useState } from 'react';
-import { Routes, Route, useLocation } from 'react-router-dom';
+import { Suspense, lazy, useEffect } from 'react';
+import { Routes, Route } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 
 // Layouts
@@ -14,7 +14,7 @@ import ManifestoPage from './pages/ManifestoPage';
 import GlossaryPage from './pages/GlossaryPage';
 import AboutPage from './pages/AboutPage';
 import EcosystemPage from './pages/EcosystemPage';
-import ServicesPage from './pages/ServicesPage';
+import ServicesPage from './pages/ServicesCatalogPage';
 import ServiceDetailPage from './pages/ServiceDetailPage';
 import AcademyPage from './pages/AcademyPage';
 import PricingPage from './pages/PricingPage';
@@ -57,37 +57,16 @@ import FounderDashboardRoute from './components/auth/FounderDashboardRoute';
 import FeatureRoute from './components/auth/FeatureRoute';
 import ProtectedRouteSkeleton from './components/auth/ProtectedRouteSkeleton';
 
-const PublicLoadingFallback = () => (
-  <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
-    <div className="h-10 w-10 rounded-full border-2 border-primary-500/30 border-t-primary-500 animate-spin" />
-  </div>
-);
-
 const withProtectedSuspense = (element: React.ReactNode) => (
   <Suspense fallback={<ProtectedRouteSkeleton />}>{element}</Suspense>
 );
 
 function App() {
-  const [isLoading, setIsLoading] = useState(true);
   const { initAuth } = useAuthStore();
-  const location = useLocation();
 
   useEffect(() => {
-    const init = async () => {
-      await initAuth();
-      setIsLoading(false);
-    };
-
-    init();
+    initAuth();
   }, [initAuth]);
-
-  if (isLoading) {
-    return location.pathname.startsWith('/dashboard') ? (
-      <ProtectedRouteSkeleton />
-    ) : (
-      <PublicLoadingFallback />
-    );
-  }
 
   return (
     <AnimatePresence mode="wait">
