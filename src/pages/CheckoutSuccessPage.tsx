@@ -119,7 +119,7 @@ const CheckoutSuccessPage = () => {
                                 ? 'Assinatura ativada! Você será direcionado ao Dashboard.'
                                 : activationStatus === 'timeout'
                                     ? 'Ainda estamos aguardando a confirmação. Você pode abrir o Dashboard e atualizar a página em alguns instantes.'
-                                    : 'Confirmando a assinatura com o Asaas. Isso pode levar alguns segundos.'}
+                                    : 'Confirmando a assinatura com a AbacatePay. Isso pode levar alguns segundos.'}
                         </motion.p>
 
                         {/* Detalhes do Plano */}

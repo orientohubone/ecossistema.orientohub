@@ -104,7 +104,7 @@ const PricingPage = () => {
     },
     {
       question: 'Quais formas de pagamento são aceitas?',
-      answer: 'A assinatura Pro é paga por cartão de crédito no checkout seguro do Asaas. Para o plano Enterprise, avaliamos as condições de faturamento com você.'
+      answer: 'A assinatura Pro é paga por cartão de crédito no checkout seguro da AbacatePay. Para o plano Enterprise, avaliamos as condições de faturamento com você.'
     },
     {
       question: 'Há taxa de cancelamento?',
