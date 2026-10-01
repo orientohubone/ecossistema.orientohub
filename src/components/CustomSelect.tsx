@@ -55,7 +55,7 @@ export const CustomSelect = ({
           {selectedOption?.label}
         </span>
         <ChevronDown 
-          className={`w-5 h-5 text-primary-500 transition-transform ${isOpen ? 'rotate-180' : ''}`}
+          className={`w-5 h-5 text-[#FFF200] transition-transform ${isOpen ? 'rotate-180' : ''}`}
         />
       </button>
 
@@ -71,7 +71,7 @@ export const CustomSelect = ({
               }}
               className={`w-full px-4 py-3 text-left transition-all first:rounded-t-lg last:rounded-b-lg ${
                 value === option.value
-                  ? 'bg-primary-500 text-black font-semibold'
+                  ? 'bg-[#FFF200] text-black font-semibold'
                   : 'text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-800'
               }`}
             >

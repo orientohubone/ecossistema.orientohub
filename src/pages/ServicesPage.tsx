@@ -24,7 +24,7 @@ const serviceIcons: Record<string, ComponentType<{ className?: string }>> = {
 };
 
 const serviceColors: Record<string, string> = {
-  primary: 'text-primary-400 border-primary-500/40 bg-primary-500/10', orange: 'text-orange-400 border-orange-500/40 bg-orange-500/10', emerald: 'text-emerald-400 border-emerald-500/40 bg-emerald-500/10', pink: 'text-pink-400 border-pink-500/40 bg-pink-500/10', violet: 'text-violet-400 border-violet-500/40 bg-violet-500/10', sky: 'text-sky-400 border-sky-500/40 bg-sky-500/10', amber: 'text-amber-400 border-amber-500/40 bg-amber-500/10', cyan: 'text-cyan-400 border-cyan-500/40 bg-cyan-500/10', green: 'text-green-400 border-green-500/40 bg-green-500/10',
+  primary: 'text-[#FFF200] border-[#FFF200]/40 bg-[#FFF200]/100/10', orange: 'text-orange-400 border-orange-500/40 bg-orange-500/10', emerald: 'text-emerald-400 border-emerald-500/40 bg-emerald-500/10', pink: 'text-pink-400 border-pink-500/40 bg-pink-500/10', violet: 'text-violet-400 border-violet-500/40 bg-violet-500/10', sky: 'text-sky-400 border-sky-500/40 bg-sky-500/10', amber: 'text-amber-400 border-amber-500/40 bg-amber-500/10', cyan: 'text-cyan-400 border-cyan-500/40 bg-cyan-500/10', green: 'text-green-400 border-green-500/40 bg-green-500/10',
 };
 
 const authorityIndicators = [
@@ -42,7 +42,7 @@ type ServicePricing = NonNullable<ServiceCatalogItem['pricing']>;
 type ServiceAccent = ServiceCatalogItem['accent'];
 
 const servicePriceColors: Record<ServiceAccent, { wrapper: string; glow: string; line: string; label: string; value: string }> = {
-  primary: { wrapper: 'border-primary-400/30 from-primary-500/[0.16] group-hover:border-primary-400/60', glow: 'bg-primary-400/15', line: 'via-primary-300/80', label: 'text-primary-300/75', value: 'text-primary-300' },
+  primary: { wrapper: 'border-[#FFF200]/30 from-[#FFF200]/[0.16] group-hover:border-[#FFF200]/60', glow: 'bg-[#FFF200]/15', line: 'via-primary-300/80', label: 'text-[#FFF200]/75', value: 'text-[#FFF200]' },
   orange: { wrapper: 'border-orange-400/30 from-orange-500/[0.16] group-hover:border-orange-400/60', glow: 'bg-orange-400/15', line: 'via-orange-300/80', label: 'text-orange-300/75', value: 'text-orange-300' },
   emerald: { wrapper: 'border-emerald-400/30 from-emerald-500/[0.16] group-hover:border-emerald-400/60', glow: 'bg-emerald-400/15', line: 'via-emerald-300/80', label: 'text-emerald-300/75', value: 'text-emerald-300' },
   pink: { wrapper: 'border-pink-400/30 from-pink-500/[0.16] group-hover:border-pink-400/60', glow: 'bg-pink-400/15', line: 'via-pink-300/80', label: 'text-pink-300/75', value: 'text-pink-300' },
@@ -57,7 +57,7 @@ const ServicePriceTag = ({ pricing, accent }: { pricing: ServicePricing; accent:
   const colors = servicePriceColors[accent];
 
   return (
-  <div className={`relative flex w-full shrink-0 flex-col justify-center overflow-hidden rounded-2xl border bg-gradient-to-br via-[#171b20] to-[#0c121b] p-4 shadow-[0_14px_35px_rgba(0,0,0,0.28)] transition duration-300 group-hover:shadow-[0_18px_40px_rgba(0,0,0,0.35)] sm:w-[180px] ${colors.wrapper}`}>
+  <div className={`relative flex w-full shrink-0 flex-col justify-center overflow-hidden rounded-2xl border bg-gradient-to-br via-[#171b20] to-[#0c121b] p-4 shadow-none transition duration-300 group-hover:shadow-none sm:w-[180px] ${colors.wrapper}`}>
     <div className={`pointer-events-none absolute -right-8 -top-10 h-24 w-24 rounded-full blur-2xl ${colors.glow}`} />
     <span className={`absolute inset-x-5 top-0 h-px bg-gradient-to-r from-transparent to-transparent ${colors.line}`} />
 
@@ -115,22 +115,22 @@ const ServicesPage = () => (
 
       <section className="container-custom relative z-10 py-16 sm:py-20 lg:py-28">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.55 }} className="mx-auto max-w-6xl">
-          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary-500/30 bg-primary-500/10 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-primary-300">
+          <div className="group relative inline-flex items-center justify-center overflow-hidden rounded-full bg-gradient-to-b from-white/10 to-black/80 backdrop-blur-xl border border-[#FFF200]/60 px-3 py-1.5 text-white shadow-none max-w-full mb-4 gap-2">
             <Sparkles className="h-3.5 w-3.5" /> Nossos serviços
           </div>
           <h1 className="max-w-4xl text-4xl font-bold leading-[0.98] tracking-tight sm:text-6xl lg:text-7xl">
-            Tudo que sua empresa <span className="text-primary-400">precisa para crescer.</span>
+            Tudo que sua empresa <span className="text-[#FFF200]">precisa para crescer.</span>
           </h1>
           <p className="mt-5 max-w-3xl text-lg leading-relaxed text-gray-400 sm:text-xl">
             Em um só lugar, gente experiente cuidando de cada detalhe para você focar no que faz de melhor.
           </p>
 
-          <div className="mt-8 flex flex-col gap-4 rounded-2xl border border-primary-500 bg-primary-500/5 p-4 sm:flex-row sm:items-center sm:justify-between sm:p-5">
+          <div className="mt-8 flex flex-col gap-4 rounded-2xl border border-[#FFF200] bg-[#FFF200]/100/5 p-4 sm:flex-row sm:items-center sm:justify-between sm:p-5">
             <div className="flex items-center gap-3 text-base font-semibold sm:text-lg">
-              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-primary-500 text-primary-400"><Bot className="h-4 w-4" /></span>
-              Montamos seu plano de crescimento <span className="text-primary-400">totalmente personalizado.</span>
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[#FFF200] text-[#FFF200]"><Bot className="h-4 w-4" /></span>
+              Montamos seu plano de crescimento <span className="text-[#FFF200]">totalmente personalizado.</span>
             </div>
-            <Link to="/contato" className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-primary-500 px-5 py-3 text-sm font-bold text-black transition hover:bg-primary-400">
+            <Link to="/contato" className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-[#FFF200]/100 px-5 py-3 text-sm font-bold text-black transition hover:bg-[#FFF200]">
               Falar sobre meu negócio <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
@@ -140,7 +140,7 @@ const ServicesPage = () => (
           {serviceCatalog.map((service, index) => {
             const Icon = serviceIcons[service.slug] || Sparkles;
             return (
-              <motion.article key={service.slug} initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.1 }} transition={{ delay: index * 0.04 }} className="group overflow-hidden rounded-2xl border border-white/[0.07] bg-[#131820] transition duration-300 hover:-translate-y-1 hover:border-primary-400/40 hover:shadow-[0_20px_50px_rgba(0,0,0,0.28)]">
+              <motion.article key={service.slug} initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.1 }} transition={{ delay: index * 0.04 }} className="group overflow-hidden rounded-2xl border border-white/[0.07] bg-[#131820] transition duration-300 hover:-translate-y-1 hover:border-[#FFF200]/40 hover:shadow-none">
                 <Link to={`/servicos/${service.slug}`} className="flex h-full flex-col gap-5 p-5 sm:flex-row sm:items-stretch sm:p-6">
                   <div className="flex min-w-0 flex-1 gap-4">
                     <span className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border ${serviceColors[service.accent]}`}><Icon className="h-5 w-5" /></span>
@@ -149,23 +149,23 @@ const ServicesPage = () => (
                     <p className="mt-1 text-base leading-relaxed text-gray-400">{service.description}</p>
                     
                     {service.slug === 'google-meu-negocio' && (
-                      <div className="mt-4 relative group/badge overflow-hidden rounded-full border border-primary-500/40 bg-gradient-to-r from-primary-500/20 via-yellow-400/10 to-primary-500/20 shadow-[0_8px_24px_rgba(234,179,8,0.12)] transition-all duration-300 hover:border-primary-400 hover:shadow-[0_12px_32px_rgba(234,179,8,0.25)]">
+                      <div className="mt-4 relative group/badge overflow-hidden rounded-full border border-[#FFF200]/40 bg-gradient-to-r from-[#FFF200]/20 via-yellow-400/10 to-[#FFF200]/20 shadow-none transition-all duration-300 hover:border-[#FFF200] hover:shadow-none">
                         <span className="absolute inset-[1px] rounded-full bg-[#131820] transition-colors duration-300 group-hover/badge:bg-[#131820]/40" />
-                        <div className="relative flex w-fit items-center gap-2 px-3.5 py-1.5 text-[10px] font-bold uppercase tracking-widest text-primary-300">
-                          <Sparkles className="h-3.5 w-3.5 text-primary-400" /> Experimente nosso simulador
+                        <div className="relative flex w-fit items-center gap-2 px-3.5 py-1.5 text-[10px] font-bold uppercase tracking-widest text-[#FFF200]">
+                          <Sparkles className="h-3.5 w-3.5 text-[#FFF200]" /> Experimente nosso simulador
                         </div>
                       </div>
                     )}
                     {service.slug === 'naming' && (
-                      <div className="mt-4 relative group/badge overflow-hidden rounded-full border border-primary-500/40 bg-gradient-to-r from-primary-500/20 via-yellow-400/10 to-primary-500/20 shadow-[0_8px_24px_rgba(234,179,8,0.12)] transition-all duration-300 hover:border-primary-400 hover:shadow-[0_12px_32px_rgba(234,179,8,0.25)]">
+                      <div className="mt-4 relative group/badge overflow-hidden rounded-full border border-[#FFF200]/40 bg-gradient-to-r from-[#FFF200]/20 via-yellow-400/10 to-[#FFF200]/20 shadow-none transition-all duration-300 hover:border-[#FFF200] hover:shadow-none">
                         <span className="absolute inset-[1px] rounded-full bg-[#131820] transition-colors duration-300 group-hover/badge:bg-[#131820]/40" />
-                        <div className="relative flex w-fit items-center gap-2 px-3.5 py-1.5 text-[10px] font-bold uppercase tracking-widest text-primary-300">
-                          <Sparkles className="h-3.5 w-3.5 text-primary-400" /> Experimente nosso gerador
+                        <div className="relative flex w-fit items-center gap-2 px-3.5 py-1.5 text-[10px] font-bold uppercase tracking-widest text-[#FFF200]">
+                          <Sparkles className="h-3.5 w-3.5 text-[#FFF200]" /> Experimente nosso gerador
                         </div>
                       </div>
                     )}
 
-                    <span className="mt-auto inline-flex items-center gap-1 pt-5 text-sm font-semibold text-primary-300 transition group-hover:gap-2">Conhecer serviço <ArrowRight className="h-4 w-4" /></span>
+                    <span className="mt-auto inline-flex items-center gap-1 pt-5 text-sm font-semibold text-[#FFF200] transition group-hover:gap-2">Conhecer serviço <ArrowRight className="h-4 w-4" /></span>
                     </div>
                   </div>
                   {service.pricing && <ServicePriceTag pricing={service.pricing} accent={service.accent} />}
@@ -184,8 +184,8 @@ const ServicesPage = () => (
           {authorityIndicators.map((indicator) => {
             const Icon = indicator.icon;
             return (
-              <div key={indicator.label} className="flex items-center justify-center gap-3 rounded-xl border border-primary-500/10 bg-primary-500/10 px-5 py-5 text-center sm:justify-start">
-                <Icon className="h-6 w-6 shrink-0 text-primary-400" />
+              <div key={indicator.label} className="flex items-center justify-center gap-3 rounded-xl border border-[#FFF200]/10 bg-[#FFF200]/100/10 px-5 py-5 text-center sm:justify-start">
+                <Icon className="h-6 w-6 shrink-0 text-[#FFF200]" />
                 <span className="text-3xl font-bold text-white">{indicator.value}</span>
                 <span className="max-w-[130px] text-left text-sm leading-tight text-gray-300 sm:text-base">{indicator.label}</span>
               </div>
@@ -197,12 +197,12 @@ const ServicesPage = () => (
           <div className="flex flex-col gap-5 sm:flex-row sm:items-center">
             <img src={founderPhoto} alt="Fernando Ramalho" className="h-24 w-24 rounded-xl object-cover object-top ring-1 ring-primary-500/30" />
             <div>
-              <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary-400">Quem cuida do seu negócio</p>
+              <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#FFF200]">Quem cuida do seu negócio</p>
               <h2 className="mt-1 text-2xl font-bold">Fernando Ramalho</h2>
               <p className="mt-2 max-w-2xl text-sm leading-relaxed text-gray-400">Os serviços prestados são o mix do núcleo que construí, conectando estratégia e execução à minha visão de negócio.</p>
             </div>
           </div>
-          <Link to="/contato" className="inline-flex items-center justify-center gap-2 rounded-xl border border-primary-500/50 px-5 py-3 text-sm font-bold text-primary-300 transition hover:bg-primary-500 hover:text-black">
+          <Link to="/contato" className="inline-flex items-center justify-center gap-2 rounded-xl border border-[#FFF200]/50 px-5 py-3 text-sm font-bold text-[#FFF200] transition hover:bg-[#FFF200]/100 hover:text-black">
             Vamos conversar <ArrowRight className="h-4 w-4" />
           </Link>
         </motion.div>

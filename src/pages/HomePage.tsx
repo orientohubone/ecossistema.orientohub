@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, Sparkles, Layers, Users, Target, Lightbulb, ExternalLink, Component, MonitorPlay, Maximize2, X, TrendingUp, Rocket, Brain, GraduationCap, Mic, Briefcase, BookOpen } from 'lucide-react';
 import SectionDivider from '../components/SectionDivider';
 import IntegrationsSection from '../components/components';
+import { Badge } from '../components/ui/Badge';
 import type { ComponentType } from 'react';
 
 type IconType = ComponentType<{
@@ -62,7 +63,7 @@ type SectionHeaderProps = {
 
 // Shared page background texture used by the hero and all sections.
 const heroBackgroundStyle = {
-  backgroundImage: 'radial-gradient(circle at 2px 2px, #FFD700 1px, transparent 0)',
+  backgroundImage: 'radial-gradient(circle at 2px 2px, #FFF200 1px, transparent 0)',
   backgroundSize: '40px 40px',
   pointerEvents: 'none' as const,
 };
@@ -199,12 +200,12 @@ const HomePage = () => {
               className="flex justify-center mb-4 sm:mb-8"
               variants={itemVariants}
             >
-              <div className="inline-flex items-center gap-2 rounded-full border border-primary-400/40 bg-black/40 px-3 py-1.5 sm:px-3.5 sm:py-2 shadow-[0_0_30px_rgba(255,215,0,0.08)] backdrop-blur-md">
-                <Rocket className="h-3.5 w-3.5 text-primary-400 shrink-0" aria-hidden="true" />
-                <span className="text-[10px] sm:text-xs font-semibold uppercase tracking-[0.12em] text-white">
+              <Badge variant="liquid-glass" className="gap-2 px-3 py-1.5 sm:px-3.5 sm:py-2">
+                <Rocket className="h-3.5 w-3.5 text-[#FFF200] shrink-0" aria-hidden="true" />
+                <span className="text-[10px] sm:text-xs font-semibold uppercase tracking-[0.12em] text-white/90">
                   Ecossistema de inovação
                 </span>
-              </div>
+              </Badge>
             </motion.div>
 
             <motion.h1
@@ -220,7 +221,7 @@ const HomePage = () => {
                   <AnimatePresence mode="wait" initial={false}>
                     <motion.span
                       key={heroOutcomeWords[heroOutcomeIndex]}
-                      className="absolute inset-0 flex items-center justify-center whitespace-nowrap bg-gradient-to-r from-primary-400 via-primary-500 to-primary-600 bg-clip-text text-transparent"
+                      className="absolute inset-0 flex items-center justify-center whitespace-nowrap bg-gradient-to-r from-[#FFF200] via-[#FFF200] to-[#FFF200]/80 bg-clip-text text-transparent"
                       initial={{ opacity: 0, y: 18, filter: 'blur(5px)' }}
                       animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
                       exit={{ opacity: 0, y: -18, filter: 'blur(5px)' }}
@@ -246,7 +247,7 @@ const HomePage = () => {
             >
               <Link
                 to="/plataforma"
-                className="group inline-flex w-full sm:w-auto items-center justify-center gap-2 px-6 sm:px-8 py-3.5 sm:py-4 bg-primary-500 hover:bg-primary-600 text-black font-bold text-base sm:text-lg rounded-xl shadow-lg shadow-primary-500/25 hover:shadow-xl hover:shadow-primary-500/40 transition-all duration-300 hover:scale-105 active:scale-95"
+                className="group inline-flex w-full sm:w-auto items-center justify-center gap-2 px-6 sm:px-8 py-3.5 sm:py-4 bg-[#FFF200] hover:bg-[#FFF200] hover:opacity-90 text-black font-bold text-base sm:text-lg rounded-xl shadow-none transition-all duration-300 hover:scale-105 active:scale-95"
               >
                 Conheça nossa plataforma
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -255,7 +256,7 @@ const HomePage = () => {
               <button
                 type="button"
                 onClick={() => setPresentationOpen(true)}
-                className="group inline-flex w-full sm:w-auto items-center justify-center gap-2 px-6 sm:px-8 py-3.5 sm:py-4 border-2 border-primary-500/50 hover:border-primary-500 hover:bg-primary-500/10 text-primary-500 font-bold text-base sm:text-lg rounded-xl backdrop-blur-sm transition-all duration-300 active:scale-95"
+                className="group inline-flex w-full sm:w-auto items-center justify-center gap-2 px-6 sm:px-8 py-3.5 sm:py-4 border-2 border-[#FFF200]/50 hover:border-[#FFF200] hover:bg-[#FFF200] hover:text-black text-[#FFF200] font-bold text-base sm:text-lg rounded-xl backdrop-blur-sm shadow-none transition-all duration-300 active:scale-95"
               >
                 Veja como funciona
                 <MonitorPlay className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -288,7 +289,7 @@ const HomePage = () => {
             <div className="flex h-full w-full flex-col overflow-hidden rounded-[15px] sm:rounded-[31px] bg-[#0b0b0b]">
               <div className="flex items-center justify-between border-b border-white/10 px-3 py-2.5 sm:px-5 sm:py-3">
                 <div className="flex items-center gap-2.5">
-                  <div className="flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full bg-primary-500/10 text-primary-500 shrink-0">
+                  <div className="flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full bg-[#FFF200]/10 text-[#FFF200] shrink-0">
                     <MonitorPlay className="h-4 w-4 sm:h-5 sm:w-5" />
                   </div>
                   <div>
@@ -301,7 +302,7 @@ const HomePage = () => {
                   <button
                     type="button"
                     onClick={openFullscreen}
-                    className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 px-2.5 py-1.5 sm:px-3 sm:py-2 text-xs sm:text-sm font-semibold text-white transition-colors hover:border-primary-500 hover:bg-primary-500/10"
+                    className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 px-2.5 py-1.5 sm:px-3 sm:py-2 text-xs sm:text-sm font-semibold text-white transition-colors hover:border-[#FFF200] hover:bg-[#FFF200]/10"
                   >
                     <Maximize2 className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                     <span className="hidden sm:inline">Tela cheia</span>
@@ -309,7 +310,7 @@ const HomePage = () => {
                   <button
                     type="button"
                     onClick={() => setPresentationOpen(false)}
-                    className="inline-flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-lg border border-white/10 text-white transition-colors hover:border-primary-500 hover:bg-primary-500/10"
+                    className="inline-flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-lg border border-white/10 text-white transition-colors hover:border-[#FFF200] hover:bg-[#FFF200]/10"
                     aria-label="Fechar apresentação"
                   >
                     <X className="h-4 w-4 sm:h-5 sm:w-5" />
@@ -394,19 +395,19 @@ const HomePage = () => {
           )}
 
           <motion.div
-            className="max-w-6xl mx-auto mt-6 sm:mt-8 rounded-2xl border border-[#b7ef09]/25 bg-[radial-gradient(ellipse_at_top_right,_rgba(6,50,12,0.62),_transparent_62%),linear-gradient(135deg,_#021709,_#000b03)] p-5 sm:p-7 flex flex-col lg:flex-row lg:items-center gap-5 sm:gap-7 shadow-[0_20px_50px_-28px_rgba(0,0,0,0.75)]"
+            className="max-w-6xl mx-auto mt-6 sm:mt-8 rounded-2xl border border-[#FFF200]/25 bg-[radial-gradient(ellipse_at_top_right,_rgba(6,50,12,0.62),_transparent_62%),linear-gradient(135deg,_#021709,_#000b03)] p-5 sm:p-7 flex flex-col lg:flex-row lg:items-center gap-5 sm:gap-7 shadow-[0_20px_50px_-28px_rgba(0,0,0,0.75)]"
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.45 }}
           >
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-[#b7ef09]/35 bg-[#102719] p-2 shadow-[0_0_24px_rgba(183,239,9,0.16)]">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-[#FFF200]/35 bg-[#102719] p-2 shadow-[0_0_24px_rgba(255,242,0,0.16)]">
               <img src="/orientamais-favicon.png" alt="Orienta+" className="h-full w-full rounded-lg object-contain" />
             </div>
             <div className="flex-1">
               <div className="flex flex-wrap items-center gap-2">
-                <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#b7ef09]">Orienta+ · consultoria</p>
-                <span className="rounded-full border border-[#b7ef09]/35 bg-[#b7ef09]/12 px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-[0.12em] text-[#d4ff53]">100% gratuita</span>
+                <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#FFF200]">Orienta+ · consultoria</p>
+                <span className="rounded-full border border-[#FFF200]/35 bg-[#FFF200]/12 px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-[0.12em] text-[#FFF200]">100% gratuita</span>
               </div>
               <h3 className="mt-1 text-xl sm:text-2xl font-bold text-[#f3f7f0]">Ficou em dúvida sobre a nossa estrutura, serviços ou como operamos?</h3>
               <p className="mt-2 text-sm sm:text-base leading-relaxed text-[#aab1a4]">Em vez de se perder entre páginas, camadas e possibilidades, converse com a gente. A Orienta+ é uma orientação gratuita para empreendedores encontrarem o próximo passo certo.</p>
@@ -415,7 +416,7 @@ const HomePage = () => {
               href="https://consultoria.orientohub.com.br"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-[#b7ef09] px-5 py-3 text-sm font-bold text-[#001005] transition hover:bg-[#c8fb27] hover:-translate-y-0.5"
+              className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-[#FFF200] px-5 py-3 text-sm font-bold text-[#001005] transition hover:bg-[#FFF200] hover:-translate-y-0.5"
             >
               Quero uma orientação <ExternalLink className="h-4 w-4" />
             </a>
@@ -453,7 +454,7 @@ const HomePage = () => {
                 href="https://fernandoramalhobuilder.com.br"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group inline-flex w-full sm:w-auto items-center justify-center gap-2 px-6 py-3.5 bg-primary-500 hover:bg-primary-600 text-black font-bold rounded-xl transition-all"
+                className="group inline-flex w-full sm:w-auto items-center justify-center gap-2 px-6 py-3.5 bg-[#FFF200] hover:bg-[#FFF200] hover:opacity-90 shadow-none text-black font-bold rounded-xl transition-all"
               >
                 Conheça Fernando
                 <ExternalLink className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -461,7 +462,7 @@ const HomePage = () => {
 
               <Link
                 to="/sobre"
-                className="group inline-flex w-full sm:w-auto items-center justify-center gap-2 px-6 py-3.5 border-2 border-primary-500/50 hover:border-primary-500 hover:bg-primary-500/10 text-primary-500 font-bold rounded-xl backdrop-blur-sm transition-all"
+                className="group inline-flex w-full sm:w-auto items-center justify-center gap-2 px-6 py-3.5 border-2 border-[#FFF200]/50 hover:border-[#FFF200] hover:bg-[#FFF200] hover:text-black text-[#FFF200] shadow-none font-bold rounded-xl backdrop-blur-sm transition-all"
               >
                 Saiba mais
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -503,7 +504,7 @@ const HomePage = () => {
           >
             <Link
               to="/manifesto"
-              className="inline-flex w-full sm:w-auto items-center justify-center gap-2 px-6 py-3.5 bg-primary-500 hover:bg-primary-600 text-black font-bold rounded-xl transition-all"
+              className="inline-flex w-full sm:w-auto items-center justify-center gap-2 px-6 py-3.5 bg-[#FFF200] hover:bg-[#FFF200] hover:opacity-90 shadow-none text-black font-bold rounded-xl transition-all"
             >
               Leia o Manifesto Completo
               <ArrowRight className="w-4 h-4" />
@@ -550,7 +551,7 @@ const HomePage = () => {
             <p className="text-sm sm:text-base text-gray-400 mb-5 sm:mb-6">Pronto para começar sua transformação?</p>
             <Link
               to="/plataforma"
-              className="group inline-flex w-full sm:w-auto items-center justify-center gap-3 px-8 sm:px-10 py-4 sm:py-5 bg-primary-500 hover:bg-primary-600 text-black font-bold text-base sm:text-lg rounded-xl shadow-2xl shadow-primary-500/30 hover:shadow-primary-500/50 hover:scale-105 transition-all duration-300"
+              className="group inline-flex w-full sm:w-auto items-center justify-center gap-3 px-8 sm:px-10 py-4 sm:py-5 bg-[#FFF200] hover:bg-[#FFF200] hover:opacity-90 shadow-none text-black font-bold text-base sm:text-lg rounded-xl hover:scale-105 transition-all duration-300"
             >
               <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 group-hover:rotate-12 transition-transform" />
               Comece Grátis
@@ -582,13 +583,13 @@ const SectionHeader = ({
       viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 0.6 }}
     >
-      <div className="inline-flex items-center gap-2 rounded-full border border-primary-400/40 bg-black/30 px-3.5 py-2 mb-6 shadow-[0_0_30px_rgba(255,215,0,0.08)] backdrop-blur-md">
-        <Icon className="h-3.5 w-3.5 text-primary-400" aria-hidden="true" />
-        <span className="h-3 w-px bg-primary-400/40" aria-hidden="true" />
-        <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-white sm:text-xs">
+      <Badge variant="liquid-glass" className="gap-2 px-3.5 py-2 mb-6">
+        <Icon className="h-3.5 w-3.5 text-[#FFF200]" aria-hidden="true" />
+        <span className="h-3 w-px bg-[#FFF200]/40" aria-hidden="true" />
+        <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-white/90 sm:text-xs">
           {label}
         </span>
-      </div>
+      </Badge>
       <h2 className={titleClassName}>{title}</h2>
       {description ? <p className={descriptionClassName}>{description}</p> : null}
     </motion.div>
@@ -711,7 +712,7 @@ const EcosystemCard = ({ layer, compact = false, expanded = false, onToggleExpan
                 
                 <Link
                   to="/servicos"
-                  className="inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-3 bg-primary-500 hover:bg-primary-600 text-black font-bold rounded-xl transition-all w-full sm:w-fit group shadow-lg shadow-primary-500/20 hover:shadow-primary-500/30 text-sm"
+                  className="inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-3 bg-[#FFF200] hover:bg-[#FFF200] hover:opacity-90 shadow-none text-black font-bold rounded-xl transition-all w-full sm:w-fit group text-sm"
                 >
                   Contrate nossos serviços
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -744,7 +745,7 @@ const EcosystemCard = ({ layer, compact = false, expanded = false, onToggleExpan
                 
                 <div className="p-3.5 sm:p-4 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800/50 dark:to-gray-800/80 rounded-xl border border-gray-200 dark:border-gray-700">
                   <h4 className="text-gray-900 dark:text-white font-bold mb-1 flex items-center gap-2 text-xs sm:text-base">
-                    <Sparkles className="w-4 h-4 text-primary-500 shrink-0" />
+                    <Sparkles className="w-4 h-4 text-[#FFF200] shrink-0" />
                     Caminho Integrado
                   </h4>
                   <p className="text-gray-600 dark:text-gray-400 text-xs sm:text-base leading-relaxed">
@@ -768,7 +769,7 @@ const EcosystemCard = ({ layer, compact = false, expanded = false, onToggleExpan
                           <div className={`w-9 h-9 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl flex items-center justify-center bg-gray-50 dark:bg-gray-900/50 border ${mvp.border}`}>
                             <MvpIcon className={`w-4 h-4 sm:w-6 sm:h-6 ${mvp.color}`} />
                           </div>
-                          <span className={`text-[9px] sm:text-[10px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wider ${mvp.status === 'Beta' ? 'bg-amber-100 dark:bg-amber-500/10 text-amber-700 dark:text-amber-400' : 'bg-primary-50 dark:bg-primary-500/10 text-primary-700 dark:text-primary-400'}`}>
+                          <span className={`text-[9px] sm:text-[10px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wider ${mvp.status === 'Beta' ? 'bg-amber-100 dark:bg-amber-500/10 text-amber-700 dark:text-amber-400' : 'bg-primary-50 dark:bg-[#FFF200]/10 text-primary-700 dark:text-[#FFF200]'}`}>
                             {mvp.status}
                           </span>
                         </div>
@@ -810,7 +811,7 @@ const EcosystemCard = ({ layer, compact = false, expanded = false, onToggleExpan
                           <div className={`w-9 h-9 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl flex items-center justify-center bg-gray-50 dark:bg-gray-900/50 border ${vert.border}`}>
                             <VertIcon className={`w-4 h-4 sm:w-6 sm:h-6 ${vert.color}`} />
                           </div>
-                          <span className={`text-[9px] sm:text-[10px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wider ${vert.status === 'Em Breve' ? 'bg-gray-100 dark:bg-gray-500/10 text-gray-600 dark:text-gray-400' : 'bg-primary-50 dark:bg-primary-500/10 text-primary-700 dark:text-primary-400'}`}>
+                          <span className={`text-[9px] sm:text-[10px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wider ${vert.status === 'Em Breve' ? 'bg-gray-100 dark:bg-gray-500/10 text-gray-600 dark:text-gray-400' : 'bg-primary-50 dark:bg-[#FFF200]/10 text-primary-700 dark:text-[#FFF200]'}`}>
                             {vert.status}
                           </span>
                         </div>
@@ -882,12 +883,12 @@ const QuickActionCard = ({ action }: { action: QuickAction }) => {
     <motion.div className="group relative" variants={itemVariants}>
       <Link
         to={action.link}
-        className="block h-full min-h-[220px] p-6 sm:p-9 rounded-2xl border border-primary-500/30 bg-white/90 dark:bg-gray-900/85 shadow-[0_18px_50px_rgba(0,0,0,0.08)] backdrop-blur-md hover:bg-white/[0.98] dark:hover:bg-gray-900 transition-all duration-300 hover:border-primary-500 active:scale-[0.98]"
+        className="block h-full min-h-[220px] p-6 sm:p-9 rounded-2xl border border-[#FFF200]/30 bg-white/90 dark:bg-gray-900/85 shadow-[0_18px_50px_rgba(0,0,0,0.08)] backdrop-blur-md hover:bg-white/[0.98] dark:hover:bg-gray-900 transition-all duration-300 hover:border-[#FFF200] active:scale-[0.98]"
       >
-        <Icon className="w-8 h-8 sm:w-9 sm:h-9 text-[#FFD700] mb-4 sm:mb-5 group-hover:scale-110 transition-transform" />
+        <Icon className="w-8 h-8 sm:w-9 sm:h-9 text-[#FFF200] mb-4 sm:mb-5 group-hover:scale-110 transition-transform" />
         <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-2 sm:mb-3">{action.title}</h3>
         <p className="text-base sm:text-lg text-gray-600 dark:text-gray-400 mb-5 sm:mb-7 leading-relaxed">{action.description}</p>
-        <span className="inline-flex items-center gap-2 text-sm sm:text-base text-[#FFD700] font-semibold group-hover:gap-3 transition-all">
+        <span className="inline-flex items-center gap-2 text-sm sm:text-base text-[#FFF200] font-semibold group-hover:gap-3 transition-all">
           Ir agora <ArrowRight className="w-4 h-4" />
         </span>
       </Link>

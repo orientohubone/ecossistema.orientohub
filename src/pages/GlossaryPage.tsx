@@ -203,28 +203,24 @@ const GlossaryPage = () => {
   return (
     <div>
       {/* Hero Section */}
-      <section className="relative min-h-[80vh] w-full overflow-hidden bg-gradient-to-br from-black via-gray-900 to-black flex items-center">
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary-500/20 rounded-full blur-3xl animate-pulse"></div>
-          <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-primary-400/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1000ms' }}></div>
-        </div>
+      <section className="relative min-h-[50vh] w-full overflow-hidden flex items-center pt-24 pb-12">
 
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0" style={{
-            backgroundImage: 'radial-gradient(circle at 2px 2px, #FFD700 1px, transparent 0)',
+            backgroundImage: 'radial-gradient(circle at 2px 2px, #FFF200 1px, transparent 0)',
             backgroundSize: '40px 40px'
           }}></div>
         </div>
 
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 py-32">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 pt-16">
           <div className="max-w-4xl mx-auto text-center">
             <motion.div
-              className="inline-flex items-center gap-2.5 rounded-full border border-primary-400/40 bg-black/30 px-3.5 py-2 shadow-[0_0_30px_rgba(255,215,0,0.08)] backdrop-blur-md mb-8"
+              className="inline-flex items-center gap-2.5 rounded-full border border-[#FFF200]/60 bg-gradient-to-b from-white/10 to-black/80 px-3.5 py-2 shadow-none backdrop-blur-md mb-8"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.2 }}
             >
-              <BookOpen className="h-3.5 w-3.5 shrink-0 text-primary-400" aria-hidden="true" />
+              <BookOpen className="h-3.5 w-3.5 shrink-0 text-[#FFF200]" aria-hidden="true" />
               <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-white sm:text-xs">
                 Glossário de Startups
               </span>
@@ -237,14 +233,14 @@ const GlossaryPage = () => {
               transition={{ duration: 0.8, delay: 0.3 }}
             >
               Domine a{' '}
-              <span className="bg-gradient-to-r from-primary-400 via-primary-500 to-primary-600 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-[#FFF200] via-[#FFF200] to-[#FFF200] bg-clip-text text-transparent">
                 Linguagem
               </span>
               {' '}das Startups
             </motion.h1>
 
             <motion.p
-              className="text-xl md:text-2xl text-gray-300 mb-12 leading-relaxed max-w-3xl mx-auto"
+              className="text-xl md:text-2xl text-gray-300 mb-6 leading-relaxed max-w-3xl mx-auto"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
@@ -252,22 +248,12 @@ const GlossaryPage = () => {
               Termos essenciais, conceitos fundamentais e o vocabulário que todo empreendedor precisa conhecer.
             </motion.p>
 
-            <motion.div
-              className="flex items-center justify-center gap-4"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6 }}
-            >
-              <div className="h-1 w-20 bg-primary-500 rounded-full" />
-              <Sparkles className="w-6 h-6 text-primary-500" />
-              <div className="h-1 w-20 bg-primary-500 rounded-full" />
-            </motion.div>
           </div>
         </div>
       </section>
 
       {/* Search and Filter Section */}
-      <section className="py-12 bg-gradient-to-b from-gray-50 to-white dark:from-gray-800 dark:to-gray-900">
+      <section className="pb-12">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-5xl mx-auto">
             <motion.div
@@ -283,7 +269,7 @@ const GlossaryPage = () => {
                   placeholder="Buscar termos..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-12 pr-4 py-4 bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:border-primary-500 focus:outline-none text-lg transition-colors"
+                  className="w-full pl-12 pr-4 py-4 bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:border-[#FFF200] focus:outline-none text-lg transition-colors"
                 />
               </div>
             </motion.div>
@@ -302,8 +288,8 @@ const GlossaryPage = () => {
                     onClick={() => setSelectedCategory(category.id)}
                     className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all duration-300 ${
                       selectedCategory === category.id
-                        ? 'bg-primary-500 text-black shadow-lg shadow-primary-500/30'
-                        : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-2 border-gray-200 dark:border-gray-700 hover:border-primary-500'
+                        ? 'bg-[#FFF200] text-black hover:opacity-90 shadow-none shadow-none shadow-none'
+                        : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-2 border-gray-200 dark:border-gray-700 hover:border-[#FFF200]'
                     }`}
                   >
                     <Icon className="w-4 h-4" />
@@ -317,7 +303,7 @@ const GlossaryPage = () => {
       </section>
 
       {/* Glossary Terms */}
-      <section className="py-24 bg-white dark:bg-gray-900">
+      <section className="py-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-5xl mx-auto">
             <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
@@ -343,10 +329,10 @@ const GlossaryPage = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="relative py-32 bg-gradient-to-br from-black via-gray-900 to-black overflow-hidden">
+      <section className="relative py-32 overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0" style={{
-            backgroundImage: 'radial-gradient(circle at 2px 2px, #FFD700 1px, transparent 0)',
+            backgroundImage: 'radial-gradient(circle at 2px 2px, #FFF200 1px, transparent 0)',
             backgroundSize: '40px 40px'
           }} />
         </div>
@@ -359,13 +345,13 @@ const GlossaryPage = () => {
             viewport={{ once: true }}
           >
             <div className="mb-8">
-              <Lightbulb className="w-16 h-16 text-primary-500 mx-auto mb-6" />
+              <Lightbulb className="w-16 h-16 text-[#FFF200] mx-auto mb-6" />
             </div>
             
             <h2 className="text-4xl md:text-6xl font-bold mb-8 text-white leading-tight">
               Pronto para aplicar esse conhecimento
               <br />
-              <span className="text-primary-500">
+              <span className="text-[#FFF200]">
                 na sua startup?
               </span>
             </h2>
@@ -377,7 +363,7 @@ const GlossaryPage = () => {
             <div className="mt-16">
               <a
                 href="/cadastro"
-                className="inline-flex items-center gap-3 px-10 py-5 bg-primary-500 hover:bg-primary-600 text-black font-bold text-xl rounded-xl shadow-2xl shadow-primary-500/30 hover:shadow-primary-500/50 transition-all duration-300 hover:scale-105"
+                className="inline-flex items-center gap-3 px-10 py-5 bg-[#FFF200] hover:bg-[#FFF200] hover:opacity-90 shadow-none text-black font-bold text-xl rounded-xl shadow-none shadow-none hover:shadow-none transition-all duration-300 hover:scale-105"
               >
                 <Rocket className="w-6 h-6" />
                 Começar Agora
@@ -409,7 +395,7 @@ const GlossaryCard = ({ term, fullName, category, definition, icon: Icon, delay 
 
   return (
     <motion.div
-      className="group relative bg-white dark:bg-gray-800 p-6 rounded-2xl border-2 border-gray-200 dark:border-gray-700 hover:border-primary-500 dark:hover:border-primary-500 transition-all duration-300 hover:shadow-2xl hover:shadow-primary-500/20"
+      className="group relative bg-white dark:bg-gray-800 p-6 rounded-2xl border-2 border-gray-200 dark:border-gray-700 hover:border-[#FFF200] dark:hover:border-[#FFF200] transition-all duration-300 hover:shadow-none hover:shadow-none"
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-50px" }}
@@ -417,16 +403,16 @@ const GlossaryCard = ({ term, fullName, category, definition, icon: Icon, delay 
       whileHover={{ y: -4 }}
     >
       <div className="flex items-start gap-4">
-        <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-black to-gray-900 rounded-xl flex items-center justify-center border-2 border-primary-500/30 group-hover:border-primary-500 transition-all duration-300 group-hover:scale-110">
-          <Icon className="w-6 h-6 text-primary-500" />
+        <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-black to-gray-900 rounded-xl flex items-center justify-center border-2 border-[#FFF200]/30 group-hover:border-[#FFF200] transition-all duration-300 group-hover:scale-110">
+          <Icon className="w-6 h-6 text-[#FFF200]" />
         </div>
         
         <div className="min-w-0 flex-1">
           <div className="mb-2 flex flex-wrap items-center gap-2">
-            <h3 className="text-xl font-bold group-hover:text-primary-500 transition-colors">
+            <h3 className="text-xl font-bold group-hover:text-[#FFF200] transition-colors">
               {term}
             </h3>
-            <span className="rounded-full bg-primary-500/10 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-primary-700 dark:text-primary-300">
+            <span className="rounded-full bg-[#FFF200]/10 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-[#FFF200] dark:text-[#FFF200]">
               {categoryNames[category] || category}
             </span>
             <span className="w-full text-xs text-gray-500 dark:text-gray-400 italic sm:w-auto">

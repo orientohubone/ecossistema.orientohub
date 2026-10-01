@@ -5,38 +5,40 @@ import { GraduationCap, Sparkles, BookOpen, Award, ArrowRight } from 'lucide-rea
 
 const AcademyPage = () => {
   return (
-    <>
+    <div className="dark min-h-screen">
+      {/* Shared fixed background */}
+      <div className="fixed inset-0 bg-gradient-to-br from-black via-gray-900 to-black -z-50" />
+      {/* Global dot grid */}
+      <div className="fixed inset-0 opacity-[0.06] pointer-events-none -z-40"
+        style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, #FFF200 1px, transparent 0)', backgroundSize: '40px 40px' }}
+      />
       <Helmet>
         <title>Oriento Academy - Orientohub</title>
         <meta name="description" content="Conheça a Oriento Academy: plataforma premium de cursos, certificações e aprendizagem gamificada para founders e inovadores." />
       </Helmet>
 
       {/* Hero Section */}
-      <section className="relative min-h-[80vh] w-full overflow-hidden bg-gradient-to-br from-black via-gray-900 to-black flex items-center">
+      <section className="relative min-h-[50vh] w-full overflow-hidden flex items-center">
         {/* Animated background elements */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary-500/15 rounded-full blur-3xl animate-[pulse_8s_ease-in-out_infinite]" />
-          <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-primary-400/10 rounded-full blur-3xl animate-[pulse_8s_ease-in-out_infinite]" style={{ animationDelay: '2400ms' }} />
-        </div>
         {/* Grid pattern overlay */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0" style={{
-            backgroundImage: 'radial-gradient(circle at 2px 2px, #FFD700 1px, transparent 0)',
+            backgroundImage: 'radial-gradient(circle at 2px 2px, #FFF200 1px, transparent 0)',
             backgroundSize: '40px 40px'
           }} />
         </div>
-        <div className="container-custom relative z-10 py-32">
+        <div className="container-custom relative z-10 pt-24 pb-12">
           <div className="max-w-4xl mx-auto text-center">
             <motion.div
-              className="mb-8 inline-flex items-center gap-2.5 rounded-full border border-primary-400/35 bg-black/45 px-4 py-2 shadow-[0_0_30px_rgba(250,204,21,0.12)] backdrop-blur-md"
+              className="inline-flex items-center gap-2.5 rounded-full border border-[#FFF200]/60 bg-gradient-to-b from-white/10 to-black/80 px-3.5 py-2 shadow-none backdrop-blur-md mb-8"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.2 }}
             >
-              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-primary-500/15 ring-1 ring-primary-400/25">
-                <GraduationCap className="h-4 w-4 text-primary-400" />
+              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#FFF200]/15 ring-1 ring-[#FFF200]/25">
+                <GraduationCap className="h-4 w-4 text-[#FFF200]" />
               </span>
-              <span className="text-xs font-bold uppercase tracking-[0.18em] text-primary-300">
+              <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-white sm:text-xs">
                 Oriento Academy
               </span>
             </motion.div>
@@ -49,7 +51,7 @@ const AcademyPage = () => {
               O futuro da aprendizagem para founders
             </motion.h1>
             <motion.p
-              className="text-lg md:text-2xl font-semibold mb-8 bg-gradient-to-r from-primary-400 via-primary-500 to-primary-600 bg-clip-text text-transparent tracking-tight"
+              className="text-lg md:text-2xl font-semibold mb-8 bg-gradient-to-r from-[#FFF200] via-[#FFF200] to-[#FFF200] bg-clip-text text-transparent tracking-tight"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.35 }}
@@ -72,7 +74,7 @@ const AcademyPage = () => {
             >
               <Link
                 to="/academy"
-                className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-primary-500 hover:bg-primary-600 text-black font-semibold rounded-2xl shadow-lg shadow-primary-500/30 transition"
+                className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-[#FFF200] hover:bg-[#FFF200] hover:opacity-90 shadow-none text-black font-semibold rounded-2xl shadow-none shadow-none transition"
               >
                 Explorar catálogo
                 <ArrowRight size={18} />
@@ -90,7 +92,7 @@ const AcademyPage = () => {
       </section>
 
       {/* Sobre Section */}
-      <section className="py-24 bg-white dark:bg-gray-900">
+      <section className="pt-12 pb-16">
         <div className="container-custom">
           <motion.div
             className="text-center mb-16"
@@ -98,11 +100,11 @@ const AcademyPage = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <div className="mb-6 inline-flex items-center gap-2.5 rounded-full border border-primary-500/25 bg-primary-500/[0.08] px-4 py-2 shadow-sm shadow-primary-500/10 backdrop-blur-sm">
-              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary-500/15">
-                <GraduationCap className="h-3.5 w-3.5 text-primary-500" />
+            <div className="mb-6 inline-flex items-center gap-2.5 rounded-full border border-[#FFF200]/25 bg-[#FFF200]/[0.08] px-4 py-2 shadow-sm shadow-none backdrop-blur-sm">
+              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#FFF200]/15">
+                <GraduationCap className="h-3.5 w-3.5 text-[#FFF200]" />
               </span>
-              <span className="text-xs font-bold uppercase tracking-[0.18em] text-primary-500">Sobre a Academy</span>
+              <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-white sm:text-xs">Sobre a Academy</span>
             </div>
             <h2 className="text-4xl md:text-5xl font-bold mb-6">O que é a Oriento Academy?</h2>
             <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
@@ -111,19 +113,19 @@ const AcademyPage = () => {
           </motion.div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
             <AcademyFeature
-              icon={<BookOpen className="w-10 h-10 text-primary-500" />}
+              icon={<BookOpen className="w-10 h-10 text-[#FFF200]" />}
               title="Conteúdo Premium"
               description="Cursos e trilhas desenvolvidos por especialistas do mercado, focados em inovação, negócios e tecnologia."
               delay={0.1}
             />
             <AcademyFeature
-              icon={<Award className="w-10 h-10 text-primary-500" />}
+              icon={<Award className="w-10 h-10 text-[#FFF200]" />}
               title="Certificações Reconhecidas"
               description="Comprove seu conhecimento e destaque-se no mercado com certificações exclusivas."
               delay={0.2}
             />
             <AcademyFeature
-              icon={<Sparkles className="w-10 h-10 text-primary-500" />}
+              icon={<Sparkles className="w-10 h-10 text-[#FFF200]" />}
               title="Gamificação e Badges"
               description="Conquiste badges, suba de nível e participe de rankings enquanto aprende."
               delay={0.3}
@@ -133,10 +135,10 @@ const AcademyPage = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="relative py-32 bg-gradient-to-br from-black via-gray-900 to-black overflow-hidden">
+      <section className="relative py-32 overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0" style={{
-            backgroundImage: 'radial-gradient(circle at 2px 2px, #FFD700 1px, transparent 0)',
+            backgroundImage: 'radial-gradient(circle at 2px 2px, #FFF200 1px, transparent 0)',
             backgroundSize: '40px 40px'
           }} />
         </div>
@@ -148,30 +150,30 @@ const AcademyPage = () => {
             viewport={{ once: true }}
           >
             <div className="mb-8">
-              <GraduationCap className="w-16 h-16 text-primary-500 mx-auto mb-6" />
+              <GraduationCap className="w-16 h-16 text-[#FFF200] mx-auto mb-6" />
             </div>
             <h2 className="text-4xl md:text-6xl font-bold mb-8 text-white leading-tight">
               Pronto para acelerar sua jornada?
               <br />
-              <span className="text-primary-500">
+              <span className="text-[#FFF200]">
                 Aprenda com os melhores.
               </span>
             </h2>
-            <div className="relative mx-auto mt-8 max-w-3xl overflow-hidden rounded-2xl border border-primary-400/30 bg-gradient-to-r from-primary-500/[0.08] via-primary-500/[0.16] to-primary-500/[0.08] px-6 py-6 shadow-[0_0_45px_rgba(250,204,21,0.10)] backdrop-blur-md sm:px-10 sm:py-7">
-              <div className="pointer-events-none absolute inset-x-16 top-0 h-px bg-gradient-to-r from-transparent via-primary-300/80 to-transparent" />
-              <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-primary-400/25 bg-black/30 px-3 py-1.5">
-                <Sparkles className="h-3.5 w-3.5 text-primary-400" />
-                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary-300">Oriento Academy</span>
+            <div className="relative mx-auto mt-8 max-w-3xl overflow-hidden rounded-2xl border border-[#FFF200]/30 bg-gradient-to-r from-[#FFF200]/[0.08] via-[#FFF200]/[0.16] to-[#FFF200]/[0.08] px-6 py-6 shadow-none backdrop-blur-md sm:px-10 sm:py-7">
+              <div className="pointer-events-none absolute inset-x-16 top-0 h-px bg-gradient-to-r from-transparent via-[#FFF200]/80 to-transparent" />
+              <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-[#FFF200]/25 bg-black/30 px-3 py-1.5">
+                <Sparkles className="h-3.5 w-3.5 text-[#FFF200]" />
+                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#FFF200]">Oriento Academy</span>
               </div>
               <p className="text-2xl font-bold leading-tight text-white sm:text-3xl md:text-4xl">
-                Onde founders se tornam <span className="text-primary-400">referência.</span>
+                Onde founders se tornam <span className="text-[#FFF200]">referência.</span>
               </p>
             </div>
             <div className="mt-16">
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <a
                   href="/cadastro"
-                  className="inline-flex items-center gap-3 px-10 py-5 bg-primary-500 hover:bg-primary-600 text-black font-bold text-xl rounded-xl shadow-2xl shadow-primary-500/30 hover:shadow-primary-500/50 transition-all duration-300 hover:scale-105"
+                  className="inline-flex items-center gap-3 px-10 py-5 bg-[#FFF200] hover:bg-[#FFF200] hover:opacity-90 shadow-none text-black font-bold text-xl rounded-xl shadow-none shadow-none hover:shadow-none transition-all duration-300 hover:scale-105"
                 >
                   <Sparkles className="w-6 h-6" />
                   Quero fazer parte
@@ -188,7 +190,7 @@ const AcademyPage = () => {
           </motion.div>
         </div>
       </section>
-    </>
+    </div>
   );
 };
 
@@ -202,18 +204,18 @@ interface AcademyFeatureProps {
 
 const AcademyFeature = ({ icon, title, description, delay }: AcademyFeatureProps) => (
   <motion.div
-    className="group relative bg-white dark:bg-gray-800 p-8 rounded-2xl border-2 border-gray-200 dark:border-gray-700 hover:border-primary-500 dark:hover:border-primary-500 transition-all duration-300 hover:shadow-2xl hover:shadow-primary-500/20"
+    className="group relative bg-white dark:bg-gray-800 p-8 rounded-2xl border-2 border-gray-200 dark:border-gray-700 hover:border-[#FFF200] dark:hover:border-[#FFF200] transition-all duration-300 hover:shadow-none hover:shadow-none"
     initial={{ opacity: 0, y: 20 }}
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true }}
     transition={{ delay }}
     whileHover={{ y: -8 }}
   >
-    <div className="relative w-16 h-16 bg-black rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg">
-      <div className="absolute inset-0 bg-primary-500/20 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+    <div className="relative w-16 h-16 bg-black rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 shadow-none">
+      <div className="absolute inset-0 bg-[#FFF200]/20 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       {icon}
     </div>
-    <h3 className="text-xl font-bold mb-3 group-hover:text-primary-500 transition-colors">{title}</h3>
+    <h3 className="text-xl font-bold mb-3 group-hover:text-[#FFF200] transition-colors">{title}</h3>
     <p className="text-gray-600 dark:text-gray-400 leading-relaxed text-sm">{description}</p>
   </motion.div>
 );

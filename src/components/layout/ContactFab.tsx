@@ -36,8 +36,8 @@ const ContactFab = () => {
       label: 'Email',
       subtitle: 'oriento.contato@pm.me',
       href: 'mailto:oriento.contato@pm.me',
-      gradient: 'from-primary-400 to-primary-600',
-      shadow: 'shadow-primary-500/25',
+      gradient: 'from-[#FFF200] to-[#FFF200]',
+      shadow: 'shadow-none',
     },
   ];
 
@@ -84,7 +84,7 @@ const ContactFab = () => {
               className="absolute bottom-20 right-0 w-[calc(100vw-40px)] max-w-[340px] sm:w-[340px] rounded-[28px] flex flex-col max-h-[calc(100vh-120px)]"
               style={{
                 background: 'linear-gradient(145deg, rgba(15,15,15,0.97), rgba(24,24,27,0.98))',
-                boxShadow: '0 32px 80px -12px rgba(0,0,0,0.65), 0 0 60px -20px rgba(234,179,8,0.15), inset 0 1px 0 rgba(255,255,255,0.06)',
+                boxShadow: '0 32px 80px -12px rgba(0,0,0,0.65), 0 0 60px -20px rgba(255,242,0,0.15), inset 0 1px 0 rgba(255,255,255,0.06)',
                 border: '1px solid rgba(255,255,255,0.08)',
               }}
             >
@@ -92,13 +92,13 @@ const ContactFab = () => {
               <div className="flex-shrink-0 rounded-t-[28px] overflow-hidden">
                 {/* Background gradient canvas */}
                 <div className="h-20 relative">
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary-500/25 via-primary-600/10 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-br from-[#FFF200]/25 via-[#FFF200]/10 to-transparent" />
                   <div className="absolute inset-0 opacity-30" style={{
-                    backgroundImage: 'radial-gradient(circle at 2px 2px, rgba(234,179,8,0.35) 1px, transparent 0)',
+                    backgroundImage: 'radial-gradient(circle at 2px 2px, rgba(255,242,0,0.35) 1px, transparent 0)',
                     backgroundSize: '24px 24px'
                   }} />
                   {/* Glow orb */}
-                  <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-primary-500/20 blur-3xl" />
+                  <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-[#FFF200]/100/20 blur-3xl" />
 
                   {/* Close button */}
                   <button
@@ -114,8 +114,8 @@ const ContactFab = () => {
               <div className="flex flex-col items-center -mt-10 flex-shrink-0 relative z-10">
                 <div className="relative mb-3">
                   {/* Glow ring */}
-                  <div className="absolute -inset-1.5 rounded-full bg-gradient-to-br from-primary-400 via-primary-500 to-primary-600 opacity-70 blur-sm" />
-                  <div className="absolute -inset-[3px] rounded-full bg-gradient-to-br from-primary-400 via-primary-500 to-primary-600" />
+                  <div className="absolute -inset-1.5 rounded-full bg-gradient-to-br from-[#FFF200] via-[#FFF200] to-[#FFF200] opacity-70 blur-sm" />
+                  <div className="absolute -inset-[3px] rounded-full bg-gradient-to-br from-[#FFF200] via-[#FFF200] to-[#FFF200]" />
                   <img
                     src={fernandoSelecao6}
                     alt="Fernando Ramalho"
@@ -134,8 +134,8 @@ const ContactFab = () => {
                   Fernando Ramalho
                 </h3>
                 <div className="inline-flex items-center gap-1.5 mb-1">
-                  <Sparkles className="w-3 h-3 text-primary-400" />
-                  <span className="text-[11px] font-semibold text-primary-400/90 uppercase tracking-[0.14em]">
+                  <Sparkles className="w-3 h-3 text-[#FFF200]" />
+                  <span className="text-[11px] font-semibold text-[#FFF200]/90 uppercase tracking-[0.14em]">
                     Fundador do Orientohub
                   </span>
                 </div>
@@ -168,7 +168,7 @@ const ContactFab = () => {
                       target="_blank"
                       rel="noopener noreferrer"
                       variants={itemVariants}
-                      className="group flex items-center gap-3.5 p-3 rounded-2xl bg-white/[0.03] hover:bg-white/[0.07] border border-white/[0.06] hover:border-primary-500/30 transition-all duration-300 cursor-pointer"
+                      className="group flex items-center gap-3.5 p-3 rounded-2xl bg-white/[0.03] hover:bg-white/[0.07] border border-white/[0.06] hover:border-[#FFF200]/30 transition-all duration-300 cursor-pointer"
                       whileHover={{ x: 4 }}
                       whileTap={{ scale: 0.98 }}
                     >
@@ -186,7 +186,7 @@ const ContactFab = () => {
                         </span>
                       </div>
                       {/* Arrow */}
-                      <ArrowUpRight className="w-4 h-4 text-white/20 group-hover:text-primary-400 transition-colors shrink-0" />
+                      <ArrowUpRight className="w-4 h-4 text-white/20 group-hover:text-[#FFF200] transition-colors shrink-0" />
                     </motion.a>
                   ))}
                 </motion.div>
@@ -194,7 +194,7 @@ const ContactFab = () => {
 
               {/* Footer */}
               <div className="px-5 sm:px-6 py-3.5 border-t border-white/[0.06] flex items-center justify-center gap-2">
-                <div className="w-1.5 h-1.5 rounded-full bg-primary-500 animate-pulse" />
+                <div className="w-1.5 h-1.5 rounded-full bg-[#FFF200]/100 animate-pulse" />
                 <p className="text-[10px] text-gray-500 uppercase tracking-[0.16em] font-semibold">
                   Resposta em até 24 horas
                 </p>
@@ -214,8 +214,8 @@ const ContactFab = () => {
         {/* Outer glow ring (visible when closed) */}
         {!isOpen && (
           <>
-            <div className="absolute -inset-2 rounded-full bg-primary-500/20 blur-xl opacity-60 group-hover:opacity-100 transition-opacity duration-500" />
-            <div className="absolute inset-0 rounded-full bg-primary-500 animate-ping opacity-15" />
+            <div className="absolute -inset-2 rounded-full bg-[#FFF200]/100/20 blur-xl opacity-60 group-hover:opacity-100 transition-opacity duration-500" />
+            <div className="absolute inset-0 rounded-full bg-[#FFF200]/100 animate-ping opacity-15" />
           </>
         )}
 
@@ -223,8 +223,8 @@ const ContactFab = () => {
         <div
           className={`relative w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center shadow-2xl transition-all duration-300 ${
             isOpen
-              ? 'bg-gray-900 border border-white/10 text-primary-400'
-              : 'bg-gradient-to-br from-primary-400 via-primary-500 to-primary-600 text-black shadow-primary-500/40'
+              ? 'bg-gray-900 border border-white/10 text-[#FFF200]'
+              : 'bg-gradient-to-br from-[#FFF200] via-[#FFF200] to-[#FFF200] text-black shadow-none'
           }`}
         >
           <AnimatePresence mode="wait">

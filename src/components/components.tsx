@@ -62,7 +62,7 @@ const IntegrationsSection = () => (
         </motion.div>
 
         <motion.div initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, amount: 0.25 }} className="order-1 text-center lg:order-2 lg:text-left">
-          <div className="inline-flex rounded-full border border-primary-400/30 bg-primary-500/10 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-primary-300">
+          <div className="inline-flex rounded-full bg-gradient-to-b from-white/10 to-black/80 backdrop-blur-xl border border-[#FFF200]/50 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-white/90">
             Ferramentas do ecossistema
           </div>
           <h2 id="tools-title" className="mt-5 text-3xl font-bold tracking-tight text-white sm:text-4xl lg:text-5xl">
@@ -71,8 +71,8 @@ const IntegrationsSection = () => (
           <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-gray-400 sm:text-lg lg:mx-0">
             Estratégia e execução conectadas às principais plataformas de presença, conteúdo, anúncios e vendas digitais.
           </p>
-          <Link to="/servicos" className="mt-7 inline-flex items-center justify-center gap-2 rounded-xl border border-primary-400/40 bg-primary-500/10 px-5 py-3 text-sm font-bold text-primary-300 transition hover:bg-primary-500 hover:text-black">
-            Conhecer nossos serviços <ArrowRight className="h-4 w-4" />
+          <Link to="/servicos" className="group mt-7 inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-b from-white/10 to-black/80 backdrop-blur-xl border border-[#FFF200]/50 px-5 py-3 text-sm font-bold text-white transition-all hover:bg-none hover:bg-[#FFF200] hover:border-[#FFF200] hover:text-black hover:scale-105 active:scale-95 shadow-none">
+            Conhecer nossos serviços <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
           </Link>
         </motion.div>
       </div>

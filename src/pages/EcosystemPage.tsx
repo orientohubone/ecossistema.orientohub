@@ -72,10 +72,10 @@ const MVPCarouselPaginated = ({ children }: { children: React.ReactNode }) => {
       {currentPage > 0 && (
         <button
           onClick={prevPage}
-          className="absolute left-0 md:left-0 top-1/2 -translate-y-1/2 md:-translate-x-16 bg-white dark:bg-gray-800 p-3 md:p-4 rounded-full shadow-xl hover:shadow-2xl hover:scale-110 transition-all z-10 border-2 border-primary-500/30 hover:border-primary-500 group focus:outline-none"
+          className="absolute left-0 md:left-0 top-1/2 -translate-y-1/2 md:-translate-x-16 bg-white dark:bg-gray-800 p-3 md:p-4 rounded-full shadow-xl hover:shadow-2xl hover:scale-110 transition-all z-10 border-2 border-[#FFF200]/30 hover:border-[#FFF200] group focus:outline-none"
           aria-label="Página anterior"
         >
-          <ArrowRight className="w-6 h-6 rotate-180 text-primary-500 group-hover:text-primary-600" />
+          <ArrowRight className="w-6 h-6 rotate-180 text-[#FFF200] group-hover:text-[#FFF200]" />
         </button>
       )}
 
@@ -83,10 +83,10 @@ const MVPCarouselPaginated = ({ children }: { children: React.ReactNode }) => {
       {currentPage < totalPages - 1 && (
         <button
           onClick={nextPage}
-          className="absolute right-0 md:right-0 top-1/2 -translate-y-1/2 md:translate-x-16 bg-white dark:bg-gray-800 p-3 md:p-4 rounded-full shadow-xl hover:shadow-2xl hover:scale-110 transition-all z-10 border-2 border-primary-500/30 hover:border-primary-500 group focus:outline-none"
+          className="absolute right-0 md:right-0 top-1/2 -translate-y-1/2 md:translate-x-16 bg-white dark:bg-gray-800 p-3 md:p-4 rounded-full shadow-xl hover:shadow-2xl hover:scale-110 transition-all z-10 border-2 border-[#FFF200]/30 hover:border-[#FFF200] group focus:outline-none"
           aria-label="Próxima página"
         >
-          <ArrowRight className="w-6 h-6 text-primary-500 group-hover:text-primary-600" />
+          <ArrowRight className="w-6 h-6 text-[#FFF200] group-hover:text-[#FFF200]" />
         </button>
       )}
 
@@ -98,8 +98,8 @@ const MVPCarouselPaginated = ({ children }: { children: React.ReactNode }) => {
               key={index}
               onClick={() => setCurrentPage(index)}
               className={`h-2 rounded-full transition-all ${index === currentPage
-                ? 'bg-primary-500 w-8'
-                : 'bg-gray-300 dark:bg-gray-600 w-2 hover:bg-primary-400'
+                ? 'bg-[#FFF200]/100 w-8'
+                : 'bg-gray-300 dark:bg-gray-600 w-2 hover:bg-[#FFF200]'
                 }`}
               aria-label={`Ir para página ${index + 1}`}
             />
@@ -114,31 +114,26 @@ const EcosystemPage = () => {
   const { t } = useTranslation();
 
   return (
-    <>
+    <div className="dark min-h-screen">
+      {/* Shared fixed background */}
+      <div className="fixed inset-0 bg-gradient-to-br from-black via-gray-900 to-black -z-50" />
+      {/* Global dot grid */}
+      <div className="fixed inset-0 opacity-[0.06] pointer-events-none -z-40"
+        style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, #FFF200 1px, transparent 0)', backgroundSize: '40px 40px' }}
+      />
       <Helmet>
         <title>Ecossistema - Orientohub</title>
         <meta name="description" content="Conheça a arquitetura estratégica do Orientohub: núcleo empresarial, plataforma de aceleração, MVPs conectados e verticais de expansão." />
       </Helmet>
 
       {/* Hero Section */}
-      <section className="relative min-h-screen w-full overflow-hidden bg-gradient-to-br from-black via-gray-900 to-black flex items-center">
-        {/* Animated background elements */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute -top-1/2 -left-1/4 w-96 h-96 bg-primary-500/20 rounded-full blur-3xl animate-pulse" />
-          <div className="absolute top-1/3 -right-1/4 w-[500px] h-[500px] bg-primary-400/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '700ms' }} />
-          <div className="absolute bottom-0 left-1/3 w-96 h-96 bg-primary-300/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1000ms' }} />
-        </div>
+      <section className="relative min-h-[60vh] sm:min-h-[70vh] w-full overflow-hidden flex items-center pt-32 pb-16">
 
-        {/* Grid pattern overlay */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute inset-0" style={{
-            backgroundImage: 'radial-gradient(circle at 2px 2px, #FFD700 1px, transparent 0)',
-            backgroundSize: '40px 40px'
-          }} />
-        </div>
+
+
 
         {/* Content */}
-        <div className="relative z-10 container-custom py-32">
+        <div className="relative z-10 container-custom">
           <div className="max-w-5xl mx-auto text-center">
             {/* Badge */}
             <motion.div
@@ -147,9 +142,9 @@ const EcosystemPage = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <div className="inline-flex items-center gap-2.5 rounded-full border border-primary-400/40 bg-black/30 px-3.5 py-2 shadow-[0_0_30px_rgba(255,215,0,0.08)] backdrop-blur-md">
-                <Layers className="h-3.5 w-3.5 text-primary-400" aria-hidden="true" />
-                <span className="h-3 w-px bg-primary-400/40" aria-hidden="true" />
+              <div className="inline-flex items-center gap-2.5 rounded-full bg-gradient-to-b from-white/10 to-black/80 backdrop-blur-xl border border-[#FFF200]/60 px-3 py-1.5 text-white shadow-none max-w-full ">
+                <Layers className="h-3.5 w-3.5 text-[#FFF200]" aria-hidden="true" />
+                <span className="h-3 w-px bg-[#FFF200]/40" aria-hidden="true" />
                 <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-white sm:text-xs">
                   Arquitetura estratégica
                 </span>
@@ -166,7 +161,7 @@ const EcosystemPage = () => {
               <span className="block text-white mb-2">
                 Orientohub
               </span>
-              <span className="bg-gradient-to-r from-primary-400 via-primary-500 to-primary-600 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-[#FFF200] via-[#FFF200] to-[#FFF200]/80 bg-clip-text text-transparent">
                 Ecossistema
               </span>
             </motion.h1>
@@ -188,10 +183,10 @@ const EcosystemPage = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.6 }}
             >
-              <a href="#nucleo" className="group px-6 py-3 bg-primary-500/10 border-2 border-primary-500/50 hover:border-primary-500 hover:bg-primary-500/20 rounded-xl backdrop-blur-sm transition-all">
+              <a href="#nucleo" className="group px-6 py-3 bg-[#FFF200]/100/10 border-2 border-[#FFF200]/50 hover:border-[#FFF200] hover:bg-[#FFF200]/100/20 rounded-xl backdrop-blur-sm transition-all">
                 <div className="flex items-center gap-2">
-                  <Compass className="w-5 h-5 text-primary-500" />
-                  <span className="text-primary-500 font-semibold">Núcleo</span>
+                  <Compass className="w-5 h-5 text-[#FFF200]" />
+                  <span className="text-[#FFF200] font-semibold">Núcleo</span>
                 </div>
               </a>
 
@@ -221,7 +216,7 @@ const EcosystemPage = () => {
       </section>
 
       {/* Núcleo Section */}
-      <section id="nucleo" className="py-24 bg-white dark:bg-gray-900">
+      <section id="nucleo" className="pt-8 pb-24">
         <div className="container-custom">
           <motion.div
             className="text-center mb-16"
@@ -229,9 +224,9 @@ const EcosystemPage = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease: "easeOut" }}
           >
-            <div className="inline-flex items-center gap-2 rounded-full border border-primary-400/40 bg-black/30 px-3.5 py-2 mb-6 shadow-[0_0_30px_rgba(255,215,0,0.08)] backdrop-blur-md">
-              <Compass className="h-3.5 w-3.5 text-primary-400" aria-hidden="true" />
-              <span className="h-3 w-px bg-primary-400/40" aria-hidden="true" />
+            <div className="inline-flex items-center gap-2 rounded-full bg-gradient-to-b from-white/10 to-black/80 backdrop-blur-xl border border-[#FFF200]/60 px-3 py-1.5 text-white shadow-none max-w-full mb-6 ">
+              <Compass className="h-3.5 w-3.5 text-[#FFF200]" aria-hidden="true" />
+              <span className="h-3 w-px bg-[#FFF200]/40" aria-hidden="true" />
               <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-white sm:text-xs">Núcleo</span>
             </div>
             <h2 className="text-3xl md:text-5xl font-bold mb-6">Orientohub Soluções Empresariais</h2>
@@ -282,7 +277,7 @@ const EcosystemPage = () => {
       </section>
 
       {/* Camada 1 - Plataforma */}
-      <section id="plataforma" className="py-24 bg-gradient-to-b from-gray-50 to-white dark:from-gray-800 dark:to-gray-900">
+      <section id="plataforma" className="py-24">
         <div className="container-custom">
           <motion.div
             className="text-center mb-16"
@@ -290,9 +285,9 @@ const EcosystemPage = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease: "easeOut" }}
           >
-            <div className="inline-flex items-center gap-2 rounded-full border border-primary-400/40 bg-black/30 px-3.5 py-2 mb-6 shadow-[0_0_30px_rgba(255,215,0,0.08)] backdrop-blur-md">
-              <Network className="h-3.5 w-3.5 text-primary-400" aria-hidden="true" />
-              <span className="h-3 w-px bg-primary-400/40" aria-hidden="true" />
+            <div className="inline-flex items-center gap-2 rounded-full bg-gradient-to-b from-white/10 to-black/80 backdrop-blur-xl border border-[#FFF200]/60 px-3 py-1.5 text-white shadow-none max-w-full mb-6 ">
+              <Network className="h-3.5 w-3.5 text-[#FFF200]" aria-hidden="true" />
+              <span className="h-3 w-px bg-[#FFF200]/40" aria-hidden="true" />
               <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-white sm:text-xs">Camada 1</span>
             </div>
             <h2 className="text-3xl md:text-5xl font-bold mb-6">Plataforma Orientohub</h2>
@@ -335,7 +330,7 @@ const EcosystemPage = () => {
       </section>
 
       {/* Camada 2 - MVPs */}
-      <section id="mvps" className="py-24 bg-white dark:bg-gray-900">
+      <section id="mvps" className="py-24">
         <div className="container-custom">
           <motion.div
             className="text-center mb-16"
@@ -343,9 +338,9 @@ const EcosystemPage = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease: "easeOut" }}
           >
-            <div className="inline-flex items-center gap-2 rounded-full border border-primary-400/40 bg-black/30 px-3.5 py-2 mb-6 shadow-[0_0_30px_rgba(255,215,0,0.08)] backdrop-blur-md">
-              <Rocket className="h-3.5 w-3.5 text-primary-400" aria-hidden="true" />
-              <span className="h-3 w-px bg-primary-400/40" aria-hidden="true" />
+            <div className="inline-flex items-center gap-2 rounded-full bg-gradient-to-b from-white/10 to-black/80 backdrop-blur-xl border border-[#FFF200]/60 px-3 py-1.5 text-white shadow-none max-w-full mb-6 ">
+              <Rocket className="h-3.5 w-3.5 text-[#FFF200]" aria-hidden="true" />
+              <span className="h-3 w-px bg-[#FFF200]/40" aria-hidden="true" />
               <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-white sm:text-xs">Camada 2</span>
             </div>
             <h2 className="text-3xl md:text-5xl font-bold mb-6">MVPs & Soluções Conectadas</h2>
@@ -419,10 +414,10 @@ const EcosystemPage = () => {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.6, ease: "easeOut" }}
           >
-            <div className="inline-flex items-center gap-3 bg-primary-500/10 border border-primary-500/30 px-6 py-3 rounded-full">
-              <CircleDot className="w-5 h-5 text-primary-500" />
+            <div className="inline-flex items-center gap-3 bg-gradient-to-b from-white/10 to-black/80 backdrop-blur-xl border border-[#FFF200]/60 px-4 py-2 text-white shadow-none max-w-full rounded-full">
+              <CircleDot className="w-5 h-5 text-[#FFF200]" />
               <span className="text-gray-700 dark:text-gray-300">
-                <strong className="text-primary-500">20% de participação societária</strong> em cada solução acelerada
+                <strong className="text-[#FFF200]">20% de participação societária</strong> em cada solução acelerada
               </span>
             </div>
           </motion.div>
@@ -430,7 +425,7 @@ const EcosystemPage = () => {
       </section>
 
       {/* Camada 3 - Verticais */}
-      <section id="verticais" className="py-24 bg-gradient-to-b from-gray-50 to-white dark:from-gray-800 dark:to-gray-900">
+      <section id="verticais" className="py-24">
         <div className="container-custom">
           <motion.div
             className="text-center mb-16"
@@ -438,9 +433,9 @@ const EcosystemPage = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease: "easeOut" }}
           >
-            <div className="inline-flex items-center gap-2 rounded-full border border-primary-400/40 bg-black/30 px-3.5 py-2 mb-6 shadow-[0_0_30px_rgba(255,215,0,0.08)] backdrop-blur-md">
-              <TrendingUp className="h-3.5 w-3.5 text-primary-400" aria-hidden="true" />
-              <span className="h-3 w-px bg-primary-400/40" aria-hidden="true" />
+            <div className="inline-flex items-center gap-2 rounded-full bg-gradient-to-b from-white/10 to-black/80 backdrop-blur-xl border border-[#FFF200]/60 px-3 py-1.5 text-white shadow-none max-w-full mb-6 ">
+              <TrendingUp className="h-3.5 w-3.5 text-[#FFF200]" aria-hidden="true" />
+              <span className="h-3 w-px bg-[#FFF200]/40" aria-hidden="true" />
               <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-white sm:text-xs">Camada 3</span>
             </div>
             <h2 className="text-3xl md:text-5xl font-bold mb-6">Verticais de Expansão</h2>
@@ -506,10 +501,10 @@ const EcosystemPage = () => {
       </section>
 
       {/* Business Model Section */}
-      <section className="py-24 bg-gradient-to-br from-black via-gray-900 to-black text-white relative overflow-hidden">
+      <section className="py-24 relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0" style={{
-            backgroundImage: 'radial-gradient(circle at 2px 2px, #FFD700 1px, transparent 0)',
+            backgroundImage: 'radial-gradient(circle at 2px 2px, #FFF200 1px, transparent 0)',
             backgroundSize: '40px 40px'
           }} />
         </div>
@@ -521,9 +516,9 @@ const EcosystemPage = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease: "easeOut" }}
           >
-            <div className="inline-flex items-center gap-2 rounded-full border border-primary-400/40 bg-black/30 px-3.5 py-2 mb-6 shadow-[0_0_30px_rgba(255,215,0,0.08)] backdrop-blur-md">
-              <Building2 className="h-3.5 w-3.5 text-primary-400" aria-hidden="true" />
-              <span className="h-3 w-px bg-primary-400/40" aria-hidden="true" />
+            <div className="inline-flex items-center gap-2 rounded-full bg-gradient-to-b from-white/10 to-black/80 backdrop-blur-xl border border-[#FFF200]/60 px-3 py-1.5 text-white shadow-none max-w-full mb-6 ">
+              <Building2 className="h-3.5 w-3.5 text-[#FFF200]" aria-hidden="true" />
+              <span className="h-3 w-px bg-[#FFF200]/40" aria-hidden="true" />
               <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-white sm:text-xs">Modelo de negócio</span>
             </div>
             <h2 className="text-4xl md:text-5xl font-bold mb-6">Como Geramos Valor</h2>
@@ -562,7 +557,7 @@ const EcosystemPage = () => {
       </section>
 
       {/* Founder Journey Timeline */}
-      <section className="py-24 bg-white dark:bg-gray-900">
+      <section className="py-24">
         <div className="container-custom">
           <motion.div
             className="text-center mb-16"
@@ -611,17 +606,17 @@ const EcosystemPage = () => {
       </section>
 
       {/* Final CTA Section */}
-      <section className="relative py-32 bg-gradient-to-br from-black via-gray-900 to-black overflow-hidden">
+      <section className="relative py-32 overflow-hidden">
         {/* Animated background elements */}
         <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary-500/20 rounded-full blur-3xl animate-pulse" />
-          <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-primary-400/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1000ms' }} />
+          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#FFF200]/100/20 rounded-full blur-3xl animate-pulse" />
+          <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-[#FFF200]/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1000ms' }} />
         </div>
 
         {/* Grid pattern overlay */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0" style={{
-            backgroundImage: 'radial-gradient(circle at 2px 2px, #FFD700 1px, transparent 0)',
+            backgroundImage: 'radial-gradient(circle at 2px 2px, #FFF200 1px, transparent 0)',
             backgroundSize: '40px 40px'
           }} />
         </div>
@@ -634,9 +629,9 @@ const EcosystemPage = () => {
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.5, ease: "easeOut" }}
           >
-            <div className="inline-flex items-center gap-2.5 rounded-full border border-primary-400/40 bg-black/30 px-3.5 py-2 mb-8 shadow-[0_0_30px_rgba(255,215,0,0.08)] backdrop-blur-md">
-              <Users className="h-3.5 w-3.5 text-primary-400" aria-hidden="true" />
-              <span className="h-3 w-px bg-primary-400/40" aria-hidden="true" />
+            <div className="inline-flex items-center gap-2.5 rounded-full bg-gradient-to-b from-white/10 to-black/80 backdrop-blur-xl border border-[#FFF200]/60 px-3 py-1.5 text-white shadow-none max-w-full mb-8 ">
+              <Users className="h-3.5 w-3.5 text-[#FFF200]" aria-hidden="true" />
+              <span className="h-3 w-px bg-[#FFF200]/40" aria-hidden="true" />
               <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-white sm:text-xs">
                 Junte-se a nós
               </span>
@@ -644,7 +639,7 @@ const EcosystemPage = () => {
 
             <h2 className="text-4xl md:text-6xl font-bold mb-6 text-white leading-tight">
               Pronto para{' '}
-              <span className="bg-gradient-to-r from-primary-400 via-primary-500 to-primary-600 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-[#FFF200] via-[#FFF200] to-[#FFF200]/80 bg-clip-text text-transparent">
                 Fazer Parte
               </span>?
             </h2>
@@ -685,7 +680,7 @@ const EcosystemPage = () => {
           </div>
         </div>
       </section>
-    </>
+    </div>
   );
 };
 
@@ -701,13 +696,13 @@ interface FeatureCardProps {
 const FeatureCard = ({ icon, title, description, delay }: FeatureCardProps) => {
   return (
     <motion.div
-      className="group bg-gradient-to-br from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 p-6 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-primary-500 dark:hover:border-primary-500 transition-all duration-300 hover:shadow-xl"
+      className="group bg-gradient-to-br from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 p-6 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-[#FFF200] dark:hover:border-[#FFF200] transition-all duration-300 hover:shadow-xl"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay, ease: "easeOut" }}
       whileHover={{ y: -5 }}
     >
-      <div className="text-primary-500 mb-4 group-hover:scale-110 transition-transform duration-300">
+      <div className="text-[#FFF200] mb-4 group-hover:scale-110 transition-transform duration-300">
         {icon}
       </div>
       <h3 className="text-lg font-bold mb-2">{title}</h3>
@@ -779,7 +774,7 @@ const MVPCard = ({ name, description, focus, icon, color, delay, link, status = 
             {/* Status Badge */}
             <div className="absolute top-4 right-4">
               <div className={`px-3 py-1 rounded-full text-xs font-bold ${status === 'active' ? 'bg-green-500 text-white' :
-                status === 'beta' ? 'bg-primary-500 text-black' :
+                status === 'beta' ? 'bg-[#FFF200]/100 text-black' :
                   'bg-gray-800 text-white'
                 }`}>
                 {status === 'active' ? '✓ Ativo' : status === 'beta' ? '⚡ Beta' : '🔜 Em Breve'}
@@ -797,7 +792,7 @@ const MVPCard = ({ name, description, focus, icon, color, delay, link, status = 
             <h3 className="text-2xl font-bold text-white mb-2">{name}</h3>
 
             {/* Focus Tag */}
-            <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-3 py-1 rounded-lg">
+            <div className="inline-flex items-center gap-2 bg-gradient-to-b from-white/10 to-black/80 backdrop-blur-xl border border-[#FFF200]/60 px-3 py-1.5 text-white shadow-none rounded-full max-w-full">
               <Target className="w-4 h-4 text-white" />
               <span className="text-white text-sm font-medium">{focus}</span>
             </div>
@@ -825,9 +820,9 @@ const MVPCard = ({ name, description, focus, icon, color, delay, link, status = 
             )}
 
             {/* Equity Badge */}
-            <div className="flex items-center justify-center gap-2 bg-primary-500/10 border-2 border-primary-500/30 rounded-lg p-2.5">
-              <CircleDot className="w-4 h-4 text-primary-500" />
-              <span className="text-xs font-bold text-primary-600 dark:text-primary-400">
+            <div className="flex items-center justify-center gap-2 bg-[#FFF200]/100/10 border-2 border-[#FFF200]/30 rounded-lg p-2.5">
+              <CircleDot className="w-4 h-4 text-[#FFF200]" />
+              <span className="text-xs font-bold text-[#FFF200] dark:text-[#FFF200]">
                 20% Participação Societária
               </span>
             </div>
@@ -875,7 +870,7 @@ const VerticalCard = ({ logo, icon, title, emoji, description, features, status,
     animate={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.5, delay, ease: "easeOut" }}
   >
-    <div className="absolute -inset-0.5 bg-gradient-to-r from-primary-500 to-purple-600 rounded-2xl blur opacity-0 group-hover:opacity-100 transition duration-500" />
+    <div className="absolute -inset-0.5 bg-gradient-to-r from-[#FFF200] to-purple-600 rounded-2xl blur opacity-0 group-hover:opacity-100 transition duration-500" />
     <div className="relative h-full bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-8 hover:shadow-2xl transition-all duration-300">
       {/* Logo ou Icon */}
       <div className="mb-6">
@@ -886,7 +881,7 @@ const VerticalCard = ({ logo, icon, title, emoji, description, features, status,
             className="h-16 w-auto"
           />
         ) : (
-          <div className="text-primary-500">
+          <div className="text-[#FFF200]">
             {icon}
           </div>
         )}
@@ -900,7 +895,7 @@ const VerticalCard = ({ logo, icon, title, emoji, description, features, status,
         </span>
       </div>
 
-      <h3 className="text-2xl font-bold mb-3 text-gray-900 dark:text-white group-hover:text-primary-500 transition-colors">
+      <h3 className="text-2xl font-bold mb-3 text-gray-900 dark:text-white group-hover:text-[#FFF200] transition-colors">
         {emoji} {title}
       </h3>
       <p className="text-gray-600 dark:text-gray-300 mb-6">
@@ -909,7 +904,7 @@ const VerticalCard = ({ logo, icon, title, emoji, description, features, status,
       <ul className="space-y-2">
         {features.map((feature, index) => (
           <li key={index} className="flex items-center text-sm text-gray-600 dark:text-gray-300">
-            <CheckCircle className="w-4 h-4 text-primary-500 mr-2 flex-shrink-0" />
+            <CheckCircle className="w-4 h-4 text-[#FFF200] mr-2 flex-shrink-0" />
             {feature}
           </li>
         ))}
@@ -924,7 +919,7 @@ const VerticalCard = ({ logo, icon, title, emoji, description, features, status,
               target="_blank"
               rel="noopener noreferrer"
               title={action.label}
-              className="inline-flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-primary-500 hover:text-white transition p-2 shadow"
+              className="inline-flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-[#FFF200]/100 hover:text-white transition p-2 shadow"
             >
               {action.icon}
             </a>
@@ -947,14 +942,14 @@ const BusinessModelCard = ({ icon, title, description, delay }: BusinessModelCar
 
   return (
     <motion.div
-      className="bg-white/5 backdrop-blur-sm p-6 rounded-xl border border-white/10 hover:border-primary-500/50 transition-all duration-300 hover:bg-white/10"
+      className="bg-white/5 backdrop-blur-sm p-6 rounded-xl border border-white/10 hover:border-[#FFF200]/50 transition-all duration-300 hover:bg-white/10"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay, ease: "easeOut" }}
       whileHover={{ y: -5 }}
     >
       <div className="mb-4">
-        <Icon className="w-10 h-10 text-primary-500" />
+        <Icon className="w-10 h-10 text-[#FFF200]" />
       </div>
       <h3 className="text-lg font-bold mb-2 text-white">{title}</h3>
       <p className="text-gray-300 text-sm">{description}</p>
@@ -1011,7 +1006,7 @@ const JourneyStep = ({ number, title, description, highlights, delay }: JourneyS
                 {[...Array(3)].map((_, i) => (
                   <div
                     key={i}
-                    className="h-2 w-full rounded-sm bg-gradient-to-r from-primary-500/20 via-primary-500/40 to-primary-500/20 animate-[slideIn_2s_ease-in-out_infinite] opacity-0"
+                    className="h-2 w-full rounded-sm bg-gradient-to-r from-[#FFF200]/20 via-[#FFF200]/40 to-[#FFF200]/20 animate-[slideIn_2s_ease-in-out_infinite] opacity-0"
                     style={{
                       width: `${60 + Math.random() * 30}%`,
                       animationDelay: `${i * 0.4}s`,
@@ -1026,10 +1021,10 @@ const JourneyStep = ({ number, title, description, highlights, delay }: JourneyS
             <div className="absolute right-0 bottom-0 left-0 p-5">
               <div className="space-y-2.5">
                 <div className="flex items-center gap-2.5">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-primary-500 to-primary-600 shadow-md">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-[#FFF200] to-[#FFF200] shadow-md">
                     <span className="text-xl font-black text-white">{number}</span>
                   </div>
-                  <h3 className="text-xl font-bold text-gray-900 dark:text-white transition-all duration-300 hover:text-primary-500">
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-white transition-all duration-300 hover:text-[#FFF200]">
                     {title}
                   </h3>
                 </div>
@@ -1048,7 +1043,7 @@ const JourneyStep = ({ number, title, description, highlights, delay }: JourneyS
         >
           {/* Borda simples SEM luz animada - para evitar sombra */}
           <div className="absolute inset-0 pointer-events-none rounded-xl">
-            <div className="absolute inset-0 border-2 border-yellow-400/40 bg-gradient-to-br from-yellow-300/5 via-transparent to-amber-400/10 rounded-xl shadow-[0_0_20px_rgba(255,214,94,0.3)]" />
+            <div className="absolute inset-0 border-2 border-yellow-400/40 bg-gradient-to-br from-yellow-300/5 via-transparent to-amber-400/10 rounded-xl shadow-none" />
           </div>
 
           {/* Inner content with padding for border */}
@@ -1062,7 +1057,7 @@ const JourneyStep = ({ number, title, description, highlights, delay }: JourneyS
             <div className="relative z-10 flex-1 space-y-3">
               {/* Header */}
               <div className="flex items-center gap-2.5 mb-1">
-                <div className="flex h-8 w-8 items-center justify-center rounded-md bg-gradient-to-br from-primary-500 to-primary-600 shadow-md">
+                <div className="flex h-8 w-8 items-center justify-center rounded-md bg-gradient-to-br from-[#FFF200] to-[#FFF200] shadow-md">
                   <span className="text-sm font-black text-white">{number}</span>
                 </div>
                 <h3 className="text-lg font-bold text-gray-900 dark:text-white">
@@ -1087,8 +1082,8 @@ const JourneyStep = ({ number, title, description, highlights, delay }: JourneyS
                       transitionDelay: `${index * 100 + 200}ms`,
                     }}
                   >
-                    <div className="flex h-4 w-4 flex-shrink-0 items-center justify-center rounded bg-primary-500/10">
-                      <span className="w-1 h-1 bg-primary-500 rounded-full" />
+                    <div className="flex h-4 w-4 flex-shrink-0 items-center justify-center rounded bg-[#FFF200]/100/10">
+                      <span className="w-1 h-1 bg-[#FFF200]/100 rounded-full" />
                     </div>
                     <span className="font-medium">{highlight}</span>
                   </div>
@@ -1164,8 +1159,8 @@ interface StatCardProps {
 
 const StatCard = ({ number, label }: StatCardProps) => {
   return (
-    <div className="text-center p-6 bg-gradient-to-br from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-primary-500 transition-all">
-      <div className="text-3xl font-bold text-primary-500 mb-2">{number}</div>
+    <div className="text-center p-6 bg-gradient-to-br from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-[#FFF200] transition-all">
+      <div className="text-3xl font-bold text-[#FFF200] mb-2">{number}</div>
       <div className="text-sm text-gray-600 dark:text-gray-400">{label}</div>
     </div>
   );
@@ -1186,8 +1181,8 @@ const CTACard = ({ title, description, features, ctaText, ctaLink, icon: Icon, d
   return (
     <motion.div
       className={`group relative bg-gradient-to-br from-gray-900 to-black p-8 rounded-2xl border-2 transition-all duration-300 hover:shadow-2xl ${featured
-        ? 'border-primary-500 shadow-xl shadow-primary-500/20 scale-105'
-        : 'border-gray-700 hover:border-primary-500 hover:shadow-primary-500/10'
+        ? 'border-[#FFF200] shadow-xl shadow-none scale-105'
+        : 'border-gray-700 hover:border-[#FFF200] hover:shadow-none'
         }`}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
@@ -1196,13 +1191,13 @@ const CTACard = ({ title, description, features, ctaText, ctaLink, icon: Icon, d
     >
       {/* Icon */}
       <div className="relative mb-6">
-        <div className="w-16 h-16 bg-black border-2 border-primary-500/30 rounded-xl flex items-center justify-center group-hover:border-primary-500 transition-colors">
-          <Icon className="w-8 h-8 text-primary-500" />
+        <div className="w-16 h-16 bg-black border-2 border-[#FFF200]/30 rounded-xl flex items-center justify-center group-hover:border-[#FFF200] transition-colors">
+          <Icon className="w-8 h-8 text-[#FFF200]" />
         </div>
       </div>
 
       {/* Content */}
-      <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-primary-500 transition-colors">
+      <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-[#FFF200] transition-colors">
         {title}
       </h3>
       <p className="text-gray-400 mb-6 leading-relaxed">
@@ -1213,7 +1208,7 @@ const CTACard = ({ title, description, features, ctaText, ctaLink, icon: Icon, d
       <ul className="space-y-3 mb-8">
         {features.map((feature, index) => (
           <li key={index} className="flex items-start gap-3">
-            <CheckCircle2 className="w-5 h-5 text-primary-500 flex-shrink-0 mt-0.5" />
+            <CheckCircle2 className="w-5 h-5 text-[#FFF200] flex-shrink-0 mt-0.5" />
             <span className="text-gray-300 text-sm">{feature}</span>
           </li>
         ))}
@@ -1223,15 +1218,15 @@ const CTACard = ({ title, description, features, ctaText, ctaLink, icon: Icon, d
       <a
         href={ctaLink}
         className={`block w-full text-center px-6 py-4 rounded-xl font-bold transition-all duration-300 ${featured
-          ? 'bg-primary-500 hover:bg-primary-600 text-black shadow-lg shadow-primary-500/30'
-          : 'bg-white/5 hover:bg-primary-500 text-white hover:text-black border-2 border-primary-500/30 hover:border-primary-500'
+          ? 'bg-[#FFF200] hover:bg-[#FFF200] hover:opacity-90 shadow-none text-black shadow-none'
+          : 'bg-white/5 hover:bg-[#FFF200]/100 text-white hover:text-black border-2 border-[#FFF200]/30 hover:border-[#FFF200]'
           }`}
       >
         {ctaText}
       </a>
 
       {/* Glow effect on hover */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary-500/0 via-primary-500/0 to-primary-500/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-br from-[#FFF200]/0 via-[#FFF200]/0 to-[#FFF200]/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
     </motion.div>
   );
 };

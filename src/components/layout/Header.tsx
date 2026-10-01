@@ -88,16 +88,20 @@ const Header = () => {
 
   return (
     <>      {/* Launch Banner */}
-      <div className="bg-gradient-to-r from-primary-500 to-primary-600 px-3 py-1.5 sm:px-4 sm:py-2">
+      <div className="bg-gradient-to-r from-[#FFF200] to-[#FFF200] px-3 py-1.5 sm:px-4 sm:py-2">
         <div className="container-custom">
           <div className="mx-auto flex max-w-4xl items-center justify-center gap-1.5 sm:gap-2.5 text-center text-[11px] sm:text-sm font-bold sm:font-semibold leading-tight text-black">
             <span className="inline-flex h-5 w-5 sm:h-6 sm:w-6 shrink-0 items-center justify-center rounded-full bg-black/10">
-              <Rocket className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-black" />
+              <MessageCircle className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-black" />
             </span>
-            <span className="truncate max-w-[280px] xs:max-w-none">
-              Plataforma Pronta! Lançamento Oficial em Breve
-            </span>
-            <Sparkles className="hidden h-4 w-4 animate-pulse text-black/70 sm:block" />
+            <a 
+              href="https://wa.me/551433331071" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="hover:underline decoration-black/50 underline-offset-4 whitespace-normal"
+            >
+              Possui alguma ideia e deseja tirar do papel?
+            </a>
           </div>
         </div>
       </div>
@@ -126,7 +130,7 @@ const Header = () => {
               {navItems.map((item) => (
                 <div key={item.name} className="relative group">
                   {item.subItems ? (
-                    <div className="flex items-center gap-1 cursor-pointer py-2 text-sm font-medium text-gray-700 hover:text-primary-500 dark:text-gray-300 dark:hover:text-primary-400 transition-colors">
+                    <div className="flex items-center gap-1 cursor-pointer py-2 text-sm font-medium text-gray-700 hover:text-[#FFF200] dark:text-gray-300 dark:hover:text-[#FFF200] transition-colors">
                       {item.name}
                       <ChevronDown className="w-4 h-4 transition-transform group-hover:rotate-180" />
                       
@@ -134,9 +138,9 @@ const Header = () => {
                       <div className="absolute top-full left-0 mt-1 w-56 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-gray-100 dark:border-gray-700 p-2 transform origin-top scale-95 group-hover:scale-100 transition-transform">
                           {item.subItems.map((sub) => sub.isGroup ? (
-                            <p key={sub.name} className="mt-2 border-t border-gray-100 px-4 pt-3 text-[10px] font-bold uppercase tracking-[0.16em] text-primary-500 dark:border-gray-700">{sub.name}</p>
+                            <p key={sub.name} className="mt-2 border-t border-gray-100 px-4 pt-3 text-[10px] font-bold uppercase tracking-[0.16em] text-[#FFF200] dark:border-gray-700">{sub.name}</p>
                           ) : (
-                            <Link key={sub.name} to={sub.href} onClick={handleNavClick} className="block px-4 py-2 text-sm rounded-lg text-gray-700 dark:text-gray-300 hover:bg-primary-500/10 hover:text-primary-600 dark:hover:text-primary-400 transition-all font-medium">{sub.name}</Link>
+                            <Link key={sub.name} to={sub.href} onClick={handleNavClick} className="block px-4 py-2 text-sm rounded-lg text-gray-700 dark:text-gray-300 hover:bg-[#FFF200]/100/10 hover:text-[#FFF200] dark:hover:text-[#FFF200] transition-all font-medium">{sub.name}</Link>
                           ))}
                         </div>
                       </div>
@@ -147,8 +151,8 @@ const Header = () => {
                       onClick={handleNavClick}
                       className={`text-sm font-medium transition-colors ${
                         location.pathname === item.href
-                          ? 'text-primary-500'
-                          : 'text-gray-700 hover:text-primary-500 dark:text-gray-300 dark:hover:text-primary-400'
+                          ? 'text-[#FFF200]'
+                          : 'text-gray-700 hover:text-[#FFF200] dark:text-gray-300 dark:hover:text-[#FFF200]'
                       }`}
                     >
                       {item.name}
@@ -161,12 +165,12 @@ const Header = () => {
                 onClick={handleNavClick}
                 className={`group relative ml-2 inline-flex items-center gap-2 overflow-hidden rounded-full border px-5 py-2.5 font-bold transition-all duration-300 ${
                   location.pathname === '/academy'
-                    ? 'border-primary-400 bg-gradient-to-r from-primary-500 via-yellow-400 to-primary-500 text-black shadow-[0_10px_30px_rgba(234,179,8,0.35)]'
-                    : 'border-primary-500/40 bg-gradient-to-r from-primary-500/16 via-yellow-400/10 to-primary-500/16 text-primary-700 dark:text-primary-300 shadow-[0_8px_24px_rgba(234,179,8,0.12)] hover:border-primary-400/70 hover:shadow-[0_12px_32px_rgba(234,179,8,0.18)]'
+                    ? 'border-[#FFF200] bg-gradient-to-r from-[#FFF200] via-[#FFF200] to-[#FFF200] text-black shadow-none'
+                    : 'border-[#FFF200]/40 bg-gradient-to-r from-[#FFF200]/16 via-[#FFF200]/10 to-[#FFF200]/16 text-[#FFF200] dark:text-[#FFF200] shadow-none hover:border-[#FFF200]/70 hover:shadow-none'
                 }`}
               >
                 <span className={`absolute inset-[1px] rounded-full transition-colors duration-300 group-hover:bg-white/82 dark:group-hover:bg-gray-950/82 ${location.pathname === '/academy' ? 'bg-transparent dark:bg-transparent group-hover:bg-transparent dark:group-hover:bg-transparent' : 'bg-white/78 dark:bg-gray-950/78'}`} />
-                <GraduationCap className={`relative w-4 h-4 ${location.pathname === '/academy' ? 'text-black' : 'text-primary-500'} transition-transform duration-300 group-hover:scale-105`} />
+                <GraduationCap className={`relative w-4 h-4 ${location.pathname === '/academy' ? 'text-black' : 'text-[#FFF200]'} transition-transform duration-300 group-hover:scale-105`} />
                 <span className="relative text-sm">Academy</span>
               </Link>
             </nav>
@@ -187,7 +191,7 @@ const Header = () => {
             <div className="md:hidden flex items-center gap-2">
               <button
                 onClick={toggleMenu}
-                className="p-2 text-gray-700 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400 rounded-lg hover:bg-white/10 transition-colors"
+                className="p-2 text-gray-700 dark:text-gray-300 hover:text-[#FFF200] dark:hover:text-[#FFF200] rounded-lg hover:bg-white/10 transition-colors"
                 aria-label="Abrir menu"
               >
                 {isOpen ? <X size={24} /> : <Menu size={24} />}
@@ -215,7 +219,7 @@ const Header = () => {
                           className="flex w-full items-center justify-between px-3 py-2.5 rounded-xl text-base font-bold text-gray-800 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-800/60 transition-colors"
                         >
                           <div className="flex items-center gap-2.5">
-                            {item.icon && <item.icon className="w-4 h-4 text-primary-500" />}
+                            {item.icon && <item.icon className="w-4 h-4 text-[#FFF200]" />}
                             {item.name}
                           </div>
                           <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${activeSubmenu === item.name ? 'rotate-180' : ''}`} />
@@ -229,9 +233,9 @@ const Header = () => {
                               className="pl-9 space-y-1 overflow-hidden"
                             >
                               {item.subItems.map((sub) => sub.isGroup ? (
-                                <p key={sub.name} className="mt-2 border-t border-gray-100 px-3 pt-3 text-[10px] font-bold uppercase tracking-[0.16em] text-primary-500 dark:border-gray-700">{sub.name}</p>
+                                <p key={sub.name} className="mt-2 border-t border-gray-100 px-3 pt-3 text-[10px] font-bold uppercase tracking-[0.16em] text-[#FFF200] dark:border-gray-700">{sub.name}</p>
                               ) : (
-                                <Link key={sub.name} to={sub.href} className={`block px-3 py-2 text-sm font-medium rounded-lg ${location.pathname === sub.href ? 'text-primary-500 bg-primary-500/10' : 'text-gray-600 dark:text-gray-400 hover:text-primary-500'}`} onClick={handleNavClick}>{sub.name}</Link>
+                                <Link key={sub.name} to={sub.href} className={`block px-3 py-2 text-sm font-medium rounded-lg ${location.pathname === sub.href ? 'text-[#FFF200] bg-[#FFF200]/100/10' : 'text-gray-600 dark:text-gray-400 hover:text-[#FFF200]'}`} onClick={handleNavClick}>{sub.name}</Link>
                               ))}
                             </motion.div>
                           )}
@@ -242,15 +246,15 @@ const Header = () => {
                         to={item.href || '#'}
                         className={`block px-3 py-2.5 rounded-xl text-base font-bold transition-all ${
                           location.pathname === item.href
-                            ? 'text-primary-500 bg-primary-500/10'
-                            : 'text-gray-800 dark:text-gray-100 hover:text-primary-500'
+                            ? 'text-[#FFF200] bg-[#FFF200]/100/10'
+                            : 'text-gray-800 dark:text-gray-100 hover:text-[#FFF200]'
                         }`}
                         onClick={handleNavClick}
                       >
                         <div className="flex items-center gap-2.5">
-                          {item.name === t('nav.home') && <Layout className="w-4 h-4 text-primary-500" />}
-                          {item.name === t('nav.pricing') && <Sparkles className="w-4 h-4 text-primary-500" />}
-                          {item.name === 'Contato' && <MessageCircle className="w-4 h-4 text-primary-500" />}
+                          {item.name === t('nav.home') && <Layout className="w-4 h-4 text-[#FFF200]" />}
+                          {item.name === t('nav.pricing') && <Sparkles className="w-4 h-4 text-[#FFF200]" />}
+                          {item.name === 'Contato' && <MessageCircle className="w-4 h-4 text-[#FFF200]" />}
                           {item.name}
                         </div>
                       </Link>
@@ -260,10 +264,10 @@ const Header = () => {
                 
                 <Link
                   to="/academy"
-                  className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl font-bold bg-gradient-to-r from-primary-500/15 via-yellow-400/10 to-primary-500/15 border border-primary-500/30 text-primary-600 dark:text-primary-400 shadow-sm"
+                  className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl font-bold bg-gradient-to-r from-[#FFF200]/15 via-[#FFF200]/10 to-[#FFF200]/15 border border-[#FFF200]/30 text-[#FFF200] dark:text-[#FFF200] shadow-sm"
                   onClick={handleNavClick}
                 >
-                  <GraduationCap className="w-5 h-5 text-primary-500" />
+                  <GraduationCap className="w-5 h-5 text-[#FFF200]" />
                   Academy
                 </Link>
 

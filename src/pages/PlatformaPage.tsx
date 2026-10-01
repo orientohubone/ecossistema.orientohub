@@ -28,7 +28,7 @@ const RotatingText = () => {
 
   return (
     <span
-      className={`inline-block bg-gradient-to-r from-primary-400 via-primary-500 to-primary-600 bg-clip-text text-transparent transition-all duration-500 ${isAnimating ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'
+      className={`inline-block bg-gradient-to-r from-[#FFF200] via-[#FFF200] to-[#FFF200]/80 bg-clip-text text-transparent transition-all duration-500 ${isAnimating ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'
         }`}
       style={{ paddingBottom: '0.15em', lineHeight: '1.2' }}
     >
@@ -49,17 +49,11 @@ const PlatformaPage = () => {
 
       {/* Hero Section */}
       <section className="relative min-h-screen w-full overflow-hidden bg-gradient-to-br from-black via-gray-900 to-black">
-        {/* Animated background elements */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute -top-1/2 -left-1/4 w-96 h-96 bg-primary-500/20 rounded-full blur-3xl animate-pulse" />
-          <div className="absolute top-1/3 -right-1/4 w-[500px] h-[500px] bg-primary-400/10 rounded-full blur-3xl animate-pulse [animation-delay:700ms]" />
-          <div className="absolute bottom-0 left-1/3 w-96 h-96 bg-primary-300/20 rounded-full blur-3xl animate-pulse [animation-delay:1000ms]" />
-        </div>
 
         {/* Grid pattern overlay */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0" style={{
-            backgroundImage: 'radial-gradient(circle at 2px 2px, #FFD700 1px, transparent 0)',
+            backgroundImage: 'radial-gradient(circle at 2px 2px, #FFF200 1px, transparent 0)',
             backgroundSize: '40px 40px'
           }} />
         </div>
@@ -67,29 +61,6 @@ const PlatformaPage = () => {
         {/* Content */}
         <div className="relative z-10 container-custom pt-24 sm:pt-32 pb-16 sm:pb-24">
           <div className="max-w-5xl mx-auto">
-            {/* Badge */}
-            <motion.div
-              className="flex justify-center mb-6 sm:mb-8 px-2"
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-            >
-              <div className="group relative inline-flex items-center justify-center overflow-hidden rounded-full border border-primary-400/35 bg-white/6 px-3.5 py-1.5 sm:px-5 sm:py-2.5 text-primary-300 shadow-[0_10px_35px_rgba(255,215,0,0.12)] backdrop-blur-md max-w-full">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.18),transparent_55%)] opacity-80" />
-                <div className="absolute inset-[1px] rounded-full bg-gradient-to-r from-black/70 via-gray-900/75 to-black/70" />
-                <div className="relative mr-2 sm:mr-3 flex h-6 w-6 sm:h-7 sm:w-7 shrink-0 items-center justify-center rounded-full border border-primary-400/30 bg-primary-500/15 shadow-[0_0_18px_rgba(255,215,0,0.2)]">
-                  <Sparkles className="h-3 w-3 sm:h-3.5 sm:w-3.5 flex-shrink-0 text-primary-400" />
-                </div>
-                <span className="relative text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.16em] sm:tracking-[0.22em] text-primary-400/90 whitespace-nowrap">
-                  Orientohub Plataforma
-                </span>
-                <span className="hidden sm:inline-block relative mx-3 h-1 w-1 rounded-full bg-primary-500/70" />
-                <span className="hidden sm:inline relative text-sm font-semibold text-center text-white/92">
-                  O hub para quem constrói o futuro das startups
-                </span>
-              </div>
-            </motion.div>
-
             {/* Main heading */}
             <motion.h1
               className="text-3xl xs:text-4xl sm:text-6xl lg:text-7xl font-bold text-center mb-4 sm:mb-6 tracking-tight leading-tight px-2"
@@ -133,7 +104,7 @@ const PlatformaPage = () => {
             >
               <a
                 href="/cadastro"
-                className="group inline-flex w-full sm:w-auto items-center justify-center gap-2 px-6 sm:px-8 py-3.5 sm:py-4 bg-primary-500 hover:bg-primary-600 text-black font-bold text-base sm:text-lg rounded-xl shadow-lg shadow-primary-500/25 hover:shadow-xl hover:shadow-primary-500/30 transition-all duration-300 active:scale-95"
+                className="group inline-flex w-full sm:w-auto items-center justify-center gap-2 px-6 sm:px-8 py-3.5 sm:py-4 bg-[#FFF200] hover:bg-[#FFF200] hover:opacity-90 shadow-none text-black font-bold text-base sm:text-lg rounded-xl shadow-none hover:shadow-none transition-all duration-300 active:scale-95"
               >
                 <Rocket className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 Comece sua jornada
@@ -142,7 +113,7 @@ const PlatformaPage = () => {
 
               <Link
                 to="/contato"
-                className="group inline-flex w-full sm:w-auto items-center justify-center gap-2 px-6 sm:px-8 py-3.5 sm:py-4 border-2 border-primary-500/50 hover:border-primary-500 hover:bg-primary-500/10 text-primary-500 font-bold text-base sm:text-lg rounded-xl backdrop-blur-sm transition-all active:scale-95"
+                className="group inline-flex w-full sm:w-auto items-center justify-center gap-2 px-6 sm:px-8 py-3.5 sm:py-4 border-2 border-[#FFF200]/50 hover:border-[#FFF200] hover:bg-[#FFF200]/100/10 text-[#FFF200] font-bold text-base sm:text-lg rounded-xl backdrop-blur-sm transition-all active:scale-95"
               >
                 <MessageCircle className="w-5 h-5 group-hover:scale-110 transition-transform" />
                 Entre em contato
@@ -156,7 +127,7 @@ const PlatformaPage = () => {
               animate={{ opacity: 1 }}
               transition={{ duration: 0.8, delay: 0.8 }}
             >
-              <Zap className="w-4 h-4 text-primary-500 shrink-0" />
+              <Zap className="w-4 h-4 text-[#FFF200] shrink-0" />
               Comece gratuitamente, sem cartão de crédito
             </motion.p>
 
@@ -184,15 +155,15 @@ const PlatformaPage = () => {
               ].map((feature, index) => (
                 <motion.div
                   key={index}
-                  className="group relative p-5 sm:p-6 rounded-2xl border border-primary-500/20 bg-gray-900/50 backdrop-blur-sm hover:bg-primary-500/10 hover:border-primary-500/40 transition-all duration-300 hover:shadow-lg hover:shadow-primary-500/10"
+                  className="group relative p-5 sm:p-6 rounded-2xl border border-[#FFF200]/20 bg-gray-900/50 backdrop-blur-sm hover:bg-[#FFF200]/100/10 hover:border-[#FFF200]/40 transition-all duration-300 hover:shadow-lg hover:shadow-none"
                   initial={{ y: 15 }}
                   whileInView={{ y: 0 }}
                   viewport={{ once: true, amount: 0.3 }}
                   transition={{ duration: 0.4, delay: feature.delay * 0.3, ease: "easeOut" }}
                   whileHover={{ y: -5 }}
                 >
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-primary-500/20 flex items-center justify-center mb-3 sm:mb-4 group-hover:bg-primary-500/30 transition-colors">
-                    <feature.icon className="w-5 h-5 sm:w-6 sm:h-6 text-primary-500" />
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-[#FFF200]/100/20 flex items-center justify-center mb-3 sm:mb-4 group-hover:bg-[#FFF200]/100/30 transition-colors">
+                    <feature.icon className="w-5 h-5 sm:w-6 sm:h-6 text-[#FFF200]" />
                   </div>
                   <h3 className="text-base sm:text-lg font-semibold mb-1.5 sm:mb-2 text-white">
                     {feature.title}
@@ -266,32 +237,32 @@ const PlatformaPage = () => {
       <section className="relative py-16 sm:py-32 bg-gradient-to-br from-black via-gray-900 to-black overflow-hidden">
         {/* Animated background elements */}
         <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary-500/20 rounded-full blur-3xl animate-pulse" />
-          <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-primary-400/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1000ms' }} />
+          <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#FFF200]/100/20 rounded-full blur-3xl animate-pulse" />
+          <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-[#FFF200]/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1000ms' }} />
         </div>
 
         {/* Grid pattern overlay */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0" style={{
-            backgroundImage: 'radial-gradient(circle at 2px 2px, #FFD700 1px, transparent 0)',
+            backgroundImage: 'radial-gradient(circle at 2px 2px, #FFF200 1px, transparent 0)',
             backgroundSize: '40px 40px'
           }} />
         </div>
 
         <div className="container-custom relative z-10">
           <motion.div
-            className="relative overflow-hidden rounded-2xl sm:rounded-[2rem] border border-primary-500/20 bg-white/[0.04] px-4 sm:px-6 py-10 sm:py-14 text-center shadow-[0_20px_80px_rgba(0,0,0,0.35)] backdrop-blur-md max-w-5xl mx-auto md:px-12"
+            className="relative overflow-hidden rounded-2xl sm:rounded-[2rem] border border-[#FFF200]/20 bg-white/[0.04] px-4 sm:px-6 py-10 sm:py-14 text-center shadow-none backdrop-blur-md max-w-5xl mx-auto md:px-12"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
           >
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.12),transparent_45%)]" />
-            <div className="absolute -top-16 left-1/2 h-40 w-40 -translate-x-1/2 rounded-full bg-primary-500/10 blur-3xl" />
+            <div className="absolute -top-16 left-1/2 h-40 w-40 -translate-x-1/2 rounded-full bg-[#FFF200]/100/10 blur-3xl" />
 
             {/* Badge */}
             <motion.div
-              className="relative mb-6 sm:mb-8 inline-flex items-center gap-2.5 sm:gap-3 overflow-hidden rounded-full border border-primary-400/35 bg-white/6 px-4 py-2 sm:px-5 sm:py-2.5 text-primary-300 shadow-[0_10px_35px_rgba(255,215,0,0.12)] backdrop-blur-md max-w-full"
+              className="relative mb-6 sm:mb-8 inline-flex items-center gap-2.5 sm:gap-3 overflow-hidden rounded-full border border-[#FFF200]/35 bg-white/6 px-4 py-2 sm:px-5 sm:py-2.5 text-[#FFF200] shadow-none backdrop-blur-md max-w-full"
               initial={{ opacity: 0, scale: 0.8 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
@@ -299,10 +270,10 @@ const PlatformaPage = () => {
             >
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.18),transparent_55%)] opacity-80" />
               <div className="absolute inset-[1px] rounded-full bg-gradient-to-r from-black/70 via-gray-900/75 to-black/70" />
-              <div className="relative flex h-6 w-6 sm:h-7 sm:w-7 shrink-0 items-center justify-center rounded-full border border-primary-400/30 bg-primary-500/15 shadow-[0_0_18px_rgba(255,215,0,0.2)]">
-                <Rocket className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-primary-400" />
+              <div className="relative flex h-6 w-6 sm:h-7 sm:w-7 shrink-0 items-center justify-center rounded-full border border-[#FFF200]/30 bg-[#FFF200]/100/15 shadow-none">
+                <Rocket className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-[#FFF200]" />
               </div>
-              <span className="relative text-primary-500 font-bold text-xs sm:text-sm uppercase tracking-[0.16em] sm:tracking-[0.2em]">
+              <span className="relative text-[#FFF200] font-bold text-xs sm:text-sm uppercase tracking-[0.16em] sm:tracking-[0.2em]">
                 Comece agora
               </span>
             </motion.div>
@@ -339,7 +310,7 @@ const PlatformaPage = () => {
             >
               <Link
                 to="/cadastro"
-                className="group inline-flex w-full sm:w-auto items-center justify-center gap-3 px-8 sm:px-10 py-4 sm:py-5 bg-primary-500 hover:bg-primary-600 text-black font-bold text-lg sm:text-xl rounded-xl shadow-2xl shadow-primary-500/30 hover:shadow-primary-500/50 hover:scale-105 transition-all duration-300"
+                className="group inline-flex w-full sm:w-auto items-center justify-center gap-3 px-8 sm:px-10 py-4 sm:py-5 bg-[#FFF200] hover:bg-[#FFF200] hover:opacity-90 shadow-none text-black font-bold text-lg sm:text-xl rounded-xl shadow-none hover:shadow-none hover:scale-105 transition-all duration-300"
               >
                 <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 group-hover:rotate-12 transition-transform" />
                 {t('home.cta.button')}
@@ -355,7 +326,7 @@ const PlatformaPage = () => {
               viewport={{ once: true }}
               transition={{ delay: 0.8 }}
             >
-              <Zap className="w-4 h-4 text-primary-500 shrink-0" />
+              <Zap className="w-4 h-4 text-[#FFF200] shrink-0" />
               <span>Grátis para começar</span>
               <span>•</span>
               <span>Sem cartão de crédito</span>
@@ -379,14 +350,14 @@ interface FeatureCardProps {
 const FeatureCard = ({ icon, title, description, delay }: FeatureCardProps) => {
   return (
     <motion.div
-      className="group bg-gradient-to-br from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 p-6 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-primary-500 dark:hover:border-primary-500 transition-all duration-300 hover:shadow-xl"
+      className="group bg-gradient-to-br from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 p-6 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-[#FFF200] dark:hover:border-[#FFF200] transition-all duration-300 hover:shadow-xl"
       initial={{ y: 15 }}
       whileInView={{ y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 0.4, delay: delay * 0.3, ease: "easeOut" }}
       whileHover={{ y: -5 }}
     >
-      <div className="text-primary-500 mb-4 group-hover:scale-110 transition-transform duration-300">
+      <div className="text-[#FFF200] mb-4 group-hover:scale-110 transition-transform duration-300">
         {icon}
       </div>
       <h3 className="text-lg font-bold mb-2">{title}</h3>

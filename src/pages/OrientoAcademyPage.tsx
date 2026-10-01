@@ -137,9 +137,16 @@ const OrientoAcademyPage = () => {
         <meta name="description" content="Cursos exclusivos para founders e empreendedores que querem acelerar o crescimento de suas startups." />
       </Helmet>
 
-      <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100">
+      <div className="dark min-h-screen">
+      {/* Shared fixed background */}
+      <div className="fixed inset-0 bg-gradient-to-br from-black via-gray-900 to-black -z-50" />
+      {/* Global dot grid */}
+      <div className="fixed inset-0 opacity-[0.06] pointer-events-none -z-40"
+        style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, #FFF200 1px, transparent 0)', backgroundSize: '40px 40px' }}
+      />
+      <div className="relative z-10 pt-24 pb-12 text-slate-100">
         {/* Hero Section */}
-        <section className="py-16 border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950">
+        <section className="py-16 border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-transparent">
           <div className="container-custom grid gap-12 lg:grid-cols-[1.1fr_0.9fr] items-center">
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
               <div className="inline-flex items-center gap-2 rounded-full bg-amber-100 dark:bg-amber-500/10 px-4 py-1 text-sm font-semibold text-amber-800 dark:text-amber-400">
@@ -155,13 +162,13 @@ const OrientoAcademyPage = () => {
               <div className="mt-10 flex flex-wrap gap-4">
                 <a
                   href="#catalogo"
-                  className="inline-flex items-center justify-center rounded-xl bg-primary-500 px-6 py-3 font-semibold text-black shadow-sm shadow-primary-500/40 transition hover:bg-primary-400"
+                  className="inline-flex items-center justify-center rounded-xl bg-[#FFF200] px-6 py-3 font-semibold text-black shadow-sm shadow-none transition hover:bg-[#FFF200]"
                 >
                   Explorar trilhas
                 </a>
                 <a
                   href="#catalogo"
-                  className="inline-flex items-center justify-center rounded-xl border border-slate-300 px-6 py-3 font-semibold text-slate-900 dark:text-white hover:bg-slate-100 dark:hover:bg-slate-900/40"
+                  className="inline-flex items-center justify-center rounded-xl border border-slate-300 px-6 py-3 font-semibold text-slate-900 dark:text-white hover:bg-slate-100 dark:hover:bg-transparent/40"
                 >
                   Ver catálogo
                 </a>
@@ -171,8 +178,8 @@ const OrientoAcademyPage = () => {
             <div className="space-y-6">
               {/* Pedagogic Panel Card - Only visible to authenticated users */}
               {user && (
-                <div id="painel-pedagogico" className="rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/80 p-6 shadow-sm">
-                  <div className="flex items-center gap-2 text-xs uppercase tracking-[0.25em] text-primary-500">
+                <div id="painel-pedagogico" className="rounded-3xl border border-slate-200 dark:border-slate-800 bg-white/5 dark:bg-transparent/40 backdrop-blur-sm border border-white/10/80 p-6 shadow-sm">
+                  <div className="flex items-center gap-2 text-xs uppercase tracking-[0.25em] text-[#FFF200]">
                     <Lock size={14} /> Painel pedagógico
                   </div>
                   <h3 className="mt-3 text-2xl font-semibold">Governança da Academy</h3>
@@ -192,7 +199,7 @@ const OrientoAcademyPage = () => {
                           <button
                             type="button"
                             onClick={() => navigate('/dashboard/pedagogico')}
-                            className="inline-flex items-center justify-center rounded-xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white hover:bg-slate-800"
+                            className="inline-flex items-center justify-center rounded-xl bg-transparent px-5 py-3 text-sm font-semibold text-white hover:bg-white/5"
                           >
                             Entrar no painel
                           </button>
@@ -211,12 +218,12 @@ const OrientoAcademyPage = () => {
                               setSecretStatus('idle');
                             }}
                             placeholder="Digite a chave de acesso..."
-                            className="mt-2 w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 px-4 py-3 text-sm text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 focus:outline-none"
+                            className="mt-2 w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-transparent px-4 py-3 text-sm text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-[#FFF200] focus:ring-2 focus:ring-[#FFF200]/20 focus:outline-none"
                           />
                         </div>
                         <button
                           type="submit"
-                          className="w-full rounded-xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white hover:bg-slate-800"
+                          className="w-full rounded-xl bg-transparent px-5 py-3 text-sm font-semibold text-white hover:bg-white/5"
                         >
                           Validar acesso
                         </button>
@@ -238,13 +245,13 @@ const OrientoAcademyPage = () => {
                   ) : (
                     // Not a Founder
                     <div className="mt-6 space-y-4">
-                      <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 p-4 text-sm text-slate-600 dark:text-slate-400">
+                      <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white/5 dark:bg-white/5/40 backdrop-blur-sm border border-white/10 p-4 text-sm text-slate-600 dark:text-slate-400">
                         <p className="font-semibold mb-1">Acesso Restrito</p>
                         Este painel é reservado para a equipe pedagógica da Orientohub.
                       </div>
                       <a
                         href="#catalogo"
-                        className="inline-flex items-center justify-center w-full rounded-xl border border-slate-300 px-5 py-3 text-sm font-semibold text-slate-900 dark:text-white hover:bg-slate-100 dark:hover:bg-slate-900/40"
+                        className="inline-flex items-center justify-center w-full rounded-xl border border-slate-300 px-5 py-3 text-sm font-semibold text-slate-900 dark:text-white hover:bg-slate-100 dark:hover:bg-transparent/40"
                       >
                         Acessar catálogo
                       </a>
@@ -253,7 +260,7 @@ const OrientoAcademyPage = () => {
                 </div>
               )}
 
-              <div className="rounded-3xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/40 p-8">
+              <div className="rounded-3xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-transparent/40 p-8">
                 <dl className="grid grid-cols-2 gap-6">
                   <div>
                     <dt className="text-sm text-slate-500">Cursos ativos</dt>
@@ -281,14 +288,14 @@ const OrientoAcademyPage = () => {
         </section>
 
         {/* Instructional pillars */}
-        <section className="py-10 bg-slate-100 dark:bg-slate-900/40 border-b border-slate-200 dark:border-slate-800">
+        <section className="py-10 bg-slate-100 dark:bg-transparent/40 border-b border-slate-200 dark:border-slate-800">
           <div className="container-custom grid gap-6 md:grid-cols-3">
             {instructionalPillars.map((pillar, idx) => (
               <div
                 key={pillar.title}
-                className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950/40 p-6 shadow-sm"
+                className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-transparent/40 p-6 shadow-sm"
               >
-                <p className="text-xs font-semibold uppercase tracking-[0.25em] text-primary-500">Pilar {idx + 1}</p>
+                <p className="text-xs font-semibold uppercase tracking-[0.25em] text-[#FFF200]">Pilar {idx + 1}</p>
                 <h3 className="mt-4 text-xl font-semibold">{pillar.title}</h3>
                 <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">{pillar.description}</p>
               </div>
@@ -297,7 +304,7 @@ const OrientoAcademyPage = () => {
         </section>
 
         {/* Filters and Search */}
-        <section className="py-8 border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950">
+        <section className="py-8 border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-transparent">
           <div className="container-custom">
             <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
               {/* Categories */}
@@ -313,8 +320,8 @@ const OrientoAcademyPage = () => {
                       className={[
                         "flex items-center gap-2 px-4 py-2 rounded-xl font-semibold transition-all whitespace-nowrap",
                         activeCategory === category.id
-                          ? "bg-slate-900 text-white shadow"
-                          : "bg-slate-100 dark:bg-slate-900/60 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-900"
+                          ? "bg-transparent text-white shadow"
+                          : "bg-slate-100 dark:bg-transparent/60 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-transparent"
                       ].join(" ")}
                     >
                       <Icon size={18} />
@@ -332,7 +339,7 @@ const OrientoAcademyPage = () => {
                   placeholder="Buscar cursos..."
                   value={searchQuery}
                   onChange={handleSearchChange}
-                  className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 focus:outline-none transition-colors"
+                  className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-transparent text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-[#FFF200] focus:ring-2 focus:ring-[#FFF200]/20 focus:outline-none transition-colors"
                 />
               </div>
             </div>
@@ -360,8 +367,8 @@ const OrientoAcademyPage = () => {
                       transition={{ delay: index * 0.1 }}
                       className="flex h-full"
                     >
-                      <div className="flex flex-col rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/60 shadow-sm transition hover:-translate-y-1 hover:shadow-md w-full">
-                        <div className="relative h-40 overflow-hidden rounded-t-2xl border-b border-slate-100 dark:border-slate-800 bg-slate-100 dark:bg-slate-900 flex items-center justify-center group-hover:bg-slate-200 dark:group-hover:bg-slate-800 transition-colors">
+                      <div className="flex flex-col rounded-2xl border border-slate-200 dark:border-slate-800 bg-white/5 dark:bg-transparent/40 backdrop-blur-sm border border-white/10/60 shadow-sm transition hover:-translate-y-1 hover:shadow-md w-full">
+                        <div className="relative h-40 overflow-hidden rounded-t-2xl border-b border-slate-100 dark:border-slate-800 bg-white/5 dark:bg-transparent/40 backdrop-blur-sm border border-white/10 flex items-center justify-center group-hover:bg-slate-200 dark:group-hover:bg-white/5 transition-colors">
                           {course.thumbnail ? (
                             <img src={course.thumbnail} alt={course.title} className="h-full w-full object-cover" loading="lazy" />
                           ) : (
@@ -401,7 +408,7 @@ const OrientoAcademyPage = () => {
 
                           <div className="mt-4 flex flex-wrap gap-2">
                             {course.tags.map((tag: string) => (
-                              <span key={tag} className="rounded-full bg-slate-100 dark:bg-slate-800 px-3 py-1 text-xs font-medium text-slate-600 dark:text-slate-300">
+                              <span key={tag} className="rounded-full bg-slate-100 dark:bg-white/5 px-3 py-1 text-xs font-medium text-slate-600 dark:text-slate-300">
                                 {tag}
                               </span>
                             ))}
@@ -416,18 +423,18 @@ const OrientoAcademyPage = () => {
                                   </span>
                                   <span>100%</span>
                                 </div>
-                                <div className="mt-2 h-2 rounded-full bg-slate-200 dark:bg-slate-800">
+                                <div className="mt-2 h-2 rounded-full bg-slate-200 dark:bg-white/5">
                                   <div className="h-full rounded-full bg-green-500" style={{ width: '100%' }} />
                                 </div>
                               </div>
                             ) : course.progress > 0 ? (
                               <div>
                                 <div className="flex items-center justify-between text-sm text-slate-500">
-                                  <span className="font-semibold text-primary-600 dark:text-primary-400">Em andamento</span>
+                                  <span className="font-semibold text-[#FFF200] dark:text-[#FFF200]">Em andamento</span>
                                   <span>{course.progress}%</span>
                                 </div>
-                                <div className="mt-2 h-2 rounded-full bg-slate-200 dark:bg-slate-800">
-                                  <div className="h-full rounded-full bg-primary-500 transition-all" style={{ width: `${course.progress}%` }} />
+                                <div className="mt-2 h-2 rounded-full bg-slate-200 dark:bg-white/5">
+                                  <div className="h-full rounded-full bg-[#FFF200] transition-all" style={{ width: `${course.progress}%` }} />
                                 </div>
                               </div>
                             ) : null}
@@ -436,7 +443,7 @@ const OrientoAcademyPage = () => {
                               whileHover={{ scale: 1.01 }}
                               whileTap={{ scale: 0.99 }}
                               onClick={() => setSelectedCourseId(course.id)}
-                              className="w-full rounded-xl border border-slate-200 bg-slate-900 px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800"
+                              className="w-full rounded-xl border border-slate-200 bg-transparent px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-white/5"
                             >
                               {course.completed ? 'Revisar conteúdo' : course.progress > 0 ? 'Retomar curso' : 'Começar agora'}
                             </motion.button>
@@ -465,15 +472,15 @@ const OrientoAcademyPage = () => {
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9 }}
-                className="bg-white dark:bg-slate-950 rounded-3xl max-w-3xl w-full max-h-[92vh] overflow-y-auto border border-slate-200 dark:border-slate-800 flex flex-col"
+                className="bg-white dark:bg-transparent rounded-3xl max-w-3xl w-full max-h-[92vh] overflow-y-auto border border-slate-200 dark:border-slate-800 flex flex-col"
               >
                 {/* Header */}
-                <div className="sticky top-0 z-10 flex items-start justify-between border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 p-6">
+                <div className="sticky top-0 z-10 flex items-start justify-between border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-transparent p-6">
                   <div>
-                    <p className="text-xs uppercase tracking-[0.25em] text-primary-500">Curso</p>
+                    <p className="text-xs uppercase tracking-[0.25em] text-[#FFF200]">Curso</p>
                     <h2 className="mt-2 text-3xl font-bold">{selectedCourse.title}</h2>
                     <div className="mt-3 flex flex-wrap items-center gap-3 text-sm">
-                      <span className="rounded-full bg-slate-100 dark:bg-slate-900/50 px-3 py-1 font-semibold text-slate-700 dark:text-slate-200">
+                      <span className="rounded-full bg-slate-100 dark:bg-transparent/50 px-3 py-1 font-semibold text-slate-700 dark:text-slate-200">
                         {selectedCourse.badge}
                       </span>
                       <span className="inline-flex items-center gap-1 text-slate-600 dark:text-slate-300">
@@ -484,7 +491,7 @@ const OrientoAcademyPage = () => {
                   <button
                     type="button"
                     onClick={() => setSelectedCourseId(null)}
-                    className="rounded-full border border-slate-200 dark:border-slate-800 p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-900"
+                    className="rounded-full border border-slate-200 dark:border-slate-800 p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-transparent"
                     aria-label="Fechar modal"
                   >
                     <X size={20} />
@@ -495,7 +502,7 @@ const OrientoAcademyPage = () => {
                 <div className="p-6 space-y-8">
                   {/* Video Preview */}
                   {youtubeEmbedUrl && (
-                    <div className="aspect-video w-full overflow-hidden rounded-2xl bg-slate-100 dark:bg-slate-900">
+                    <div className="aspect-video w-full overflow-hidden rounded-2xl bg-white/5 dark:bg-transparent/40 backdrop-blur-sm border border-white/10">
                       <iframe
                         src={youtubeEmbedUrl}
                         title="Course Preview"
@@ -515,8 +522,8 @@ const OrientoAcademyPage = () => {
                   </div>
 
                   {/* Instructor */}
-                  <div className="flex items-center gap-4 p-4 rounded-2xl bg-slate-50 dark:bg-slate-900/50 border border-slate-100 dark:border-slate-800">
-                    <div className="h-12 w-12 rounded-full bg-primary-100 flex items-center justify-center text-primary-700 font-bold text-xl">
+                  <div className="flex items-center gap-4 p-4 rounded-2xl bg-slate-50 dark:bg-transparent/50 border border-slate-100 dark:border-slate-800">
+                    <div className="h-12 w-12 rounded-full bg-[#FFF200] flex items-center justify-center text-[#FFF200] font-bold text-xl">
                       {selectedCourse.instructor.charAt(0)}
                     </div>
                     <div>
@@ -528,19 +535,19 @@ const OrientoAcademyPage = () => {
                   {/* Curriculum */}
                   <div>
                     <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
-                      <BookOpen size={20} className="text-primary-500" />
+                      <BookOpen size={20} className="text-[#FFF200]" />
                       Conteúdo Programático
                     </h3>
                     <div className="space-y-3">
                       {selectedCourse.modules?.map((module) => (
                         <div key={module.id} className="border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden">
-                          <div className="bg-slate-50 dark:bg-slate-900/50 px-4 py-3 font-semibold text-sm flex justify-between items-center">
+                          <div className="bg-slate-50 dark:bg-transparent/50 px-4 py-3 font-semibold text-sm flex justify-between items-center">
                             <span>{module.title}</span>
                             <span className="text-xs text-slate-500">{module.lessons.length} aulas</span>
                           </div>
                           <div className="divide-y divide-slate-100 dark:divide-slate-800">
                             {module.lessons.map((lesson) => (
-                              <div key={lesson.id} className="px-4 py-3 text-sm flex items-center justify-between hover:bg-slate-50 dark:hover:bg-slate-900/30 transition">
+                              <div key={lesson.id} className="px-4 py-3 text-sm flex items-center justify-between hover:bg-slate-50 dark:hover:bg-transparent/30 transition">
                                 <div className="flex items-center gap-3">
                                   <Play size={14} className="text-slate-400" />
                                   <span className={lesson.isFree ? "text-slate-900 dark:text-slate-200" : "text-slate-500"}>
@@ -566,11 +573,11 @@ const OrientoAcademyPage = () => {
                 </div>
 
                 {/* Footer */}
-                <div className="sticky bottom-0 p-6 bg-white dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800">
+                <div className="sticky bottom-0 p-6 bg-white dark:bg-transparent border-t border-slate-200 dark:border-slate-800">
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className="w-full rounded-xl bg-primary-500 px-6 py-4 text-lg font-semibold text-black shadow-lg shadow-primary-500/30 transition hover:bg-primary-400 flex items-center justify-center gap-2"
+                    className="w-full rounded-xl bg-[#FFF200] px-6 py-4 text-lg font-semibold text-black shadow-none shadow-none transition hover:bg-[#FFF200] flex items-center justify-center gap-2"
                   >
                     Iniciar Curso Agora
                     <Play size={20} />
@@ -580,7 +587,8 @@ const OrientoAcademyPage = () => {
             </motion.div >
           )}
         </AnimatePresence >
-      </div >
+      </div>
+      </div>
     </>
   );
 };

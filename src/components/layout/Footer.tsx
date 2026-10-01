@@ -14,9 +14,9 @@ const BackToTopButton = memo(({ onClick }: { onClick: () => void }) => (
     <button
       type="button"
       onClick={onClick}
-      className="inline-flex items-center gap-3 rounded-full border border-primary-500/30 bg-black/75 px-5 py-3 text-sm font-semibold text-primary-300 shadow-2xl shadow-black/40 backdrop-blur-md transition-all hover:border-primary-500 hover:bg-black/85 hover:text-primary-200"
+      className="inline-flex items-center gap-3 rounded-full border border-[#FFF200]/30 bg-black/75 px-5 py-3 text-sm font-semibold text-[#FFF200] shadow-2xl shadow-black/40 backdrop-blur-md transition-all hover:border-[#FFF200] hover:bg-black/85 hover:text-[#FFF200]"
     >
-      <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-primary-500 to-primary-600 shadow-lg shadow-primary-500/30">
+      <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-[#FFF200] to-[#FFF200] shadow-none">
         <ArrowUp className="w-4 h-4 text-black" />
       </div>
       Voltar ao topo
@@ -158,15 +158,11 @@ const Footer = () => {
   return (
     <footer ref={footerRef} className="relative bg-gradient-to-br from-black via-gray-900 to-black text-white overflow-hidden">
       {/* Animated background elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -left-40 w-96 h-96 bg-primary-500/10 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute -bottom-40 -right-40 w-[500px] h-[500px] bg-primary-400/5 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1000ms' }} />
-      </div>
 
       {/* Grid pattern overlay */}
       <div className="absolute inset-0 opacity-5">
         <div className="absolute inset-0" style={{
-          backgroundImage: 'radial-gradient(circle at 2px 2px, #FFD700 1px, transparent 0)',
+          backgroundImage: 'radial-gradient(circle at 2px 2px, #FFF200 1px, transparent 0)',
           backgroundSize: '40px 40px'
         }} />
       </div>
@@ -181,15 +177,15 @@ const Footer = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
             >
-              <div className="inline-flex items-center gap-2 rounded-full border border-primary-400/40 bg-black/30 px-3.5 py-2 mb-6 shadow-[0_0_30px_rgba(255,215,0,0.08)] backdrop-blur-md">
-                <Mail className="h-3.5 w-3.5 text-primary-400" aria-hidden="true" />
-                <span className="h-3 w-px bg-primary-400/40" aria-hidden="true" />
+              <div className="inline-flex items-center gap-2 rounded-full border border-[#FFF200]/40 bg-black/30 px-3.5 py-2 mb-6 shadow-none backdrop-blur-md">
+                <Mail className="h-3.5 w-3.5 text-[#FFF200]" aria-hidden="true" />
+                <span className="h-3 w-px bg-[#FFF200]/40" aria-hidden="true" />
                 <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-white sm:text-xs">FIQUE POR DENTRO</span>
               </div>
               
               <h3 className="text-3xl md:text-4xl font-bold mb-4">
                 Receba insights exclusivos sobre{' '}
-                <span className="bg-gradient-to-r from-primary-400 via-primary-500 to-primary-600 bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-[#FFF200] via-[#FFF200] to-[#FFF200]/80 bg-clip-text text-transparent">
                   startups
                 </span>
               </h3>
@@ -207,7 +203,7 @@ const Footer = () => {
                     placeholder="Seu melhor e-mail"
                     required
                     disabled={status === 'loading' || status === 'success'}
-                    className="w-full px-6 py-4 bg-gray-800/50 border-2 border-gray-700 rounded-xl text-white placeholder-gray-500 focus:border-primary-500 focus:outline-none transition-all backdrop-blur-sm disabled:opacity-50"
+                    className="w-full px-6 py-4 bg-gray-800/50 border-2 border-gray-700 rounded-xl text-white placeholder-gray-500 focus:border-[#FFF200] focus:outline-none transition-all backdrop-blur-sm disabled:opacity-50"
                   />
                   {message && (
                     <motion.p
@@ -224,7 +220,7 @@ const Footer = () => {
                   whileTap={{ scale: 0.98 }}
                   type="submit"
                   disabled={status === 'loading' || status === 'success'}
-                  className="group px-8 py-4 bg-primary-500 hover:bg-primary-600 text-black font-bold rounded-xl transition-all shadow-lg shadow-primary-500/25 hover:shadow-xl hover:shadow-primary-500/40 flex items-center justify-center gap-2 disabled:bg-gray-600 disabled:shadow-none"
+                  className="group px-8 py-4 bg-[#FFF200] hover:bg-[#FFF200] hover:opacity-90 shadow-none text-black font-bold rounded-xl transition-all shadow-none hover:shadow-none flex items-center justify-center gap-2 disabled:bg-gray-600 disabled:shadow-none"
                 >
                   {status === 'loading' ? 'Insccrevendo...' : (
                     <>
@@ -245,7 +241,7 @@ const Footer = () => {
 <div className="lg:col-span-2">
   <Link to="/" onClick={handleLinkClick} className="inline-flex items-center group mb-6">
     <div className="relative">
-      <div className="absolute inset-0 bg-primary-500/20 rounded-lg blur-xl group-hover:blur-2xl transition-all" />
+      <div className="absolute inset-0 bg-[#FFF200]/100/20 rounded-lg blur-xl group-hover:blur-2xl transition-all" />
       <img 
         src="/orientohub.png" 
         alt="Orientohub" 
@@ -264,11 +260,11 @@ const Footer = () => {
                   <motion.a
                     key={index}
                     href={social.href}
-                    className={`group relative w-12 h-12 bg-gray-800/50 hover:bg-gray-700 rounded-xl flex items-center justify-center transition-all border border-gray-700 hover:border-primary-500/50 ${social.color}`}
+                    className={`group relative w-12 h-12 bg-gray-800/50 hover:bg-gray-700 rounded-xl flex items-center justify-center transition-all border border-gray-700 hover:border-[#FFF200]/50 ${social.color}`}
                     whileHover={{ y: -3 }}
                     whileTap={{ scale: 0.95 }}
                   >
-                    <div className="absolute inset-0 bg-primary-500/0 group-hover:bg-primary-500/10 rounded-xl transition-all" />
+                    <div className="absolute inset-0 bg-[#FFF200]/100/0 group-hover:bg-[#FFF200]/100/10 rounded-xl transition-all" />
                     <social.icon className="w-5 h-5 relative z-10" />
                     <span className="sr-only">{social.label}</span>
                   </motion.a>
@@ -279,7 +275,7 @@ const Footer = () => {
             {/* Navigation */}
             <div>
               <h3 className="text-sm font-bold text-gray-300 uppercase tracking-wider mb-6 flex items-center gap-2">
-                <div className="w-1 h-4 bg-primary-500 rounded-full" />
+                <div className="w-1 h-4 bg-[#FFF200]/100 rounded-full" />
                 Navegação
               </h3>
               <ul className="space-y-3">
@@ -288,7 +284,7 @@ const Footer = () => {
                     <Link 
                       to={link.to}
                       onClick={handleLinkClick}
-                      className="group text-gray-400 hover:text-primary-500 transition-colors flex items-center gap-2"
+                      className="group text-gray-400 hover:text-[#FFF200] transition-colors flex items-center gap-2"
                     >
                       <ArrowRight className="w-4 h-4 opacity-0 group-hover:opacity-100 -ml-6 group-hover:ml-0 transition-all" />
                       {link.label}
@@ -301,7 +297,7 @@ const Footer = () => {
             {/* Legal */}
             <div>
               <h3 className="text-sm font-bold text-gray-300 uppercase tracking-wider mb-6 flex items-center gap-2">
-                <div className="w-1 h-4 bg-primary-500 rounded-full" />
+                <div className="w-1 h-4 bg-[#FFF200]/100 rounded-full" />
                 Legal
               </h3>
               <ul className="space-y-3">
@@ -310,7 +306,7 @@ const Footer = () => {
                     <Link 
                       to={link.to}
                       onClick={handleLinkClick}
-                      className="group text-gray-400 hover:text-primary-500 transition-colors flex items-center gap-2"
+                      className="group text-gray-400 hover:text-[#FFF200] transition-colors flex items-center gap-2"
                     >
                       <ArrowRight className="w-4 h-4 opacity-0 group-hover:opacity-100 -ml-6 group-hover:ml-0 transition-all" />
                       {link.label}
@@ -323,13 +319,13 @@ const Footer = () => {
             {/* Contact */}
             <div>
               <h3 className="text-sm font-bold text-gray-300 uppercase tracking-wider mb-6 flex items-center gap-2">
-                <div className="w-1 h-4 bg-primary-500 rounded-full" />
+                <div className="w-1 h-4 bg-[#FFF200]/100 rounded-full" />
                 Contato
               </h3>
               <ul className="space-y-4">
                 {contactInfo.map((item, index) => (
                   <li key={index} className="flex items-start gap-3 text-gray-400">
-                    <item.icon className="w-5 h-5 text-primary-500 flex-shrink-0 mt-0.5" />
+                    <item.icon className="w-5 h-5 text-[#FFF200] flex-shrink-0 mt-0.5" />
                     <span className="text-sm">{item.text}</span>
                   </li>
                 ))}
@@ -345,14 +341,14 @@ const Footer = () => {
               <div className="flex items-center gap-2 text-gray-400 text-sm">
                 <span>&copy; {currentYear} Orientohub.</span>
                 <span className="hidden sm:inline">Feito com</span>
-                <Heart className="w-4 h-4 text-primary-500 fill-primary-500 animate-pulse" />
+                <Heart className="w-4 h-4 text-[#FFF200] fill-[#FFF200] animate-pulse" />
                 <span className="hidden sm:inline">para founders</span>
               </div>
 
               <div className="flex items-center gap-6">
 
                 <div className="flex items-center gap-2 text-gray-500 text-xs">
-                  <Rocket className="w-4 h-4 text-primary-500" />
+                  <Rocket className="w-4 h-4 text-[#FFF200]" />
                   <span>v2.0.0</span>
                 </div>
               </div>

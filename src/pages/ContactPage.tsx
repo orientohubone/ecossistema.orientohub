@@ -141,24 +141,26 @@ const ContactPage = () => {
   ];
 
   return (
-    <>
+    <div className="dark min-h-screen">
+      {/* Shared fixed background */}
+      <div className="fixed inset-0 bg-gradient-to-br from-black via-gray-900 to-black -z-50" />
+      {/* Global dot grid */}
+      <div className="fixed inset-0 opacity-[0.06] pointer-events-none -z-40"
+        style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, #FFF200 1px, transparent 0)', backgroundSize: '40px 40px' }}
+      />
       <Helmet>
         <title>Contato - Orientohub</title>
         <meta name="description" content="Entre em contato conosco. Estamos prontos para ajudar você a transformar sua startup!" />
       </Helmet>
 
       {/* Hero Section */}
-      <section className="relative min-h-[50vh] w-full overflow-hidden bg-gradient-to-br from-black via-gray-900 to-black flex items-center">
+      <section className="relative min-h-[40vh] w-full overflow-hidden flex items-center pt-24 pb-12">
         {/* Animated background */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary-500/20 rounded-full blur-3xl animate-pulse" />
-          <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-primary-400/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1000ms' }} />
-        </div>
 
         {/* Grid pattern */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0" style={{
-            backgroundImage: 'radial-gradient(circle at 2px 2px, #FFD700 1px, transparent 0)',
+            backgroundImage: 'radial-gradient(circle at 2px 2px, #FFF200 1px, transparent 0)',
             backgroundSize: '40px 40px'
           }} />
         </div>
@@ -171,20 +173,20 @@ const ContactPage = () => {
             transition={{ duration: 0.8 }}
           >
             <motion.div
-              className="inline-flex items-center gap-2 bg-primary-500/20 border-2 border-primary-500/40 px-5 py-2 rounded-full mb-8 backdrop-blur-sm"
+              className="inline-flex items-center gap-2.5 rounded-full border border-[#FFF200]/60 bg-gradient-to-b from-white/10 to-black/80 px-3.5 py-2 shadow-none backdrop-blur-md mb-8"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.2 }}
             >
-              <MessageSquare className="w-4 h-4 text-primary-500" />
-              <span className="text-primary-500 font-bold text-sm uppercase tracking-wide">
+              <MessageSquare className="w-3.5 h-3.5 shrink-0 text-[#FFF200]" />
+              <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-white sm:text-xs">
                 Fale Conosco
               </span>
             </motion.div>
 
             <h1 className="text-5xl md:text-7xl font-bold mb-8 text-white leading-tight">
               Vamos conversar sobre seu{' '}
-              <span className="bg-gradient-to-r from-primary-400 via-primary-500 to-primary-600 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-[#FFF200] via-[#FFF200] to-[#FFF200] bg-clip-text text-transparent">
                 negócio
               </span>
             </h1>
@@ -197,7 +199,7 @@ const ContactPage = () => {
       </section>
 
       {/* Contact Cards */}
-      <section className="py-16 bg-gradient-to-b from-gray-50 to-white dark:from-gray-800 dark:to-gray-900">
+      <section className="pt-12 pb-16">
         <div className="container-custom">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto mb-16">
             {contactInfo.map((info, index) => (
@@ -206,15 +208,15 @@ const ContactPage = () => {
                 href={info.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group bg-white dark:bg-gray-800 p-6 rounded-2xl border-2 border-gray-200 dark:border-gray-700 hover:border-primary-500 transition-all duration-300 shadow-lg hover:shadow-xl"
+                className="group bg-white dark:bg-gray-800 p-6 rounded-2xl border-2 border-gray-200 dark:border-gray-700 hover:border-[#FFF200] transition-all duration-300 shadow-none hover:shadow-none"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
                 whileHover={{ y: -5 }}
               >
-                <div className="w-14 h-14 bg-primary-500/10 rounded-xl flex items-center justify-center mb-4 group-hover:bg-primary-500/20 transition-colors">
-                  <info.icon className="w-7 h-7 text-primary-500" />
+                <div className="w-14 h-14 bg-[#FFF200]/10 rounded-xl flex items-center justify-center mb-4 group-hover:bg-[#FFF200]/20 transition-colors">
+                  <info.icon className="w-7 h-7 text-[#FFF200]" />
                 </div>
                 <h3 className="text-lg font-bold mb-2">{info.title}</h3>
                 <p className="text-xl font-semibold text-gray-900 dark:text-white mb-1">
@@ -238,10 +240,10 @@ const ContactPage = () => {
                 viewport={{ once: true }}
                 transition={{ delay: 0.2 }}
               >
-                <div className="bg-white dark:bg-gray-800 p-8 rounded-2xl border-2 border-gray-200 dark:border-gray-700 shadow-xl">
+                <div className="bg-white dark:bg-gray-800 p-8 rounded-2xl border-2 border-gray-200 dark:border-gray-700 shadow-none">
                   <div className="flex items-center gap-3 mb-6">
-                    <div className="w-12 h-12 bg-primary-500/20 rounded-xl flex items-center justify-center">
-                      <Send className="w-6 h-6 text-primary-500" />
+                    <div className="w-12 h-12 bg-[#FFF200]/20 rounded-xl flex items-center justify-center">
+                      <Send className="w-6 h-6 text-[#FFF200]" />
                     </div>
                     <div>
                       <h2 className="text-2xl font-bold">Envie sua mensagem</h2>
@@ -279,7 +281,7 @@ const ContactPage = () => {
                             required
                             value={formData.name}
                             onChange={handleInputChange}
-                            className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-900 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:border-primary-500 focus:outline-none transition-all"
+                            className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-900 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:border-[#FFF200] focus:outline-none transition-all"
                             placeholder="João Silva"
                           />
                         </div>
@@ -295,7 +297,7 @@ const ContactPage = () => {
                             required
                             value={formData.email}
                             onChange={handleInputChange}
-                            className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-900 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:border-primary-500 focus:outline-none transition-all"
+                            className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-900 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:border-[#FFF200] focus:outline-none transition-all"
                             placeholder="joao@email.com"
                           />
                         </div>
@@ -310,7 +312,7 @@ const ContactPage = () => {
                             name="phone"
                             value={formData.phone}
                             onChange={handleInputChange}
-                            className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-900 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:border-primary-500 focus:outline-none transition-all"
+                            className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-900 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:border-[#FFF200] focus:outline-none transition-all"
                             placeholder="(11) 99999-9999"
                           />
                         </div>
@@ -325,7 +327,7 @@ const ContactPage = () => {
                             name="company"
                             value={formData.company}
                             onChange={handleInputChange}
-                            className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-900 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:border-primary-500 focus:outline-none transition-all"
+                            className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-900 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:border-[#FFF200] focus:outline-none transition-all"
                             placeholder="Sua Startup"
                           />
                         </div>
@@ -353,7 +355,7 @@ const ContactPage = () => {
                           spellCheck="false"
                           value={formData.message}
                           onChange={handleInputChange}
-                          className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-900 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:border-primary-500 focus:outline-none transition-all resize-none"
+                          className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-900 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:border-[#FFF200] focus:outline-none transition-all resize-none"
                           placeholder="Conte-nos como podemos ajudar..."
                         />
                       </div>
@@ -363,7 +365,7 @@ const ContactPage = () => {
                         disabled={isSubmitting}
                         whileHover={{ scale: 1.01 }}
                         whileTap={{ scale: 0.99 }}
-                        className="w-full flex items-center justify-center gap-3 px-8 py-4 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-black font-bold text-lg rounded-xl shadow-lg shadow-primary-500/30 hover:shadow-xl hover:shadow-primary-500/50 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="w-full flex items-center justify-center gap-3 px-8 py-4 bg-gradient-to-r from-[#FFF200] to-[#FFF200] hover:from-[#FFF200] hover:to-[#FFF200] text-black font-bold text-lg rounded-xl shadow-none shadow-none hover:shadow-none hover:shadow-none transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         {isSubmitting ? (
                           <>
@@ -395,7 +397,7 @@ const ContactPage = () => {
               >
                 <div className="space-y-6">
                   {/* Quick Links */}
-                  <div className="bg-gradient-to-br from-primary-500 to-primary-600 p-6 rounded-2xl text-black">
+                  <div className="bg-gradient-to-br from-[#FFF200] to-[#FFF200] p-6 rounded-2xl text-black">
                     <div className="flex items-center gap-2 mb-4">
                       <Rocket className="w-6 h-6" />
                       <h3 className="text-lg font-bold">Pronto para começar?</h3>
@@ -405,7 +407,7 @@ const ContactPage = () => {
                     </p>
                     <a
                       href="/cadastro"
-                      className="block w-full px-4 py-3 bg-black hover:bg-gray-900 text-primary-500 font-bold text-center rounded-xl transition-all"
+                      className="block w-full px-4 py-3 bg-black hover:bg-gray-900 text-[#FFF200] font-bold text-center rounded-xl transition-all"
                     >
                       Começar Grátis
                     </a>
@@ -414,7 +416,7 @@ const ContactPage = () => {
                   {/* Business Hours */}
                   <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl border-2 border-gray-200 dark:border-gray-700">
                     <div className="flex items-center gap-2 mb-4">
-                      <Clock className="w-5 h-5 text-primary-500" />
+                      <Clock className="w-5 h-5 text-[#FFF200]" />
                       <h3 className="font-bold">Horário de Atendimento</h3>
                     </div>
                     <div className="space-y-2 text-sm">
@@ -443,7 +445,7 @@ const ContactPage = () => {
                           href={social.href}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className={`w-12 h-12 bg-gray-100 dark:bg-gray-700 hover:bg-primary-500/20 rounded-xl flex items-center justify-center transition-all ${social.color}`}
+                          className={`w-12 h-12 bg-gray-100 dark:bg-gray-700 hover:bg-[#FFF200]/20 rounded-xl flex items-center justify-center transition-all ${social.color}`}
                         >
                           <social.icon className="w-5 h-5" />
                         </a>
@@ -454,7 +456,7 @@ const ContactPage = () => {
                   {/* Enterprise */}
                   <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl border-2 border-gray-200 dark:border-gray-700">
                     <div className="flex items-center gap-2 mb-3">
-                      <Building className="w-5 h-5 text-primary-500" />
+                      <Building className="w-5 h-5 text-[#FFF200]" />
                       <h3 className="font-bold">Enterprise</h3>
                     </div>
                     <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
@@ -462,7 +464,7 @@ const ContactPage = () => {
                     </p>
                     <a
                       href="/planos"
-                      className="text-sm text-primary-500 font-medium hover:underline"
+                      className="text-sm text-[#FFF200] font-medium hover:underline"
                     >
                       Ver planos Enterprise →
                     </a>
@@ -473,7 +475,7 @@ const ContactPage = () => {
           </div>
         </div>
       </section>
-    </>
+    </div>
   );
 };
 

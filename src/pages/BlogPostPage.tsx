@@ -286,7 +286,7 @@ const BlogPostPage = () => {
           animate={{ rotate: 360 }}
           transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
         >
-          <div className="w-16 h-16 border-4 border-primary-500/30 border-t-primary-500 rounded-full" />
+          <div className="w-16 h-16 border-4 border-[#FFF200]/30 border-t-[#FFF200] rounded-full" />
         </motion.div>
       </div>
     );
@@ -310,25 +310,20 @@ const BlogPostPage = () => {
 
       {/* Reading Progress Bar */}
       <motion.div
-        className="fixed top-0 left-0 right-0 h-1 bg-primary-500 z-50 origin-left"
+        className="fixed top-0 left-0 right-0 h-1 bg-[#FFF200] z-50 origin-left"
         style={{ scaleX: scrollYProgress }}
       />
 
       {/* Hero Section */}
-      <section className="relative min-h-[90vh] w-full overflow-hidden bg-gradient-to-br from-black via-gray-900 to-black">
+      <section className="relative min-h-[90vh] w-full overflow-hidden">
         {/* Background Effects */}
         <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary-500/20 rounded-full blur-3xl animate-pulse" />
-          <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-primary-400/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1000ms' }} />
+          
+          
         </div>
 
         {/* Grid Pattern */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute inset-0" style={{
-            backgroundImage: 'radial-gradient(circle at 2px 2px, #FFD700 1px, transparent 0)',
-            backgroundSize: '40px 40px'
-          }} />
-        </div>
+
 
         <div className="container-custom relative z-10 pt-32 pb-20">
           {/* Back Button */}
@@ -339,7 +334,7 @@ const BlogPostPage = () => {
           >
             <Link
               to="/blog"
-              className="inline-flex items-center gap-2 text-gray-400 hover:text-primary-500 transition-colors group"
+              className="inline-flex items-center gap-2 text-gray-400 hover:text-[#FFF200] transition-colors group"
             >
               <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
               <span className="font-medium">Voltar para o blog</span>
@@ -356,13 +351,13 @@ const BlogPostPage = () => {
             >
               {/* Category Badge */}
               <motion.div
-                className="inline-flex items-center gap-2 bg-primary-500/20 border-2 border-primary-500/40 px-4 py-2 rounded-full mb-6 backdrop-blur-sm"
+                className="inline-flex items-center gap-2 bg-[#FFF200]/20 border-2 border-[#FFF200]/40 px-4 py-2 rounded-full mb-6 backdrop-blur-sm"
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.2 }}
               >
-                <Sparkles className="w-4 h-4 text-primary-500" />
-                <span className="text-primary-500 font-bold text-sm uppercase tracking-wide">
+                <Sparkles className="w-4 h-4 text-[#FFF200]" />
+                <span className="text-[#FFF200] font-bold text-sm uppercase tracking-wide">
                   {post.category}
                 </span>
               </motion.div>
@@ -380,7 +375,7 @@ const BlogPostPage = () => {
               {/* Meta Info */}
               <div className="flex flex-wrap items-center gap-6 text-gray-400 mb-8">
                 <div className="flex items-center gap-2">
-                  <Calendar className="w-5 h-5 text-primary-500" />
+                  <Calendar className="w-5 h-5 text-[#FFF200]" />
                   <time dateTime={post.publishedAt}>
                     {new Date(post.publishedAt).toLocaleDateString('pt-BR', {
                       day: 'numeric',
@@ -390,32 +385,32 @@ const BlogPostPage = () => {
                   </time>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Clock className="w-5 h-5 text-primary-500" />
+                  <Clock className="w-5 h-5 text-[#FFF200]" />
                   <span>{post.readingTime} de leitura</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <ThumbsUp className="w-5 h-5 text-primary-500" />
+                  <ThumbsUp className="w-5 h-5 text-[#FFF200]" />
                   <span>{post.likes} likes</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <MessageCircle className="w-5 h-5 text-primary-500" />
+                  <MessageCircle className="w-5 h-5 text-[#FFF200]" />
                   <span>{post.comments} comentários</span>
                 </div>
               </div>
 
               {/* Author */}
-              <div className="flex items-center gap-4 p-4 bg-white/5 border border-primary-500/20 rounded-xl backdrop-blur-sm">
+              <div className="flex items-center gap-4 p-4 bg-white/5 border border-[#FFF200]/20 rounded-xl backdrop-blur-sm">
                 <img
                   src={post.author.avatar}
                   alt={post.author.name}
-                  className="w-14 h-14 rounded-full border-2 border-primary-500"
+                  className="w-14 h-14 rounded-full border-2 border-[#FFF200]"
                   onError={(e) => {
-                    e.currentTarget.src = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(post.author.name) + '&size=56&background=FFD700&color=000&bold=true';
+                    e.currentTarget.src = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(post.author.name) + '&size=56&background=FFF200&color=000&bold=true';
                   }}
                 />
                 <div>
                   <h3 className="text-white font-bold">{post.author.name}</h3>
-                  <p className="text-primary-500 text-sm">{post.author.role}</p>
+                  <p className="text-[#FFF200] text-sm">{post.author.role}</p>
                 </div>
               </div>
             </motion.div>
@@ -428,8 +423,8 @@ const BlogPostPage = () => {
               transition={{ duration: 0.8, delay: 0.2 }}
               style={{ opacity, scale }}
             >
-              <div className={`relative overflow-hidden rounded-2xl shadow-2xl ${isIdeasArticle ? 'bg-[#f7f2e8] p-3 sm:p-4' : ''}`}>
-                {!isIdeasArticle && <div className="absolute inset-0 z-10 bg-gradient-to-br from-primary-500/20 to-transparent" />}
+              <div className={`relative overflow-hidden rounded-2xl shadow-none ${isIdeasArticle ? 'bg-[#f7f2e8] p-3 sm:p-4' : ''}`}>
+                {!isIdeasArticle && <div className="absolute inset-0 z-10 bg-gradient-to-br from-[#FFF200]/20 to-transparent" />}
                 <img
                   src={post.coverImage}
                   alt={post.title}
@@ -440,7 +435,7 @@ const BlogPostPage = () => {
                 <a
                   href={post.coverImage}
                   download="50-ideias-de-negocios-orientohub.png"
-                  className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl border border-primary-400/40 bg-primary-500 px-4 py-3 text-sm font-bold text-[#0c121b] transition-colors hover:bg-primary-400"
+                  className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl border border-[#FFF200]/40 bg-[#FFF200] px-4 py-3 text-sm font-bold text-[#0c121b] transition-colors hover:bg-[#FFF200]"
                 >
                   <Download className="h-4 w-4" />
                   Baixar imagem com as 50 ideias
@@ -467,8 +462,8 @@ const BlogPostPage = () => {
                   onClick={() => setHasLiked(!hasLiked)}
                   className={`w-full flex flex-col items-center gap-2 p-4 rounded-xl border-2 transition-all duration-300 ${
                     hasLiked
-                      ? 'bg-primary-500/10 border-primary-500 text-primary-500'
-                      : 'border-gray-200 dark:border-gray-700 hover:border-primary-500'
+                      ? 'bg-[#FFF200]/10 border-[#FFF200] text-[#FFF200]'
+                      : 'border-gray-200 dark:border-gray-700 hover:border-[#FFF200]'
                   }`}
                 >
                   <ThumbsUp className={`w-6 h-6 ${hasLiked ? 'fill-current' : ''}`} />
@@ -479,8 +474,8 @@ const BlogPostPage = () => {
                   onClick={() => setIsBookmarked(!isBookmarked)}
                   className={`w-full flex flex-col items-center gap-2 p-4 rounded-xl border-2 transition-all duration-300 ${
                     isBookmarked
-                      ? 'bg-primary-500/10 border-primary-500 text-primary-500'
-                      : 'border-gray-200 dark:border-gray-700 hover:border-primary-500'
+                      ? 'bg-[#FFF200]/10 border-[#FFF200] text-[#FFF200]'
+                      : 'border-gray-200 dark:border-gray-700 hover:border-[#FFF200]'
                   }`}
                 >
                   <Bookmark className={`w-6 h-6 ${isBookmarked ? 'fill-current' : ''}`} />
@@ -492,19 +487,19 @@ const BlogPostPage = () => {
                   <div className="space-y-2">
                     <button
                       onClick={() => handleShare('twitter')}
-                      className="w-full flex items-center justify-center gap-2 p-3 rounded-xl border-2 border-gray-200 dark:border-gray-700 hover:border-primary-500 hover:bg-primary-500/10 transition-all"
+                      className="w-full flex items-center justify-center gap-2 p-3 rounded-xl border-2 border-gray-200 dark:border-gray-700 hover:border-[#FFF200] hover:bg-[#FFF200]/10 transition-all"
                     >
                       <Twitter className="w-5 h-5" />
                     </button>
                     <button
                       onClick={() => handleShare('linkedin')}
-                      className="w-full flex items-center justify-center gap-2 p-3 rounded-xl border-2 border-gray-200 dark:border-gray-700 hover:border-primary-500 hover:bg-primary-500/10 transition-all"
+                      className="w-full flex items-center justify-center gap-2 p-3 rounded-xl border-2 border-gray-200 dark:border-gray-700 hover:border-[#FFF200] hover:bg-[#FFF200]/10 transition-all"
                     >
                       <Linkedin className="w-5 h-5" />
                     </button>
                     <button
                       onClick={() => handleShare('facebook')}
-                      className="w-full flex items-center justify-center gap-2 p-3 rounded-xl border-2 border-gray-200 dark:border-gray-700 hover:border-primary-500 hover:bg-primary-500/10 transition-all"
+                      className="w-full flex items-center justify-center gap-2 p-3 rounded-xl border-2 border-gray-200 dark:border-gray-700 hover:border-[#FFF200] hover:bg-[#FFF200]/10 transition-all"
                     >
                       <Facebook className="w-5 h-5" />
                     </button>
@@ -525,10 +520,10 @@ const BlogPostPage = () => {
                   prose-headings:font-bold prose-headings:text-gray-900 dark:prose-headings:text-white
                   prose-h2:text-3xl prose-h2:mt-12 prose-h2:mb-6
                   prose-p:text-gray-700 dark:prose-p:text-gray-300 prose-p:leading-relaxed
-                  prose-a:text-primary-500 prose-a:no-underline hover:prose-a:underline
+                  prose-a:text-[#FFF200] prose-a:no-underline hover:prose-a:underline
                   prose-strong:text-gray-900 dark:prose-strong:text-white
-                  prose-blockquote:border-l-4 prose-blockquote:border-primary-500 prose-blockquote:bg-primary-500/5 prose-blockquote:py-4 prose-blockquote:px-6 prose-blockquote:rounded-r-xl prose-blockquote:not-italic prose-blockquote:text-gray-700 dark:prose-blockquote:text-gray-300
-                  prose-img:rounded-xl prose-img:shadow-xl"
+                  prose-blockquote:border-l-4 prose-blockquote:border-[#FFF200] prose-blockquote:bg-[#FFF200]/5 prose-blockquote:py-4 prose-blockquote:px-6 prose-blockquote:rounded-r-xl prose-blockquote:not-italic prose-blockquote:text-gray-700 dark:prose-blockquote:text-gray-300
+                  prose-img:rounded-xl prose-img:shadow-none"
                 dangerouslySetInnerHTML={{ __html: post.content }}
               />
 
@@ -539,7 +534,7 @@ const BlogPostPage = () => {
                   {post.tags.map((tag, index) => (
                     <span
                       key={index}
-                      className="px-4 py-2 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-full text-sm font-medium hover:bg-primary-500/10 hover:text-primary-500 transition-colors cursor-pointer"
+                      className="px-4 py-2 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-full text-sm font-medium hover:bg-[#FFF200]/10 hover:text-[#FFF200] transition-colors cursor-pointer"
                     >
                       #{tag}
                     </span>
@@ -553,14 +548,14 @@ const BlogPostPage = () => {
                 <div className="flex gap-3">
                   <button
                     onClick={() => handleShare('twitter')}
-                    className="flex-1 flex items-center justify-center gap-2 p-4 rounded-xl border-2 border-gray-200 dark:border-gray-700 hover:border-primary-500 hover:bg-primary-500/10 transition-all"
+                    className="flex-1 flex items-center justify-center gap-2 p-4 rounded-xl border-2 border-gray-200 dark:border-gray-700 hover:border-[#FFF200] hover:bg-[#FFF200]/10 transition-all"
                   >
                     <Twitter className="w-5 h-5" />
                     <span className="font-medium">Twitter</span>
                   </button>
                   <button
                     onClick={() => handleShare('linkedin')}
-                    className="flex-1 flex items-center justify-center gap-2 p-4 rounded-xl border-2 border-gray-200 dark:border-gray-700 hover:border-primary-500 hover:bg-primary-500/10 transition-all"
+                    className="flex-1 flex items-center justify-center gap-2 p-4 rounded-xl border-2 border-gray-200 dark:border-gray-700 hover:border-[#FFF200] hover:bg-[#FFF200]/10 transition-all"
                   >
                     <Linkedin className="w-5 h-5" />
                     <span className="font-medium">LinkedIn</span>
@@ -578,7 +573,7 @@ const BlogPostPage = () => {
             >
               <div className="bg-gradient-to-br from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 p-6 rounded-2xl border-2 border-gray-200 dark:border-gray-700">
                 <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
-                  <TrendingUp className="w-5 h-5 text-primary-500" />
+                  <TrendingUp className="w-5 h-5 text-[#FFF200]" />
                   Neste artigo
                 </h3>
                 <nav className="space-y-3">
@@ -603,9 +598,9 @@ const BlogPostPage = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <div className="inline-flex items-center gap-2 bg-primary-500/20 border-2 border-primary-500/40 px-4 py-2 rounded-full mb-6 backdrop-blur-sm">
-              <Sparkles className="w-4 h-4 text-primary-500" />
-              <span className="text-primary-500 font-bold text-sm uppercase tracking-wide">
+            <div className="inline-flex items-center gap-2 bg-[#FFF200]/20 border-2 border-[#FFF200]/40 px-4 py-2 rounded-full mb-6 backdrop-blur-sm">
+              <Sparkles className="w-4 h-4 text-[#FFF200]" />
+              <span className="text-[#FFF200] font-bold text-sm uppercase tracking-wide">
                 Newsletter
               </span>
             </div>
@@ -621,11 +616,11 @@ const BlogPostPage = () => {
               <input
                 type="email"
                 placeholder="seu@email.com"
-                className="flex-1 px-6 py-4 rounded-xl border-2 border-primary-500/30 bg-white/5 text-white placeholder-gray-400 focus:border-primary-500 focus:ring-0 focus:bg-white/10 transition-all backdrop-blur-sm"
+                className="flex-1 px-6 py-4 rounded-xl border-2 border-[#FFF200]/30 bg-white/5 text-white placeholder-gray-400 focus:border-[#FFF200] focus:ring-0 focus:bg-white/10 transition-all backdrop-blur-sm"
               />
               <button
                 type="submit"
-                className="px-8 py-4 bg-primary-500 hover:bg-primary-600 text-black font-bold rounded-xl transition-all duration-300 hover:scale-105 shadow-lg shadow-primary-500/30"
+                className="px-8 py-4 bg-[#FFF200] hover:bg-[#FFF200] hover:opacity-90 shadow-none text-black font-bold rounded-xl transition-all duration-300 hover:scale-105 shadow-none shadow-none"
               >
                 Assinar Grátis
               </button>
@@ -682,7 +677,7 @@ const RelatedPostCard = ({ post, delay }: RelatedPostCardProps) => {
     >
       <Link
         to={`/blog/${post.slug}`}
-        className="group block bg-gradient-to-br from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 rounded-2xl border-2 border-gray-200 dark:border-gray-700 hover:border-primary-500 overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-2"
+        className="group block bg-gradient-to-br from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 rounded-2xl border-2 border-gray-200 dark:border-gray-700 hover:border-[#FFF200] overflow-hidden transition-all duration-300 hover:shadow-none hover:-translate-y-2"
       >
         <div className="relative h-48 overflow-hidden">
           <img
@@ -691,13 +686,13 @@ const RelatedPostCard = ({ post, delay }: RelatedPostCardProps) => {
             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
           />
           <div className="absolute top-4 left-4">
-            <span className="px-3 py-1 bg-primary-500 text-black text-xs font-bold rounded-full">
+            <span className="px-3 py-1 bg-[#FFF200] text-black hover:opacity-90 shadow-none text-xs font-bold rounded-full">
               {post.category}
             </span>
           </div>
         </div>
         <div className="p-6">
-          <h3 className="text-lg font-bold mb-3 group-hover:text-primary-500 transition-colors">
+          <h3 className="text-lg font-bold mb-3 group-hover:text-[#FFF200] transition-colors">
             {post.title}
           </h3>
           <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
@@ -728,7 +723,7 @@ const customStyles = `
 
   .highlight-box {
     background: linear-gradient(135deg, #FFF9E6 0%, #FFF4CC 100%);
-    border-left: 4px solid #FFD700;
+    border-left: 4px solid #FFF200;
     padding: 1.5rem;
     border-radius: 0.75rem;
     margin: 2rem 0;
@@ -760,7 +755,7 @@ const customStyles = `
     display: block;
     font-size: 2.5rem;
     font-weight: bold;
-    color: #FFD700;
+    color: #FFF200;
     margin-bottom: 0.5rem;
   }
 
@@ -783,7 +778,7 @@ const customStyles = `
   }
 
   .key-takeaways h3 {
-    color: #FFD700 !important;
+    color: #FFF200 !important;
     margin-bottom: 1rem;
   }
 
@@ -802,7 +797,7 @@ const customStyles = `
     content: "✓";
     position: absolute;
     left: 0;
-    color: #FFD700;
+    color: #FFF200;
     font-weight: bold;
   }
 

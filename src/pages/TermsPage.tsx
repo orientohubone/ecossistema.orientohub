@@ -110,24 +110,27 @@ const TermsPage = () => {
   const lastUpdated = '15 de fevereiro de 2025';
 
   return (
-    <>
+    <div className="dark min-h-screen text-slate-100">
+      {/* Shared fixed background */}
+      <div className="fixed inset-0 bg-gradient-to-br from-black via-gray-900 to-black -z-50" />
+      {/* Global dot grid */}
+      <div className="fixed inset-0 opacity-[0.06] pointer-events-none -z-40"
+        style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, #FFF200 1px, transparent 0)', backgroundSize: '40px 40px' }}
+      />
+      <div className="relative z-10 pt-24 pb-12">
       <Helmet>
         <title>Termos de Serviço - Orientohub</title>
         <meta name="description" content="Leia os termos de serviço do Orientohub. Conheça seus direitos e responsabilidades ao usar nossa plataforma." />
       </Helmet>
 
       {/* Hero Section */}
-      <section className="relative min-h-[50vh] w-full overflow-hidden bg-gradient-to-br from-black via-gray-900 to-black flex items-center">
+      <section className="relative min-h-[50vh] w-full flex items-center">
         {/* Animated background */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary-500/20 rounded-full blur-3xl animate-pulse" />
-          <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-primary-400/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1000ms' }} />
-        </div>
 
         {/* Grid pattern */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0" style={{
-            backgroundImage: 'radial-gradient(circle at 2px 2px, #FFD700 1px, transparent 0)',
+            backgroundImage: 'radial-gradient(circle at 2px 2px, #FFF200 1px, transparent 0)',
             backgroundSize: '40px 40px'
           }} />
         </div>
@@ -140,20 +143,20 @@ const TermsPage = () => {
             transition={{ duration: 0.8 }}
           >
             <motion.div
-              className="inline-flex items-center gap-2 bg-primary-500/20 border-2 border-primary-500/40 px-5 py-2 rounded-full mb-8 backdrop-blur-sm"
+              className="inline-flex items-center gap-2 border border-[#FFF200]/60 bg-gradient-to-b from-white/10 to-black/80 px-5 py-2 rounded-full mb-8 backdrop-blur-sm shadow-none"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.2 }}
             >
-              <Shield className="w-4 h-4 text-primary-500" />
-              <span className="text-primary-500 font-bold text-sm uppercase tracking-wide">
+              <Shield className="w-4 h-4 text-[#FFF200]" />
+              <span className="text-[#FFF200] font-bold text-sm uppercase tracking-wide">
                 Termos de Serviço
               </span>
             </motion.div>
 
             <h1 className="text-5xl md:text-6xl font-bold mb-6 text-white leading-tight">
               Termos e{' '}
-              <span className="bg-gradient-to-r from-primary-400 via-primary-500 to-primary-600 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-[#FFF200] via-[#FFF200] to-[#FFF200] bg-clip-text text-transparent">
                 Condições
               </span>
             </h1>
@@ -164,10 +167,10 @@ const TermsPage = () => {
 
             <div className="flex items-center justify-center gap-6 text-sm text-gray-400">
               <div className="flex items-center gap-2">
-                <Clock className="w-4 h-4 text-primary-500" />
+                <Clock className="w-4 h-4 text-[#FFF200]" />
                 <span>Última atualização: {lastUpdated}</span>
               </div>
-              <button className="flex items-center gap-2 text-primary-400 hover:text-primary-300 transition-colors">
+              <button className="flex items-center gap-2 text-[#FFF200] hover:text-[#FFF200] transition-colors">
                 <Download className="w-4 h-4" />
                 <span>Baixar PDF</span>
               </button>
@@ -177,7 +180,7 @@ const TermsPage = () => {
       </section>
 
       {/* Table of Contents */}
-      <section className="bg-white dark:bg-gray-900 border-b-2 border-gray-200 dark:border-gray-800 sticky top-0 z-40 backdrop-blur-lg bg-white/90 dark:bg-gray-900/90">
+      <section className="border-b border-white/10 sticky top-0 z-40 backdrop-blur-lg bg-black/50">
         <div className="container-custom py-4">
           <div className="flex items-center gap-4 overflow-x-auto scrollbar-hide">
             <span className="text-sm font-semibold text-gray-600 dark:text-gray-400 whitespace-nowrap">
@@ -187,7 +190,7 @@ const TermsPage = () => {
               <a
                 key={section.id}
                 href={`#${section.id}`}
-                className="text-sm text-gray-600 dark:text-gray-400 hover:text-primary-500 transition-colors whitespace-nowrap"
+                className="text-sm text-gray-600 dark:text-gray-400 hover:text-[#FFF200] transition-colors whitespace-nowrap"
               >
                 {section.title.split('.')[0]}. {section.title.split('. ')[1]}
               </a>
@@ -197,18 +200,18 @@ const TermsPage = () => {
       </section>
 
       {/* Main Content */}
-      <section className="bg-gradient-to-b from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 py-16">
+      <section className="py-16">
         <div className="container-custom">
           <div className="max-w-4xl mx-auto">
             {/* Important Notice */}
             <motion.div
-              className="bg-primary-500/10 border-2 border-primary-500/30 rounded-2xl p-6 mb-12 backdrop-blur-sm"
+              className="bg-[#FFF200]/10 border-2 border-[#FFF200]/20 rounded-2xl p-6 mb-12 backdrop-blur-sm"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
             >
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-primary-500/20 rounded-xl flex items-center justify-center flex-shrink-0">
-                  <Sparkles className="w-6 h-6 text-primary-500" />
+                <div className="w-12 h-12 bg-[#FFF200]/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                  <Sparkles className="w-6 h-6 text-[#FFF200]" />
                 </div>
                 <div>
                   <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">
@@ -234,7 +237,7 @@ const TermsPage = () => {
 
             {/* Contact Section */}
             <motion.div
-              className="mt-16 bg-gradient-to-br from-gray-900 to-black p-8 rounded-2xl border-2 border-primary-500/30"
+              className="mt-16 bg-white/5 backdrop-blur-sm p-8 rounded-2xl border border-white/10"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -248,7 +251,7 @@ const TermsPage = () => {
                 </p>
                 <Link
                   to="/contato"
-                  className="inline-flex items-center gap-2 px-8 py-4 bg-primary-500 hover:bg-primary-600 text-black font-bold rounded-xl transition-all duration-300 hover:scale-105 shadow-lg shadow-primary-500/30"
+                  className="inline-flex items-center gap-2 px-8 py-4 bg-[#FFF200] hover:opacity-90 shadow-none text-black font-bold rounded-xl transition-all duration-300 hover:scale-105 shadow-lg shadow-none"
                 >
                   Fale Conosco
                   <ArrowRight className="w-5 h-5" />
@@ -265,48 +268,49 @@ const TermsPage = () => {
             >
               <Link
                 to="/privacidade"
-                className="group p-6 bg-white dark:bg-gray-800 rounded-xl border-2 border-gray-200 dark:border-gray-700 hover:border-primary-500 transition-all duration-300"
+                className="group p-6 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 hover:border-[#FFF200] transition-all duration-300"
               >
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-primary-500/10 rounded-xl flex items-center justify-center group-hover:bg-primary-500/20 transition-colors">
-                    <Lock className="w-6 h-6 text-primary-500" />
+                  <div className="w-12 h-12 bg-[#FFF200]/10 rounded-xl flex items-center justify-center group-hover:bg-[#FFF200]/10 transition-colors">
+                    <Lock className="w-6 h-6 text-[#FFF200]" />
                   </div>
                   <div className="flex-1">
-                    <h4 className="font-bold text-gray-900 dark:text-white mb-1 group-hover:text-primary-500 transition-colors">
+                    <h4 className="font-bold text-gray-900 dark:text-white mb-1 group-hover:text-[#FFF200] transition-colors">
                       Política de Privacidade
                     </h4>
                     <p className="text-sm text-gray-600 dark:text-gray-400">
                       Como protegemos seus dados
                     </p>
                   </div>
-                  <ArrowRight className="w-5 h-5 text-gray-400 group-hover:text-primary-500 group-hover:translate-x-1 transition-all" />
+                  <ArrowRight className="w-5 h-5 text-gray-400 group-hover:text-[#FFF200] group-hover:translate-x-1 transition-all" />
                 </div>
               </Link>
 
               <Link
                 to="/cookies"
-                className="group p-6 bg-white dark:bg-gray-800 rounded-xl border-2 border-gray-200 dark:border-gray-700 hover:border-primary-500 transition-all duration-300"
+                className="group p-6 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 hover:border-[#FFF200] transition-all duration-300"
               >
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-primary-500/10 rounded-xl flex items-center justify-center group-hover:bg-primary-500/20 transition-colors">
-                    <FileText className="w-6 h-6 text-primary-500" />
+                  <div className="w-12 h-12 bg-[#FFF200]/10 rounded-xl flex items-center justify-center group-hover:bg-[#FFF200]/10 transition-colors">
+                    <FileText className="w-6 h-6 text-[#FFF200]" />
                   </div>
                   <div className="flex-1">
-                    <h4 className="font-bold text-gray-900 dark:text-white mb-1 group-hover:text-primary-500 transition-colors">
+                    <h4 className="font-bold text-gray-900 dark:text-white mb-1 group-hover:text-[#FFF200] transition-colors">
                       Política de Cookies
                     </h4>
                     <p className="text-sm text-gray-600 dark:text-gray-400">
                       Como usamos cookies
                     </p>
                   </div>
-                  <ArrowRight className="w-5 h-5 text-gray-400 group-hover:text-primary-500 group-hover:translate-x-1 transition-all" />
+                  <ArrowRight className="w-5 h-5 text-gray-400 group-hover:text-[#FFF200] group-hover:translate-x-1 transition-all" />
                 </div>
               </Link>
             </motion.div>
           </div>
         </div>
       </section>
-    </>
+      </div>
+    </div>
   );
 };
 
@@ -328,7 +332,7 @@ const TermSection = ({ section, delay }: TermSectionProps) => {
   return (
     <motion.div
       id={section.id}
-      className="bg-white dark:bg-gray-800 rounded-2xl border-2 border-gray-200 dark:border-gray-700 p-8 scroll-mt-24"
+      className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-8 scroll-mt-24"
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
@@ -336,8 +340,8 @@ const TermSection = ({ section, delay }: TermSectionProps) => {
     >
       {/* Header */}
       <div className="flex items-start gap-4 mb-6">
-        <div className="w-12 h-12 bg-primary-500/10 rounded-xl flex items-center justify-center flex-shrink-0">
-          <Icon className="w-6 h-6 text-primary-500" />
+        <div className="w-12 h-12 bg-[#FFF200]/10 rounded-xl flex items-center justify-center flex-shrink-0">
+          <Icon className="w-6 h-6 text-[#FFF200]" />
         </div>
         <div className="flex-1">
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
@@ -357,7 +361,7 @@ const TermSection = ({ section, delay }: TermSectionProps) => {
           <ul className="space-y-3 mt-6">
             {section.highlights.map((highlight, index) => (
               <li key={index} className="flex items-start gap-3">
-                <CheckCircle2 className="w-5 h-5 text-primary-500 flex-shrink-0 mt-0.5" />
+                <CheckCircle2 className="w-5 h-5 text-[#FFF200] flex-shrink-0 mt-0.5" />
                 <span className="text-gray-700 dark:text-gray-300">{highlight}</span>
               </li>
             ))}

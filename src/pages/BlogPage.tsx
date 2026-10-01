@@ -170,27 +170,28 @@ const BlogPage = () => {
   const regularPosts = filteredPosts.filter(post => !post.featured);
 
   return (
-    <>
+    <div className="dark min-h-screen">
+      {/* Shared fixed background */}
+      <div className="fixed inset-0 bg-gradient-to-br from-black via-gray-900 to-black -z-50" />
+      {/* Global dot grid */}
+      <div className="fixed inset-0 opacity-[0.06] pointer-events-none -z-40"
+        style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, #FFF200 1px, transparent 0)', backgroundSize: '40px 40px' }}
+      />
       <Helmet>
         <title>Blog - Orientohub | Conteúdo para Founders e Startups</title>
         <meta name="description" content="Artigos, guias e recursos exclusivos sobre empreendedorismo, startups e inovação. Aprenda com quem já trilhou esse caminho." />
       </Helmet>
 
       {/* Hero Section */}
-      <section className="relative min-h-[60vh] w-full overflow-hidden bg-gradient-to-br from-black via-gray-900 to-black flex items-center">
+      <section className="relative min-h-[60vh] w-full overflow-hidden flex items-center">
         {/* Animated background */}
         <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary-500/20 rounded-full blur-3xl animate-pulse" />
-          <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-primary-400/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1000ms' }} />
+          
+          
         </div>
 
         {/* Grid pattern */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute inset-0" style={{
-            backgroundImage: 'radial-gradient(circle at 2px 2px, #FFD700 1px, transparent 0)',
-            backgroundSize: '40px 40px'
-          }} />
-        </div>
+
 
         <div className="container-custom relative z-10 py-20">
           <motion.div
@@ -200,12 +201,12 @@ const BlogPage = () => {
             transition={{ duration: 0.8 }}
           >
             <motion.div
-              className="inline-flex items-center gap-2.5 rounded-full border border-primary-400/40 bg-black/30 px-3.5 py-2 shadow-[0_0_30px_rgba(255,215,0,0.08)] backdrop-blur-md mb-8"
+              className="inline-flex items-center gap-2.5 rounded-full border border-[#FFF200]/60 bg-gradient-to-b from-white/10 to-black/80 px-3.5 py-2 shadow-none backdrop-blur-md mb-8"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.2 }}
             >
-              <Rocket className="h-3.5 w-3.5 text-primary-400" aria-hidden="true" />
+              <Rocket className="h-3.5 w-3.5 text-[#FFF200]" aria-hidden="true" />
               <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-white sm:text-xs">
                 Blog Orientohub
               </span>
@@ -213,7 +214,7 @@ const BlogPage = () => {
 
             <h1 className="text-5xl md:text-7xl font-bold mb-8 text-white leading-tight">
               Conteúdo que{' '}
-              <span className="bg-gradient-to-r from-primary-400 via-primary-500 to-primary-600 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-[#FFF200] via-[#FFF200] to-[#FFF200] bg-clip-text text-transparent">
                 acelera
               </span>
               {' '}sua startup
@@ -234,7 +235,7 @@ const BlogPage = () => {
                   placeholder="Buscar artigos..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="block w-full pl-12 pr-4 py-4 bg-white/10 border-2 border-white/20 rounded-xl text-white placeholder-gray-400 focus:border-primary-500 focus:ring-0 transition-all backdrop-blur-sm"
+                  className="block w-full pl-12 pr-4 py-4 bg-white/10 border-2 border-white/20 rounded-xl text-white placeholder-gray-400 focus:border-[#FFF200] focus:ring-0 transition-all backdrop-blur-sm"
                 />
               </div>
             </div>
@@ -243,7 +244,7 @@ const BlogPage = () => {
       </section>
 
       {/* Categories Filter */}
-      <section className="bg-white dark:bg-gray-900 border-b-2 border-gray-200 dark:border-gray-800 sticky top-0 z-40 backdrop-blur-lg bg-white/80 dark:bg-gray-900/80">
+      <section className="sticky top-0 z-40 backdrop-blur-lg bg-black/50 border-b-2 border-gray-800">
         <div className="container-custom py-6">
           <div className="flex items-center gap-4 overflow-x-auto scrollbar-hide">
             {categories.map((category) => {
@@ -254,7 +255,7 @@ const BlogPage = () => {
                   onClick={() => setSelectedCategory(category.id)}
                   className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold whitespace-nowrap transition-all duration-300 ${
                     selectedCategory === category.id
-                      ? 'bg-primary-500 text-black shadow-lg shadow-primary-500/30'
+                      ? 'bg-[#FFF200] text-black hover:opacity-90 shadow-none shadow-none shadow-none'
                       : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
                   }`}
                 >
@@ -277,7 +278,7 @@ const BlogPage = () => {
               animate={{ opacity: 1, y: 0 }}
             >
               <h2 className="text-3xl font-bold flex items-center gap-3">
-                <Sparkles className="w-8 h-8 text-primary-500" />
+                <Sparkles className="w-8 h-8 text-[#FFF200]" />
                 Artigo em Destaque
               </h2>
             </motion.div>
@@ -330,10 +331,10 @@ const BlogPage = () => {
       </section>
 
       {/* Newsletter CTA */}
-      <section className="relative py-24 bg-gradient-to-br from-black via-gray-900 to-black overflow-hidden">
+      <section className="relative py-24 overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0" style={{
-            backgroundImage: 'radial-gradient(circle at 2px 2px, #FFD700 1px, transparent 0)',
+            backgroundImage: 'radial-gradient(circle at 2px 2px, #FFF200 1px, transparent 0)',
             backgroundSize: '40px 40px'
           }} />
         </div>
@@ -345,8 +346,8 @@ const BlogPage = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <div className="inline-flex items-center gap-2.5 rounded-full border border-primary-400/40 bg-black/30 px-3.5 py-2 shadow-[0_0_30px_rgba(255,215,0,0.08)] backdrop-blur-md mb-6">
-              <Mail className="h-3.5 w-3.5 text-primary-400" aria-hidden="true" />
+            <div className="inline-flex items-center gap-2.5 rounded-full border border-[#FFF200]/60 bg-gradient-to-b from-white/10 to-black/80 px-3.5 py-2 shadow-none backdrop-blur-md mb-6">
+              <Mail className="h-3.5 w-3.5 text-[#FFF200]" aria-hidden="true" />
               <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-white sm:text-xs">
                 Newsletter Exclusiva
               </span>
@@ -363,11 +364,11 @@ const BlogPage = () => {
               <input
                 type="email"
                 placeholder="seu@email.com"
-                className="flex-1 px-6 py-4 rounded-xl border-2 border-primary-500/30 bg-white/5 text-white placeholder-gray-400 focus:border-primary-500 focus:ring-0 focus:bg-white/10 transition-all backdrop-blur-sm"
+                className="flex-1 px-6 py-4 rounded-xl border-2 border-[#FFF200]/30 bg-white/5 text-white placeholder-gray-400 focus:border-[#FFF200] focus:ring-0 focus:bg-white/10 transition-all backdrop-blur-sm"
               />
               <button
                 type="submit"
-                className="px-8 py-4 bg-primary-500 hover:bg-primary-600 text-black font-bold rounded-xl transition-all duration-300 hover:scale-105 shadow-lg shadow-primary-500/30 flex items-center justify-center gap-2"
+                className="px-8 py-4 bg-[#FFF200] hover:bg-[#FFF200] hover:opacity-90 shadow-none text-black font-bold rounded-xl transition-all duration-300 hover:scale-105 shadow-none shadow-none flex items-center justify-center gap-2"
               >
                 <Mail className="w-5 h-5" />
                 Assinar Grátis
@@ -376,22 +377,22 @@ const BlogPage = () => {
 
             <div className="flex items-center justify-center gap-6 text-sm text-gray-400">
               <span className="flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-primary-500" />
+                <CheckCircle2 className="w-4 h-4 text-[#FFF200]" />
                 Sem spam
               </span>
               <span className="flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-primary-500" />
+                <CheckCircle2 className="w-4 h-4 text-[#FFF200]" />
                 Cancele quando quiser
               </span>
               <span className="flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-primary-500" />
+                <CheckCircle2 className="w-4 h-4 text-[#FFF200]" />
                 Conteúdo exclusivo
               </span>
             </div>
           </motion.div>
         </div>
       </section>
-    </>
+    </div>
   );
 };
 
@@ -409,7 +410,7 @@ const FeaturedPostCard = ({ post }: FeaturedPostCardProps) => {
     >
       <Link
         to={`/blog/${post.slug}`}
-        className="group block bg-gradient-to-br from-gray-900 to-black rounded-3xl overflow-hidden border-2 border-primary-500/30 hover:border-primary-500 transition-all duration-300 hover:shadow-2xl hover:shadow-primary-500/20"
+        className="group block bg-gradient-to-br from-gray-900 to-black rounded-3xl overflow-hidden border-2 border-[#FFF200]/30 hover:border-[#FFF200] transition-all duration-300 hover:shadow-none hover:shadow-none"
       >
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
           {/* Image */}
@@ -421,8 +422,8 @@ const FeaturedPostCard = ({ post }: FeaturedPostCardProps) => {
             />
             <div className="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-r from-black/60 to-transparent" />
             <div className="absolute top-6 left-6">
-              <span className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border border-primary-300/60 bg-black/70 px-3.5 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-white shadow-lg backdrop-blur-md">
-                <Sparkles className="h-3.5 w-3.5 text-primary-400" />
+              <span className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border border-[#FFF200]/60 bg-black/70 px-3.5 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-white shadow-none backdrop-blur-md">
+                <Sparkles className="h-3.5 w-3.5 text-[#FFF200]" />
                 Destaque
               </span>
             </div>
@@ -434,9 +435,9 @@ const FeaturedPostCard = ({ post }: FeaturedPostCardProps) => {
               <img
                 src={post.author.avatar}
                 alt={post.author.name}
-                className="w-12 h-12 rounded-full border-2 border-primary-500"
+                className="w-12 h-12 rounded-full border-2 border-[#FFF200]"
                 onError={(e) => {
-                  e.currentTarget.src = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(post.author.name) + '&size=48&background=FFD700&color=000&bold=true';
+                  e.currentTarget.src = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(post.author.name) + '&size=48&background=FFF200&color=000&bold=true';
                 }}
               />
               <div>
@@ -455,13 +456,13 @@ const FeaturedPostCard = ({ post }: FeaturedPostCardProps) => {
               </div>
             </div>
 
-            <h2 className="text-3xl lg:text-4xl font-bold text-white mb-4 group-hover:text-primary-500 transition-colors">
+            <h2 className="text-3xl lg:text-4xl font-bold text-white mb-4 group-hover:text-[#FFF200] transition-colors">
               {post.title}
             </h2>
             <p className="text-gray-300 text-lg mb-6 leading-relaxed">
               {post.excerpt}
             </p>
-            <div className="flex items-center gap-2 text-primary-500 font-bold">
+            <div className="flex items-center gap-2 text-[#FFF200] font-bold">
               Ler artigo completo
               <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />
             </div>
@@ -498,7 +499,7 @@ const BlogPostCard = ({ post, delay }: BlogPostCardProps) => {
     >
       <Link
         to={`/blog/${post.slug}`}
-        className="group block bg-gradient-to-br from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 rounded-2xl border-2 border-gray-200 dark:border-gray-700 hover:border-primary-500 overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-2"
+        className="group block bg-gradient-to-br from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 rounded-2xl border-2 border-gray-200 dark:border-gray-700 hover:border-[#FFF200] overflow-hidden transition-all duration-300 hover:shadow-none hover:-translate-y-2"
       >
         {/* Image */}
         <div className="relative h-48 overflow-hidden">
@@ -508,8 +509,8 @@ const BlogPostCard = ({ post, delay }: BlogPostCardProps) => {
             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
           />
           <div className="absolute top-4 left-4">
-            <span className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border border-primary-300/60 bg-black/70 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-white shadow-lg backdrop-blur-md">
-              <CategoryIcon className="h-3 w-3 text-primary-400" />
+            <span className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border border-[#FFF200]/60 bg-black/70 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-white shadow-none backdrop-blur-md">
+              <CategoryIcon className="h-3 w-3 text-[#FFF200]" />
               {post.category}
             </span>
           </div>
@@ -522,9 +523,9 @@ const BlogPostCard = ({ post, delay }: BlogPostCardProps) => {
             <img
               src={post.author.avatar}
               alt={post.author.name}
-              className="w-10 h-10 rounded-full border-2 border-primary-500"
+              className="w-10 h-10 rounded-full border-2 border-[#FFF200]"
               onError={(e) => {
-                e.currentTarget.src = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(post.author.name) + '&size=40&background=FFD700&color=000&bold=true';
+                e.currentTarget.src = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(post.author.name) + '&size=40&background=FFF200&color=000&bold=true';
               }}
             />
             <div className="flex-1 min-w-0">
@@ -544,7 +545,7 @@ const BlogPostCard = ({ post, delay }: BlogPostCardProps) => {
           </div>
 
           {/* Title */}
-          <h3 className="text-xl font-bold mb-3 line-clamp-2 group-hover:text-primary-500 transition-colors">
+          <h3 className="text-xl font-bold mb-3 line-clamp-2 group-hover:text-[#FFF200] transition-colors">
             {post.title}
           </h3>
 
@@ -555,7 +556,7 @@ const BlogPostCard = ({ post, delay }: BlogPostCardProps) => {
 
           {/* CTA */}
           <div className="flex items-center justify-between">
-            <span className="flex items-center gap-2 text-primary-500 font-semibold">
+            <span className="flex items-center gap-2 text-[#FFF200] font-semibold">
               Ler mais
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </span>

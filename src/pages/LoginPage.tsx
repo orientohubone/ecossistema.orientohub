@@ -105,333 +105,177 @@ const LoginPage = () => {
         <meta name="description" content="Faça login na plataforma Orientohub e acelere sua startup" />
       </Helmet>
 
-      <div className="min-h-screen w-full overflow-hidden bg-gradient-to-br from-black via-gray-900 to-black relative flex items-center justify-center">
-        <div className="pointer-events-none fixed right-0 top-24 bottom-0 z-40 hidden md:flex items-center">
-          <div className="relative h-full w-[4px] rounded-full bg-transparent">
-            <motion.div
-              className="absolute left-0 w-[4px] rounded-full bg-primary-500 shadow-[0_0_10px_rgba(255,215,0,0.45)]"
-              style={{
-                height: '72px',
-                top: `clamp(0px, calc(${scrollProgress * 100}% - 36px), calc(100% - 72px))`,
-              }}
-              animate={{
-                opacity: isScrollIndicatorVisible ? 0.9 : 0,
-              }}
-              transition={{ duration: 0.22, ease: 'easeOut' }}
-            />
-          </div>
+      <div className="h-screen w-full flex bg-[#0A0A0A] text-white font-sans overflow-hidden">
+        {/* Left Side - Dashboard Collage */}
+        <div className="hidden lg:block lg:w-1/2 h-full relative bg-[#FFF200] items-center justify-center overflow-hidden">
+          <img 
+            src="/Colagem de Dashboard em Preto e Amarelo.png" 
+            alt="Dashboard Collage" 
+            className="absolute inset-0 w-full h-full object-cover object-center"
+          />
         </div>
 
-
-
-        {/* Grid pattern */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute inset-0" style={{
-            backgroundImage: 'radial-gradient(circle at 2px 2px, #FFD700 1px, transparent 0)',
-            backgroundSize: '40px 40px'
-          }} />
-        </div>
-
-        <div className="container-custom relative z-10 py-12 px-4">
-          <div className="max-w-7xl mx-auto mb-6">
-            <Link
-              to="/"
-              className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-gray-300 backdrop-blur-sm transition-all hover:border-primary-500/40 hover:bg-primary-500/10 hover:text-white"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              <Home className="w-4 h-4 text-primary-500" />
-              Voltar para home
+        {/* Right Side - Form */}
+        <div className="w-full lg:w-1/2 h-full flex items-center justify-center p-6 sm:p-8 lg:p-12 overflow-y-auto">
+          <motion.div 
+            className="w-full max-w-md relative z-10"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            {/* Back Button */}
+            <Link to="/" className="inline-flex items-center gap-2 text-sm font-medium text-gray-400 hover:text-white transition-colors mb-8 group">
+              <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+              Voltar para a Home
             </Link>
-          </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center max-w-7xl mx-auto">
-            {/* Left Side - Branding */}
-            <motion.div
-              className="hidden lg:block"
-              initial={{ opacity: 0, x: -50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-            >
-              <Link to="/" className="inline-block mb-8">
+            {/* Header */}
+            <div className="mb-8">
+              <Link to="/" className="inline-block mb-6">
                 <img
                   src="/orientohub.png"
                   alt="Orientohub"
-                  className="h-10 w-auto"
+                  className="h-8 w-auto"
                 />
               </Link>
-
-              <h1 className="text-5xl md:text-6xl font-bold text-white mb-6 leading-tight">
-                Bem-vindo de{' '}
-                <span className="bg-gradient-to-r from-primary-400 via-primary-500 to-primary-600 bg-clip-text text-transparent">
-                  volta
-                </span>
+              
+              <h1 className="text-3xl font-bold text-white mb-2 tracking-tight">
+                Bem-vindo de volta.
               </h1>
-
-              <p className="text-xl text-gray-300 mb-8 leading-relaxed">
-                Acesse sua conta e continue transformando sua ideia em um negócio de sucesso.
+              <p className="text-gray-400 text-lg">
+                Acesse sua conta para continuar.
               </p>
+            </div>
 
-              {/* Launch Message */}
-              <div className="relative p-8 rounded-2xl bg-gradient-to-br from-primary-500/10 to-primary-600/5 backdrop-blur-sm border-2 border-primary-500/30 overflow-hidden">
-                {/* Animated background glow */}
-                <div className="absolute inset-0 bg-gradient-to-r from-primary-500/0 via-primary-500/10 to-primary-500/0 animate-pulse" />
-
-                <div className="relative z-10 space-y-4">
-                  <div className="inline-flex items-center gap-2 rounded-full border border-primary-400/40 bg-black/70 px-3.5 py-2 mb-2 shadow-[0_0_30px_rgba(255,215,0,0.08)] backdrop-blur-md">
-                    <Rocket className="h-3.5 w-3.5 text-primary-400" aria-hidden="true" />
-                    <span className="h-3 w-px bg-primary-400/40" aria-hidden="true" />
-                    <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-white sm:text-xs">PLATAFORMA PRONTA</span>
+            {/* Connection Status */}
+            {connectionStatus === 'disconnected' && (
+              <motion.div
+                className="bg-red-500/10 border border-red-500/20 rounded-xl p-4 mb-6"
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+              >
+                <div className="flex items-start gap-3">
+                  <AlertTriangle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
+                  <div className="flex-1">
+                    <h3 className="text-sm font-bold text-red-400 mb-1">Problema de Conexão</h3>
+                    <p className="text-sm text-red-300/80 mb-3">Não foi possível conectar ao servidor.</p>
+                    <button onClick={handleRetryConnection} className="text-sm text-red-400 font-medium hover:text-red-300 transition-colors flex items-center gap-2">
+                      <RefreshCw className="w-4 h-4" /> Tentar novamente
+                    </button>
                   </div>
+                </div>
+              </motion.div>
+            )}
 
-                  <h3 className="text-2xl md:text-3xl font-bold text-white leading-tight">
-                    Lançamento Oficial em Breve
-                  </h3>
-
-                  <p className="text-lg text-gray-300 leading-relaxed">
-                    Nossa plataforma está completa e pronta para transformar sua jornada empreendedora.
-                    Em breve, faremos o lançamento oficial com acesso total a todos os recursos.
-                  </p>
-
-                  <div className="flex items-center gap-3 pt-2">
-                    <CheckCircle2 className="w-5 h-5 text-primary-500 flex-shrink-0" />
-                    <span className="text-gray-300">Aguarde nosso anúncio oficial</span>
+            {/* Error Messages */}
+            {error && !isConnectionError && (
+              <motion.div
+                className="bg-red-500/10 border border-red-500/20 rounded-xl p-4 mb-6"
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+              >
+                <p className="text-sm text-red-400">{error}</p>
+                {isEmailNotConfirmed && (
+                  <div className="mt-3 pt-3 border-t border-red-500/20">
+                    <button type="button" onClick={handleResendConfirmation} disabled={isLoading} className="text-sm text-red-400 hover:underline">
+                      Reenviar e-mail de confirmação
+                    </button>
+                    {resendSuccess && (
+                      <p className="text-sm text-green-400 mt-2 flex items-center gap-2"><CheckCircle2 className="w-4 h-4" /> E-mail reenviado com sucesso!</p>
+                    )}
                   </div>
+                )}
+              </motion.div>
+            )}
+
+            {/* Form */}
+            <form onSubmit={handleSubmit} className="space-y-3">
+              {/* Email */}
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
+                  E-mail
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                    <Mail className="w-5 h-5 text-gray-400" />
+                  </div>
+                  <input
+                    id="email" name="email" type="email" autoComplete="email" required
+                    value={email} onChange={(e) => setEmail(e.target.value)} disabled={connectionStatus === 'disconnected'}
+                    className="block w-full pl-12 pr-4 py-2.5 bg-[#121212] border border-gray-800 rounded-xl text-white placeholder-gray-500 focus:border-[#FFF200] focus:ring-1 focus:ring-[#FFF200] outline-none transition-all"
+                    placeholder="seu@email.com"
+                  />
                 </div>
               </div>
-            </motion.div>
 
-            {/* Right Side - Login Form */}
-            <motion.div
-              className="w-full max-w-md mx-auto"
-              initial={{ opacity: 0, y: 50 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-            >
-              <div className="bg-black/40 backdrop-blur-xl p-8 rounded-2xl border-2 border-white/10 shadow-2xl">
-                {/* Mobile Logo */}
-                <div className="lg:hidden text-center mb-8">
-                  <Link to="/" className="inline-block mb-8">
-                    <img
-                      src="/orientohub.png"
-                      alt="Orientohub"
-                      className="h-10 w-auto"
-                    />
-                  </Link>
-                </div>
-
-                {/* Header */}
-                <div className="text-center mb-8">
-                  <div className="inline-flex items-center gap-2 rounded-full border border-primary-400/40 bg-black/30 px-3.5 py-2 mb-4 shadow-[0_0_30px_rgba(255,215,0,0.08)] backdrop-blur-md">
-                    <Lock className="h-3.5 w-3.5 text-primary-400" aria-hidden="true" />
-                    <span className="h-3 w-px bg-primary-400/40" aria-hidden="true" />
-                    <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-white sm:text-xs">
-                      Login
-                    </span>
+              {/* Password */}
+              <div>
+                <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-2">
+                  Senha
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                    <Lock className="w-5 h-5 text-gray-400" />
                   </div>
-                  <h2 className="text-3xl font-bold text-white mb-2">
-                    Entre na sua conta
-                  </h2>
-                  <p className="text-gray-400">
-                    Continue sua jornada empreendedora
-                  </p>
-                </div>
-
-                {/* Connection Status */}
-                {connectionStatus === 'disconnected' && (
-                  <motion.div
-                    className="bg-red-500/10 border-2 border-red-500/30 rounded-xl p-4 mb-6 backdrop-blur-sm"
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                  >
-                    <div className="flex items-start gap-3">
-                      <AlertTriangle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
-                      <div className="flex-1">
-                        <h3 className="text-sm font-bold text-red-400 mb-1">
-                          Problema de Conexão
-                        </h3>
-                        <p className="text-sm text-red-300/80 mb-3">
-                          Não foi possível conectar ao servidor. O projeto pode estar pausado.
-                        </p>
-                        <button
-                          onClick={handleRetryConnection}
-                          className="inline-flex items-center gap-2 text-sm font-medium text-red-400 hover:text-red-300 transition-colors"
-                        >
-                          <RefreshCw className="w-4 h-4" />
-                          Tentar novamente
-                        </button>
-                      </div>
-                    </div>
-                  </motion.div>
-                )}
-
-                {/* Error Messages */}
-                {error && !isConnectionError && (
-                  <motion.div
-                    className="bg-red-500/10 border-2 border-red-500/30 rounded-xl p-4 mb-6 backdrop-blur-sm"
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                  >
-                    <p className="text-sm text-red-400">{error}</p>
-
-                    {isEmailNotConfirmed && (
-                      <div className="mt-3 pt-3 border-t border-red-500/20">
-                        <button
-                          type="button"
-                          onClick={handleResendConfirmation}
-                          disabled={isLoading}
-                          className="text-sm font-medium text-red-400 hover:text-red-300 transition-colors"
-                        >
-                          Reenviar e-mail de confirmação
-                        </button>
-                        {resendSuccess && (
-                          <p className="text-sm text-green-400 mt-2 flex items-center gap-2">
-                            <CheckCircle2 className="w-4 h-4" />
-                            E-mail reenviado com sucesso!
-                          </p>
-                        )}
-                      </div>
-                    )}
-                  </motion.div>
-                )}
-
-                {/* Login Form */}
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  {/* Email Field */}
-                  <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
-                      E-mail
-                    </label>
-                    <div className="relative">
-                      <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                        <Mail className="w-5 h-5 text-gray-400" />
-                      </div>
-                      <input
-                        id="email"
-                        name="email"
-                        type="email"
-                        autoComplete="email"
-                        required
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        disabled={connectionStatus === 'disconnected'}
-                        className="block w-full pl-12 pr-4 py-3.5 bg-white/5 border-2 border-white/10 rounded-xl text-white placeholder-gray-500 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 focus:outline-none transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-                        placeholder="seu@email.com"
-                      />
-                    </div>
-                  </div>
-
-                  {/* Password Field */}
-                  <div>
-                    <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-2">
-                      Senha
-                    </label>
-                    <div className="relative">
-                      <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                        <Lock className="w-5 h-5 text-gray-400" />
-                      </div>
-                      <input
-                        id="password"
-                        name="password"
-                        type={showPassword ? 'text' : 'password'}
-                        autoComplete="current-password"
-                        required
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        disabled={connectionStatus === 'disconnected'}
-                        className="block w-full pl-12 pr-12 py-3.5 bg-white/5 border-2 border-white/10 rounded-xl text-white placeholder-gray-500 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 focus:outline-none transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-                        placeholder="••••••••"
-                      />
-                      <button
-                        type="button"
-                        onClick={() => setShowPassword(!showPassword)}
-                        className="absolute inset-y-0 right-0 pr-4 flex items-center"
-                      >
-                        {showPassword ? (
-                          <EyeOff className="w-5 h-5 text-gray-400 hover:text-gray-300 transition-colors" />
-                        ) : (
-                          <Eye className="w-5 h-5 text-gray-400 hover:text-gray-300 transition-colors" />
-                        )}
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* Remember Me & Forgot Password */}
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center">
-                      <input
-                        id="remember-me"
-                        name="remember-me"
-                        type="checkbox"
-                        checked={rememberMe}
-                        onChange={(e) => setRememberMe(e.target.checked)}
-                        disabled={connectionStatus === 'disconnected'}
-                        className="w-4 h-4 rounded border-white/10 bg-white/5 text-primary-500 focus:ring-primary-500 focus:ring-offset-0 transition-colors disabled:opacity-50"
-                      />
-                      <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-300">
-                        Lembrar-me
-                      </label>
-                    </div>
-
-                    <Link
-                      to="/recuperar-senha"
-                      className="text-sm font-medium text-primary-400 hover:text-primary-300 transition-colors"
-                    >
-                      Esqueceu a senha?
-                    </Link>
-                  </div>
-
-                  {/* Submit Button */}
-                  <button
-                    type="submit"
-                    disabled={isLoading || connectionStatus === 'disconnected'}
-                    className="w-full flex items-center justify-center gap-3 px-6 py-4 bg-primary-500 hover:bg-primary-600 text-black font-bold text-lg rounded-xl shadow-lg shadow-primary-500/30 hover:shadow-primary-500/50 hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
-                  >
-                    {isLoading ? (
-                      <>
-                        <svg className="animate-spin w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                        </svg>
-                        Entrando...
-                      </>
-                    ) : (
-                      <>
-                        <Rocket className="w-5 h-5" />
-                        Entrar
-                        <ArrowRight className="w-5 h-5" />
-                      </>
-                    )}
+                  <input
+                    id="password" name="password" type={showPassword ? 'text' : 'password'} autoComplete="current-password" required
+                    value={password} onChange={(e) => setPassword(e.target.value)} disabled={connectionStatus === 'disconnected'}
+                    className="block w-full pl-12 pr-12 py-2.5 bg-[#121212] border border-gray-800 rounded-xl text-white placeholder-gray-500 focus:border-[#FFF200] focus:ring-1 focus:ring-[#FFF200] outline-none transition-all"
+                    placeholder="••••••••"
+                  />
+                  <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute inset-y-0 right-0 pr-4 flex items-center">
+                    {showPassword ? <EyeOff className="w-5 h-5 text-gray-400" /> : <Eye className="w-5 h-5 text-gray-400" />}
                   </button>
-                </form>
-
-                {/* Divider */}
-                <div className="relative my-8">
-                  <div className="absolute inset-0 flex items-center">
-                    <div className="w-full border-t border-white/10"></div>
-                  </div>
-                  <div className="relative flex justify-center text-sm">
-                    <span className="px-4 bg-gradient-to-br from-white/10 to-white/5 text-gray-400">
-                      Novo por aqui?
-                    </span>
-                  </div>
-                </div>
-
-                {/* Sign Up Link */}
-                <div className="text-center">
-                  <Link
-                    to="/cadastro"
-                    className="inline-flex items-center gap-2 text-gray-300 hover:text-white transition-colors group"
-                  >
-                    <span>Não tem uma conta?</span>
-                    <span className="font-bold text-primary-500 group-hover:text-primary-400">
-                      Cadastre-se grátis
-                    </span>
-                    <ArrowRight className="w-4 h-4 text-primary-500 group-hover:translate-x-1 transition-transform" />
-                  </Link>
                 </div>
               </div>
-            </motion.div>
-          </div>
+
+              {/* Remember Me & Forgot Password */}
+              <div className="flex items-center justify-between py-1">
+                <div className="flex items-center">
+                  <input
+                    id="remember-me" name="remember-me" type="checkbox"
+                    checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} disabled={connectionStatus === 'disconnected'}
+                    className="w-4 h-4 rounded border-gray-800 bg-[#121212] text-[#FFF200] focus:ring-[#FFF200] focus:ring-offset-0 transition-colors"
+                  />
+                  <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-300">
+                    Lembrar-me
+                  </label>
+                </div>
+                <Link to="/recuperar-senha" className="text-sm font-medium text-[#FFF200] hover:text-[#FFF200]/80 transition-colors">
+                  Esqueci minha senha?
+                </Link>
+              </div>
+
+              {/* Submit */}
+              <button
+                type="submit" disabled={isLoading || connectionStatus === 'disconnected'}
+                className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-[#FFF200] hover:bg-[#FFF200]/90 text-black font-bold text-lg rounded-xl transition-all duration-300 disabled:opacity-50 mt-4 shadow-none"
+              >
+                {isLoading ? (
+                  <>
+                    <svg className="animate-spin w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Entrando...
+                  </>
+                ) : (
+                  <>
+                    <Rocket className="w-5 h-5" />
+                    Entrar <ArrowRight className="w-5 h-5 ml-1" />
+                  </>
+                )}
+              </button>
+            </form>
+
+            <div className="mt-6 pt-6 border-t border-gray-800/50 flex justify-center items-center gap-2 text-sm text-gray-400">
+              Ainda não tem uma conta? 
+              <Link to="/cadastro" className="text-[#FFF200] font-semibold hover:underline flex items-center gap-1">
+                Criar conta <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+
+          </motion.div>
         </div>
       </div>
     </>

@@ -123,7 +123,14 @@ const CookiesPage = () => {
   };
 
   return (
-    <>
+    <div className="dark min-h-screen text-slate-100">
+        {/* Shared fixed background */}
+        <div className="fixed inset-0 bg-gradient-to-br from-black via-gray-900 to-black -z-50" />
+        {/* Global dot grid */}
+        <div className="fixed inset-0 opacity-[0.06] pointer-events-none -z-40"
+          style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, #FFF200 1px, transparent 0)', backgroundSize: '40px 40px' }}
+        />
+        <div className="relative z-10 pt-24 pb-12">
       <Helmet>
         <title>Política de Cookies - Orientohub | Sem Glúten, Só Dados! 🍪</title>
         <meta name="description" content="Descubra como os cookies do Orientohub tornam sua experiência mais saborosa (e segura). Spoiler: não são comestíveis!" />
@@ -132,15 +139,11 @@ const CookiesPage = () => {
       {/* Hero Section */}
       <section className="relative min-h-[60vh] w-full overflow-hidden bg-gradient-to-br from-black via-gray-900 to-black flex items-center">
         {/* Animated background */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary-500/20 rounded-full blur-3xl animate-pulse" />
-          <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-primary-400/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1000ms' }} />
-        </div>
 
         {/* Grid pattern */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0" style={{
-            backgroundImage: 'radial-gradient(circle at 2px 2px, #FFD700 1px, transparent 0)',
+            backgroundImage: 'radial-gradient(circle at 2px 2px, #FFF200 1px, transparent 0)',
             backgroundSize: '40px 40px'
           }} />
         </div>
@@ -180,20 +183,20 @@ const CookiesPage = () => {
             transition={{ duration: 0.8 }}
           >
             <motion.div
-              className="inline-flex items-center gap-2 bg-primary-500/20 border-2 border-primary-500/40 px-5 py-2 rounded-full mb-8 backdrop-blur-sm"
+              className="inline-flex items-center gap-2 border border-[#FFF200]/60 bg-gradient-to-b from-white/10 to-black/80 px-5 py-2 rounded-full mb-8 backdrop-blur-sm shadow-none"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.2 }}
             >
-              <Cookie className="w-4 h-4 text-primary-500" />
-              <span className="text-primary-500 font-bold text-sm uppercase tracking-wide">
+              <Cookie className="w-4 h-4 text-[#FFF200]" />
+              <span className="text-[#FFF200] font-bold text-sm uppercase tracking-wide">
                 Política de Cookies
               </span>
             </motion.div>
 
             <h1 className="text-5xl md:text-7xl font-bold mb-6 text-white leading-tight">
               🍪 Nossos Cookies{' '}
-              <span className="bg-gradient-to-r from-primary-400 via-primary-500 to-primary-600 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-[#FFF200] via-[#FFF200] to-[#FFF200] bg-clip-text text-transparent">
                 (Não Comestíveis)
               </span>
             </h1>
@@ -208,10 +211,10 @@ const CookiesPage = () => {
 
             <div className="flex items-center justify-center gap-6 text-sm text-gray-400">
               <div className="flex items-center gap-2">
-                <Clock className="w-4 h-4 text-primary-500" />
+                <Clock className="w-4 h-4 text-[#FFF200]" />
                 <span>Última fornada: {lastUpdated}</span>
               </div>
-              <button className="flex items-center gap-2 text-primary-400 hover:text-primary-300 transition-colors">
+              <button className="flex items-center gap-2 text-[#FFF200] hover:text-[#FFF200] transition-colors">
                 <Download className="w-4 h-4" />
                 <span>Baixar Receita (PDF)</span>
               </button>
@@ -221,11 +224,11 @@ const CookiesPage = () => {
       </section>
 
       {/* What Are Cookies Section */}
-      <section className="bg-white dark:bg-gray-900 py-16">
+      <section className="py-16">
         <div className="container-custom">
           <div className="max-w-4xl mx-auto">
             <motion.div
-              className="bg-gradient-to-br from-primary-500/10 to-primary-600/10 border-2 border-primary-500/30 rounded-2xl p-8 mb-12"
+              className="bg-[#FFF200]/10 border border-[#FFF200]/20 rounded-2xl p-8 mb-12 backdrop-blur-sm"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -238,7 +241,7 @@ const CookiesPage = () => {
                   </h2>
                   <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
                     Imagine que você entra na sua padaria favorita. O dono te reconhece e já sabe que você gosta de pão francês quentinho. 
-                    <strong className="text-primary-600 dark:text-primary-400"> Cookies são exatamente isso, mas no mundo digital!</strong>
+                    <strong className="text-[#FFF200] dark:text-[#FFF200]"> Cookies são exatamente isso, mas no mundo digital!</strong>
                   </p>
                   <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
                     São pequenos arquivos de texto que guardam informações sobre suas preferências e atividades no site. 
@@ -252,7 +255,7 @@ const CookiesPage = () => {
       </section>
 
       {/* Cookie Types Section */}
-      <section className="bg-gradient-to-b from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 py-16">
+      <section className="py-16">
         <div className="container-custom">
           <div className="max-w-4xl mx-auto">
             <motion.div
@@ -290,7 +293,7 @@ const CookiesPage = () => {
             >
               <button
                 onClick={savePreferences}
-                className="inline-flex items-center gap-3 px-10 py-5 bg-primary-500 hover:bg-primary-600 text-black font-bold text-xl rounded-xl shadow-lg shadow-primary-500/30 hover:shadow-primary-500/50 hover:scale-105 transition-all duration-300"
+                className="inline-flex items-center gap-3 px-10 py-5 bg-[#FFF200] hover:opacity-90 shadow-none text-black font-bold text-xl rounded-xl shadow-lg shadow-none hover:shadow-none hover:scale-105 transition-all duration-300"
               >
                 <Heart className="w-6 h-6" />
                 Salvar Minhas Preferências
@@ -314,14 +317,14 @@ const CookiesPage = () => {
               viewport={{ once: true }}
             >
               <h2 className="text-3xl font-bold mb-8 flex items-center gap-3">
-                <Settings className="w-8 h-8 text-primary-500" />
+                <Settings className="w-8 h-8 text-[#FFF200]" />
                 Como Controlar os Cookies
               </h2>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="p-6 bg-gradient-to-br from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 rounded-xl border-2 border-gray-200 dark:border-gray-700">
-                  <div className="w-12 h-12 bg-primary-500/10 rounded-xl flex items-center justify-center mb-4">
-                    <ToggleLeft className="w-6 h-6 text-primary-500" />
+                  <div className="w-12 h-12 bg-[#FFF200]/10 rounded-xl flex items-center justify-center mb-4">
+                    <ToggleLeft className="w-6 h-6 text-[#FFF200]" />
                   </div>
                   <h3 className="text-lg font-bold mb-2">Aqui na Plataforma</h3>
                   <p className="text-gray-600 dark:text-gray-400 text-sm">
@@ -330,23 +333,23 @@ const CookiesPage = () => {
                 </div>
 
                 <div className="p-6 bg-gradient-to-br from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 rounded-xl border-2 border-gray-200 dark:border-gray-700">
-                  <div className="w-12 h-12 bg-primary-500/10 rounded-xl flex items-center justify-center mb-4">
-                    <Settings className="w-6 h-6 text-primary-500" />
+                  <div className="w-12 h-12 bg-[#FFF200]/10 rounded-xl flex items-center justify-center mb-4">
+                    <Settings className="w-6 h-6 text-[#FFF200]" />
                   </div>
                   <h3 className="text-lg font-bold mb-2">No Seu Navegador</h3>
                   <p className="text-gray-600 dark:text-gray-400 text-sm mb-3">
                     Você também pode gerenciar cookies nas configurações do navegador:
                   </p>
                   <div className="space-y-1 text-sm">
-                    <a href="https://support.google.com/chrome/answer/95647" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-primary-500 hover:underline">
+                    <a href="https://support.google.com/chrome/answer/95647" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-[#FFF200] hover:underline">
                       <ExternalLink className="w-3 h-3" />
                       Chrome
                     </a>
-                    <a href="https://support.mozilla.org/pt-BR/kb/protecao-aprimorada-contra-rastreamento-firefox-desktop" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-primary-500 hover:underline">
+                    <a href="https://support.mozilla.org/pt-BR/kb/protecao-aprimorada-contra-rastreamento-firefox-desktop" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-[#FFF200] hover:underline">
                       <ExternalLink className="w-3 h-3" />
                       Firefox
                     </a>
-                    <a href="https://support.apple.com/pt-br/guide/safari/sfri11471/mac" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-primary-500 hover:underline">
+                    <a href="https://support.apple.com/pt-br/guide/safari/sfri11471/mac" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-[#FFF200] hover:underline">
                       <ExternalLink className="w-3 h-3" />
                       Safari
                     </a>
@@ -374,7 +377,7 @@ const CookiesPage = () => {
       </section>
 
       {/* Fun Facts Section */}
-      <section className="bg-gradient-to-br from-primary-500/5 to-primary-600/5 py-16">
+      <section className="bg-gradient-to-br from-[#FFF200]/5 to-[#FFF200]/5 py-16">
         <div className="container-custom">
           <div className="max-w-4xl mx-auto">
             <motion.div
@@ -384,7 +387,7 @@ const CookiesPage = () => {
               viewport={{ once: true }}
             >
               <h2 className="text-3xl font-bold mb-4 flex items-center justify-center gap-3">
-                <Sparkles className="w-8 h-8 text-primary-500" />
+                <Sparkles className="w-8 h-8 text-[#FFF200]" />
                 Curiosidades sobre Cookies
               </h2>
             </motion.div>
@@ -414,7 +417,7 @@ const CookiesPage = () => {
               ].map((fact, index) => (
                 <motion.div
                   key={index}
-                  className="p-6 bg-white dark:bg-gray-800 rounded-xl border-2 border-gray-200 dark:border-gray-700"
+                  className="p-6 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10"
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
@@ -448,15 +451,15 @@ const CookiesPage = () => {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a
-                href="mailto:privacy@orientohub.com"
-                className="inline-flex items-center gap-2 px-8 py-4 bg-primary-500 hover:bg-primary-600 text-black font-bold rounded-xl transition-all duration-300 hover:scale-105 shadow-lg shadow-primary-500/30"
+                href="mailto:fernando@orientohub.com.br"
+                className="inline-flex items-center gap-2 px-8 py-4 bg-[#FFF200] hover:opacity-90 shadow-none text-black font-bold rounded-xl transition-all duration-300 hover:scale-105 shadow-lg shadow-none"
               >
                 <Mail className="w-5 h-5" />
-                privacy@orientohub.com
+                fernando@orientohub.com.br
               </a>
               <Link
                 to="/contato"
-                className="inline-flex items-center gap-2 px-8 py-4 border-2 border-primary-500/50 hover:border-primary-500 text-primary-500 font-bold rounded-xl backdrop-blur-sm hover:bg-primary-500/10 transition-all duration-300"
+                className="inline-flex items-center gap-2 px-8 py-4 border-2 border-[#FFF200]/30 hover:border-[#FFF200] text-[#FFF200] font-bold rounded-xl backdrop-blur-sm hover:bg-[#FFF200]/10 transition-all duration-300"
               >
                 Fale Conosco
                 <ArrowRight className="w-5 h-5" />
@@ -473,48 +476,49 @@ const CookiesPage = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <Link
                 to="/termos"
-                className="group p-6 bg-gradient-to-br from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 rounded-xl border-2 border-gray-200 dark:border-gray-700 hover:border-primary-500 transition-all duration-300"
+                className="group p-6 bg-gradient-to-br from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 rounded-xl border-2 border-gray-200 dark:border-gray-700 hover:border-[#FFF200] transition-all duration-300"
               >
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-primary-500/10 rounded-xl flex items-center justify-center group-hover:bg-primary-500/20 transition-colors">
-                    <Shield className="w-6 h-6 text-primary-500" />
+                  <div className="w-12 h-12 bg-[#FFF200]/10 rounded-xl flex items-center justify-center group-hover:bg-[#FFF200]/10 transition-colors">
+                    <Shield className="w-6 h-6 text-[#FFF200]" />
                   </div>
                   <div className="flex-1">
-                    <h4 className="font-bold text-gray-900 dark:text-white mb-1 group-hover:text-primary-500 transition-colors">
+                    <h4 className="font-bold text-gray-900 dark:text-white mb-1 group-hover:text-[#FFF200] transition-colors">
                       Termos de Serviço
                     </h4>
                     <p className="text-sm text-gray-600 dark:text-gray-400">
                       As regras do jogo
                     </p>
                   </div>
-                  <ArrowRight className="w-5 h-5 text-gray-400 group-hover:text-primary-500 group-hover:translate-x-1 transition-all" />
+                  <ArrowRight className="w-5 h-5 text-gray-400 group-hover:text-[#FFF200] group-hover:translate-x-1 transition-all" />
                 </div>
               </Link>
 
               <Link
                 to="/privacidade"
-                className="group p-6 bg-gradient-to-br from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 rounded-xl border-2 border-gray-200 dark:border-gray-700 hover:border-primary-500 transition-all duration-300"
+                className="group p-6 bg-gradient-to-br from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 rounded-xl border-2 border-gray-200 dark:border-gray-700 hover:border-[#FFF200] transition-all duration-300"
               >
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-primary-500/10 rounded-xl flex items-center justify-center group-hover:bg-primary-500/20 transition-colors">
-                    <Lock className="w-6 h-6 text-primary-500" />
+                  <div className="w-12 h-12 bg-[#FFF200]/10 rounded-xl flex items-center justify-center group-hover:bg-[#FFF200]/10 transition-colors">
+                    <Lock className="w-6 h-6 text-[#FFF200]" />
                   </div>
                   <div className="flex-1">
-                    <h4 className="font-bold text-gray-900 dark:text-white mb-1 group-hover:text-primary-500 transition-colors">
+                    <h4 className="font-bold text-gray-900 dark:text-white mb-1 group-hover:text-[#FFF200] transition-colors">
                       Política de Privacidade
                     </h4>
                     <p className="text-sm text-gray-600 dark:text-gray-400">
                       Como protegemos você
                     </p>
                   </div>
-                  <ArrowRight className="w-5 h-5 text-gray-400 group-hover:text-primary-500 group-hover:translate-x-1 transition-all" />
+                  <ArrowRight className="w-5 h-5 text-gray-400 group-hover:text-[#FFF200] group-hover:translate-x-1 transition-all" />
                 </div>
               </Link>
             </div>
           </div>
         </div>
       </section>
-    </>
+      </div>
+    </div>
   );
 };
 
@@ -533,7 +537,7 @@ const CookieTypeCard = ({ cookie, isEnabled, onToggle, delay }: CookieTypeCardPr
     <motion.div
       className={`bg-white dark:bg-gray-800 rounded-2xl border-2 p-6 transition-all duration-300 ${
         isEnabled 
-          ? 'border-primary-500/50 shadow-lg shadow-primary-500/10' 
+          ? 'border-[#FFF200]/30 shadow-lg shadow-none' 
           : 'border-gray-200 dark:border-gray-700'
       }`}
       initial={{ opacity: 0, y: 20 }}
@@ -544,9 +548,9 @@ const CookieTypeCard = ({ cookie, isEnabled, onToggle, delay }: CookieTypeCardPr
       <div className="flex items-start justify-between mb-4">
         <div className="flex items-center gap-4">
           <div className={`w-14 h-14 rounded-xl flex items-center justify-center ${
-            isEnabled ? 'bg-primary-500/20' : 'bg-gray-100 dark:bg-gray-700'
+            isEnabled ? 'bg-[#FFF200]/10' : 'bg-gray-100 dark:bg-gray-700'
           }`}>
-            <Icon className={`w-7 h-7 ${isEnabled ? 'text-primary-500' : 'text-gray-400'}`} />
+            <Icon className={`w-7 h-7 ${isEnabled ? 'text-[#FFF200]' : 'text-gray-400'}`} />
           </div>
           <div>
             <h3 className="text-xl font-bold flex items-center gap-2">
@@ -566,7 +570,7 @@ const CookieTypeCard = ({ cookie, isEnabled, onToggle, delay }: CookieTypeCardPr
           onClick={onToggle}
           disabled={!cookie.canDisable}
           className={`relative inline-flex h-8 w-14 items-center rounded-full transition-colors ${
-            isEnabled ? 'bg-primary-500' : 'bg-gray-300 dark:bg-gray-600'
+            isEnabled ? 'bg-[#FFF200]' : 'bg-gray-300 dark:bg-gray-600'
           } ${!cookie.canDisable ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
         >
           <span
@@ -592,7 +596,7 @@ const CookieTypeCard = ({ cookie, isEnabled, onToggle, delay }: CookieTypeCardPr
           <ul className="space-y-1">
             {cookie.examples.map((example: string, idx: number) => (
               <li key={idx} className="flex items-start gap-2 text-sm text-gray-700 dark:text-gray-300">
-                <CheckCircle2 className="w-4 h-4 text-primary-500 flex-shrink-0 mt-0.5" />
+                <CheckCircle2 className="w-4 h-4 text-[#FFF200] flex-shrink-0 mt-0.5" />
                 {example}
               </li>
             ))}

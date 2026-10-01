@@ -231,9 +231,9 @@ const PrivacyPage = () => {
       title: '12. Contato e DPO',
       content: `Para exercer seus direitos ou esclarecer dúvidas sobre privacidade, entre em contato com nosso Encarregado de Proteção de Dados (DPO):`,
       contactInfo: {
-        email: 'privacy@orientohub.com',
-        dpo: 'dpo@orientohub.com',
-        address: 'Orientohub - Avenida Exemplo, 1234 - São Paulo, SP',
+        email: 'fernando@orientohub.com.br',
+        dpo: 'fernando@orientohub.com.br',
+        address: 'Orientohub - Pompeia, Brasil',
         response: 'Responderemos em até 15 dias úteis'
       }
     }
@@ -242,24 +242,27 @@ const PrivacyPage = () => {
   const lastUpdated = '15 de fevereiro de 2025';
 
   return (
-    <>
+    <div className="dark min-h-screen text-slate-100">
+        {/* Shared fixed background */}
+        <div className="fixed inset-0 bg-gradient-to-br from-black via-gray-900 to-black -z-50" />
+        {/* Global dot grid */}
+        <div className="fixed inset-0 opacity-[0.06] pointer-events-none -z-40"
+          style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, #FFF200 1px, transparent 0)', backgroundSize: '40px 40px' }}
+        />
+        <div className="relative z-10 pt-24 pb-12">
       <Helmet>
         <title>Política de Privacidade - Orientohub</title>
         <meta name="description" content="Saiba como o Orientohub protege seus dados pessoais. Nossa política de privacidade em conformidade com a LGPD." />
       </Helmet>
 
       {/* Hero Section */}
-      <section className="relative min-h-[50vh] w-full overflow-hidden bg-gradient-to-br from-black via-gray-900 to-black flex items-center">
+      <section className="relative min-h-[50vh] w-full flex items-center">
         {/* Animated background */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary-500/20 rounded-full blur-3xl animate-pulse" />
-          <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-primary-400/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1000ms' }} />
-        </div>
 
         {/* Grid pattern */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0" style={{
-            backgroundImage: 'radial-gradient(circle at 2px 2px, #FFD700 1px, transparent 0)',
+            backgroundImage: 'radial-gradient(circle at 2px 2px, #FFF200 1px, transparent 0)',
             backgroundSize: '40px 40px'
           }} />
         </div>
@@ -272,20 +275,20 @@ const PrivacyPage = () => {
             transition={{ duration: 0.8 }}
           >
             <motion.div
-              className="inline-flex items-center gap-2 bg-primary-500/20 border-2 border-primary-500/40 px-5 py-2 rounded-full mb-8 backdrop-blur-sm"
+              className="inline-flex items-center gap-2 border border-[#FFF200]/60 bg-gradient-to-b from-white/10 to-black/80 px-5 py-2 rounded-full mb-8 backdrop-blur-sm shadow-none"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.2 }}
             >
-              <Lock className="w-4 h-4 text-primary-500" />
-              <span className="text-primary-500 font-bold text-sm uppercase tracking-wide">
+              <Lock className="w-4 h-4 text-[#FFF200]" />
+              <span className="text-[#FFF200] font-bold text-sm uppercase tracking-wide">
                 Política de Privacidade
               </span>
             </motion.div>
 
             <h1 className="text-5xl md:text-6xl font-bold mb-6 text-white leading-tight">
               Seus dados{' '}
-              <span className="bg-gradient-to-r from-primary-400 via-primary-500 to-primary-600 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-[#FFF200] via-[#FFF200] to-[#FFF200] bg-clip-text text-transparent">
                 protegidos
               </span>
             </h1>
@@ -296,14 +299,14 @@ const PrivacyPage = () => {
 
             <div className="flex flex-wrap items-center justify-center gap-4 text-sm text-gray-400">
               <div className="flex items-center gap-2">
-                <Clock className="w-4 h-4 text-primary-500" />
+                <Clock className="w-4 h-4 text-[#FFF200]" />
                 <span>Última atualização: {lastUpdated}</span>
               </div>
               <div className="flex items-center gap-2">
                 <Shield className="w-4 h-4 text-green-500" />
                 <span>Conforme LGPD</span>
               </div>
-              <button className="flex items-center gap-2 text-primary-400 hover:text-primary-300 transition-colors">
+              <button className="flex items-center gap-2 text-[#FFF200] hover:text-[#FFF200] transition-colors">
                 <Download className="w-4 h-4" />
                 <span>Baixar PDF</span>
               </button>
@@ -313,7 +316,7 @@ const PrivacyPage = () => {
       </section>
 
       {/* Quick Links */}
-      <section className="bg-white dark:bg-gray-900 border-b-2 border-gray-200 dark:border-gray-800 sticky top-0 z-40 backdrop-blur-lg bg-white/90 dark:bg-gray-900/90">
+      <section className="border-b border-white/10 sticky top-0 z-40 backdrop-blur-lg bg-black/50">
         <div className="container-custom py-4">
           <div className="flex items-center gap-4 overflow-x-auto scrollbar-hide">
             <span className="text-sm font-semibold text-gray-600 dark:text-gray-400 whitespace-nowrap flex items-center gap-2">
@@ -324,7 +327,7 @@ const PrivacyPage = () => {
               <a
                 key={section.id}
                 href={`#${section.id}`}
-                className="text-sm text-gray-600 dark:text-gray-400 hover:text-primary-500 transition-colors whitespace-nowrap"
+                className="text-sm text-gray-600 dark:text-gray-400 hover:text-[#FFF200] transition-colors whitespace-nowrap"
               >
                 {section.title.split('.')[0]}. {section.title.split('. ')[1]}
               </a>
@@ -334,7 +337,7 @@ const PrivacyPage = () => {
       </section>
 
       {/* Main Content */}
-      <section className="bg-gradient-to-b from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 py-16">
+      <section className="py-16">
         <div className="container-custom">
           <div className="max-w-4xl mx-auto">
             {/* LGPD Compliance Badge */}
@@ -372,14 +375,14 @@ const PrivacyPage = () => {
 
             {/* Contact DPO */}
             <motion.div
-              className="mt-16 bg-gradient-to-br from-gray-900 to-black p-8 rounded-2xl border-2 border-primary-500/30"
+              className="mt-16 bg-white/5 backdrop-blur-sm p-8 rounded-2xl border border-white/10"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
             >
               <div className="text-center">
-                <div className="w-16 h-16 bg-primary-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Mail className="w-8 h-8 text-primary-500" />
+                <div className="w-16 h-16 bg-[#FFF200]/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Mail className="w-8 h-8 text-[#FFF200]" />
                 </div>
                 <h3 className="text-2xl font-bold text-white mb-4">
                   Dúvidas sobre Privacidade?
@@ -390,14 +393,14 @@ const PrivacyPage = () => {
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <a
                     href="mailto:privacy@orientohub.com"
-                    className="inline-flex items-center gap-2 px-8 py-4 bg-primary-500 hover:bg-primary-600 text-black font-bold rounded-xl transition-all duration-300 hover:scale-105 shadow-lg shadow-primary-500/30"
+                    className="inline-flex items-center gap-2 px-8 py-4 bg-[#FFF200] hover:opacity-90 shadow-none text-black font-bold rounded-xl transition-all duration-300 hover:scale-105 shadow-lg shadow-none"
                   >
                     <Mail className="w-5 h-5" />
                     privacy@orientohub.com
                   </a>
                   <Link
                     to="/contato"
-                    className="inline-flex items-center gap-2 px-8 py-4 border-2 border-primary-500/50 hover:border-primary-500 text-primary-500 font-bold rounded-xl backdrop-blur-sm hover:bg-primary-500/10 transition-all duration-300"
+                    className="inline-flex items-center gap-2 px-8 py-4 border-2 border-[#FFF200]/30 hover:border-[#FFF200] text-[#FFF200] font-bold rounded-xl backdrop-blur-sm hover:bg-[#FFF200]/10 transition-all duration-300"
                   >
                     Formulário de Contato
                     <ArrowRight className="w-5 h-5" />
@@ -415,48 +418,49 @@ const PrivacyPage = () => {
             >
               <Link
                 to="/termos"
-                className="group p-6 bg-white dark:bg-gray-800 rounded-xl border-2 border-gray-200 dark:border-gray-700 hover:border-primary-500 transition-all duration-300"
+                className="group p-6 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 hover:border-[#FFF200] transition-all duration-300"
               >
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-primary-500/10 rounded-xl flex items-center justify-center group-hover:bg-primary-500/20 transition-colors">
-                    <FileText className="w-6 h-6 text-primary-500" />
+                  <div className="w-12 h-12 bg-[#FFF200]/10 rounded-xl flex items-center justify-center group-hover:bg-[#FFF200]/10 transition-colors">
+                    <FileText className="w-6 h-6 text-[#FFF200]" />
                   </div>
                   <div className="flex-1">
-                    <h4 className="font-bold text-gray-900 dark:text-white mb-1 group-hover:text-primary-500 transition-colors">
+                    <h4 className="font-bold text-gray-900 dark:text-white mb-1 group-hover:text-[#FFF200] transition-colors">
                       Termos de Serviço
                     </h4>
                     <p className="text-sm text-gray-600 dark:text-gray-400">
                       Condições de uso da plataforma
                     </p>
                   </div>
-                  <ArrowRight className="w-5 h-5 text-gray-400 group-hover:text-primary-500 group-hover:translate-x-1 transition-all" />
+                  <ArrowRight className="w-5 h-5 text-gray-400 group-hover:text-[#FFF200] group-hover:translate-x-1 transition-all" />
                 </div>
               </Link>
 
               <Link
                 to="/cookies"
-                className="group p-6 bg-white dark:bg-gray-800 rounded-xl border-2 border-gray-200 dark:border-gray-700 hover:border-primary-500 transition-all duration-300"
+                className="group p-6 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 hover:border-[#FFF200] transition-all duration-300"
               >
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-primary-500/10 rounded-xl flex items-center justify-center group-hover:bg-primary-500/20 transition-colors">
-                    <Cookie className="w-6 h-6 text-primary-500" />
+                  <div className="w-12 h-12 bg-[#FFF200]/10 rounded-xl flex items-center justify-center group-hover:bg-[#FFF200]/10 transition-colors">
+                    <Cookie className="w-6 h-6 text-[#FFF200]" />
                   </div>
                   <div className="flex-1">
-                    <h4 className="font-bold text-gray-900 dark:text-white mb-1 group-hover:text-primary-500 transition-colors">
+                    <h4 className="font-bold text-gray-900 dark:text-white mb-1 group-hover:text-[#FFF200] transition-colors">
                       Política de Cookies
                     </h4>
                     <p className="text-sm text-gray-600 dark:text-gray-400">
                       Como usamos cookies
                     </p>
                   </div>
-                  <ArrowRight className="w-5 h-5 text-gray-400 group-hover:text-primary-500 group-hover:translate-x-1 transition-all" />
+                  <ArrowRight className="w-5 h-5 text-gray-400 group-hover:text-[#FFF200] group-hover:translate-x-1 transition-all" />
                 </div>
               </Link>
             </motion.div>
           </div>
         </div>
       </section>
-    </>
+      </div>
+    </div>
   );
 };
 
@@ -491,7 +495,7 @@ const PrivacySection = ({ section, delay }: PrivacySectionProps) => {
       id={section.id}
       className={`bg-white dark:bg-gray-800 rounded-2xl border-2 p-8 scroll-mt-24 ${
         section.important 
-          ? 'border-primary-500/50 bg-primary-500/5' 
+          ? 'border-[#FFF200]/30 bg-[#FFF200]/5' 
           : 'border-gray-200 dark:border-gray-700'
       }`}
       initial={{ opacity: 0, y: 20 }}
@@ -502,9 +506,9 @@ const PrivacySection = ({ section, delay }: PrivacySectionProps) => {
       {/* Header */}
       <div className="flex items-start gap-4 mb-6">
         <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 ${
-          section.important ? 'bg-primary-500/20' : 'bg-primary-500/10'
+          section.important ? 'bg-[#FFF200]/10' : 'bg-[#FFF200]/10'
         }`}>
-          <Icon className="w-6 h-6 text-primary-500" />
+          <Icon className="w-6 h-6 text-[#FFF200]" />
         </div>
         <div className="flex-1">
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
@@ -524,7 +528,7 @@ const PrivacySection = ({ section, delay }: PrivacySectionProps) => {
           <ul className="space-y-3 mt-6">
             {section.highlights.map((highlight, index) => (
               <li key={index} className="flex items-start gap-3">
-                <CheckCircle2 className="w-5 h-5 text-primary-500 flex-shrink-0 mt-0.5" />
+                <CheckCircle2 className="w-5 h-5 text-[#FFF200] flex-shrink-0 mt-0.5" />
                 <span className="text-gray-700 dark:text-gray-300">{highlight}</span>
               </li>
             ))}
@@ -537,13 +541,13 @@ const PrivacySection = ({ section, delay }: PrivacySectionProps) => {
             {section.subcategories.map((subcategory, index) => (
               <div key={index} className="bg-gray-50 dark:bg-gray-900/50 p-6 rounded-xl">
                 <h4 className="font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-                  <div className="w-2 h-2 bg-primary-500 rounded-full" />
+                  <div className="w-2 h-2 bg-[#FFF200] rounded-full" />
                   {subcategory.title}
                 </h4>
                 <ul className="space-y-2">
                   {subcategory.items.map((item, idx) => (
                     <li key={idx} className="flex items-start gap-3 text-sm">
-                      <CheckCircle2 className="w-4 h-4 text-primary-500 flex-shrink-0 mt-0.5" />
+                      <CheckCircle2 className="w-4 h-4 text-[#FFF200] flex-shrink-0 mt-0.5" />
                       <span className="text-gray-700 dark:text-gray-300">{item}</span>
                     </li>
                   ))}
@@ -556,15 +560,15 @@ const PrivacySection = ({ section, delay }: PrivacySectionProps) => {
         {/* Contact Info */}
         {section.contactInfo && (
           <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="p-4 bg-primary-500/10 rounded-xl border border-primary-500/20">
+            <div className="p-4 bg-[#FFF200]/10 rounded-xl border border-[#FFF200]/20">
               <p className="text-sm font-semibold text-gray-600 dark:text-gray-400 mb-2">E-mail Privacidade</p>
-              <a href={`mailto:${section.contactInfo.email}`} className="text-primary-500 font-medium hover:underline">
+              <a href={`mailto:${section.contactInfo.email}`} className="text-[#FFF200] font-medium hover:underline">
                 {section.contactInfo.email}
               </a>
             </div>
-            <div className="p-4 bg-primary-500/10 rounded-xl border border-primary-500/20">
+            <div className="p-4 bg-[#FFF200]/10 rounded-xl border border-[#FFF200]/20">
               <p className="text-sm font-semibold text-gray-600 dark:text-gray-400 mb-2">DPO</p>
-              <a href={`mailto:${section.contactInfo.dpo}`} className="text-primary-500 font-medium hover:underline">
+              <a href={`mailto:${section.contactInfo.dpo}`} className="text-[#FFF200] font-medium hover:underline">
                 {section.contactInfo.dpo}
               </a>
             </div>
