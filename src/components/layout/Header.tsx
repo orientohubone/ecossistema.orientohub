@@ -95,7 +95,7 @@ const Header = () => {
               <MessageCircle className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-black" />
             </span>
             <a 
-              href="https://wa.me/551433331071" 
+              href="https://wa.me/551433331071?text=Olá!%20Vim%20pelo%20site%20e%20gostaria%20de%20saber%20mais." 
               target="_blank" 
               rel="noopener noreferrer"
               className="hover:underline decoration-black/50 underline-offset-4 whitespace-normal"

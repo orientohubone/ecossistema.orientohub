@@ -349,7 +349,7 @@ const Footer = () => {
 
                 <div className="flex items-center gap-2 text-gray-500 text-xs">
                   <Rocket className="w-4 h-4 text-[#FFF200]" />
-                  <span>v2.0.0</span>
+                  <span>v3.0.0</span>
                 </div>
               </div>
             </div>
