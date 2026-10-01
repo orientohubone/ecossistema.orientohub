@@ -115,11 +115,13 @@ const CheckoutSuccessPage = () => {
                             transition={{ delay: 0.4 }}
                             className="text-center text-gray-600 dark:text-gray-400 mb-8"
                         >
-                            {activationStatus === 'active'
+                            {!user
+                                ? 'Recebemos seu retorno do Mercado Pago. A confirmação e os dados da assinatura serão enviados ao e-mail informado.'
+                                : activationStatus === 'active'
                                 ? 'Assinatura ativada! Você será direcionado ao Dashboard.'
                                 : activationStatus === 'timeout'
                                     ? 'Ainda estamos aguardando a confirmação. Você pode abrir o Dashboard e atualizar a página em alguns instantes.'
-                                    : 'Confirmando a assinatura com a AbacatePay. Isso pode levar alguns segundos.'}
+                                    : 'Confirmando a assinatura com o Mercado Pago. Isso pode levar alguns segundos.'}
                         </motion.p>
 
                         {/* Detalhes do Plano */}
@@ -194,7 +196,7 @@ const CheckoutSuccessPage = () => {
                             </Link>
 
                             <p className="text-center text-sm text-gray-500 dark:text-gray-400">
-                                {activationStatus === 'active' ? 'Redirecionando...' : 'Aguardando confirmação segura do pagamento...'}
+                                {!user ? 'Você já pode entrar ou criar sua conta com o mesmo e-mail da assinatura.' : activationStatus === 'active' ? 'Redirecionando...' : 'Aguardando confirmação segura do pagamento...'}
                             </p>
                         </motion.div>
 
