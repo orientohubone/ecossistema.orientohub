@@ -13,10 +13,12 @@ import InnovationServicePage from './InnovationServicePage';
 import MarketingServicePage from './MarketingServicePage';
 import PaidMediaServicePage from './PaidMediaServicePage';
 import GoogleBusinessServicePage from './GoogleBusinessServicePage';
+import DesignServicePage from './DesignServicePage';
+import IntelligentSystemsServicePage from './IntelligentSystemsServicePage';
 
 const icons: Record<string, ComponentType<{ className?: string }>> = {
   estrategia: Briefcase, inovacao: Rocket, marketing: BarChart3, 'midia-paga': Megaphone,
-  design: Palette, 'vibe-coding': Code2, marcas: Award, naming: Tags, dominio: Globe2, sites: Target, 'e-commerce': ShoppingCart,
+  design: Palette, 'sistemas-inteligentes': Code2, marcas: Award, naming: Tags, dominio: Globe2, sites: Target, 'e-commerce': ShoppingCart,
 };
 
 const accentClasses = {
@@ -38,6 +40,7 @@ const getDiscountPercentage = (original: number, promotional: number) =>
 
 const ServiceDetailPage = () => {
   const { serviceSlug } = useParams();
+  if (serviceSlug === 'vibe-coding') return <Navigate to="/servicos/sistemas-inteligentes" replace />;
   const service = getServiceBySlug(serviceSlug);
   if (!service) return <Navigate to="/servicos" replace />;
   if (service.slug === 'estrategia') return <StrategyServicePage service={service} />;
@@ -45,6 +48,8 @@ const ServiceDetailPage = () => {
   if (service.slug === 'marketing') return <MarketingServicePage service={service} />;
   if (service.slug === 'midia-paga') return <PaidMediaServicePage service={service} />;
   if (service.slug === 'google-meu-negocio') return <GoogleBusinessServicePage service={service} />;
+  if (service.slug === 'design') return <DesignServicePage service={service} />;
+  if (service.slug === 'sistemas-inteligentes') return <IntelligentSystemsServicePage service={service} />;
 
   const Icon = icons[service.slug] || Sparkles;
   const accent = accentClasses[service.accent];

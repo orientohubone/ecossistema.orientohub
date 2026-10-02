@@ -31,7 +31,7 @@ const serviceIcons: Record<string, ComponentType<{ className?: string }>> = {
   'midia-paga': Megaphone,
   'google-meu-negocio': MapPin,
   design: Palette,
-  'vibe-coding': Code2,
+  'sistemas-inteligentes': Code2,
   marcas: Award,
   naming: Tags,
   dominio: Globe2,

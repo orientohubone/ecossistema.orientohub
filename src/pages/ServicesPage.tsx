@@ -20,7 +20,7 @@ import type { ComponentType } from 'react';
 const serviceIcons: Record<string, ComponentType<{ className?: string }>> = {
   estrategia: Briefcase, inovacao: Rocket, marketing: BarChart3, 'midia-paga': Megaphone,
   'google-meu-negocio': MapPin,
-  design: Palette, 'vibe-coding': Code2, marcas: Award, naming: Tags, dominio: Globe2, sites: Target, 'e-commerce': ShoppingCart,
+  design: Palette, 'sistemas-inteligentes': Code2, marcas: Award, naming: Tags, dominio: Globe2, sites: Target, 'e-commerce': ShoppingCart,
 };
 
 const serviceColors: Record<string, string> = {
