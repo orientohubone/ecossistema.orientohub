@@ -10,7 +10,6 @@ import {
   Terminal,
   Zap,
   Link2,
-  ArrowRight,
   MousePointer2,
   ChevronLeft,
   ChevronRight,
@@ -46,11 +45,11 @@ const dnsGroups: DnsGroup[] = [
     label: 'Apontamento de hospedagem',
     Icon: Server,
     description: 'Conecta o domínio ao servidor ou CDN onde o site está hospedado.',
-    domain: 'intentia.com.br',
+    domain: 'empresa-exemplo.com.br',
     records: [
-      { type: 'A',     name: '@',   value: '76.76.21.21',          ttl: 'Auto', note: 'Vercel' },
-      { type: 'A',     name: 'www', value: '76.76.21.21',          ttl: 'Auto', note: 'Vercel' },
-      { type: 'CNAME', name: 'www', value: 'cname.vercel-dns.com', ttl: '3600' },
+      { type: 'A',     name: '@',   value: '192.0.2.10',                 ttl: 'Auto', note: 'Exemplo' },
+      { type: 'A',     name: 'www', value: '192.0.2.10',                 ttl: 'Auto', note: 'Exemplo' },
+      { type: 'CNAME', name: 'www', value: 'site.empresa-exemplo.com.br', ttl: '3600' },
     ],
   },
   {
@@ -58,12 +57,11 @@ const dnsGroups: DnsGroup[] = [
     label: 'Configuração de e-mail',
     Icon: Mail,
     description: 'Direciona e-mails para o provedor certo e garante entregabilidade.',
-    domain: 'humansys.com.br',
+    domain: 'empresa-exemplo.com.br',
     records: [
-      { type: 'MX',  name: '@', value: 'aspmx.l.google.com',      ttl: '3600', priority: 1,  note: 'Google Workspace' },
-      { type: 'MX',  name: '@', value: 'alt1.aspmx.l.google.com', ttl: '3600', priority: 5 },
-      { type: 'MX',  name: '@', value: 'alt2.aspmx.l.google.com', ttl: '3600', priority: 10 },
-      { type: 'TXT', name: '@', value: 'v=spf1 include:_spf.google.com ~all', ttl: '3600', note: 'SPF' },
+      { type: 'MX',  name: '@', value: 'mail1.empresa-exemplo.com.br', ttl: '3600', priority: 1, note: 'Exemplo' },
+      { type: 'MX',  name: '@', value: 'mail2.empresa-exemplo.com.br', ttl: '3600', priority: 5 },
+      { type: 'TXT', name: '@', value: 'v=spf1 include:spf.empresa-exemplo.com.br ~all', ttl: '3600', note: 'SPF demonstrativo' },
     ],
   },
   {
@@ -71,11 +69,11 @@ const dnsGroups: DnsGroup[] = [
     label: 'Autenticação DKIM & DMARC',
     Icon: ShieldCheck,
     description: 'Impede falsificação de identidade e melhora a reputação do e-mail.',
-    domain: 'fernandoramalhobuilder.com.br',
+    domain: 'empresa-exemplo.com.br',
     records: [
-      { type: 'DKIM', name: 'google._domainkey', value: 'v=DKIM1; k=rsa; p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8A…', ttl: '3600' },
-      { type: 'TXT',  name: '_dmarc',            value: 'v=DMARC1; p=quarantine; rua=mailto:dmarc@intentia.com.br', ttl: '3600' },
-      { type: 'SPF',  name: '@',                 value: 'v=spf1 include:_spf.google.com include:sendgrid.net ~all', ttl: '3600' },
+      { type: 'DKIM', name: 'email._domainkey', value: 'v=DKIM1; k=rsa; p=CHAVE_PUBLICA_DEMONSTRATIVA', ttl: '3600' },
+      { type: 'TXT',  name: '_dmarc',           value: 'v=DMARC1; p=quarantine; rua=mailto:dmarc@empresa-exemplo.com.br', ttl: '3600' },
+      { type: 'SPF',  name: '@',                value: 'v=spf1 include:spf.empresa-exemplo.com.br ~all', ttl: '3600' },
     ],
   },
   {
@@ -83,12 +81,10 @@ const dnsGroups: DnsGroup[] = [
     label: 'Subdomínios via CNAME',
     Icon: Layers,
     description: 'Segmenta serviços, ferramentas e produtos em endereços próprios.',
-    domain: 'orientohub.com.br',
+    domain: 'empresa-exemplo.com.br',
     records: [
-      { type: 'CNAME', name: 'consultoria',       value: 'cname.vercel-dns.com',                     ttl: 'Auto', note: 'Produto' },
-      { type: 'CNAME', name: 'radartech',         value: 'cname.vercel-dns.com',                     ttl: 'Auto', note: 'Produto' },
-      { type: 'CNAME', name: 'siteparapsicologa', value: 'cname.vercel-dns.com',                     ttl: 'Auto', note: 'Cliente' },
-      { type: 'CNAME', name: 'api',               value: 'api.orientohub.com.br.cdn.cloudflare.net', ttl: 'Auto', note: 'API' },
+      { type: 'CNAME', name: 'app', value: 'app.empresa-exemplo.com.br', ttl: 'Auto', note: 'Produto' },
+      { type: 'CNAME', name: 'api', value: 'api.empresa-exemplo.com.br', ttl: 'Auto', note: 'API' },
     ],
   },
   {
@@ -96,11 +92,11 @@ const dnsGroups: DnsGroup[] = [
     label: 'Cloudflare & CDN',
     Icon: Zap,
     description: 'Proxy com CDN global, SSL automático e proteção DDoS.',
-    domain: 'studio.intentia.com.br',
+    domain: 'app.empresa-exemplo.com.br',
     records: [
-      { type: 'A',    name: '@',   value: '104.21.XX.XX',         ttl: 'Auto', note: 'Proxied' },
-      { type: 'A',    name: 'www', value: '172.67.XX.XX',         ttl: 'Auto', note: 'Proxied' },
-      { type: 'AAAA', name: '@',   value: '2606:4700::6815:XXXX', ttl: 'Auto', note: 'IPv6' },
+      { type: 'A',    name: '@',   value: '192.0.2.20',   ttl: 'Auto', note: 'Exemplo' },
+      { type: 'A',    name: 'www', value: '198.51.100.20', ttl: 'Auto', note: 'Exemplo' },
+      { type: 'AAAA', name: '@',   value: '2001:db8::20', ttl: 'Auto', note: 'IPv6 demonstrativo' },
     ],
   },
   {
@@ -108,22 +104,21 @@ const dnsGroups: DnsGroup[] = [
     label: 'Verificação de propriedade',
     Icon: CheckCircle2,
     description: 'Registros TXT para comprovar posse do domínio em diversas plataformas.',
-    domain: 'intentia.com.br',
+    domain: 'empresa-exemplo.com.br',
     records: [
-      { type: 'TXT', name: '@',        value: 'google-site-verification=xXxXxXxXxXxXxXxX', ttl: '3600', note: 'Google' },
-      { type: 'TXT', name: '_vercel',  value: 'vc-domain-verify=intentia.com.br,XXXXXXXXXX', ttl: '3600', note: 'Vercel' },
-      { type: 'TXT', name: '_atproto', value: 'did=did:plc:XXXXXXXXXXXXXXXX',                ttl: '3600', note: 'Bluesky' },
+      { type: 'TXT', name: '@',       value: 'service-verification=VALOR_DEMONSTRATIVO', ttl: '3600', note: 'Exemplo' },
+      { type: 'TXT', name: '_verify', value: 'domain-verify=VALOR_DEMONSTRATIVO',        ttl: '3600', note: 'Exemplo' },
     ],
   },
 ];
 
 const subdomainUseCases = [
-  { prefix: 'consultoria.',       domain: 'orientohub.com.br', purpose: 'Landing page dedicada a conversão', Icon: Link2 },
-  { prefix: 'radartech.',         domain: 'orientohub.com.br', purpose: 'Portal de notícias e tecnologia',    Icon: Zap },
-  { prefix: 'studio.',            domain: 'intentia.com.br',   purpose: 'Braço separado da marca principal', Icon: Layers },
-  { prefix: 'app.',               domain: 'orientohub.com.br', purpose: 'Ambiente de usuário logado',        Icon: Terminal },
-  { prefix: 'api.',               domain: 'orientohub.com.br', purpose: 'Endpoint para integrações externas',Icon: Link2 },
-  { prefix: 'siteparapsicologa.', domain: 'orientohub.com.br', purpose: 'Site de demonstração em subdomínio',     Icon: Globe2 },
+  { prefix: 'consultoria.', domain: 'empresa-exemplo.com.br', purpose: 'Landing page dedicada a conversão', Icon: Link2 },
+  { prefix: 'conteudo.',    domain: 'empresa-exemplo.com.br', purpose: 'Portal de notícias e conteúdo',      Icon: Zap },
+  { prefix: 'studio.',      domain: 'empresa-exemplo.com.br', purpose: 'Braço separado da marca principal',  Icon: Layers },
+  { prefix: 'app.',         domain: 'empresa-exemplo.com.br', purpose: 'Ambiente de usuário logado',         Icon: Terminal },
+  { prefix: 'api.',         domain: 'empresa-exemplo.com.br', purpose: 'Endpoint para integrações externas', Icon: Link2 },
+  { prefix: 'campanha.',    domain: 'empresa-exemplo.com.br', purpose: 'Página dedicada a uma campanha',     Icon: Globe2 },
 ];
 
 const domainPortfolio = [
@@ -290,6 +285,7 @@ const DomainPortfolio = () => {
                   </span>
                 ))}
               </div>
+              <p className="mt-3 text-xs text-[#9ba9bc]">Registros e valores demonstrativos — nenhum dado de autenticação real é exibido.</p>
             </div>
             {hasMultiple && (
               <div className="flex shrink-0 gap-2">
@@ -488,22 +484,6 @@ const DomainPortfolio = () => {
             ))}
           </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 8 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="mt-8 flex flex-col items-start gap-4 rounded-2xl border border-primary-400/20 bg-primary-500/5 p-5 sm:flex-row sm:items-center sm:justify-between"
-          >
-            <p className="text-sm font-semibold text-[#d7e0ea]">
-              Precisa organizar seus domínios, e-mails ou subdomínios?
-            </p>
-            <a
-              href="/contato"
-              className="inline-flex shrink-0 items-center gap-2 rounded-xl bg-primary-500 px-5 py-3 text-sm font-bold text-[#0c121b] transition hover:bg-primary-400"
-            >
-              Falar com a OrientoHub <ArrowRight className="h-4 w-4" />
-            </a>
-          </motion.div>
         </div>
       </section>
     </>

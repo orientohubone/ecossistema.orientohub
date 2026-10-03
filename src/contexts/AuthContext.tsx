@@ -27,14 +27,11 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     // Verificar sessão ativa ao carregar
     const initializeAuth = async () => {
       try {
-        console.log('🔐 Inicializando autenticação...');
-        
         const { data: { session: currentSession }, error } = await supabase.auth.getSession();
         
         if (error) {
           console.error('❌ Erro ao obter sessão:', error);
         } else {
-          console.log('✅ Sessão obtida:', currentSession ? 'Usuário logado' : 'Nenhum usuário');
           setSession(currentSession);
           setUser(currentSession?.user ?? null);
         }
@@ -49,28 +46,11 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
     // Escutar mudanças de autenticação
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event: AuthChangeEvent, currentSession: Session | null) => {
-        console.log('🔄 Auth state changed:', event, currentSession?.user?.email);
-        
+      async (_event: AuthChangeEvent, currentSession: Session | null) => {
         setSession(currentSession);
         setUser(currentSession?.user ?? null);
         setLoading(false);
 
-        // Log específico para cada evento
-        switch (event) {
-          case 'SIGNED_IN':
-            console.log('✅ Usuário fez login:', currentSession?.user?.email);
-            break;
-          case 'SIGNED_OUT':
-            console.log('👋 Usuário fez logout');
-            break;
-          case 'TOKEN_REFRESHED':
-            console.log('🔄 Token renovado');
-            break;
-          case 'USER_UPDATED':
-            console.log('👤 Dados do usuário atualizados');
-            break;
-        }
       }
     );
 
@@ -81,9 +61,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const signIn = async (email: string, password: string) => {
     try {
-      console.log('🔐 Tentando fazer login com:', email);
-      
-      const { data, error } = await supabase.auth.signInWithPassword({
+      const { error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
@@ -93,7 +71,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         return { error };
       }
 
-      console.log('✅ Login bem-sucedido:', data.user?.email);
       return { error: null };
     } catch (error: any) {
       console.error('❌ Erro inesperado no login:', error);
@@ -103,9 +80,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const signUp = async (email: string, password: string, metadata?: any) => {
     try {
-      console.log('📝 Tentando criar conta para:', email);
-      
-      const { data, error } = await supabase.auth.signUp({
+      const { error } = await supabase.auth.signUp({
         email,
         password,
         options: {
@@ -118,8 +93,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         return { error };
       }
 
-      console.log('✅ Conta criada com sucesso:', data.user?.email);
-      console.log('📧 Verifique seu email para confirmar a conta!');
       return { error: null };
     } catch (error: any) {
       console.error('❌ Erro inesperado no cadastro:', error);
@@ -129,8 +102,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const signOut = async () => {
     try {
-      console.log('👋 Fazendo logout...');
-      
       const { error } = await supabase.auth.signOut();
       
       if (error) {
@@ -138,7 +109,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         throw error;
       }
 
-      console.log('✅ Logout bem-sucedido');
     } catch (error) {
       console.error('❌ Erro inesperado no logout:', error);
       throw error;
@@ -147,8 +117,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const resetPassword = async (email: string) => {
     try {
-      console.log('🔑 Enviando email de recuperação para:', email);
-      
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
         redirectTo: `${window.location.origin}/reset-password`,
       });

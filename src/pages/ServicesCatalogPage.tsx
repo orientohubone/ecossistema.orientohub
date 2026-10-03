@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
@@ -19,7 +19,14 @@ const priceLabel = (service: ServiceCatalogItem) => {
 
 const ServicesCatalogPage = () => {
   const [activeIndex, setActiveIndex] = useState(0);
+  const serviceDetailRef = useRef<HTMLElement>(null);
   const activeService = serviceCatalog[activeIndex];
+  const selectService = (index: number) => {
+    setActiveIndex(index);
+    if (window.matchMedia('(max-width: 1023px)').matches) {
+      requestAnimationFrame(() => serviceDetailRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+    }
+  };
 
   return <>
     <Helmet><title>Serviços | OrientoHub</title><meta name="description" content="Estratégia e execução conectadas para destravar o próximo movimento do seu negócio." /></Helmet>
@@ -35,9 +42,9 @@ const ServicesCatalogPage = () => {
       <section id="catalogo" className="container-custom relative z-10 py-16 sm:py-24">
         <div className="mb-10 flex flex-col gap-5 border-b border-white/15 pb-8 sm:flex-row sm:items-end sm:justify-between"><div><p className="text-xs font-bold uppercase tracking-[0.24em] text-[#FFF200]">O que fazemos</p><h2 className="mt-3 max-w-2xl text-3xl font-bold tracking-tight sm:text-5xl">Escolha o desafio. Nós conectamos a solução.</h2></div><p className="max-w-md text-sm leading-relaxed text-white/50">Cada frente pode ser contratada separadamente ou combinada em uma operação sob medida para o momento da sua empresa.</p></div>
         <div className="grid gap-8 lg:grid-cols-[minmax(280px,0.72fr)_minmax(0,1.55fr)] lg:gap-14">
-          <nav aria-label="Catálogo de serviços" className="border-t border-white/15">{serviceCatalog.map((service, index) => <button key={service.slug} type="button" onClick={() => setActiveIndex(index)} className={`group flex w-full items-center gap-4 border-b px-1 py-4 text-left transition sm:py-5 ${activeIndex === index ? 'border-[#FFF200] text-white' : 'border-white/10 text-white/45 hover:border-white/30 hover:text-white'}`}><span className={`w-7 text-xs font-bold ${activeIndex === index ? 'text-[#FFF200]' : 'text-white/25'}`}>{String(index + 1).padStart(2, '0')}</span><span className="flex-1 text-base font-semibold sm:text-lg">{service.title}</span><ChevronRight className={`h-4 w-4 transition ${activeIndex === index ? 'text-[#FFF200]' : '-translate-x-2 opacity-0 group-hover:translate-x-0 group-hover:opacity-100'}`} /></button>)}</nav>
+          <nav aria-label="Catálogo de serviços" className="border-t border-white/15">{serviceCatalog.map((service, index) => <button key={service.slug} type="button" onClick={() => selectService(index)} className={`group flex w-full items-center gap-4 border-b px-1 py-4 text-left transition sm:py-5 ${activeIndex === index ? 'border-[#FFF200] text-white' : 'border-white/10 text-white/45 hover:border-white/30 hover:text-white'}`}><span className={`w-7 text-xs font-bold ${activeIndex === index ? 'text-[#FFF200]' : 'text-white/25'}`}>{String(index + 1).padStart(2, '0')}</span><span className="flex-1 text-base font-semibold sm:text-lg">{service.title}</span><ChevronRight className={`h-4 w-4 transition ${activeIndex === index ? 'text-[#FFF200]' : '-translate-x-2 opacity-0 group-hover:translate-x-0 group-hover:opacity-100'}`} /></button>)}</nav>
 
-          <motion.article key={activeService.slug} initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.25 }} className="relative min-h-[600px] overflow-hidden rounded-2xl border border-[#FFF200]/35 bg-gray-900/85 p-6 shadow-[0_18px_50px_rgba(0,0,0,0.22),0_0_28px_rgba(255,242,0,0.04)] backdrop-blur-md transition-colors hover:border-[#FFF200]/60 sm:p-10 lg:p-12">
+          <motion.article ref={serviceDetailRef} key={activeService.slug} initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.25 }} className="relative min-h-[600px] scroll-mt-24 overflow-hidden rounded-2xl border border-[#FFF200]/35 bg-gray-900/85 p-6 shadow-[0_18px_50px_rgba(0,0,0,0.22),0_0_28px_rgba(255,242,0,0.04)] backdrop-blur-md transition-colors hover:border-[#FFF200]/60 sm:p-10 lg:p-12">
             <span className="pointer-events-none absolute -right-3 -top-12 text-[180px] font-black leading-none text-white/[0.025] sm:text-[260px]">{String(activeIndex + 1).padStart(2, '0')}</span>
             <div className="relative flex h-full flex-col"><div className="flex flex-wrap items-center justify-between gap-4"><p className="text-xs font-bold uppercase tracking-[0.22em] text-[#FFF200]">{activeService.eyebrow}</p><span className="border border-[#FFF200]/45 bg-[#FFF200]/10 px-4 py-2 text-sm font-black text-[#FFF200] shadow-[0_0_24px_rgba(255,242,0,0.08)]">{priceLabel(activeService)}</span></div>
               <h3 className="mt-10 max-w-3xl text-4xl font-black leading-[0.95] tracking-[-0.04em] sm:text-6xl">{activeService.hero}</h3><p className="mt-6 max-w-2xl text-lg leading-relaxed text-white/55">{activeService.outcome}</p>

@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, Check, Layers3, MousePointer2, Palette, PenTool, Shapes } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { ServiceCatalogItem } from '../data/serviceCatalog';
 
 const formatPrice = (value: number) =>
@@ -33,6 +33,13 @@ const DesignServicePage = ({ service }: { service: ServiceCatalogItem }) => {
   const processIcons = [MousePointer2, PenTool, Layers3];
   const [openPortfolio, setOpenPortfolio] = useState<string | null>(null);
   const [loadedPortfolios, setLoadedPortfolios] = useState<Set<string>>(() => new Set());
+  const portfolioSectionRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!openPortfolio) return;
+    const frame = requestAnimationFrame(() => portfolioSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+    return () => cancelAnimationFrame(frame);
+  }, [openPortfolio]);
 
   return (
     <>
@@ -78,7 +85,7 @@ const DesignServicePage = ({ service }: { service: ServiceCatalogItem }) => {
               <div className="max-w-3xl"><p className="text-xs font-black uppercase tracking-[0.22em] text-[#FFF200]">Soluções de design</p><h2 className="mt-4 text-4xl font-black tracking-[-0.04em] sm:text-5xl">Escolha o ponto que sua marca precisa resolver agora.</h2><p className="mt-5 text-lg text-white/50">Escopos objetivos para necessidades diferentes, mantendo direção visual e qualidade em cada entrega.</p></div>
               <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
                 {service.options.map((option, index) => (
-                  <motion.article key={option.title} initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.05 }} className="group flex min-h-[330px] flex-col rounded-2xl border border-[#FFF200]/30 bg-gray-900/80 p-6 transition hover:-translate-y-1 hover:border-[#FFF200]">
+                  <motion.article key={option.title} initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.05 }} className={`group flex min-h-[330px] flex-col rounded-2xl border bg-gray-900/80 p-6 transition hover:-translate-y-1 hover:border-[#FFF200] ${openPortfolio === option.title ? 'border-[#FFF200] ring-1 ring-[#FFF200]/35' : 'border-[#FFF200]/30'}`}>
                     <div className="flex items-center justify-between"><span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#FFF200] text-sm font-black text-black">0{index + 1}</span><span className="text-[10px] font-black uppercase tracking-[0.16em] text-white/35">{option.suffix ? 'Por peça' : 'Projeto'}</span></div>
                     <h3 className="mt-7 text-2xl font-black">{option.title}</h3>
                     {option.description && <p className="mt-3 text-sm leading-relaxed text-white/50">{option.description}</p>}
@@ -87,7 +94,7 @@ const DesignServicePage = ({ service }: { service: ServiceCatalogItem }) => {
                 ))}
               </div>
               {Array.from(loadedPortfolios).map(portfolioName => (
-                <motion.div key={portfolioName} initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className={openPortfolio === portfolioName ? 'overflow-hidden' : 'hidden'}>
+                <motion.div ref={openPortfolio === portfolioName ? portfolioSectionRef : undefined} key={portfolioName} initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className={openPortfolio === portfolioName ? 'scroll-mt-24 overflow-hidden' : 'hidden'}>
                   <div className="mt-8 border-t border-[#FFF200]/25 pt-8">
                     <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between"><div><p className="text-xs font-black uppercase tracking-[0.22em] text-[#FFF200]">Projetos selecionados</p><h3 className="mt-2 text-3xl font-black">{portfolioName}</h3></div><a href="https://www.behance.net/fernandoramalho1" target="_blank" rel="noreferrer" className="text-sm font-bold text-white/55 transition hover:text-[#FFF200]">Ver portfólio completo no Behance</a></div>
                     <div className="mt-6 grid gap-5 md:grid-cols-2 xl:grid-cols-3">

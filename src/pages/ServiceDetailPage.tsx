@@ -15,6 +15,9 @@ import PaidMediaServicePage from './PaidMediaServicePage';
 import GoogleBusinessServicePage from './GoogleBusinessServicePage';
 import DesignServicePage from './DesignServicePage';
 import IntelligentSystemsServicePage from './IntelligentSystemsServicePage';
+import BrandsServicePage from './BrandsServicePage';
+import NamingServicePage from './NamingServicePage';
+import DomainServicePage from './DomainServicePage';
 
 const icons: Record<string, ComponentType<{ className?: string }>> = {
   estrategia: Briefcase, inovacao: Rocket, marketing: BarChart3, 'midia-paga': Megaphone,
@@ -50,6 +53,9 @@ const ServiceDetailPage = () => {
   if (service.slug === 'google-meu-negocio') return <GoogleBusinessServicePage service={service} />;
   if (service.slug === 'design') return <DesignServicePage service={service} />;
   if (service.slug === 'sistemas-inteligentes') return <IntelligentSystemsServicePage service={service} />;
+  if (service.slug === 'marcas') return <BrandsServicePage service={service} />;
+  if (service.slug === 'naming') return <NamingServicePage service={service} />;
+  if (service.slug === 'dominio') return <DomainServicePage service={service} />;
 
   const Icon = icons[service.slug] || Sparkles;
   const accent = accentClasses[service.accent];

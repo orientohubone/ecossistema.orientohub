@@ -17,6 +17,38 @@ interface AuthState {
   resendConfirmationEmail: (email: string) => Promise<void>;
 }
 
+const LOGIN_GUARD_KEY = 'orientohub_login_guard';
+const LOGIN_WINDOW_MS = 15 * 60 * 1000;
+const MAX_LOGIN_FAILURES = 5;
+
+type LoginGuard = { failures: number; windowStartedAt: number; blockedUntil: number };
+
+const readLoginGuard = (): LoginGuard => {
+  try {
+    const parsed = JSON.parse(localStorage.getItem(LOGIN_GUARD_KEY) || '{}');
+    const now = Date.now();
+    if (!parsed.windowStartedAt || now - parsed.windowStartedAt >= LOGIN_WINDOW_MS) {
+      return { failures: 0, windowStartedAt: now, blockedUntil: 0 };
+    }
+    return { failures: Number(parsed.failures) || 0, windowStartedAt: Number(parsed.windowStartedAt), blockedUntil: Number(parsed.blockedUntil) || 0 };
+  } catch {
+    return { failures: 0, windowStartedAt: Date.now(), blockedUntil: 0 };
+  }
+};
+
+const writeLoginGuard = (guard: LoginGuard) => {
+  try { localStorage.setItem(LOGIN_GUARD_KEY, JSON.stringify(guard)); } catch { /* storage indisponível */ }
+};
+
+const clearLoginGuard = () => {
+  try { localStorage.removeItem(LOGIN_GUARD_KEY); } catch { /* storage indisponível */ }
+};
+
+const blockedMessage = (blockedUntil: number) => {
+  const minutes = Math.max(1, Math.ceil((blockedUntil - Date.now()) / 60000));
+  return `Muitas tentativas de acesso. Aguarde ${minutes} minuto${minutes === 1 ? '' : 's'} antes de tentar novamente.`;
+};
+
 export const useAuthStore = create<AuthState>((set) => ({
   user: null,
   isAuthenticated: false,
@@ -100,6 +132,9 @@ export const useAuthStore = create<AuthState>((set) => ({
   login: async (email, password) => {
     try {
       set({ isLoading: true, error: null });
+
+      const guard = readLoginGuard();
+      if (guard.blockedUntil > Date.now()) throw new Error(blockedMessage(guard.blockedUntil));
       
       // Test connection before attempting login
       const connectionTest = await testSupabaseConnection();
@@ -113,26 +148,40 @@ export const useAuthStore = create<AuthState>((set) => ({
       });
       
       if (error) throw error;
-      
+
+      clearLoginGuard();
       set({ isLoading: false });
     } catch (error: any) {
-      console.error('Login error:', error);
       let errorMessage = 'Falha no login';
-      
-      if (error.message?.includes('upstream connect error') || error.message?.includes('503')) {
+
+      const isRateLimited = error?.status === 429 || error?.code === 'over_request_rate_limit' || error.message?.toLowerCase().includes('rate limit');
+      const isInvalidCredentials = error.message?.includes('Invalid login credentials');
+
+      if (isRateLimited) {
+        const nextGuard = { failures: MAX_LOGIN_FAILURES, windowStartedAt: Date.now(), blockedUntil: Date.now() + LOGIN_WINDOW_MS };
+        writeLoginGuard(nextGuard);
+        errorMessage = blockedMessage(nextGuard.blockedUntil);
+      } else if (isInvalidCredentials) {
+        const current = readLoginGuard();
+        const failures = current.failures + 1;
+        const blockedUntil = failures >= MAX_LOGIN_FAILURES ? Date.now() + LOGIN_WINDOW_MS : 0;
+        writeLoginGuard({ failures, windowStartedAt: current.windowStartedAt, blockedUntil });
+        errorMessage = blockedUntil
+          ? blockedMessage(blockedUntil)
+          : `Credenciais inválidas. Restam ${MAX_LOGIN_FAILURES - failures} tentativa${MAX_LOGIN_FAILURES - failures === 1 ? '' : 's'} antes do bloqueio temporário.`;
+      } else if (error.message?.includes('Muitas tentativas de acesso')) {
+        errorMessage = error.message;
+      } else if (error.message?.includes('upstream connect error') || error.message?.includes('503')) {
         errorMessage = 'Servidor temporariamente indisponível. Tente novamente em alguns minutos.';
-      } else if (error.message?.includes('Invalid login credentials')) {
-        errorMessage = 'Credenciais inválidas. Verifique seu e-mail e senha.';
       } else if (error.message?.includes('Email not confirmed')) {
         errorMessage = 'E-mail não confirmado. Verifique sua caixa de entrada.';
-      } else if (error.message) {
-        errorMessage = error.message;
       }
       
       set({ 
         error: errorMessage,
         isLoading: false,
       });
+      throw new Error(errorMessage);
     }
   },
   

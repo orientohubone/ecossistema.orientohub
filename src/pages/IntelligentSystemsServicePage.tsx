@@ -1,8 +1,8 @@
 import { motion } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, Blocks, Bot, Check, Code2, Gauge, Workflow } from 'lucide-react';
-import { useState } from 'react';
+import { ArrowLeft, ArrowRight, Blocks, Bot, Building2, Check, Code2, Gauge, Lightbulb, Search, Workflow } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
 import type { ServiceCatalogItem } from '../data/serviceCatalog';
 
 const IntelligentSystemsServicePage = ({ service }: { service: ServiceCatalogItem }) => {
@@ -10,6 +10,17 @@ const IntelligentSystemsServicePage = ({ service }: { service: ServiceCatalogIte
   const processIcons = [Workflow, Code2, Gauge];
   const [showDigitalProjects, setShowDigitalProjects] = useState(false);
   const [digitalProjectsLoaded, setDigitalProjectsLoaded] = useState(false);
+  const [showInternalProcesses, setShowInternalProcesses] = useState(false);
+  const [internalProcessesLoaded, setInternalProcessesLoaded] = useState(false);
+  const internalProcessesRef = useRef<HTMLDivElement>(null);
+  const digitalProjectsRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const target = showInternalProcesses ? internalProcessesRef.current : showDigitalProjects ? digitalProjectsRef.current : null;
+    if (!target) return;
+    const frame = requestAnimationFrame(() => target.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+    return () => cancelAnimationFrame(frame);
+  }, [showInternalProcesses, showDigitalProjects]);
 
   return (
     <>
@@ -54,12 +65,17 @@ const IntelligentSystemsServicePage = ({ service }: { service: ServiceCatalogIte
           <div className="container-custom py-16 sm:py-24">
             <div className="max-w-3xl"><p className="text-xs font-black uppercase tracking-[0.22em] text-[#FFF200]">Onde aplicamos</p><h2 className="mt-4 text-4xl font-black tracking-[-0.04em] sm:text-5xl">Soluções conectadas à rotina da empresa.</h2></div>
             <div className="mt-10 grid gap-5 md:grid-cols-3">
-              <article className="rounded-2xl border border-[#FFF200]/30 bg-gray-900/75 p-7"><Workflow className="h-7 w-7 text-[#FFF200]" /><h3 className="mt-8 text-2xl font-black">Processos internos</h3><p className="mt-3 leading-relaxed text-white/50">Centralização de etapas, responsáveis e informações que hoje ficam dispersas.</p></article>
+              <article className={`rounded-2xl border bg-gray-900/75 p-7 ${showInternalProcesses ? 'border-[#FFF200] ring-1 ring-[#FFF200]/35' : 'border-[#FFF200]/30'}`}><Workflow className="h-7 w-7 text-[#FFF200]" /><h3 className="mt-8 text-2xl font-black">Processos internos</h3><p className="mt-3 leading-relaxed text-white/50">Centralização de etapas, responsáveis e informações que hoje ficam dispersas.</p><button type="button" onClick={() => { setInternalProcessesLoaded(true); setShowDigitalProjects(false); setShowInternalProcesses(current => !current); }} aria-expanded={showInternalProcesses} className="mt-6 text-sm font-black uppercase text-[#FFF200] underline decoration-[#FFF200]/40 underline-offset-4 transition hover:decoration-[#FFF200]">{showInternalProcesses ? 'Recolher exemplos' : 'Ver exemplos'}</button></article>
               <article className="rounded-2xl border border-[#FFF200]/30 bg-gray-900/75 p-7"><Bot className="h-7 w-7 text-[#FFF200]" /><h3 className="mt-8 text-2xl font-black">Automações</h3><p className="mt-3 leading-relaxed text-white/50">Execução automática de tarefas repetitivas e conexão entre ferramentas já utilizadas.</p></article>
-              <article className="rounded-2xl border border-[#FFF200]/30 bg-gray-900/75 p-7"><Blocks className="h-7 w-7 text-[#FFF200]" /><h3 className="mt-8 text-2xl font-black">Produtos digitais</h3><p className="mt-3 leading-relaxed text-white/50">Protótipos e sistemas personalizados para validar e operar novas soluções.</p><button type="button" onClick={() => { setDigitalProjectsLoaded(true); setShowDigitalProjects(current => !current); }} aria-expanded={showDigitalProjects} className="mt-6 text-sm font-black uppercase text-[#FFF200] underline decoration-[#FFF200]/40 underline-offset-4 transition hover:decoration-[#FFF200]">{showDigitalProjects ? 'Recolher projetos' : 'Ver projetos'}</button></article>
+              <article className={`rounded-2xl border bg-gray-900/75 p-7 ${showDigitalProjects ? 'border-[#FFF200] ring-1 ring-[#FFF200]/35' : 'border-[#FFF200]/30'}`}><Blocks className="h-7 w-7 text-[#FFF200]" /><h3 className="mt-8 text-2xl font-black">Produtos digitais</h3><p className="mt-3 leading-relaxed text-white/50">Protótipos e sistemas personalizados para validar e operar novas soluções.</p><button type="button" onClick={() => { setDigitalProjectsLoaded(true); setShowInternalProcesses(false); setShowDigitalProjects(current => !current); }} aria-expanded={showDigitalProjects} className="mt-6 text-sm font-black uppercase text-[#FFF200] underline decoration-[#FFF200]/40 underline-offset-4 transition hover:decoration-[#FFF200]">{showDigitalProjects ? 'Recolher projetos' : 'Ver projetos'}</button></article>
             </div>
+            {internalProcessesLoaded && (
+              <motion.div ref={internalProcessesRef} initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className={showInternalProcesses ? 'scroll-mt-24 overflow-hidden' : 'hidden'}>
+                <InternalProcessShowcase />
+              </motion.div>
+            )}
             {digitalProjectsLoaded && (
-              <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className={showDigitalProjects ? 'overflow-hidden' : 'hidden'}>
+              <motion.div ref={digitalProjectsRef} initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className={showDigitalProjects ? 'scroll-mt-24 overflow-hidden' : 'hidden'}>
                 <div className="mt-8 border-t border-[#FFF200]/25 pt-8">
                   <p className="text-xs font-black uppercase tracking-[0.22em] text-[#FFF200]">Projetos selecionados</p>
                   <h3 className="mt-2 text-3xl font-black">Produtos digitais</h3>
@@ -90,6 +106,41 @@ const IntelligentSystemsServicePage = ({ service }: { service: ServiceCatalogIte
         </section>
       </main>
     </>
+  );
+};
+
+const InternalProcessShowcase = () => {
+  const ideaStages = [
+    { name: 'Captura', color: 'text-[#FFF200]', items: ['Assistente de atendimento'] },
+    { name: 'Descoberta', color: 'text-sky-300', items: ['Painel operacional'] },
+    { name: 'Validação', color: 'text-violet-300', items: ['Automação de propostas'] },
+    { name: 'Incubação', color: 'text-orange-300', items: ['Portal de parceiros'] },
+    { name: 'Prontas', color: 'text-emerald-300', items: ['Sistema de agendamentos'] },
+  ];
+  const crmStages = [
+    { name: 'Novo', items: ['Empresa demonstrativa'] },
+    { name: 'Contato', items: ['Negócio exemplo'] },
+    { name: 'Proposta', items: ['Projeto fictício'] },
+    { name: 'Negociação', items: ['Oportunidade teste'] },
+  ];
+
+  return (
+    <div className="mt-8 border-t border-[#FFF200]/25 pt-8">
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between"><div><p className="text-xs font-black uppercase tracking-[0.22em] text-[#FFF200]">Sistemas em operação</p><h3 className="mt-2 text-3xl font-black">Processos internos da OrientoHub</h3></div><span className="text-xs font-bold uppercase tracking-[0.14em] text-white/35">Dados demonstrativos</span></div>
+      <div className="mt-6 grid gap-6 xl:grid-cols-2">
+        <article className="overflow-hidden rounded-2xl border border-white/10 bg-[#171c24] p-4 sm:p-5">
+          <div className="flex items-start justify-between gap-4"><div><p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#FFF200]">Pré-projeto</p><h4 className="mt-1 text-xl font-bold">Ideias e incubação</h4><p className="mt-1 text-xs text-[#9ba9bc]">Da captura à decisão de transformar uma ideia em projeto.</p></div><span className="rounded-lg bg-[#FFF200] px-2 py-1 text-[10px] font-black text-black">Nova ideia</span></div>
+          <div className="relative mt-4"><Search className="absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-[#718096]" /><div className="rounded-lg border border-[#273548] bg-[#101722] py-2 pl-9 text-[11px] text-[#718096]">Buscar ideias, público ou problema</div></div>
+          <div className="mt-4 grid gap-2 sm:grid-cols-5">{ideaStages.map(stage => <div key={stage.name} className="min-h-36 rounded-xl border border-[#273548] bg-[#101722] p-2"><p className={`text-[9px] font-black uppercase tracking-wide ${stage.color}`}>{stage.name}</p><div className="mt-3 space-y-2">{stage.items.map(item => <div key={item} className="rounded-lg border border-[#273548] bg-[#151f2b] p-2"><div className="flex gap-1.5"><Lightbulb className="mt-0.5 h-3 w-3 shrink-0 text-[#FFF200]" /><p className="text-[10px] font-bold leading-tight">{item}</p></div><p className="mt-2 text-right text-[8px] text-[#FFF200]">Curadoria demonstrativa</p></div>)}</div></div>)}</div>
+        </article>
+
+        <article className="overflow-hidden rounded-2xl border border-white/10 bg-[#171c24] p-4 sm:p-5">
+          <div className="flex items-start justify-between gap-4"><div><p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#FFF200]">Relacionamento comercial</p><h4 className="mt-1 text-xl font-bold">CRM comercial</h4><p className="mt-1 text-xs text-[#9ba9bc]">Oportunidades organizadas por etapa e próximo passo.</p></div><span className="rounded-lg bg-[#FFF200] px-2 py-1 text-[10px] font-black text-black">Novo cliente</span></div>
+          <div className="relative mt-4"><Search className="absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-[#718096]" /><div className="rounded-lg border border-[#273548] bg-[#101722] py-2 pl-9 text-[11px] text-[#718096]">Buscar oportunidades</div></div>
+          <div className="mt-4 grid gap-2 sm:grid-cols-4">{crmStages.map(stage => <div key={stage.name} className="min-h-36 rounded-xl border border-[#273548] bg-[#0c121b]/50 p-2"><div className="flex items-center justify-between"><p className="text-[9px] font-black uppercase tracking-wide text-[#d7e0ea]">{stage.name}</p><span className="text-[9px] text-[#FFF200]">1</span></div><div className="mt-3 space-y-2">{stage.items.map(item => <div key={item} className="rounded-lg border border-[#273548] bg-[#101722] p-2"><div className="flex gap-1.5"><Building2 className="mt-0.5 h-3 w-3 shrink-0 text-[#FFF200]" /><p className="text-[10px] font-bold leading-tight">{item}</p></div><p className="mt-2 text-[8px] text-[#9ba9bc]">Próximo passo demonstrativo</p></div>)}</div></div>)}</div>
+        </article>
+      </div>
+    </div>
   );
 };
 

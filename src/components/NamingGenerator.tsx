@@ -342,7 +342,7 @@ const NamingGenerator = () => {
           initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="mb-10 grid gap-6 lg:grid-cols-[0.8fr_1.2fr] lg:items-end"
+          className="mb-10 grid gap-6 lg:grid-cols-[0.8fr_1.2fr_auto] lg:items-center"
         >
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary-300">
@@ -356,6 +356,7 @@ const NamingGenerator = () => {
             Não é um sorteador aleatório. Aplicamos regras formais de morfologia, etimologia e
             semântica estrutural para construir 3 rotas distintas de naming a partir do seu briefing.
           </p>
+          <NamingEngineSeal />
         </motion.div>
 
         {/* Formulário */}
@@ -425,7 +426,7 @@ const NamingGenerator = () => {
                 type="button"
                 onClick={handleGenerate}
                 disabled={!canGenerate}
-                className="flex w-full items-center justify-center gap-2 rounded-xl bg-primary-500 px-6 py-3 text-sm font-bold text-[#0c121b] transition hover:bg-primary-400 disabled:cursor-not-allowed disabled:opacity-40"
+                className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#FFF200] px-6 py-3 text-sm font-bold text-black transition hover:bg-white disabled:cursor-not-allowed disabled:opacity-40"
               >
                 <Sparkles className="h-4 w-4" />
                 {uses >= MAX_USES ? 'Limite atingido' : 'Gerar nomes'}
@@ -541,7 +542,7 @@ const NamingGenerator = () => {
                   </p>
                   <Link
                     to="/contato?service=Naming&message=Ol%C3%A1%2C%20gostaria%20de%20contratar%20a%20an%C3%A1lise%20completa%20de%20Naming%20%26%20Viabilidade%20INPI."
-                    className="inline-flex items-center gap-2 rounded-xl bg-primary-500 px-5 py-3 text-sm font-bold text-[#0c121b] transition hover:bg-primary-400"
+                    className="inline-flex items-center gap-2 rounded-xl bg-[#FFF200] px-5 py-3 text-sm font-bold text-black transition hover:bg-white"
                   >
                     Contratar análise completa <ArrowRight className="h-4 w-4" />
                   </Link>
@@ -555,5 +556,39 @@ const NamingGenerator = () => {
     </section>
   );
 };
+
+const NamingEngineSeal = () => (
+  <div className="mx-auto h-36 w-36 shrink-0 drop-shadow-[0_16px_24px_rgba(0,0,0,0.38)] sm:h-40 sm:w-40" aria-label="Motor de Naming 100% grátis">
+    <svg viewBox="0 0 180 180" role="img" className="h-full w-full -rotate-6">
+      <defs>
+        <radialGradient id="naming-seal-metal" cx="34%" cy="24%" r="78%">
+          <stop offset="0%" stopColor="#fffbd0" />
+          <stop offset="18%" stopColor="#fff76a" />
+          <stop offset="48%" stopColor="#FFF200" />
+          <stop offset="76%" stopColor="#d0b900" />
+          <stop offset="100%" stopColor="#766400" />
+        </radialGradient>
+        <linearGradient id="naming-seal-edge" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor="#fffbd5" />
+          <stop offset="30%" stopColor="#9b8500" />
+          <stop offset="55%" stopColor="#fff86b" />
+          <stop offset="100%" stopColor="#665600" />
+        </linearGradient>
+        <path id="naming-seal-path" d="M 90,90 m -65,0 a 65,65 0 1,1 130,0 a 65,65 0 1,1 -130,0" />
+      </defs>
+      <circle cx="90" cy="90" r="84" fill="url(#naming-seal-edge)" />
+      <circle cx="90" cy="90" r="78" fill="url(#naming-seal-metal)" stroke="#fff899" strokeWidth="1.5" />
+      <circle cx="90" cy="90" r="59" fill="none" stroke="#241f00" strokeWidth="1.5" opacity="0.42" />
+      <circle cx="90" cy="90" r="53" fill="#111111" stroke="#fff76a" strokeWidth="2" />
+      <text fill="#111111" fontSize="13" fontWeight="900" letterSpacing="3.1">
+        <textPath href="#naming-seal-path" startOffset="3%">MOTOR DE NAMING • MOTOR DE NAMING •</textPath>
+      </text>
+      <text x="90" y="75" textAnchor="middle" fill="#FFF200" fontSize="13" fontWeight="900" letterSpacing="1.5">MOTOR</text>
+      <text x="90" y="101" textAnchor="middle" fill="#ffffff" fontSize="27" fontWeight="900">100%</text>
+      <text x="90" y="119" textAnchor="middle" fill="#FFF200" fontSize="12" fontWeight="900" letterSpacing="2">GRÁTIS</text>
+      <path d="M45 43 C70 20 113 18 139 42" fill="none" stroke="#ffffff" strokeWidth="3" strokeLinecap="round" opacity="0.38" />
+    </svg>
+  </div>
+);
 
 export default NamingGenerator;

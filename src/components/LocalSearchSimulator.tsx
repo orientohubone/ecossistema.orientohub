@@ -229,18 +229,21 @@ const LocalSearchSimulator = () => {
           initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="mb-10 max-w-3xl"
+          className="mb-10 grid gap-6 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center"
         >
-          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary-300">
-            Simulador de Visibilidade Local
-          </p>
-          <h2 className="mt-3 text-3xl font-bold sm:text-4xl">
-            Sua empresa aparece quando o cliente procura perto dele?
-          </h2>
-          <p className="mt-4 leading-relaxed text-[#9ba9bc]">
-            No Google Maps, apenas os 3 primeiros perfis (Local Pack) capturam até 80% das ligações e cliques. 
-            Descubra o potencial de captura da sua marca na sua região atualizando os pilares de Relevância, Distância e Proeminência.
-          </p>
+          <div className="max-w-3xl">
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary-300">
+              Simulador de Visibilidade Local
+            </p>
+            <h2 className="mt-3 text-3xl font-bold sm:text-4xl">
+              Sua empresa aparece quando o cliente procura perto dele?
+            </h2>
+            <p className="mt-4 leading-relaxed text-[#9ba9bc]">
+              No Google Maps, apenas os 3 primeiros perfis (Local Pack) capturam até 80% das ligações e cliques. 
+              Descubra o potencial de captura da sua marca na sua região atualizando os pilares de Relevância, Distância e Proeminência.
+            </p>
+          </div>
+          <LocalSimulatorSeal />
         </motion.div>
 
         {/* Formulário */}
@@ -320,7 +323,7 @@ const LocalSearchSimulator = () => {
               type="button"
               onClick={handleSimulate}
               disabled={!canGenerate}
-              className="flex w-full items-center justify-center gap-2 rounded-xl bg-primary-500 px-6 py-3 text-sm font-bold text-[#0c121b] transition hover:bg-primary-400 disabled:cursor-not-allowed disabled:opacity-40 sm:w-auto"
+              className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#FFF200] px-6 py-3 text-sm font-bold text-black transition hover:bg-white disabled:cursor-not-allowed disabled:opacity-40 sm:w-auto"
             >
               <Search className="h-4 w-4" />
               Analisar Potencial de Captura Local
@@ -501,7 +504,7 @@ const LocalSearchSimulator = () => {
                       </p>
                       <Link
                         to={`/contato?origem=simulador-gmn&cep=${form.cep}&bairro=${location.bairro}&nicho=${form.segmento}&servico=google-meu-negocio-249`}
-                        className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary-500 px-5 py-3 text-sm font-bold text-[#0c121b] transition hover:bg-primary-400"
+                        className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#FFF200] px-5 py-3 text-sm font-bold text-black transition hover:bg-white"
                       >
                         Ativar Perfil no Google <ArrowRight className="h-4 w-4" />
                       </Link>
@@ -518,5 +521,39 @@ const LocalSearchSimulator = () => {
     </section>
   );
 };
+
+const LocalSimulatorSeal = () => (
+  <div className="mx-auto h-36 w-36 shrink-0 drop-shadow-[0_16px_24px_rgba(0,0,0,0.38)] sm:h-40 sm:w-40" aria-label="Simulador de visibilidade local 100% grátis">
+    <svg viewBox="0 0 180 180" role="img" className="h-full w-full rotate-6">
+      <defs>
+        <radialGradient id="local-seal-metal" cx="34%" cy="24%" r="78%">
+          <stop offset="0%" stopColor="#fffbd0" />
+          <stop offset="18%" stopColor="#fff76a" />
+          <stop offset="48%" stopColor="#FFF200" />
+          <stop offset="76%" stopColor="#d0b900" />
+          <stop offset="100%" stopColor="#766400" />
+        </radialGradient>
+        <linearGradient id="local-seal-edge" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor="#fffbd5" />
+          <stop offset="30%" stopColor="#9b8500" />
+          <stop offset="55%" stopColor="#fff86b" />
+          <stop offset="100%" stopColor="#665600" />
+        </linearGradient>
+        <path id="local-seal-path" d="M 90,90 m -65,0 a 65,65 0 1,1 130,0 a 65,65 0 1,1 -130,0" />
+      </defs>
+      <circle cx="90" cy="90" r="84" fill="url(#local-seal-edge)" />
+      <circle cx="90" cy="90" r="78" fill="url(#local-seal-metal)" stroke="#fff899" strokeWidth="1.5" />
+      <circle cx="90" cy="90" r="59" fill="none" stroke="#241f00" strokeWidth="1.5" opacity="0.42" />
+      <circle cx="90" cy="90" r="53" fill="#111111" stroke="#fff76a" strokeWidth="2" />
+      <text fill="#111111" fontSize="10.5" fontWeight="900" letterSpacing="1.8">
+        <textPath href="#local-seal-path" startOffset="1%">SIMULADOR LOCAL • VISIBILIDADE LOCAL • 100% GRÁTIS •</textPath>
+      </text>
+      <text x="90" y="75" textAnchor="middle" fill="#FFF200" fontSize="13" fontWeight="900" letterSpacing="1.5">LOCAL</text>
+      <text x="90" y="101" textAnchor="middle" fill="#ffffff" fontSize="27" fontWeight="900">100%</text>
+      <text x="90" y="119" textAnchor="middle" fill="#FFF200" fontSize="12" fontWeight="900" letterSpacing="2">GRÁTIS</text>
+      <path d="M45 43 C70 20 113 18 139 42" fill="none" stroke="#ffffff" strokeWidth="3" strokeLinecap="round" opacity="0.38" />
+    </svg>
+  </div>
+);
 
 export default LocalSearchSimulator;

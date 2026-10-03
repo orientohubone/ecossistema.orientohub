@@ -42,8 +42,8 @@ const LoginPage = () => {
     try {
       await login(email, password);
       navigate(from, { replace: true });
-    } catch (error) {
-      console.error('Login failed:', error);
+    } catch {
+      // A mensagem sanitizada é exibida pelo estado de autenticação.
     }
   };
 
