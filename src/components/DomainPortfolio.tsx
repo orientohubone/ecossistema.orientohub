@@ -132,6 +132,44 @@ const domainPortfolio = [
   { domain: 'orientohub.com.br',                   platform: 'Cloudflare',  category: 'Hub Principal' },
 ];
 
+const registrarReferences = [
+  {
+    name: 'Registro.br',
+    price: '.br: R$ 40/ano',
+    href: 'https://registro.br/dominio/processo-de-liberacao/resultado/',
+  },
+  {
+    name: 'Cloudflare',
+    price: 'Preço de custo por extensão',
+    href: 'https://pricing.registrar.cloudflare.com/',
+  },
+  {
+    name: 'GoDaddy',
+    price: '.com.br: a partir de R$ 64,99/ano*',
+    href: 'https://www.godaddy.com/pt-br/dominios',
+  },
+  {
+    name: 'Namecheap',
+    price: '.com: US$ 11,28 · renov. US$ 18,48*',
+    href: 'https://www.namecheap.com/domains/',
+  },
+  {
+    name: 'AWS Route 53',
+    price: 'Varia por TLD + serviço de DNS',
+    href: 'https://aws.amazon.com/route53/pricing/',
+  },
+  {
+    name: 'HostGator',
+    price: 'Consultar preço atual',
+    href: 'https://www.hostgator.com.br/registro-de-dominio',
+  },
+  {
+    name: 'Locaweb',
+    price: 'Consultar preço atual',
+    href: 'https://www.locaweb.com.br/registro-de-dominio/',
+  },
+];
+
 /* ─── Flip Card ──────────────────────────────────────────────────────────── */
 
 const DnsGroupCard = ({ group, index }: { group: DnsGroup; index: number }) => {
@@ -472,16 +510,29 @@ const DomainPortfolio = () => {
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            className="mt-8 flex flex-wrap items-center gap-3"
+            className="mt-8"
           >
             <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#9ba9bc]">
-              Plataformas que operamos:
+              Referências nas plataformas que operamos
             </p>
-            {['Registro.br', 'Cloudflare', 'GoDaddy', 'Namecheap', 'AWS Route 53', 'Hostgator', 'Locaweb'].map((p) => (
-              <span key={p} className="rounded-full border border-[#34455a] bg-[#151f2b] px-3 py-1 text-xs font-semibold text-[#d7e0ea]">
-                {p}
-              </span>
-            ))}
+            <div className="mt-3 flex flex-wrap gap-3">
+              {registrarReferences.map((registrar) => (
+                <a
+                  key={registrar.name}
+                  href={registrar.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="group inline-flex flex-col rounded-xl border border-[#34455a] bg-[#151f2b] px-4 py-2.5 transition hover:border-[#FFF200]/70 hover:bg-[#1a2634]"
+                  aria-label={`Consultar preço atual na ${registrar.name}`}
+                >
+                  <span className="text-xs font-bold text-[#d7e0ea] transition group-hover:text-white">{registrar.name}</span>
+                  <span className="mt-1 text-xs font-black text-[#FFF200]">{registrar.price}</span>
+                </a>
+              ))}
+            </div>
+            <p className="mt-4 max-w-4xl text-xs leading-relaxed text-[#7f8da0]">
+              Valores de referência consultados em 03/10/2026. *Ofertas de primeiro ano podem exigir contratação por prazo maior; renovação, impostos, câmbio e disponibilidade podem alterar o total. Confirme o valor no registrador antes da compra. Serviços da OrientoHub são orçados separadamente.
+            </p>
           </motion.div>
 
         </div>

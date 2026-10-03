@@ -31,9 +31,14 @@ const DomainServicePage = ({ service }: { service: ServiceCatalogItem }) => {
 
               <motion.aside initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="rounded-2xl border border-[#FFF200]/35 bg-gray-900/85 p-7 backdrop-blur-md sm:p-9">
                 <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#FFF200] text-black"><Globe2 className="h-6 w-6" /></span>
-                <p className="mt-8 text-xs font-black uppercase tracking-[0.2em] text-[#FFF200]">Registros a partir de</p>
-                <p className="mt-2 text-5xl font-black text-[#FFF200]">R$ 40,00</p>
-                <p className="mt-5 border-t border-white/10 pt-5 text-sm leading-relaxed text-white/50">O valor varia conforme extensão, registrador, disponibilidade e serviços de configuração ou gestão necessários.</p>
+                <p className="mt-8 text-xs font-black uppercase tracking-[0.2em] text-[#FFF200]">Registro de domínio .br a partir de</p>
+                <p className="mt-2 flex flex-wrap items-end gap-x-2 text-5xl font-black text-[#FFF200]">
+                  R$ 40,00
+                  <span className="pb-1 text-lg font-bold text-white/70">/ ano</span>
+                </p>
+                <p className="mt-5 border-t border-white/10 pt-5 text-sm leading-relaxed text-white/50">
+                  Valor anual de referência do Registro.br. O preço final pode mudar conforme extensão, plataforma de registro, disponibilidade, promoções, câmbio, renovação e serviços de configuração ou gestão.
+                </p>
               </motion.aside>
             </div>
           </div>
