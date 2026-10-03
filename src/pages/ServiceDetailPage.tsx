@@ -19,6 +19,7 @@ import BrandsServicePage from './BrandsServicePage';
 import NamingServicePage from './NamingServicePage';
 import DomainServicePage from './DomainServicePage';
 import SitesServicePage from './SitesServicePage';
+import EcommerceServicePage from './EcommerceServicePage';
 
 const icons: Record<string, ComponentType<{ className?: string }>> = {
   estrategia: Briefcase, inovacao: Rocket, marketing: BarChart3, 'midia-paga': Megaphone,
@@ -58,6 +59,7 @@ const ServiceDetailPage = () => {
   if (service.slug === 'naming') return <NamingServicePage service={service} />;
   if (service.slug === 'dominio') return <DomainServicePage service={service} />;
   if (service.slug === 'sites') return <SitesServicePage service={service} />;
+  if (service.slug === 'e-commerce') return <EcommerceServicePage service={service} />;
 
   const Icon = icons[service.slug] || Sparkles;
   const accent = accentClasses[service.accent];

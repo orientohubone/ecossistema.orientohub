@@ -42,6 +42,7 @@ type EcosystemLayer = {
   brandColor: string;
   href?: string;
   ctaLabel?: string;
+  tags: string[];
 };
 
 type QuickAction = {
@@ -79,6 +80,9 @@ const ecosystemLayers: EcosystemLayer[] = [
     icon: Target,
     color: 'from-amber-500 to-orange-600',
     brandColor: 'amber',
+    href: '/servicos',
+    ctaLabel: 'Conhecer os serviços',
+    tags: ['Estratégia', 'Inovação', 'Marketing', 'Construção'],
   },
   {
     number: '02',
@@ -90,6 +94,7 @@ const ecosystemLayers: EcosystemLayer[] = [
     brandColor: 'blue',
     href: '/plataforma',
     ctaLabel: 'Gerencie seus projetos',
+    tags: ['Ideação', 'Validação', 'Tração', 'Escala'],
   },
   {
     number: '03',
@@ -101,6 +106,7 @@ const ecosystemLayers: EcosystemLayer[] = [
     brandColor: 'green',
     href: '/ecossistema#mvps',
     ctaLabel: 'Seja um cofounder',
+    tags: ['Humansys', 'Intentia', 'Forgether', 'Custfly'],
   },
   {
     number: '04',
@@ -112,6 +118,7 @@ const ecosystemLayers: EcosystemLayer[] = [
     brandColor: 'purple',
     href: '/ecossistema#verticais',
     ctaLabel: 'Ver iniciativas',
+    tags: ['Academy', 'Expertise', 'Ventures', 'Orientados'],
   },
 ];
 
@@ -132,7 +139,6 @@ const quickActions: QuickAction[] = [
 
 const HomePage = () => {
   const [presentationOpen, setPresentationOpen] = useState(false);
-  const [expandedLayer, setExpandedLayer] = useState<string | null>(null);
   const [heroOutcomeIndex, setHeroOutcomeIndex] = useState(0);
   const modalContentRef = useRef<HTMLDivElement | null>(null);
 
@@ -253,6 +259,7 @@ const HomePage = () => {
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Link>
 
+              {/* Botão temporariamente desativado.
               <button
                 type="button"
                 onClick={() => setPresentationOpen(true)}
@@ -261,6 +268,7 @@ const HomePage = () => {
                 Veja como funciona
                 <MonitorPlay className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </button>
+              */}
             </motion.div>
 
             <div className="lg:hidden mt-8 sm:mt-12">
@@ -346,53 +354,15 @@ const HomePage = () => {
             />
           </div>
 
-          {expandedLayer ? (
-            <div className="max-w-6xl mx-auto space-y-4 sm:space-y-6">
-              <motion.div
-                className="w-full"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.35 }}
-              >
-                <EcosystemCard
-                  layer={ecosystemLayers.find(l => l.number === expandedLayer)!}
-                  expanded
-                  onToggleExpand={() => setExpandedLayer(null)}
-                />
-              </motion.div>
-
-              <motion.div
-                className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6"
-                variants={containerVariants}
-                initial="hidden"
-                animate="visible"
-              >
-                {ecosystemLayers.filter(l => l.number !== expandedLayer).map((layer) => (
-                  <EcosystemCard
-                    key={layer.number}
-                    layer={layer}
-                    onToggleExpand={() => setExpandedLayer(layer.number)}
-                  />
-                ))}
-              </motion.div>
-            </div>
-          ) : (
-            <motion.div
-              className="grid grid-cols-1 lg:grid-cols-4 auto-rows-fr gap-4 sm:gap-6 max-w-6xl mx-auto items-stretch"
-              variants={containerVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.1 }}
-            >
-              {ecosystemLayers.map((layer) => (
-                <EcosystemCard
-                  key={layer.number}
-                  layer={layer}
-                  onToggleExpand={() => setExpandedLayer((current) => (current === layer.number ? null : layer.number))}
-                />
-              ))}
-            </motion.div>
-          )}
+          <motion.div
+            className="mx-auto grid max-w-7xl auto-rows-fr grid-cols-1 items-stretch gap-4 md:grid-cols-2 xl:grid-cols-4"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.1 }}
+          >
+            {ecosystemLayers.map((layer) => <DirectEcosystemCard key={layer.number} layer={layer} />)}
+          </motion.div>
 
           <motion.div
             className="max-w-6xl mx-auto mt-6 sm:mt-8 rounded-2xl border border-[#FFF200]/25 bg-[radial-gradient(ellipse_at_top_right,_rgba(6,50,12,0.62),_transparent_62%),linear-gradient(135deg,_#021709,_#000b03)] p-5 sm:p-7 flex flex-col lg:flex-row lg:items-center gap-5 sm:gap-7 shadow-[0_20px_50px_-28px_rgba(0,0,0,0.75)]"
@@ -604,6 +574,44 @@ type EcosystemCardProps = {
   onToggleExpand?: () => void;
 };
 
+const DirectEcosystemCard = ({ layer }: { layer: EcosystemLayer }) => {
+  const Icon = layer.icon;
+
+  return (
+    <motion.article variants={itemVariants} className="h-full">
+      <Link
+        to={layer.href ?? '/ecossistema'}
+        className="group relative flex h-full min-h-[260px] flex-col overflow-hidden rounded-2xl border border-white/10 bg-[#0d131d] p-5 transition duration-300 hover:-translate-y-1 hover:border-[#FFF200]/55 hover:bg-[#111925] sm:p-6"
+      >
+        <span className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#FFF200]/80 to-transparent opacity-40 transition-opacity group-hover:opacity-100" />
+
+        <div className="mb-5 flex items-center justify-between gap-4">
+          <span className="text-xs font-black tracking-[0.2em] text-[#FFF200]/55">{layer.number}</span>
+          <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#FFF200]/35 bg-[#FFF200]/10">
+            <Icon className="h-5 w-5 text-[#FFF200] transition-transform group-hover:scale-110" />
+          </span>
+        </div>
+
+        <h3 className="text-xl font-black leading-tight text-white sm:text-2xl">{layer.title}</h3>
+        <p className="mt-2 text-sm leading-relaxed text-white/50">{layer.shortDescription ?? layer.description}</p>
+
+        <div className="mt-5 flex flex-wrap gap-1.5" aria-label={`Áreas de ${layer.title}`}>
+          {layer.tags.map((tag) => (
+            <span key={tag} className="rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1 text-[10px] font-semibold text-white/60">
+              {tag}
+            </span>
+          ))}
+        </div>
+
+        <span className="mt-auto flex items-center gap-2 border-t border-white/10 pt-5 text-xs font-black uppercase tracking-wide text-[#FFF200] transition-colors group-hover:text-white">
+          {layer.ctaLabel ?? 'Conhecer'}
+          <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+        </span>
+      </Link>
+    </motion.article>
+  );
+};
+
 const EcosystemCard = ({ layer, compact = false, expanded = false, onToggleExpand }: EcosystemCardProps) => {
   const Icon = layer.icon;
   const isNucleus = layer.number === '01';
@@ -611,37 +619,26 @@ const EcosystemCard = ({ layer, compact = false, expanded = false, onToggleExpan
   const isMVPs = layer.number === '03';
   const isVerticais = layer.number === '04';
   const canExpand = (isNucleus || isPlataforma || isMVPs || isVerticais) && Boolean(onToggleExpand);
-  // Refined mobile paddings: more compact on small screens
-  const shellPadding = expanded ? 'p-4 sm:p-8 lg:p-10' : 'p-4 sm:p-5 md:p-6';
+  const shellPadding = expanded ? 'p-5 sm:p-8 lg:p-10' : 'p-5 sm:p-6';
   const is2ColumnLayout = expanded && isNucleus;
   const cardLayout = is2ColumnLayout
     ? 'grid gap-5 lg:gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-center'
     : 'flex h-full flex-col';
 
-  // Dynamic branding based on layer.brandColor
-  const brandColor = layer.brandColor;
-  const colorMap: Record<string, string> = {
-    amber: 'text-amber-500 border-amber-500 text-amber-500/55 bg-amber-500 shadow-amber-500/20',
-    blue: 'text-blue-500 border-blue-500 text-blue-500/55 bg-blue-500 shadow-blue-500/20',
-    green: 'text-green-500 border-green-500 text-green-500/55 bg-green-500 shadow-green-500/20',
-    purple: 'text-purple-500 border-purple-500 text-purple-500/55 bg-purple-500 shadow-purple-500/20',
-  };
-
   const getStyle = (type: 'text' | 'border' | 'faded' | 'bg' | 'shadow') => {
-    const parts = colorMap[brandColor].split(' ');
-    if (type === 'text') return parts[0];
-    if (type === 'border') return parts[1];
-    if (type === 'faded') return parts[2];
-    if (type === 'bg') return parts[3];
-    return parts[4];
+    if (type === 'text') return 'text-[#FFF200]';
+    if (type === 'border') return 'border-[#FFF200]';
+    if (type === 'faded') return 'text-[#FFF200]/55';
+    if (type === 'bg') return 'bg-[#FFF200]';
+    return 'shadow-none';
   };
 
   return (
     <motion.div
-      className={`group relative overflow-hidden rounded-2xl border bg-white/90 dark:bg-gray-900/85 shadow-[0_12px_40px_rgba(0,0,0,0.06)] dark:shadow-none backdrop-blur-md transition-all duration-300 active:scale-[0.99] ${expanded
-          ? `border-${brandColor}-500/60 shadow-[0_28px_80px_rgba(0,0,0,0.16)]`
-          : `border-gray-200/80 dark:border-gray-700/50 hover:border-${brandColor}-500 dark:hover:border-${brandColor}-500`
-        } ${shellPadding} h-full ${expanded ? 'min-h-[260px] sm:min-h-[320px]' : 'min-h-[250px] sm:min-h-[290px]'} ${canExpand || expanded ? 'cursor-pointer' : 'cursor-default'}`}
+      className={`group relative overflow-hidden rounded-2xl border bg-[#0d131d] transition-all duration-300 active:scale-[0.995] ${expanded
+          ? 'border-[#FFF200]/60 shadow-[0_24px_70px_rgba(0,0,0,0.24)]'
+          : 'border-white/10 hover:-translate-y-1 hover:border-[#FFF200]/55 hover:bg-[#111925]'
+        } ${shellPadding} h-full ${expanded ? 'min-h-[260px] sm:min-h-[320px]' : 'min-h-[260px] sm:min-h-[280px]'} ${canExpand || expanded ? 'cursor-pointer' : 'cursor-default'}`}
       variants={itemVariants}
       role={canExpand ? 'button' : undefined}
       tabIndex={canExpand ? 0 : undefined}
@@ -658,38 +655,37 @@ const EcosystemCard = ({ layer, compact = false, expanded = false, onToggleExpan
           : undefined
       }
     >
-      {/* Soft hover wash */}
-      <div className={`absolute inset-0 opacity-0 group-hover:opacity-10 bg-gradient-to-br ${layer.color} transition-opacity duration-300`} />
+      <span className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#FFF200]/80 to-transparent opacity-40 transition-opacity group-hover:opacity-100" />
 
       <div className={`relative z-10 h-full ${cardLayout}`}>
         <div className={expanded ? 'flex flex-col justify-between gap-4 sm:gap-5' : 'flex h-full flex-col'}>
-          <div className="flex items-center justify-between gap-4 mb-2 sm:mb-3">
-            <span className={`${expanded ? 'text-3xl sm:text-5xl' : compact ? 'text-2xl' : 'text-3xl sm:text-4xl'} font-bold ${getStyle('faded')}`}>
+          <div className="mb-5 flex items-center justify-between gap-4 sm:mb-6">
+            <span className={`${expanded ? 'text-3xl sm:text-5xl' : 'text-xs'} font-black tracking-[0.2em] ${getStyle('faded')}`}>
               {layer.number}
             </span>
-            {!expanded && <Icon className={`${compact ? 'w-5 h-5' : 'w-6 h-6 sm:w-8 sm:h-8'} ${getStyle('text')} group-hover:scale-110 transition-transform`} />}
+            {!expanded && <span className="flex h-11 w-11 items-center justify-center rounded-xl border border-[#FFF200]/35 bg-[#FFF200]/10"><Icon className="h-5 w-5 text-[#FFF200] transition-transform group-hover:scale-110" /></span>}
           </div>
 
           <div className={`${expanded && isNucleus ? 'max-w-2xl' : expanded ? 'w-full' : ''} ${isNucleus && !expanded ? 'max-w-xl' : ''}`}>
             {isNucleus && (
-              <span className={`inline-flex items-center gap-2 mb-2 sm:mb-3 text-[10px] sm:text-xs font-bold uppercase tracking-[0.18em] ${getStyle('text')}`}>
-                <span className={`h-1.5 w-1.5 rounded-full ${getStyle('bg')}`} />
+              <span className={`mb-3 inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.18em] ${getStyle('text')}`}>
+                <span className="h-px w-5 bg-[#FFF200]" />
                 Origem da OrientoHub
               </span>
             )}
-            <h3 className={`${expanded ? 'text-xl sm:text-4xl' : compact ? 'text-lg sm:text-xl' : 'text-xl sm:text-2xl'} font-bold mb-1.5 sm:mb-3 text-gray-900 dark:text-white leading-tight`}>
+            <h3 className={`${expanded ? 'text-xl sm:text-4xl' : 'text-xl sm:text-2xl'} mb-2.5 font-black leading-tight text-white`}>
               {layer.title}
             </h3>
-            <p className={`${expanded ? 'text-xs sm:text-lg max-w-2xl' : compact ? 'text-xs sm:text-[0.95rem]' : 'text-xs sm:text-base text-gray-600 dark:text-gray-400 line-clamp-2'} mb-3 sm:mb-5 leading-relaxed`}>
+            <p className={`${expanded ? 'max-w-2xl text-sm sm:text-lg' : 'text-sm text-white/50'} mb-4 leading-relaxed`}>
               {!expanded && layer.shortDescription ? layer.shortDescription : layer.description}
             </p>
 
             {isNucleus && !expanded && (
-              <div className="flex flex-wrap gap-1.5 mb-3 sm:mb-5" aria-label="Serviços do Núcleo">
+              <div className="mb-5 flex flex-wrap gap-2" aria-label="Serviços do Núcleo">
                 {['Estratégia', 'Inovação & IA', 'Construção & Growth'].map((service) => (
                   <span
                     key={service}
-                    className="rounded-full border border-amber-500/25 bg-amber-500/10 px-2.5 py-1 text-[10px] sm:text-xs font-semibold text-amber-700 dark:text-amber-300"
+                    className="rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1 text-[10px] font-semibold text-white/55 sm:text-xs"
                   >
                     {service}
                   </span>
@@ -851,13 +847,13 @@ const EcosystemCard = ({ layer, compact = false, expanded = false, onToggleExpan
           <Link
             to="/servicos"
             aria-label="Contrate nossos serviços do Núcleo"
-            className={`inline-flex items-center justify-center gap-2 px-5 py-3 mt-auto text-sm font-bold text-black ${getStyle('bg')} hover:opacity-90 rounded-xl shadow-lg ${getStyle('shadow')} transition-all duration-300 group-hover:-translate-y-1 w-full sm:w-fit`}
+            className="mt-auto inline-flex items-center gap-2 border-t border-white/10 pt-5 text-sm font-black uppercase tracking-wide text-[#FFF200] transition-colors hover:text-white"
             onClick={(event) => event.stopPropagation()}
           >
             Contrate nossos serviços <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </Link>
         ) : canExpand && !expanded ? (
-          <div className={`inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-3 mt-auto text-sm font-bold text-black ${getStyle('bg')} hover:opacity-90 rounded-xl shadow-lg ${getStyle('shadow')} transition-all duration-300 group-hover:-translate-y-1 w-full sm:w-fit`}>
+          <div className="mt-auto inline-flex items-center gap-2 border-t border-white/10 pt-5 text-sm font-black uppercase tracking-wide text-[#FFF200] transition-colors group-hover:text-white">
             {layer.ctaLabel ?? 'Ver detalhes'} <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </div>
         ) : layer.ctaLabel ? (
