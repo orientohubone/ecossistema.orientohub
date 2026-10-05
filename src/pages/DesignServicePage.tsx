@@ -10,6 +10,7 @@ const formatPrice = (value: number) =>
 
 const portfolioProjects: Record<string, Array<{ title: string; projectId: string }>> = {
   'Identidade visual': [
+    { title: 'Penttia Cyber Security', projectId: '256669131' },
     { title: 'FK Marcenaria', projectId: '225190655' },
     { title: 'Complep', projectId: '168125181' },
     { title: 'OrientoHub', projectId: '163511823' },
@@ -18,6 +19,7 @@ const portfolioProjects: Record<string, Array<{ title: string; projectId: string
     { title: 'Igreja Templo Nacional de Missões', projectId: '167644407' },
   ],
   'Design system': [
+    { title: 'Penttia Cyber Security', projectId: '256678215' },
     { title: 'Intentia', projectId: '256562827' },
     { title: 'SaaS Humansys', projectId: '256566141' },
     { title: 'TIA — IA Conversacional', projectId: '256574877' },

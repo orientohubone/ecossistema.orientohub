@@ -346,6 +346,35 @@ const Footer = () => {
               </div>
 
               <div className="flex items-center gap-6">
+                <div className="relative group flex items-center">
+                  <a 
+                    href="https://penttiacybersecurity.vercel.app" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                  >
+                    <img 
+                      src="/selo-penttia.png" 
+                      alt="Selo de Auditoria de Cybersegurança Penttia" 
+                      className="h-14 w-auto opacity-80 group-hover:opacity-100 transition-opacity"
+                    />
+                  </a>
+                  
+                  <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-max opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200 z-50">
+                    <div className="bg-gray-800/95 backdrop-blur-sm text-gray-200 font-medium text-xs rounded-lg py-2 px-3 shadow-xl border border-gray-700 flex items-center gap-3">
+                      <span>Auditoria de Cybersegurança</span>
+                      <a 
+                        href="https://penttiacybersecurity.vercel.app" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="flex items-center justify-center bg-[#FFF200] text-black rounded-full w-5 h-5 hover:scale-110 transition-transform"
+                      >
+                        <ArrowRight className="w-3 h-3 -rotate-45" />
+                      </a>
+                    </div>
+                    <div className="absolute top-full left-1/2 -translate-x-1/2 border-[6px] border-transparent border-t-gray-700" />
+                    <div className="absolute top-full left-1/2 -translate-x-1/2 border-[5px] border-transparent border-t-gray-800/95" />
+                  </div>
+                </div>
 
                 <div className="flex items-center gap-2 text-gray-500 text-xs">
                   <Rocket className="w-4 h-4 text-[#FFF200]" />

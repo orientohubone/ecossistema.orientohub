@@ -1,5 +1,12 @@
 export const sitePortfolio = [
   {
+    name: 'Penttia',
+    domain: 'penttiacybersecurity.vercel.app',
+    url: 'https://penttiacybersecurity.vercel.app',
+    screenshot: '/sites/Site-penttia.jpg',
+    description: 'Empresa de auditoria e segurança da informação focada em proteger a infraestrutura e os dados do seu negócio.',
+  },
+  {
     name: 'Norcfit',
     domain: 'norcfit.vercel.app',
     url: 'https://norcfit.vercel.app',
