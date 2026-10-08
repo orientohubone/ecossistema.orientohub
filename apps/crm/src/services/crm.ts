@@ -29,9 +29,14 @@ export const crm = {
     return ((data || []) as DealRow[]).map((deal) => ({ ...deal, company: deal.company?.name || null })) as Deal[];
   },
   async moveDeal(id: string, stage: DealStage) {
+    const { data: current } = await supabase.from('crm_deals').select('stage').eq('id', id).maybeSingle();
     const status = stage === 'ganho' ? 'won' : stage === 'perdido' ? 'lost' : 'open';
     const { data, error } = await supabase.from('crm_deals').update({ stage, status, closed_at: status === 'open' ? null : new Date().toISOString(), updated_at: new Date().toISOString() }).eq('id', id).select('*').single();
     if (error) throw error;
+    if (current?.stage && current.stage !== stage) {
+      const labels: Record<string, string> = { novo: 'Sem contato', qualificando: 'Contato feito', proposta: 'Proposta', negociação: 'Negociação', ganho: 'Ganho', perdido: 'Perdido' };
+      await supabase.from('crm_notes').insert({ deal_id: id, client_id: null, body: `Etapa alterada de ${labels[current.stage] || current.stage} para ${labels[stage] || stage}` });
+    }
     return data as Deal;
   },
   async getDeal(id: string) {
@@ -148,6 +153,7 @@ export const crm = {
       const { error: linkError } = await supabase.from('crm_deal_contacts').insert({ deal_id: data.id, contact_id: input.primary_contact_id });
       if (linkError) throw linkError;
     }
+    await supabase.from('crm_notes').insert({ deal_id: data.id, client_id: null, body: 'Negociação criada' });
     return data as Deal;
   },
 };
