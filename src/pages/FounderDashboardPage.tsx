@@ -1,21 +1,16 @@
 import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Crown, TrendingUp, Users, DollarSign, Activity, FileText, GitBranch, Download, Inbox, Calculator, MessageSquareText } from 'lucide-react';
+import { Crown, TrendingUp, Users, DollarSign, Activity, FileText, GitBranch, Download } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { DashboardHeader } from '../components/founder/DashboardHeader';
 import { KPICards } from '../components/founder/metrics/KPICards';
 import { useFounderData } from '../hooks/useFounderData';
 import { Company } from '../types/founder';
 import DashboardPageSkeleton from '../components/ui/DashboardPageSkeleton';
-import { CrmWorkspace } from '../components/founder/CrmWorkspace';
 import { FeatureFlagsPanel } from '../components/founder/FeatureFlagsPanel';
-import { PricingCalculator } from '../components/founder/PricingCalculator';
-import { CommercialScript } from '../components/founder/CommercialScript';
-import type { CrmClient } from '../services/crmService';
 
 const FounderDashboardPage = () => {
     const [activeTab, setActiveTab] = useState('overview');
-    const [proposalClient, setProposalClient] = useState<CrmClient | null>(null);
     const { analytics, companies, revenueChart, isLoading, error, refetch } = useFounderData();
 
     const tabs = [
@@ -23,11 +18,8 @@ const FounderDashboardPage = () => {
         { id: 'revenue', label: 'Receita', icon: DollarSign },
         { id: 'engagement', label: 'Engajamento', icon: TrendingUp },
         { id: 'reports', label: 'Relatórios', icon: FileText },
-        { id: 'leads', label: 'CRM', icon: Inbox },
-        { id: 'commercial-script', label: 'Script Comercial', icon: MessageSquareText },
         { id: 'versions', label: 'Versões', icon: GitBranch },
         { id: 'flags', label: 'Feature Flags', icon: Activity },
-        { id: 'pricing', label: 'Precificação', icon: Calculator },
     ];
 
     const handleExport = (data: Company[], filename: string) => {
@@ -149,10 +141,6 @@ const FounderDashboardPage = () => {
                             )}
 
                             {activeTab === 'flags' && <FeatureFlagsPanel />}
-
-                            {activeTab === 'pricing' && <PricingCalculator client={proposalClient} />}
-
-                            {activeTab === 'commercial-script' && <CommercialScript />}
 
                             {activeTab === 'revenue' && (
                                 <div className="space-y-6">
@@ -337,10 +325,6 @@ const FounderDashboardPage = () => {
                                         </div>
                                     </div>
                                 </div>
-                            )}
-
-                            {activeTab === 'leads' && (
-                                <CrmWorkspace onCreateProposal={(client) => { setProposalClient(client); setActiveTab('pricing'); }} />
                             )}
 
                             {activeTab === 'versions' && (
