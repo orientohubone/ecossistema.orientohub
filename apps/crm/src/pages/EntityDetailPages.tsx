@@ -15,7 +15,7 @@ export const CompanyDetailPage = () => {
   const load = () => crm.getCompany(companyId).then(setData).catch(() => setError('Não foi possível carregar esta empresa.'));
   useEffect(() => { load(); }, [companyId]);
   if (error) return <DetailError message={error} back="/empresas" />;
-  if (!data) return <div className="detail-loading">Carregando empresa…</div>;
+  if (!data) return <EntityDetailSkeleton entity="empresa" />;
   const { company, contacts, deals } = data;
   const open = deals.filter((deal) => !['ganho', 'perdido'].includes(deal.stage));
   return <div className="entity-detail">
@@ -41,7 +41,7 @@ export const ContactDetailPage = () => {
   const load = () => crm.getContact(contactId).then((item) => setContact(item as ContactDetail)).catch(() => setError('Não foi possível carregar este contato.'));
   useEffect(() => { load(); }, [contactId]);
   if (error) return <DetailError message={error} back="/contatos" />;
-  if (!contact) return <div className="detail-loading">Carregando contato…</div>;
+  if (!contact) return <EntityDetailSkeleton entity="contato" />;
   const deals = (contact.deal_links || []).flatMap((link) => link.deal ? [link.deal] : []);
   return <div className="entity-detail">
     <DetailHeader back="/contatos" eyebrow="Contato" title={contact.name} onEdit={() => setEditing(true)} />
@@ -60,3 +60,11 @@ const Related = ({ title, children }: { title: string; children: React.ReactNode
 const Empty = ({ text }: { text: string }) => <div className="detail-empty">{text}</div>;
 const DetailError = ({ message, back }: { message: string; back: string }) => <section className="detail-error"><p>{message}</p><Link to={back}>Voltar</Link></section>;
 const consentLabel = (value: Contact['communication_consent']) => ({ authorized: 'Autorizado', revoked: 'Revogado', not_informed: 'Não informado' }[value]);
+const EntityDetailSkeleton = ({ entity }: { entity: 'empresa' | 'contato' }) => <div className="entity-detail entity-detail-loading" role="status" aria-label={`Carregando ${entity}`}>
+  <header className="entity-heading"><div><span className="skeleton-line back-skeleton" /><span className="skeleton-line eyebrow-skeleton" /><span className="skeleton-line title-skeleton" /></div><span className="skeleton-line action-skeleton" /></header>
+  <div className="entity-grid">
+    <aside className="entity-profile skeleton-profile"><div className="profile-icon-skeleton"><span className="loading-spinner" /></div>{[0, 1, 2, 3, 4].map((item) => <div className="profile-field-skeleton" key={item}><span className="skeleton-line skeleton-label" /><span className="skeleton-line skeleton-value" /></div>)}</aside>
+    <main className="entity-content"><div className="entity-metrics skeleton-metrics">{[0, 1, 2].map((item) => <div key={item}><span className="skeleton-line skeleton-label" /><span className="skeleton-line metric-value-skeleton" /></div>)}</div><section className="detail-panel skeleton-related"><span className="skeleton-line related-title-skeleton" />{[0, 1, 2].map((item) => <div key={item}><span className="skeleton-line related-icon-skeleton" /><div><span className="skeleton-line related-name-skeleton" /><span className="skeleton-line related-meta-skeleton" /></div></div>)}</section></main>
+  </div>
+  <span className="sr-loading-text">Carregando dados do {entity}…</span>
+</div>;

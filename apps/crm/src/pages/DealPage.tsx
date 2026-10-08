@@ -31,6 +31,8 @@ export const DealPage = () => {
   const [stageFeedback, setStageFeedback] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
   const [celebrating, setCelebrating] = useState(false);
   const [outcomeDismissed, setOutcomeDismissed] = useState(true);
+  const [draggedTaskId, setDraggedTaskId] = useState<string | null>(null);
+  const [dragOverTaskId, setDragOverTaskId] = useState<string | null>(null);
 
   const load = async () => {
     try {
@@ -63,15 +65,26 @@ export const DealPage = () => {
     } finally { setStageSaving(null); }
   };
   const toggleTask = async (task: Task) => { await crm.toggleTask(task.id, !task.completed); setTasks((current) => current.map((item) => item.id === task.id ? { ...item, completed: !item.completed } : item)); };
-  const moveTask = async (index: number, direction: -1 | 1) => {
-    const target = index + direction;
-    if (target < 0 || target >= tasks.length) return;
-    const previous = tasks;
-    const reordered = [...tasks];
-    [reordered[index], reordered[target]] = [reordered[target], reordered[index]];
+  const persistTaskOrder = async (reordered: Task[], previous: Task[]) => {
     setTasks(reordered.map((task, position) => ({ ...task, sort_order: position })));
     try { await crm.reorderTasks(reordered.map((task) => task.id)); }
     catch (caught) { console.error('Falha ao reordenar tarefas', caught); setTasks(previous); setStageFeedback({ type: 'error', message: 'Não foi possível salvar a nova ordem das tarefas.' }); }
+  };
+  const moveTask = async (index: number, direction: -1 | 1) => {
+    const target = index + direction; if (target < 0 || target >= tasks.length) return;
+    const previous = tasks;
+    const reordered = [...tasks];
+    [reordered[index], reordered[target]] = [reordered[target], reordered[index]];
+    await persistTaskOrder(reordered, previous);
+  };
+  const dropTask = async (targetId: string) => {
+    if (!draggedTaskId || draggedTaskId === targetId) { setDraggedTaskId(null); setDragOverTaskId(null); return; }
+    const from = tasks.findIndex((task) => task.id === draggedTaskId);
+    const to = tasks.findIndex((task) => task.id === targetId);
+    if (from < 0 || to < 0) return;
+    const previous = tasks; const reordered = [...tasks]; const [moved] = reordered.splice(from, 1);
+    reordered.splice(to, 0, moved); setDraggedTaskId(null); setDragOverTaskId(null);
+    await persistTaskOrder(reordered, previous);
   };
   const editPeriod = (task: Task) => setEditingPeriod({ id: task.id, startsAt: toInputDate(task.starts_at), endsAt: toInputDate(task.ends_at || task.due_at) });
   const savePeriod = async () => {
@@ -114,7 +127,7 @@ export const DealPage = () => {
         {Boolean(deal.services?.length) && <section className="detail-panel"><div className="panel-title"><div><h2>Serviços de interesse</h2><p>Informações preservadas do cadastro anterior.</p></div></div><div className="service-tags">{deal.services?.map((service) => <span key={service}>{service}</span>)}</div></section>}
         <section className={`detail-panel tasks-panel ${tasksCollapsed ? 'collapsed' : ''}`}>
           <div className="panel-title"><div><h2>Próximas tarefas</h2><p>{tasks.filter((task) => !task.completed).length} pendentes · {tasks.filter((task) => task.completed).length} concluídas</p></div><div className="panel-actions"><button className="secondary compact" onClick={() => setTaskDrawerOpen(true)}><Plus size={15} />Criar tarefa</button><button className="collapse-button" onClick={() => setTasksCollapsed((current) => !current)} aria-expanded={!tasksCollapsed}><span>{tasksCollapsed ? 'Expandir' : 'Recolher'}</span><ChevronDown className={tasksCollapsed ? '' : 'rotated'} size={17} /></button></div></div>
-          {!tasksCollapsed && <div className="task-list">{tasks.map((task, index) => <article key={task.id} className={task.completed ? 'completed' : ''}><div className="task-order"><GripVertical size={14} /><b>{index + 1}</b></div><button className="task-check" onClick={() => toggleTask(task)} aria-label={task.completed ? 'Reabrir tarefa' : 'Concluir tarefa'}>{task.completed ? <CheckCircle2 className="done" /> : <Circle />}</button><div className="task-content"><strong>{task.title}</strong>{task.description && <p>{task.description}</p>}{editingPeriod?.id === task.id ? <div className="period-editor"><label>Início<input type="datetime-local" value={editingPeriod.startsAt} onChange={(event) => setEditingPeriod({ ...editingPeriod, startsAt: event.target.value })} /></label><label>Fim<input type="datetime-local" value={editingPeriod.endsAt} onChange={(event) => setEditingPeriod({ ...editingPeriod, endsAt: event.target.value })} /></label><div><button className="secondary" onClick={() => setEditingPeriod(null)}>Cancelar</button><button className="primary" onClick={savePeriod}>Salvar período</button></div></div> : <button className="task-period-line" onClick={() => editPeriod(task)}><CalendarDays size={14} /><span><b>Início:</b> {formatTaskDate(task.starts_at)}</span><i>→</i><span><b>Fim:</b> {formatTaskDate(task.ends_at || task.due_at)}</span></button>}</div><div className="task-reorder"><button disabled={index === 0} onClick={() => moveTask(index, -1)} aria-label={`Mover ${task.title} para cima`}><ArrowUp size={14} /></button><button disabled={index === tasks.length - 1} onClick={() => moveTask(index, 1)} aria-label={`Mover ${task.title} para baixo`}><ArrowDown size={14} /></button></div></article>)}{!tasks.length && <div className="detail-empty">Nenhuma tarefa pendente para esta negociação.</div>}</div>}
+          {!tasksCollapsed && <div className="task-list">{tasks.map((task, index) => <article draggable key={task.id} onDragStart={(event) => { setDraggedTaskId(task.id); event.dataTransfer.effectAllowed = 'move'; event.dataTransfer.setData('text/plain', task.id); }} onDragOver={(event) => { event.preventDefault(); event.dataTransfer.dropEffect = 'move'; setDragOverTaskId(task.id); }} onDragLeave={() => setDragOverTaskId((current) => current === task.id ? null : current)} onDrop={(event) => { event.preventDefault(); dropTask(task.id); }} onDragEnd={() => { setDraggedTaskId(null); setDragOverTaskId(null); }} className={`${task.completed ? 'completed' : ''} ${draggedTaskId === task.id ? 'dragging' : ''} ${dragOverTaskId === task.id && draggedTaskId !== task.id ? 'drag-over' : ''}`}><div className="task-order" title="Arraste para mudar a posição"><GripVertical size={14} /><b>{index + 1}</b></div><button className="task-check" onClick={() => toggleTask(task)} aria-label={task.completed ? 'Reabrir tarefa' : 'Concluir tarefa'}>{task.completed ? <CheckCircle2 className="done" /> : <Circle />}</button><div className="task-content"><strong>{task.title}</strong>{task.description && <p>{task.description}</p>}{editingPeriod?.id === task.id ? <div className="period-editor"><label>Início<input type="datetime-local" value={editingPeriod.startsAt} onChange={(event) => setEditingPeriod({ ...editingPeriod, startsAt: event.target.value })} /></label><label>Fim<input type="datetime-local" value={editingPeriod.endsAt} onChange={(event) => setEditingPeriod({ ...editingPeriod, endsAt: event.target.value })} /></label><div><button className="secondary" onClick={() => setEditingPeriod(null)}>Cancelar</button><button className="primary" onClick={savePeriod}>Salvar período</button></div></div> : <button className="task-period-line" onClick={() => editPeriod(task)}><CalendarDays size={14} /><span><b>Início:</b> {formatTaskDate(task.starts_at)}</span><i>→</i><span><b>Fim:</b> {formatTaskDate(task.ends_at || task.due_at)}</span></button>}</div><div className="task-reorder"><button disabled={index === 0} onClick={() => moveTask(index, -1)} aria-label={`Mover ${task.title} para cima`}><ArrowUp size={14} /></button><button disabled={index === tasks.length - 1} onClick={() => moveTask(index, 1)} aria-label={`Mover ${task.title} para baixo`}><ArrowDown size={14} /></button></div></article>)}{!tasks.length && <div className="detail-empty">Nenhuma tarefa pendente para esta negociação.</div>}</div>}
         </section>
         <section className="detail-panel history-panel"><div className="panel-title"><div><h2>Histórico</h2><p>Atividades e anotações registradas.</p></div><span className="activity-count">{activities.length} {activities.length === 1 ? 'registro' : 'registros'}</span></div><div className="note-composer"><textarea value={noteBody} onChange={(event) => setNoteBody(event.target.value)} placeholder="Registre uma anotação sobre esta negociação" /><button className="primary" disabled={!noteBody.trim() || savingNote} onClick={saveNote}><Send size={15} />{savingNote ? 'Salvando…' : 'Adicionar anotação'}</button></div><div className="activity-timeline">{activities.map((activity) => <article key={activity.id} className={activity.kind}><div className="activity-marker">{activity.kind === 'stage' ? <GitBranch /> : activity.kind === 'created' ? <Flag /> : <MessageSquareText />}</div><div className="activity-content"><header><span>{activity.kind === 'stage' ? 'Mudança de etapa' : activity.kind === 'created' ? 'Criação' : 'Anotação'}</span><time>{formatActivityDate(activity.created_at)}</time></header><p>{activity.kind === 'note' ? activity.body : <><strong>Fernando Ramalho</strong> {activity.kind === 'created' ? 'criou esta negociação' : activity.body.toLowerCase()}</>}</p></div></article>)}</div></section>
         {deal.demand && <section className="detail-panel demand-panel"><div className="demand-accent" aria-hidden="true"><Flag size={17} /></div><div><div className="panel-title"><div><p className="eyebrow">Contexto de entrada</p><h2>Demanda inicial</h2></div></div><p className="demand-text">{deal.demand}</p></div></section>}
