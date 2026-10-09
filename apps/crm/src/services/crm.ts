@@ -50,7 +50,7 @@ export const crm = {
     return data || [];
   },
   async getDealTasks(dealId: string) {
-    const { data, error } = await supabase.from('crm_tasks').select('id, title, description, completed, starts_at, ends_at, due_at, sort_order, created_at').eq('deal_id', dealId).order('sort_order').order('created_at');
+    const { data, error } = await supabase.from('crm_tasks').select('id, title, description, completed, task_status, starts_at, ends_at, due_at, sort_order, created_at').eq('deal_id', dealId).order('sort_order').order('created_at');
     if (error) throw error;
     return data || [];
   },
@@ -60,7 +60,12 @@ export const crm = {
     if (failed?.error) throw failed.error;
   },
   async toggleTask(id: string, completed: boolean) {
-    const { error } = await supabase.from('crm_tasks').update({ completed, completed_at: completed ? new Date().toISOString() : null }).eq('id', id);
+    const { error } = await supabase.from('crm_tasks').update({ completed, task_status: completed ? 'completed' : 'pending', completed_at: completed ? new Date().toISOString() : null }).eq('id', id);
+    if (error) throw error;
+  },
+  async updateTaskStatus(id: string, taskStatus: 'pending' | 'in_progress' | 'waiting_client' | 'completed') {
+    const completed = taskStatus === 'completed';
+    const { error } = await supabase.from('crm_tasks').update({ task_status: taskStatus, completed, completed_at: completed ? new Date().toISOString() : null }).eq('id', id);
     if (error) throw error;
   },
   async updateTaskPeriod(id: string, startsAt: string | null, endsAt: string | null) {
@@ -70,12 +75,12 @@ export const crm = {
   async createTask(input: { deal_id: string; title: string; description?: string | null; starts_at?: string | null; ends_at?: string | null; task_type?: string }) {
     const { data: { user } } = await supabase.auth.getUser();
     const { data: lastTask } = await supabase.from('crm_tasks').select('sort_order').eq('deal_id', input.deal_id).order('sort_order', { ascending: false }).limit(1).maybeSingle();
-    const { data, error } = await supabase.from('crm_tasks').insert({ ...input, client_id: null, assigned_to: user?.id || null, due_at: input.ends_at || null, sort_order: Number(lastTask?.sort_order ?? -1) + 1 }).select().single();
+    const { data, error } = await supabase.from('crm_tasks').insert({ ...input, client_id: null, assigned_to: user?.id || null, due_at: input.ends_at || null, task_status: 'pending', sort_order: Number(lastTask?.sort_order ?? -1) + 1 }).select().single();
     if (error) throw error;
     return data;
   },
   async listTasks() {
-    const { data, error } = await supabase.from('crm_tasks').select('id, deal_id, title, description, completed, starts_at, ends_at, due_at, task_type, created_at, deal:crm_deals!crm_tasks_deal_id_fkey(name, company:crm_companies!crm_deals_company_id_fkey(name))').order('completed').order('starts_at');
+    const { data, error } = await supabase.from('crm_tasks').select('id, deal_id, title, description, completed, task_status, starts_at, ends_at, due_at, task_type, created_at, deal:crm_deals!crm_tasks_deal_id_fkey(name, company:crm_companies!crm_deals_company_id_fkey(name))').order('completed').order('starts_at');
     if (error) throw error;
     return data || [];
   },

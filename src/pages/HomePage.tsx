@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, Sparkles, Layers, Users, Target, Lightbulb, ExternalLink, Component, MonitorPlay, Maximize2, X, TrendingUp, Rocket, Brain, GraduationCap, Mic, Briefcase, BookOpen } from 'lucide-react';
 import SectionDivider from '../components/SectionDivider';
 import IntegrationsSection from '../components/components';
+import ClientsShowcase from '../components/ClientsShowcase';
 import { Badge } from '../components/ui/Badge';
 import type { ComponentType } from 'react';
 
@@ -393,6 +394,10 @@ const HomePage = () => {
           </motion.div>
         </div>
       </section>
+
+      <SectionDivider />
+
+      <ClientsShowcase />
 
       <SectionDivider />
 
