@@ -1,0 +1,23 @@
+# Orientohub
+
+> Ecossistema brasileiro de estratégia, inovação, tecnologia e execução para empreendedores e empresas.
+
+## Conteúdo principal
+
+- [Início](https://orientohub.com.br/): visão geral da Orientohub.
+- [Soluções](https://orientohub.com.br/servicos): catálogo de serviços.
+- [Ecossistema](https://orientohub.com.br/ecossistema): núcleo, plataforma, MVPs e verticais.
+- [Sobre](https://orientohub.com.br/sobre): história e forma de atuação.
+- [Blog](https://orientohub.com.br/blog): artigos e guias.
+- [Contato](https://orientohub.com.br/contato): canal para novos projetos.
+
+## Soluções
+
+- Estratégia e inovação
+- Marketing e mídia paga
+- Design e construção de marcas
+- Sistemas inteligentes e automações
+- Sites e comércio eletrônico
+- Naming, domínios e presença local
+
+Conteúdo público em português do Brasil. Áreas de dashboard, CRM, checkout e autenticação não fazem parte do conteúdo indexável.

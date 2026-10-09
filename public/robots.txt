@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /dashboard/
+Disallow: /checkout/
+Disallow: /entrar
+Disallow: /cadastro
+
+Sitemap: https://orientohub.com.br/sitemap.xml
