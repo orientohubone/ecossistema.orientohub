@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && node scripts/prerender-public.mjs",
+    "build": "vite build && npm --prefix apps/crm run build && node scripts/prerender-public.mjs",
     "lint": "eslint .",
     "preview": "vite preview"
   },
