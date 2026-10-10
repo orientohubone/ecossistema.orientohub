@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { Briefcase, Check, Copy, ExternalLink, Maximize2, Presentation, Search } from 'lucide-react';
 
 type MaterialCategory = 'apresentacoes' | 'servicos';
-type ServiceType = 'estrategias' | 'inovacao' | 'ecommerce';
+type ServiceType = 'estrategias' | 'inovacao' | 'sites' | 'ecommerce';
 
 type CommercialMaterial = {
   id: string;
@@ -99,6 +99,42 @@ const materials: CommercialMaterial[] = [
     embedUrl: 'https://www.canva.com/design/DAHXnQeWW9I/nl-vpT902me7Btmmj3_xNA/view?embed',
   },
   {
+    id: 'servico-sites-presenca-que-converte',
+    title: 'Presença que converte',
+    description: 'Material comercial para apresentar o serviço de criação de sites orientados à presença, conversão e resultados.',
+    category: 'servicos',
+    categoryLabel: 'Serviços',
+    service: 'sites',
+    serviceLabel: 'Sites',
+    platform: 'Canva',
+    url: 'https://www.canva.com/design/DAHXpW4Whgg/36U-Z3r5-JfFX-1291kvzw/view',
+    embedUrl: 'https://www.canva.com/design/DAHXpW4Whgg/36U-Z3r5-JfFX-1291kvzw/view?embed',
+  },
+  {
+    id: 'proposta-comercial-sites',
+    title: 'Proposta comercial de Sites',
+    description: 'Proposta comercial para apresentar o escopo, as entregas e as condições do serviço de criação de sites.',
+    category: 'servicos',
+    categoryLabel: 'Serviços',
+    service: 'sites',
+    serviceLabel: 'Sites',
+    platform: 'Canva',
+    url: 'https://www.canva.com/design/DAHXpRTTGi8/ZOz9zUr_SPZebzOM9_6jLA/view',
+    embedUrl: 'https://www.canva.com/design/DAHXpRTTGi8/ZOz9zUr_SPZebzOM9_6jLA/view?embed',
+  },
+  {
+    id: 'servicos-adicionais-sites',
+    title: 'Serviços adicionais para o seu site',
+    description: 'Material para apresentar serviços complementares que podem ampliar, manter e evoluir a presença digital do cliente.',
+    category: 'servicos',
+    categoryLabel: 'Serviços',
+    service: 'sites',
+    serviceLabel: 'Sites',
+    platform: 'Canva',
+    url: 'https://www.canva.com/design/DAHXpQW6EL8/T_pCB5kQkuZ48nIgs9TfJg/view',
+    embedUrl: 'https://www.canva.com/design/DAHXpQW6EL8/T_pCB5kQkuZ48nIgs9TfJg/view?embed',
+  },
+  {
     id: 'servico-ecommerce',
     title: 'E-commerce',
     description: 'Material comercial para apresentar o serviço de e-commerce e suas entregas.',
@@ -146,6 +182,7 @@ const services = [
   { id: 'todos', label: 'Todos os serviços' },
   { id: 'estrategias', label: 'Estratégias' },
   { id: 'inovacao', label: 'Inovação' },
+  { id: 'sites', label: 'Sites' },
   { id: 'ecommerce', label: 'E-commerce' },
 ] as const;
 
