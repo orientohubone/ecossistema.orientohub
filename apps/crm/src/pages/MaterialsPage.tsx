@@ -74,6 +74,30 @@ const materials: CommercialMaterial[] = [
     url: 'https://www.canva.com/design/DAHXnCDZi1E/PZc5TLRj-s41Pm9xZKblmw/view',
     embedUrl: 'https://www.canva.com/design/DAHXnCDZi1E/PZc5TLRj-s41Pm9xZKblmw/view?embed',
   },
+  {
+    id: 'proposta-comercial-inovacao',
+    title: 'Proposta comercial de inovação',
+    description: 'Proposta comercial para apresentar o escopo, as entregas e as condições do serviço de inovação.',
+    category: 'servicos',
+    categoryLabel: 'Serviços',
+    service: 'inovacao',
+    serviceLabel: 'Inovação',
+    platform: 'Canva',
+    url: 'https://www.canva.com/design/DAHXnZYSTzE/GjNllULTfMBBy2xBxuyOYQ/view',
+    embedUrl: 'https://www.canva.com/design/DAHXnZYSTzE/GjNllULTfMBBy2xBxuyOYQ/view?embed',
+  },
+  {
+    id: 'template-poc-v1',
+    title: 'Template PoC v.1',
+    description: 'Template para estruturar e apresentar uma prova de conceito durante o processo de inovação.',
+    category: 'servicos',
+    categoryLabel: 'Serviços',
+    service: 'inovacao',
+    serviceLabel: 'Inovação',
+    platform: 'Canva',
+    url: 'https://www.canva.com/design/DAHXnQeWW9I/nl-vpT902me7Btmmj3_xNA/view',
+    embedUrl: 'https://www.canva.com/design/DAHXnQeWW9I/nl-vpT902me7Btmmj3_xNA/view?embed',
+  },
 ];
 
 const categories = [
