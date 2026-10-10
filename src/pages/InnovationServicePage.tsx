@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, BarChart3, Check, ClipboardList, FlaskConical, Lightbulb, Microscope, Rocket, Search, Target } from 'lucide-react';
 import type { ServiceCatalogItem } from '../data/serviceCatalog';
+import StrategyInnovationComparison from '../components/StrategyInnovationComparison';
 
 const InnovationServicePage = ({ service }: { service: ServiceCatalogItem }) => (
   <>
@@ -19,6 +20,8 @@ const InnovationServicePage = ({ service }: { service: ServiceCatalogItem }) => 
       </div></section>
 
       <section className="relative z-10 container-custom py-16 sm:py-24"><div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16"><div><p className="text-xs font-black uppercase tracking-[0.22em] text-[#FFF200]">Inovação sem teatro</p><h2 className="mt-4 text-4xl font-black leading-tight tracking-[-0.04em] sm:text-5xl">Menos aposta. Mais evidência.</h2><p className="mt-5 text-lg leading-relaxed text-white/50">Inovar não é colecionar ideias. É aprender rápido o suficiente para investir apenas nas oportunidades que demonstram valor real.</p></div><div className="grid gap-4 sm:grid-cols-2">{service.deliverables.map((item, index) => <motion.div key={item} initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.06 }} className="rounded-2xl border border-[#FFF200]/30 bg-gray-900/70 p-6 backdrop-blur"><span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#FFF200]/10 text-xs font-black text-[#FFF200]">0{index + 1}</span><p className="mt-8 text-lg font-bold leading-snug">{item}</p></motion.div>)}</div></div></section>
+
+      <StrategyInnovationComparison />
 
       <section id="metodo-inovacao" className="relative z-10 border-y border-white/10 bg-black/35"><div className="container-custom py-16 sm:py-24"><div className="max-w-3xl"><p className="text-xs font-black uppercase tracking-[0.22em] text-[#FFF200]">Como trabalhamos</p><h2 className="mt-4 text-4xl font-black tracking-[-0.04em] sm:text-5xl">Da oportunidade ao aprendizado.</h2></div><div className="mt-10 grid gap-5 md:grid-cols-3">{service.process.map((step, index) => { const Icon = [Microscope, FlaskConical, Rocket][index] || Check; return <article key={step.title} className="group rounded-2xl border border-[#FFF200]/30 bg-gray-900/75 p-7 transition hover:-translate-y-1 hover:border-[#FFF200]/65"><div className="flex items-center justify-between"><span className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#FFF200]/10 text-[#FFF200]"><Icon className="h-6 w-6" /></span><span className="text-sm font-black text-white/20">0{index + 1}</span></div><h3 className="mt-10 text-2xl font-black">{step.title}</h3><p className="mt-3 leading-relaxed text-white/50">{step.description}</p></article>; })}</div></div></section>
 

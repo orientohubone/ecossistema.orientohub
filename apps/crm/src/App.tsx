@@ -11,6 +11,7 @@ import { TasksPage } from './pages/TasksPage';
 import { CompanyDetailPage, ContactDetailPage } from './pages/EntityDetailPages';
 import { PlaybookPage } from './pages/PlaybookPage';
 import { MetricsPage } from './pages/MetricsPage';
+import { MaterialsPage } from './pages/MaterialsPage';
 
 export default function App() {
   const [session, setSession] = useState<Session | null>(null);
@@ -18,5 +19,5 @@ export default function App() {
   useEffect(() => { supabase.auth.getSession().then(({ data }) => { setSession(data.session); setReady(true); }); const { data } = supabase.auth.onAuthStateChange((_event, next) => setSession(next)); return () => data.subscription.unsubscribe(); }, []);
   if (!ready) return <div className="splash">Carregando CRM…</div>;
   const allowed = session?.user.email?.toLowerCase() === CRM_ALLOWED_EMAIL;
-  return <BrowserRouter><Routes><Route path="/login" element={allowed ? <Navigate to="/" replace /> : <Login />} /><Route element={allowed && session ? <AppShell user={session.user} /> : <Navigate to="/login" replace />}><Route index element={<PipelinePage />} /><Route path="negociacoes/:dealId" element={<DealPage />} /><Route path="empresas" element={<CompaniesPage />} /><Route path="empresas/:companyId" element={<CompanyDetailPage />} /><Route path="contatos" element={<ContactsPage />} /><Route path="contatos/:contactId" element={<ContactDetailPage />} /><Route path="tarefas" element={<TasksPage />} /><Route path="metricas" element={<MetricsPage />} /><Route path="playbook" element={<PlaybookPage />} /></Route><Route path="*" element={<Navigate to="/" replace />} /></Routes></BrowserRouter>;
+  return <BrowserRouter><Routes><Route path="/login" element={allowed ? <Navigate to="/" replace /> : <Login />} /><Route element={allowed && session ? <AppShell user={session.user} /> : <Navigate to="/login" replace />}><Route index element={<PipelinePage />} /><Route path="negociacoes/:dealId" element={<DealPage />} /><Route path="empresas" element={<CompaniesPage />} /><Route path="empresas/:companyId" element={<CompanyDetailPage />} /><Route path="contatos" element={<ContactsPage />} /><Route path="contatos/:contactId" element={<ContactDetailPage />} /><Route path="tarefas" element={<TasksPage />} /><Route path="metricas" element={<MetricsPage />} /><Route path="playbook" element={<PlaybookPage />} /><Route path="materiais" element={<MaterialsPage />} /></Route><Route path="*" element={<Navigate to="/" replace />} /></Routes></BrowserRouter>;
 }

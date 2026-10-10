@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, BarChart3, ClipboardList, Compass, Crosshair, Route, Search, Target } from 'lucide-react';
 import type { ServiceCatalogItem } from '../data/serviceCatalog';
+import StrategyInnovationComparison from '../components/StrategyInnovationComparison';
 
 const StrategyServicePage = ({ service }: { service: ServiceCatalogItem }) => (
   <>
@@ -36,6 +37,8 @@ const StrategyServicePage = ({ service }: { service: ServiceCatalogItem }) => (
           <div className="grid gap-4 sm:grid-cols-2">{service.deliverables.map((item, index) => <motion.div key={item} initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.06 }} className="rounded-2xl border border-[#FFF200]/30 bg-gray-900/70 p-6 backdrop-blur"><span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#FFF200]/10 text-xs font-black text-[#FFF200]">0{index + 1}</span><p className="mt-8 text-lg font-bold leading-snug">{item}</p></motion.div>)}</div>
         </div>
       </section>
+
+      <StrategyInnovationComparison />
 
       <section id="metodo" className="relative z-10 border-y border-white/10 bg-black/35">
         <div className="container-custom py-16 sm:py-24"><div className="max-w-3xl"><p className="text-xs font-black uppercase tracking-[0.22em] text-[#FFF200]">Como trabalhamos</p><h2 className="mt-4 text-4xl font-black tracking-[-0.04em] sm:text-5xl">Direção antes da execução.</h2></div>

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import type { User } from '@supabase/supabase-js';
-import { BarChart3, Building2, ChevronDown, Handshake, ListTodo, Loader2, LogOut, Menu, MessageSquareText, Search, UserRound, Users, X } from 'lucide-react';
+import { BarChart3, BookOpen, Building2, ChevronDown, Handshake, ListTodo, Loader2, LogOut, Menu, MessageSquareText, Search, UserRound, Users, X } from 'lucide-react';
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { crm } from '../services/crm';
@@ -10,6 +10,7 @@ const items = [
   { to: '/contatos', label: 'Contatos', icon: Users }, { to: '/tarefas', label: 'Tarefas', icon: ListTodo },
   { to: '/metricas', label: 'Métricas', icon: BarChart3 },
   { to: '/playbook', label: 'Playbook', icon: MessageSquareText },
+  { to: '/materiais', label: 'Materiais', icon: BookOpen },
 ];
 type SearchResults = Awaited<ReturnType<typeof crm.globalSearch>>;
 const emptyResults: SearchResults = { deals: [], companies: [], contacts: [] };
