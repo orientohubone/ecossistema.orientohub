@@ -14,6 +14,7 @@ const items = [
 ];
 type SearchResults = Awaited<ReturnType<typeof crm.globalSearch>>;
 const emptyResults: SearchResults = { deals: [], companies: [], contacts: [] };
+const assetUrl = (file: string) => `${import.meta.env.BASE_URL}${file}`;
 
 export const AppShell = ({ user }: { user: User }) => {
   const [collapsed, setCollapsed] = useState(false);
@@ -22,8 +23,8 @@ export const AppShell = ({ user }: { user: User }) => {
   const company = user.user_metadata?.company || 'OrientoHub';
 
   const Sidebar = () => <>
-    <div className="shell-brand"><Link to="/"><img className="shell-logo-full" src="/orientohub.png" alt="OrientoHub" /><img className="shell-logo-mark" src="/isotipo-orientohub.png" alt="OrientoHub" /></Link><button onClick={() => setCollapsed((current) => !current)} aria-label={collapsed ? 'Expandir menu' : 'Recolher menu'}>{collapsed ? <ChevronDown size={18} /> : <Menu size={18} />}</button></div>
-    <div className="shell-profile"><div className="shell-avatar"><img src="/fernando.jpg" alt={name} /></div><div><strong>{name}</strong><span>Founder • {company}</span></div></div>
+    <div className="shell-brand"><Link to="/"><img className="shell-logo-full" src={assetUrl('orientohub.png')} alt="OrientoHub" /><img className="shell-logo-mark" src={assetUrl('isotipo-orientohub.png')} alt="OrientoHub" /></Link><button onClick={() => setCollapsed((current) => !current)} aria-label={collapsed ? 'Expandir menu' : 'Recolher menu'}>{collapsed ? <ChevronDown size={18} /> : <Menu size={18} />}</button></div>
+    <div className="shell-profile"><div className="shell-avatar"><img src={assetUrl('fernando.jpg')} alt={name} /></div><div><strong>{name}</strong><span>Founder • {company}</span></div></div>
     <nav>{items.map(({ to, label, icon: Icon }) => <NavLink key={to} to={to} end={to === '/'} onClick={() => setMobileOpen(false)} className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'} aria-label={label} data-tooltip={label}><Icon size={19} /><span>{label}</span></NavLink>)}</nav>
     <button className="nav-link logout" data-tooltip="Sair" aria-label="Sair" onClick={() => supabase.auth.signOut()}><LogOut size={19} /><span>Sair</span></button>
   </>;
@@ -32,7 +33,7 @@ export const AppShell = ({ user }: { user: User }) => {
     {mobileOpen && <div className="mobile-overlay" onClick={() => setMobileOpen(false)} />}
     <aside className={`sidebar ${mobileOpen ? 'mobile-open' : ''}`}><Sidebar /></aside>
     <section className="workspace">
-      <header className="topbar"><div className="topbar-left"><button className="mobile-menu" onClick={() => setMobileOpen(true)}><Menu size={20} /></button><GlobalSearch /></div><div className="top-profile"><div className="shell-avatar small"><img src="/fernando.jpg" alt={name} /></div><div><strong>{name}</strong><span>{company}</span></div><ChevronDown size={16} /></div></header>
+      <header className="topbar"><div className="topbar-left"><button className="mobile-menu" onClick={() => setMobileOpen(true)}><Menu size={20} /></button><GlobalSearch /></div><div className="top-profile"><div className="shell-avatar small"><img src={assetUrl('fernando.jpg')} alt={name} /></div><div><strong>{name}</strong><span>{company}</span></div><ChevronDown size={16} /></div></header>
       <main className="content"><Outlet /></main>
     </section>
     {mobileOpen && <button className="mobile-close" onClick={() => setMobileOpen(false)} aria-label="Fechar menu"><X /></button>}

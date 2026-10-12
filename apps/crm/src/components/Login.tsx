@@ -25,7 +25,7 @@ export const Login = () => {
     <section className="auth-panel">
       <form className="auth-form" onSubmit={submit}>
         <a className="auth-back" href="https://orientohub.com.br"><ArrowLeft size={16} />Voltar para a Home</a>
-        <img className="auth-logo" src="/orientohub.png" alt="OrientoHub" />
+        <img className="auth-logo" src={`${import.meta.env.BASE_URL}orientohub.png`} alt="OrientoHub" />
         <div className="auth-heading"><h1>Bem-vindo de volta.</h1><p>Acesse sua conta para continuar.</p></div>
         {error && <p className="auth-error">{error}</p>}
         <label className="auth-field">E-mail<div><Mail size={20} /><input type="email" autoComplete="email" value={email} onChange={(event) => setEmail(event.target.value)} placeholder="seu@email.com" required /></div></label>
