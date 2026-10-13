@@ -11,6 +11,8 @@
     "remotion:css": "tailwindcss -c tailwind.config.js -i src/index.css -o remotion/styles.css --minify --content ./src/**/*.{js,ts,jsx,tsx}",
     "remotion:studio": "npm run remotion:css && remotion studio remotion/index.ts --env-file=.env",
     "remotion:render:journey": "npm run remotion:css && remotion render remotion/index.ts JornadaEmpreendedora public/videos/jornada-empreendedora.mp4 --env-file=.env"
+    ,"remotion:render:dashboard": "npm run remotion:css && remotion render remotion/index.ts Dashboard public/videos/dashboard.mp4 --env-file=.env"
+    ,"remotion:render:ideas": "npm run remotion:css && remotion render remotion/index.ts Ideias public/videos/ideias.mp4 --env-file=.env"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.18",

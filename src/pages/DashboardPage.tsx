@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
-import { dashboardService, type DashboardData } from '../services/dashboardService';
+import type { DashboardData } from '../services/dashboardService';
 import DashboardPageSkeleton from '../components/ui/DashboardPageSkeleton';
 import { getCachedValue, getOrLoadCachedValue, invalidateCache } from '../lib/memoryCache';
 import { 
@@ -32,9 +32,14 @@ import {
 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 
-const DashboardPage = () => {
+interface DashboardPageProps {
+  initialDashboardData?: DashboardData;
+  showcaseFrame?: number;
+}
+
+const DashboardPage = ({ initialDashboardData, showcaseFrame }: DashboardPageProps = {}) => {
   const navigate = useNavigate();
-  const cachedDashboardData = getCachedValue<DashboardData>('dashboard:data');
+  const cachedDashboardData = initialDashboardData ?? getCachedValue<DashboardData>('dashboard:data');
   const [selectedPhase, setSelectedPhase] = useState('validation');
   const [dashboardData, setDashboardData] = useState<DashboardData | null>(cachedDashboardData);
   const [isLoading, setIsLoading] = useState(!cachedDashboardData);
@@ -43,11 +48,13 @@ const DashboardPage = () => {
   // Carregar dados do dashboard
   useEffect(() => {
     const loadDashboardData = async () => {
+      if (initialDashboardData) return;
       try {
         if (!cachedDashboardData) {
           setIsLoading(true);
         }
         setError(null);
+        const { dashboardService } = await import('../services/dashboardService');
         const data = await getOrLoadCachedValue(
           'dashboard:data',
           30000,
@@ -64,7 +71,7 @@ const DashboardPage = () => {
     };
     
     loadDashboardData();
-  }, []);
+  }, [initialDashboardData]);
 
   if (isLoading) {
     return <DashboardPageSkeleton hero cards={4} columns={2} />;
@@ -101,43 +108,6 @@ const DashboardPage = () => {
     return { icon: Crown, text: 'Operação estabelecida com excelência estratégica.' };
   };
 
-  const userData = dashboardData.userProfile;
-  const xpPercentage = (userData.currentXP / userData.nextLevelXP) * 100;
-  const quickStats = [
-    {
-      icon: Trophy,
-      label: 'Conquistas',
-      value: `${dashboardData.stats.achievements.completed}/${dashboardData.stats.achievements.total}`,
-      color: 'from-yellow-400 to-yellow-600',
-      bgColor: 'bg-yellow-500/10',
-      change: '+3 esta semana'
-    },
-    {
-      icon: Flame,
-      label: 'Sequência',
-      value: `${dashboardData.stats.streak} dias`,
-      color: 'from-orange-400 to-red-600',
-      bgColor: 'bg-orange-500/10',
-      change: dashboardData.stats.streak >= 5 ? 'Recorde pessoal!' : 'Continue assim!'
-    },
-    {
-      icon: Target,
-      label: 'Metas Concluídas',
-      value: `${dashboardData.stats.completedGoals.completed}/${dashboardData.stats.completedGoals.total}`,
-      color: 'from-blue-400 to-blue-600',
-      bgColor: 'bg-blue-500/10',
-      change: `${Math.round((dashboardData.stats.completedGoals.completed / dashboardData.stats.completedGoals.total) * 100)}% completo`
-    },
-    {
-      icon: Users,
-      label: 'Networking',
-      value: dashboardData.stats.networking.toString(),
-      color: 'from-purple-400 to-purple-600',
-      bgColor: 'bg-purple-500/10',
-      change: '+5 conexões'
-    }
-  ];
-
   // Mapeamento de strings para componentes de ícone
   const iconMap: { [key: string]: any } = {
     'Trophy': Trophy,
@@ -148,7 +118,8 @@ const DashboardPage = () => {
     'Rocket': Rocket,
     'Lightbulb': Lightbulb,
     'TrendingUp': TrendingUp,
-    'Activity': Activity
+    'Activity': Activity,
+    'CheckSquare': CheckSquare
   };
 
   // Função para mudar o status da tarefa
@@ -184,6 +155,7 @@ const DashboardPage = () => {
       });
 
       // Atualizar no backend
+      const { dashboardService } = await import('../services/dashboardService');
       await dashboardService.updateTaskProgress(task.id, newProgress);
       
       // Invalidar o cache da dashboard para refletir as mudanças permanentemente
@@ -191,7 +163,7 @@ const DashboardPage = () => {
     } catch (err: any) {
       console.error('Error toggling task:', err);
       // Se falhar, tenta recarregar os dados do backend
-      dashboardService.getDashboardData().then(data => {
+      import('../services/dashboardService').then(({ dashboardService }) => dashboardService.getDashboardData()).then(data => {
         setDashboardData(data);
       }).catch(console.error);
     }
@@ -240,13 +212,85 @@ const DashboardPage = () => {
     }
   };
 
-  const recentTasks = dashboardData.tasks;
-  const frameworks = dashboardData.frameworks;
-  const upcomingEvents = dashboardData.events;
-  const recentActivity = dashboardData.activity;
+  const showcaseTaskCompleted = showcaseFrame !== undefined && showcaseFrame >= 330;
+  const showcaseXpGain = showcaseFrame === undefined
+    ? 0
+    : Math.round(Math.max(0, Math.min(1, (showcaseFrame - 338) / 46)) * 100);
+  const showcaseFrameworkProgress = showcaseFrame === undefined
+    ? null
+    : Math.round(42 + Math.max(0, Math.min(1, (showcaseFrame - 438) / 54)) * 36);
+  const showcaseData: DashboardData = showcaseFrame === undefined ? dashboardData : {
+    ...dashboardData,
+    userProfile: {
+      ...dashboardData.userProfile,
+      currentXP: dashboardData.userProfile.currentXP + showcaseXpGain,
+    },
+    stats: {
+      ...dashboardData.stats,
+      completedGoals: {
+        ...dashboardData.stats.completedGoals,
+        completed: dashboardData.stats.completedGoals.completed + (showcaseTaskCompleted ? 1 : 0),
+      },
+    },
+    tasks: dashboardData.tasks.map((task, index) => index === 0 && showcaseTaskCompleted
+      ? {...task, completed: true, progress: 100, priority: 'low'}
+      : task),
+    frameworks: dashboardData.frameworks.map((framework, index) => index === 0 && showcaseFrameworkProgress !== null
+      ? {...framework, progress: showcaseFrameworkProgress, status: showcaseFrameworkProgress >= 75 ? 'Quase concluído' : 'Em andamento'}
+      : framework),
+    activity: showcaseTaskCompleted
+      ? [{id: 'showcase-task', action: 'Tarefa concluída', target: dashboardData.tasks[0]?.title || 'Validação concluída', xp: 100, time: 'Agora', icon: 'CheckSquare'}, ...dashboardData.activity]
+      : dashboardData.activity,
+  };
+  const userData = showcaseData.userProfile;
+  const xpPercentage = (userData.currentXP / userData.nextLevelXP) * 100;
+  const quickStats = [
+    {
+      icon: Trophy,
+      label: 'Conquistas',
+      value: `${showcaseData.stats.achievements.completed}/${showcaseData.stats.achievements.total}`,
+      color: 'from-yellow-400 to-yellow-600',
+      bgColor: 'bg-yellow-500/10',
+      change: '+3 esta semana'
+    },
+    {
+      icon: Flame,
+      label: 'Sequência',
+      value: `${showcaseData.stats.streak} dias`,
+      color: 'from-orange-400 to-red-600',
+      bgColor: 'bg-orange-500/10',
+      change: showcaseData.stats.streak >= 5 ? 'Recorde pessoal!' : 'Continue assim!'
+    },
+    {
+      icon: Target,
+      label: 'Metas Concluídas',
+      value: `${showcaseData.stats.completedGoals.completed}/${showcaseData.stats.completedGoals.total}`,
+      color: 'from-blue-400 to-blue-600',
+      bgColor: 'bg-blue-500/10',
+      change: `${Math.round((showcaseData.stats.completedGoals.completed / showcaseData.stats.completedGoals.total) * 100)}% completo`
+    },
+    {
+      icon: Users,
+      label: 'Networking',
+      value: showcaseData.stats.networking.toString(),
+      color: 'from-purple-400 to-purple-600',
+      bgColor: 'bg-purple-500/10',
+      change: '+5 conexões'
+    }
+  ];
+  const showcaseReveal = (start: number) => {
+    if (showcaseFrame === undefined) return undefined;
+    const progress = Math.max(0, Math.min(1, (showcaseFrame - start) / 18));
+    const eased = 1 - Math.pow(1 - progress, 3);
+    return {opacity: eased, transform: `translateY(${(1 - eased) * 26}px) scale(${0.94 + eased * 0.06})`};
+  };
+  const recentTasks = showcaseData.tasks;
+  const frameworks = showcaseData.frameworks;
+  const upcomingEvents = showcaseData.events;
+  const recentActivity = showcaseData.activity;
   const visibleActivity = recentActivity.slice(0, 5);
-  const recommendations = dashboardData.recommendations;
-  const phases = dashboardData.phases;
+  const recommendations = showcaseData.recommendations;
+  const phases = showcaseData.phases;
 
   return (
     <>
@@ -258,7 +302,7 @@ const DashboardPage = () => {
         <div className="container-custom space-y-5 py-4 sm:space-y-8 sm:py-8">
           {/* Welcome Header */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={showcaseFrame === undefined ? { opacity: 0, y: 20 } : false}
             animate={{ opacity: 1, y: 0 }}
             className="overflow-hidden rounded-2xl border border-[#34455a] bg-[#101722] p-4 shadow-[0_16px_36px_rgba(0,0,0,0.2)] sm:p-8"
           >
@@ -324,7 +368,7 @@ const DashboardPage = () => {
                     </div>
                     <div className="relative h-3 overflow-hidden rounded-full bg-[#0c121b]">
                       <motion.div
-                        initial={{ width: 0 }}
+                        initial={showcaseFrame === undefined ? { width: 0 } : false}
                         animate={{ width: `${xpPercentage}%` }}
                         transition={{ duration: 1.5, ease: "easeOut" }}
                         className="h-full bg-gradient-to-r from-primary-500 to-primary-400 rounded-full relative"
@@ -362,9 +406,10 @@ const DashboardPage = () => {
               return (
                 <motion.div
                   key={index}
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={showcaseFrame === undefined ? { opacity: 0, y: 20 } : false}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
+                  style={showcaseReveal(-18 + index * 12)}
                   className="group rounded-2xl border border-[#273548] bg-[#101722] p-4 shadow-[0_12px_28px_rgba(0,0,0,0.16)] transition-all duration-300 hover:-translate-y-1 hover:border-primary-400/70 hover:shadow-[0_20px_38px_rgba(0,0,0,0.28)] sm:p-5"
                 >
                   <div className="flex items-start justify-between mb-4">
@@ -393,7 +438,7 @@ const DashboardPage = () => {
 
           {/* Journey Phases */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={showcaseFrame === undefined ? { opacity: 0, y: 20 } : false}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
             className="rounded-2xl border border-[#273548] bg-[#101722] p-4 shadow-[0_12px_28px_rgba(0,0,0,0.16)] sm:p-6"
@@ -414,7 +459,7 @@ const DashboardPage = () => {
                 {phases.map((phase, index) => {
                   const Icon = iconMap[phase.icon] || Lightbulb; // Fallback para Lightbulb
                   return (
-                    <div key={phase.id} className="relative flex flex-1 flex-col items-center">
+                    <div key={phase.id} style={showcaseReveal(120 + index * 12)} className="relative flex flex-1 flex-col items-center">
                       {/* Connector Line */}
                       {index < phases.length - 1 && (
                         <div className={`absolute top-6 left-1/2 w-full h-1 ${
@@ -449,7 +494,7 @@ const DashboardPage = () => {
                       {/* Active Indicator */}
                       {phase.active && (
                         <motion.div
-                          initial={{ scale: 0 }}
+                          initial={showcaseFrame === undefined ? { scale: 0 } : false}
                           animate={{ scale: 1 }}
                           className="absolute -top-2 left-1/2 -translate-x-1/2"
                         >
@@ -469,7 +514,7 @@ const DashboardPage = () => {
             <div className="space-y-5 lg:col-span-2 sm:space-y-8">
               {/* Tasks */}
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
+                initial={showcaseFrame === undefined ? { opacity: 0, y: 20 } : false}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5 }}
                 className="rounded-2xl border border-[#273548] bg-[#101722] p-4 shadow-[0_12px_28px_rgba(0,0,0,0.16)] sm:p-6"
@@ -488,9 +533,13 @@ const DashboardPage = () => {
                   {recentTasks.map((task, index) => (
                     <motion.div
                       key={task.id}
-                      initial={{ opacity: 0, x: -20 }}
+                      initial={showcaseFrame === undefined ? { opacity: 0, x: -20 } : false}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: 0.6 + index * 0.1 }}
+                      style={showcaseFrame !== undefined && index === 0 && showcaseFrame >= 324 && showcaseFrame <= 365 ? {
+                        transform: `scale(${1 + Math.sin(Math.min(1, (showcaseFrame - 324) / 18) * Math.PI) * 0.018})`,
+                        boxShadow: `0 0 ${Math.max(0, 34 - Math.abs(showcaseFrame - 342))}px rgba(52,211,153,.48)`,
+                      } : undefined}
                       className={`group p-4 rounded-xl border-2 transition-all duration-300 ${
                         task.completed
                           ? 'bg-emerald-400/5 border-emerald-400/25'
@@ -571,7 +620,7 @@ const DashboardPage = () => {
 
               {/* Frameworks Progress */}
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
+                initial={showcaseFrame === undefined ? { opacity: 0, y: 20 } : false}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.7 }}
                 className="rounded-2xl border border-[#273548] bg-[#101722] p-4 shadow-[0_12px_28px_rgba(0,0,0,0.16)] sm:p-6"
@@ -596,9 +645,13 @@ const DashboardPage = () => {
                     return (
                     <motion.div
                       key={framework.id}
-                      initial={{ opacity: 0, scale: 0.9 }}
+                      initial={showcaseFrame === undefined ? { opacity: 0, scale: 0.9 } : false}
                       animate={{ opacity: 1, scale: 1 }}
                       transition={{ delay: 0.8 + index * 0.1 }}
+                      style={showcaseFrame !== undefined && index === 0 && showcaseFrame >= 438 && showcaseFrame <= 500 ? {
+                        boxShadow: `0 0 ${12 + Math.sin((showcaseFrame - 438) / 62 * Math.PI) * 28}px rgba(250,204,21,.28)`,
+                        borderColor: 'rgba(250,204,21,.55)',
+                      } : undefined}
                       className="group cursor-pointer rounded-xl border border-[#273548] bg-[#0c121b] p-5 transition-all duration-300 hover:border-primary-400/70 hover:bg-[#151f2b]"
                     >
                       <div className="flex items-start justify-between mb-3">
@@ -632,7 +685,7 @@ const DashboardPage = () => {
                             className={`h-full rounded-full ${
                               framework.progress === 100 ? 'bg-green-500' : 'bg-gradient-to-r from-primary-400 to-primary-600'
                             }`}
-                            initial={{ width: 0 }}
+                            initial={showcaseFrame === undefined ? { width: 0 } : false}
                             animate={{ width: `${framework.progress}%` }}
                             transition={{ duration: 1, delay: 0.9 + index * 0.1 }}
                           />
@@ -657,7 +710,7 @@ const DashboardPage = () => {
             <div className="space-y-5 sm:space-y-8">
               {/* Upcoming Events */}
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
+                initial={showcaseFrame === undefined ? { opacity: 0, y: 20 } : false}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.6 }}
                 className="rounded-2xl border border-[#273548] bg-[#101722] p-4 shadow-[0_12px_28px_rgba(0,0,0,0.16)] sm:p-6"
@@ -674,7 +727,7 @@ const DashboardPage = () => {
                   {upcomingEvents.map((event, index) => (
                     <motion.div
                       key={event.id}
-                      initial={{ opacity: 0, x: 20 }}
+                      initial={showcaseFrame === undefined ? { opacity: 0, x: 20 } : false}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: 0.7 + index * 0.1 }}
                       className="flex items-start gap-3 p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl hover:bg-primary-500/10 transition-colors cursor-pointer group"
@@ -715,7 +768,7 @@ const DashboardPage = () => {
 
               {/* Recommendations */}
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
+                initial={showcaseFrame === undefined ? { opacity: 0, y: 20 } : false}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.8 }}
                 className="rounded-2xl border border-primary-400/25 bg-[#101722] p-4 shadow-[0_12px_28px_rgba(0,0,0,0.16)] sm:p-6"
@@ -731,7 +784,7 @@ const DashboardPage = () => {
                     return (
                       <motion.div
                         key={rec.id}
-                        initial={{ opacity: 0, y: 10 }}
+                        initial={showcaseFrame === undefined ? { opacity: 0, y: 10 } : false}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.9 + index * 0.1 }}
                         className="rounded-xl border border-[#273548] bg-[#0c121b] p-4"
@@ -773,7 +826,7 @@ const DashboardPage = () => {
           </div>
 
           <motion.section
-            initial={{ opacity: 0, y: 16 }}
+            initial={showcaseFrame === undefined ? { opacity: 0, y: 16 } : false}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.9 }}
             className="mt-5 rounded-2xl border border-[#273548] bg-[#101722] p-4 shadow-[0_12px_28px_rgba(0,0,0,0.16)] sm:mt-8 sm:p-5"
@@ -818,9 +871,15 @@ const DashboardPage = () => {
                   return (
                     <motion.div
                       key={activity.id}
-                      initial={{ opacity: 0, y: 8 }}
+                      initial={showcaseFrame === undefined ? { opacity: 0, y: 8 } : false}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 1 + index * 0.06 }}
+                      style={showcaseFrame !== undefined && activity.id === 'showcase-task' ? {
+                        opacity: Math.max(0, Math.min(1, (showcaseFrame - 492) / 16)),
+                        transform: `translateY(${Math.max(0, 1 - (showcaseFrame - 492) / 16) * 18}px)`,
+                        borderColor: 'rgba(250,204,21,.5)',
+                        boxShadow: '0 0 26px rgba(250,204,21,.12)',
+                      } : undefined}
                       className="flex min-w-0 items-start gap-3 rounded-xl border border-[#273548] bg-[#0c121b] p-3"
                     >
                       <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary-500/10 text-primary-300">

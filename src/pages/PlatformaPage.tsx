@@ -88,11 +88,31 @@ const PlatformaPage = () => {
               Ideal para aceleradoras, incubadoras, fundadores e aspirantes.
             </motion.p>
 
-            {/* Showcase Jornada Empreendedora */}
+            {/* Showcases da plataforma */}
             <VideoShowcase
-              image={gamificacaoShowcase}
-              videoUrl="/videos/jornada-empreendedora.mp4"
-              alt="Demonstração da Jornada Empreendedora"
+              items={[
+                {
+                  image: '/videos/dashboard-v2-click.png',
+                  videoUrl: '/videos/dashboard.mp4',
+                  alt: 'Demonstração do dashboard da OrientoHub',
+                  title: 'Dashboard inteligente',
+                  description: 'Tarefas, XP, frameworks e conquistas atualizados conforme você avança.',
+                },
+                {
+                  image: '/videos/ideias-board-check.png',
+                  videoUrl: '/videos/ideias.mp4',
+                  alt: 'Demonstração da gestão de ideias da OrientoHub',
+                  title: 'Ideias e incubação',
+                  description: 'Organize oportunidades, teste hipóteses e amadureça ideias antes de transformá-las em projetos.',
+                },
+                {
+                  image: gamificacaoShowcase,
+                  videoUrl: '/videos/jornada-empreendedora.mp4',
+                  alt: 'Demonstração da Jornada Empreendedora',
+                  title: 'Jornada Empreendedora',
+                  description: 'Etapas, missões e conquistas que orientam a evolução do negócio.',
+                },
+              ]}
             />
 
             {/* CTA Buttons */}
