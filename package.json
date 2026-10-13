@@ -7,7 +7,10 @@
     "dev": "vite",
     "build": "vite build && npm --prefix apps/crm run build && node scripts/prerender-public.mjs",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "remotion:css": "tailwindcss -c tailwind.config.js -i src/index.css -o remotion/styles.css --minify --content ./src/**/*.{js,ts,jsx,tsx}",
+    "remotion:studio": "npm run remotion:css && remotion studio remotion/index.ts --env-file=.env",
+    "remotion:render:journey": "npm run remotion:css && remotion render remotion/index.ts JornadaEmpreendedora public/videos/jornada-empreendedora.mp4 --env-file=.env"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.18",
@@ -34,6 +37,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.9.1",
+    "@remotion/cli": "^4.0.535",
     "@types/react": "^18.3.5",
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^5.1.0",
@@ -43,6 +47,7 @@
     "eslint-plugin-react-refresh": "^0.4.11",
     "globals": "^15.9.0",
     "postcss": "^8.4.35",
+    "remotion": "^4.0.535",
     "tailwindcss": "^3.4.1",
     "typescript": "^5.5.3",
     "typescript-eslint": "^8.3.0",

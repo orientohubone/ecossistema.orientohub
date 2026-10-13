@@ -14,6 +14,7 @@ interface VideoShowcaseProps {
 
 const VideoShowcase = ({ image, videoUrl, alt, playerOffsetX = '0px', playerOffsetY = '0px' }: VideoShowcaseProps) => {
   const [open, setOpen] = useState(false);
+  const isLocalVideo = videoUrl.startsWith('/') || /\.(mp4|webm)(\?.*)?$/i.test(videoUrl);
 
   return (
     <div className="w-full flex flex-col items-center justify-center py-6 sm:py-10 px-1 sm:px-0">
@@ -33,11 +34,25 @@ const VideoShowcase = ({ image, videoUrl, alt, playerOffsetX = '0px', playerOffs
 
           {/* Image container */}
           <div className="relative m-[2px] sm:m-[3px] rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl">
-            <img
-              src={image}
-              alt={alt || 'Demo'}
-              className="relative w-full h-auto object-cover rounded-2xl sm:rounded-3xl min-h-0 sm:min-h-[380px] lg:min-h-[420px] max-h-[600px] object-top"
-            />
+            {isLocalVideo ? (
+              <video
+                src={videoUrl}
+                poster={image}
+                aria-label={alt || 'Demonstração da plataforma'}
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="metadata"
+                className="relative aspect-video w-full rounded-2xl object-cover sm:rounded-3xl"
+              />
+            ) : (
+              <img
+                src={image}
+                alt={alt || 'Demo'}
+                className="relative w-full h-auto object-cover rounded-2xl sm:rounded-3xl min-h-0 sm:min-h-[380px] lg:min-h-[420px] max-h-[600px] object-top"
+              />
+            )}
             
             {/* Overlay gradient on hover */}
             <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl sm:rounded-3xl" />

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { dashboardService, type JourneyPhase } from '../services/dashboardService';
+import type { JourneyPhase } from '../services/dashboardService';
 import DashboardPageSkeleton from '../components/ui/DashboardPageSkeleton';
 import { 
   Rocket,
@@ -31,16 +31,25 @@ const iconMap: { [key: string]: any } = {
   'Rocket': Rocket
 };
 
-const JourneyPage = () => {
-  const [selectedPhase, setSelectedPhase] = useState(0);
-  const [expandedMission, setExpandedMission] = useState<number | null>(null);
-  const [journeyPhases, setJourneyPhases] = useState<JourneyPhase[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+interface JourneyPageProps {
+  initialJourneyPhases?: JourneyPhase[];
+  showcaseSelectedPhase?: number;
+  showcaseExpandedMission?: number | null;
+  showcaseFrame?: number;
+}
+
+const JourneyPage = ({ initialJourneyPhases, showcaseSelectedPhase, showcaseExpandedMission, showcaseFrame }: JourneyPageProps = {}) => {
+  const [selectedPhase, setSelectedPhase] = useState(showcaseSelectedPhase ?? 0);
+  const [expandedMission, setExpandedMission] = useState<number | null>(showcaseExpandedMission ?? null);
+  const [journeyPhases, setJourneyPhases] = useState<JourneyPhase[]>(initialJourneyPhases ?? []);
+  const [isLoading, setIsLoading] = useState(!initialJourneyPhases);
 
   useEffect(() => {
     const loadJourney = async () => {
+      if (initialJourneyPhases) return;
       try {
         setIsLoading(true);
+        const { dashboardService } = await import('../services/dashboardService');
         const data = await dashboardService.getJourneyData();
         setJourneyPhases(data);
         
@@ -60,7 +69,15 @@ const JourneyPage = () => {
       }
     };
     loadJourney();
-  }, []);
+  }, [initialJourneyPhases]);
+
+  useEffect(() => {
+    if (showcaseSelectedPhase !== undefined) setSelectedPhase(showcaseSelectedPhase);
+  }, [showcaseSelectedPhase]);
+
+  useEffect(() => {
+    if (showcaseExpandedMission !== undefined) setExpandedMission(showcaseExpandedMission);
+  }, [showcaseExpandedMission]);
 
   // Removed static mock journeyPhases
 
@@ -85,6 +102,15 @@ const JourneyPage = () => {
   const totalMissions = journeyPhases.reduce((acc, phase) => 
     acc + phase.missions.length, 0
   );
+  const showcaseReveal = (start: number) => {
+    if (showcaseFrame === undefined) return undefined;
+    const progress = Math.max(0, Math.min(1, (showcaseFrame - start) / 18));
+    const eased = 1 - Math.pow(1 - progress, 3);
+    return {
+      opacity: eased,
+      transform: `translateY(${(1 - eased) * 34}px) scale(${0.92 + eased * 0.08})`,
+    };
+  };
 
   return (
     <div className="dark min-h-screen bg-[#0c121b] text-white">
@@ -99,7 +125,7 @@ const JourneyPage = () => {
 
         <div className="container-custom relative z-10">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={showcaseFrame === undefined ? { opacity: 0, y: 20 } : false}
             animate={{ opacity: 1, y: 0 }}
             className="max-w-4xl"
           >
@@ -120,12 +146,12 @@ const JourneyPage = () => {
 
           {/* Overall Stats */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={showcaseFrame === undefined ? { opacity: 0, y: 20 } : false}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
             className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8"
           >
-            <div className="rounded-xl border border-[#34455a] bg-[#151f2b]/90 p-4 backdrop-blur-sm">
+            <div style={showcaseReveal(-18)} className="rounded-xl border border-[#34455a] bg-[#151f2b]/90 p-4 backdrop-blur-sm">
               <div className="mb-2 flex items-center gap-2 text-primary-300">
                 <Star className="w-5 h-5" />
                 <span className="text-sm font-medium">XP Total</span>
@@ -133,7 +159,7 @@ const JourneyPage = () => {
               <p className="text-2xl font-bold text-white">{totalXP}</p>
             </div>
 
-            <div className="rounded-xl border border-[#34455a] bg-[#151f2b]/90 p-4 backdrop-blur-sm">
+            <div style={showcaseReveal(0)} className="rounded-xl border border-[#34455a] bg-[#151f2b]/90 p-4 backdrop-blur-sm">
               <div className="flex items-center gap-2 text-green-400 mb-2">
                 <CheckCircle2 className="w-5 h-5" />
                 <span className="text-sm font-medium">Missões</span>
@@ -141,7 +167,7 @@ const JourneyPage = () => {
               <p className="text-2xl font-bold text-white">{completedMissions}/{totalMissions}</p>
             </div>
 
-            <div className="rounded-xl border border-[#34455a] bg-[#151f2b]/90 p-4 backdrop-blur-sm">
+            <div style={showcaseReveal(12)} className="rounded-xl border border-[#34455a] bg-[#151f2b]/90 p-4 backdrop-blur-sm">
               <div className="flex items-center gap-2 text-blue-400 mb-2">
                 <Target className="w-5 h-5" />
                 <span className="text-sm font-medium">Fases</span>
@@ -149,7 +175,7 @@ const JourneyPage = () => {
               <p className="text-2xl font-bold text-white">2/5</p>
             </div>
 
-            <div className="rounded-xl border border-[#34455a] bg-[#151f2b]/90 p-4 backdrop-blur-sm">
+            <div style={showcaseReveal(24)} className="rounded-xl border border-[#34455a] bg-[#151f2b]/90 p-4 backdrop-blur-sm">
               <div className="flex items-center gap-2 text-yellow-400 mb-2">
                 <Trophy className="w-5 h-5" />
                 <span className="text-sm font-medium">Conquistas</span>
@@ -173,21 +199,21 @@ const JourneyPage = () => {
                 const isCompleted = phase.status === 'completed';
 
                 return (
-                  <motion.button
-                    key={phase.id}
-                    onClick={() => !isLocked && setSelectedPhase(index)}
-                    className={`relative p-6 rounded-2xl border-2 transition-all duration-300 text-left ${
-                      selectedPhase === index
-                        ? 'border-primary-400 bg-primary-500/10 shadow-xl shadow-primary-500/10'
-                        : isLocked
-                        ? 'border-[#273548] bg-[#101722] opacity-50 cursor-not-allowed'
-                        : 'border-[#273548] bg-[#151f2b] hover:border-primary-400/50 hover:bg-[#182331]'
-                    }`}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                    disabled={isLocked}
-                  >
+                  <div key={phase.id} style={showcaseReveal(124 + index * 14)}>
+                    <motion.button
+                      onClick={() => !isLocked && setSelectedPhase(index)}
+                      className={`relative h-full w-full p-6 rounded-2xl border-2 transition-all duration-300 text-left ${
+                        selectedPhase === index
+                          ? 'border-primary-400 bg-primary-500/10 shadow-xl shadow-primary-500/10'
+                          : isLocked
+                          ? 'border-[#273548] bg-[#101722] opacity-50 cursor-not-allowed'
+                          : 'border-[#273548] bg-[#151f2b] hover:border-primary-400/50 hover:bg-[#182331]'
+                      }`}
+                      initial={showcaseFrame === undefined ? { opacity: 0, y: 20 } : false}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                      disabled={isLocked}
+                    >
                     {/* Status Badge */}
                     {isCompleted && (
                       <div className="absolute -right-2 -top-2 flex h-8 w-8 items-center justify-center rounded-full border-4 border-[#0c121b] bg-green-500">
@@ -223,7 +249,8 @@ const JourneyPage = () => {
                         </p>
                       </>
                     )}
-                  </motion.button>
+                    </motion.button>
+                  </div>
                 );
               })}
             </div>
@@ -231,7 +258,7 @@ const JourneyPage = () => {
             {/* Phase Details */}
             <motion.div
               key={selectedPhase}
-              initial={{ opacity: 0, y: 20 }}
+              initial={showcaseFrame === undefined ? { opacity: 0, y: 20 } : false}
               animate={{ opacity: 1, y: 0 }}
               className="rounded-2xl border border-[#273548] bg-[#101722] p-5 md:p-8"
             >
@@ -275,7 +302,7 @@ const JourneyPage = () => {
                   return (
                     <motion.div
                       key={mission.id}
-                      initial={{ opacity: 0, x: -20 }}
+                      initial={showcaseFrame === undefined ? { opacity: 0, x: -20 } : false}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: index * 0.1 }}
                       className={`flex flex-col rounded-xl border-2 transition-all duration-300 overflow-hidden ${
@@ -343,7 +370,7 @@ const JourneyPage = () => {
                       {/* Expanded Content with Frameworks and Tasks Details */}
                       {isExpanded && !mission.completed && (
                         <motion.div 
-                          initial={{ opacity: 0, height: 0 }}
+                          initial={showcaseFrame === undefined ? { opacity: 0, height: 0 } : false}
                           animate={{ opacity: 1, height: 'auto' }}
                           exit={{ opacity: 0, height: 0 }}
                           className="px-4 pb-4 pt-2 border-t border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/30"
@@ -421,7 +448,7 @@ const JourneyPage = () => {
         <div className="container-custom">
           <div className="w-full">
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={showcaseFrame === undefined ? { opacity: 0, y: 20 } : false}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               className="text-center mb-8"
@@ -440,18 +467,18 @@ const JourneyPage = () => {
               {achievements.map((achievement, index) => {
                 const Icon = achievement.icon;
                 return (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: index * 0.1 }}
-                    className={`relative p-6 rounded-2xl border-2 text-center transition-all duration-300 ${
-                      achievement.unlocked
-                        ? 'border-primary-400/35 bg-primary-500/10 hover:shadow-xl hover:shadow-primary-500/10'
-                        : 'border-[#273548] bg-[#151f2b] opacity-50'
-                    }`}
-                  >
+                  <div key={index} style={showcaseReveal(397 + index * 9)}>
+                    <motion.div
+                      initial={showcaseFrame === undefined ? { opacity: 0, scale: 0.8 } : false}
+                      whileInView={{ opacity: 1, scale: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: index * 0.1 }}
+                      className={`relative h-full p-6 rounded-2xl border-2 text-center transition-all duration-300 ${
+                        achievement.unlocked
+                          ? 'border-primary-400/35 bg-primary-500/10 hover:shadow-xl hover:shadow-primary-500/10'
+                          : 'border-[#273548] bg-[#151f2b] opacity-50'
+                      }`}
+                    >
                     {achievement.unlocked && (
                       <div className="absolute -top-2 -right-2">
                         <Sparkles className="w-6 h-6 text-primary-500" />
@@ -478,7 +505,8 @@ const JourneyPage = () => {
                         <Lock className="w-8 h-8 text-gray-400" />
                       </div>
                     )}
-                  </motion.div>
+                    </motion.div>
+                  </div>
                 );
               })}
             </div>

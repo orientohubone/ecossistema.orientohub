@@ -384,3 +384,30 @@ body.auth-scrollbar-hidden::-webkit-scrollbar {
   height: 0;
   display: none;
 }
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+.clients-marquee-track {
+  animation: marquee 22s linear infinite;
+  will-change: transform;
+}
+
+@media (min-width: 640px) {
+  .clients-marquee-track {
+    animation-duration: 36s;
+  }
+
+  .clients-marquee-viewport:hover .clients-marquee-track {
+    animation-play-state: paused;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .clients-marquee-track {
+    animation-play-state: paused;
+    will-change: auto;
+  }
+}

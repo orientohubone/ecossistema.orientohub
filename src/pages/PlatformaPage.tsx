@@ -91,8 +91,8 @@ const PlatformaPage = () => {
             {/* Showcase Jornada Empreendedora */}
             <VideoShowcase
               image={gamificacaoShowcase}
-              videoUrl="https://www.youtube.com/embed/2Xc9gXyf2G4"
-              alt="Jornada Empreendedora Print"
+              videoUrl="/videos/jornada-empreendedora.mp4"
+              alt="Demonstração da Jornada Empreendedora"
             />
 
             {/* CTA Buttons */}

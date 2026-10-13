@@ -36,7 +36,7 @@ const BrandIcon = ({ brand }: { brand: Brand }) => {
 
 const IntegrationsSection = () => (
   <section className="relative overflow-hidden pb-16 pt-6 sm:pb-20 sm:pt-8" aria-labelledby="tools-title">
-    <div className="pointer-events-none absolute left-1/2 top-1/2 h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary-500/10 blur-[100px]" />
+
     <div className="container-custom relative">
       <div className="grid items-center gap-12 lg:grid-cols-[0.95fr_1.05fr] lg:gap-16">
         <motion.div initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, amount: 0.25 }} className="order-2 lg:order-1">

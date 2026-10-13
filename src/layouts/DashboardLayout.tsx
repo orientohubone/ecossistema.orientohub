@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, type ReactNode } from 'react';
 import * as Tooltip from '@radix-ui/react-tooltip';
 import { Link, useLocation, useNavigate, Outlet } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -28,13 +28,24 @@ import { useAuthStore } from '../stores/authStore';
 import ContactFab from '../components/layout/ContactFab';
 import { supabase } from '../config/supabase';
 
-const DashboardLayout = () => {
+interface DashboardLayoutProps {
+  showcaseContent?: ReactNode;
+  showcaseUser?: any;
+  showcasePlan?: string;
+  showcaseLogo?: string;
+  showcaseIsotipo?: string;
+  initialCollapsed?: boolean;
+  hideContactFab?: boolean;
+}
+
+const DashboardLayout = ({ showcaseContent, showcaseUser, showcasePlan, showcaseLogo, showcaseIsotipo, initialCollapsed = false, hideContactFab = false }: DashboardLayoutProps = {}) => {
   const { t } = useTranslation();
   const location = useLocation();
   const navigate = useNavigate();
-  const { user, logout } = useAuthStore();
+  const { user: authenticatedUser, logout } = useAuthStore();
+  const user = showcaseUser ?? authenticatedUser;
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(initialCollapsed);
 
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
   const toggleCollapse = () => setCollapsed(!collapsed);
@@ -110,7 +121,7 @@ const DashboardLayout = () => {
                 <>
                   <span className="text-primary-500 text-2xl font-extrabold dark:hidden">O</span>
                   <img
-                    src="/isotipo-orientohub.png"
+                    src={showcaseIsotipo ?? "/isotipo-orientohub.png"}
                     alt="Orientohub"
                     className="hidden dark:block w-12 h-12 object-contain flex-shrink-0"
                   />
@@ -119,7 +130,7 @@ const DashboardLayout = () => {
                 <>
                   <span className="text-xl font-bold text-primary-500 dark:hidden">Orientohub</span>
                   <img
-                    src="/orientohub.png"
+                    src={showcaseLogo ?? "/orientohub.png"}
                     alt="Orientohub"
                     className="hidden dark:block h-6 w-auto"
                   />
@@ -137,7 +148,7 @@ const DashboardLayout = () => {
             <SidebarHeader user={user} collapsed={collapsed} />
             <SearchBox collapsed={collapsed} />
             <nav className="flex-1 space-y-1 mt-2">{navItems.map(item => <SidebarLink key={item.id} item={item} pathname={location.pathname} collapsed={collapsed} />)}</nav>
-            <div className="mt-4"><PlanCTA compact={collapsed} /></div>
+            <div className="mt-4"><PlanCTA compact={collapsed} planOverride={showcasePlan} /></div>
             <div className="mt-auto">
               <LogoutButton onLogout={handleLogout} compact={collapsed} />
             </div>
@@ -159,7 +170,7 @@ const DashboardLayout = () => {
                   </div>
 
                 <div className="flex shrink-0 items-center gap-2 sm:gap-4">
-                  <TopPlanBadge />
+                  <TopPlanBadge planOverride={showcasePlan} />
                   <div className="flex items-center gap-3"><UserMenu user={user} /></div>
                 </div>
               </div>
@@ -169,12 +180,12 @@ const DashboardLayout = () => {
           {/* Page content */}
           <motion.main className="dashboard-main relative min-h-0 min-w-0 flex-1 overflow-y-auto" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }}>
             <div>
-              <div className="dashboard-content w-full px-4 sm:px-6 lg:px-8"><Outlet /></div>
+              <div className="dashboard-content w-full px-4 sm:px-6 lg:px-8">{showcaseContent ?? <Outlet />}</div>
             </div>
           </motion.main>
         </div>
       </div>
-      <ContactFab />
+      {!hideContactFab && <ContactFab />}
     </Tooltip.Provider>
   );
 };
@@ -445,8 +456,9 @@ const useCurrentPlan = () => {
   return plan;
 };
 
-const TopPlanBadge = () => {
-  const plan = useCurrentPlan();
+const TopPlanBadge = ({ planOverride }: { planOverride?: string }) => {
+  const currentPlan = useCurrentPlan();
+  const plan = planOverride ?? currentPlan;
   const label = plan === 'pro' ? 'Pro' : plan === 'enterprise' ? 'Enterprise' : 'Free';
 
   return (
@@ -459,8 +471,9 @@ const TopPlanBadge = () => {
   );
 };
 
-const PlanCTA = ({ compact = false }: { compact?: boolean }) => {
-  const plan = useCurrentPlan();
+const PlanCTA = ({ compact = false, planOverride }: { compact?: boolean; planOverride?: string }) => {
+  const currentPlan = useCurrentPlan();
+  const plan = planOverride ?? currentPlan;
 
   return compact ? (
     <div className="flex items-center justify-center p-2"><Crown className="w-5 h-5 text-yellow-400" /></div>
