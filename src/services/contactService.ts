@@ -8,6 +8,7 @@ export interface ContactMessage {
   company?: string;
   subject: string;
   message: string;
+  source?: 'contato' | 'chat_site';
   created_at?: string;
 }
 
@@ -15,7 +16,7 @@ export const contactService = {
   async sendMessage(data: ContactMessage): Promise<{ success: boolean; error?: string }> {
     try {
       // 1. Validação simples
-      if (!data.name || !data.email || !data.message) {
+      if (!data.name || (!data.email && !data.phone) || !data.message) {
         return { success: false, error: 'Por favor, preencha todos os campos obrigatórios.' };
       }
 

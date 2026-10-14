@@ -44,6 +44,11 @@ export const crm = {
     if (error) throw error;
     return data as Deal & { company: Company | null; primary_contact: Contact | null; demand?: string | null; campaign?: string | null; status: 'open' | 'won' | 'lost' };
   },
+  async deleteDeal(id: string) {
+    const { data, error } = await supabase.from('crm_deals').delete().eq('id', id).select('id').maybeSingle();
+    if (error) throw error;
+    if (!data) throw new Error('A negociação não foi encontrada ou você não tem permissão para excluí-la.');
+  },
   async getDealNotes(dealId: string) {
     const { data, error } = await supabase.from('crm_notes').select('id, body, created_at').eq('deal_id', dealId).order('created_at', { ascending: false });
     if (error) throw error;

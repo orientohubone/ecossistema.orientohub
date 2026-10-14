@@ -255,12 +255,6 @@ const PlatformaPage = () => {
 
       {/* CTA Section */}
       <section className="relative py-16 sm:py-32 bg-gradient-to-br from-black via-gray-900 to-black overflow-hidden">
-        {/* Animated background elements */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#FFF200]/100/20 rounded-full blur-3xl animate-pulse" />
-          <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-[#FFF200]/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1000ms' }} />
-        </div>
-
         {/* Grid pattern overlay */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0" style={{
@@ -278,8 +272,6 @@ const PlatformaPage = () => {
             transition={{ duration: 0.8 }}
           >
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.12),transparent_45%)]" />
-            <div className="absolute -top-16 left-1/2 h-40 w-40 -translate-x-1/2 rounded-full bg-[#FFF200]/100/10 blur-3xl" />
-
             {/* Badge */}
             <motion.div
               className="relative mb-6 sm:mb-8 inline-flex items-center gap-2.5 sm:gap-3 overflow-hidden rounded-full border border-[#FFF200]/35 bg-white/6 px-4 py-2 sm:px-5 sm:py-2.5 text-[#FFF200] shadow-none backdrop-blur-md max-w-full"

@@ -47,12 +47,6 @@ const VideoShowcase = ({ image, videoUrl, alt, items, playerOffsetX = '0px', pla
   return (
     <div className="w-full flex flex-col items-center justify-center py-6 sm:py-10 px-1 sm:px-0">
       <div className="relative group max-w-5xl mx-auto w-full">
-        {/* Depth glow backdrop */}
-        <div className="absolute -inset-6 sm:-inset-10 -z-10 pointer-events-none flex items-center justify-center">
-          <div className="w-full h-full bg-gradient-to-br from-yellow-400/45 via-amber-300/25 to-transparent blur-2xl sm:blur-3xl opacity-85 rounded-full" />
-          <div className="absolute inset-4 sm:inset-10 bg-yellow-300/20 blur-[60px] sm:blur-[120px] rounded-full" />
-        </div>
-
         {hasMultipleSlides && (
           <div className="mb-5 flex items-end justify-between gap-4 px-1 sm:mb-7">
             <div className="min-w-0 text-left">

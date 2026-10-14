@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { ArrowDown, ArrowLeft, ArrowUp, Building2, CalendarDays, Check, CheckCircle2, ChevronDown, Circle, Copy, ExternalLink, Flag, GitBranch, GripVertical, Mail, MessageCircle, MessageSquareText, Phone, Plus, RotateCcw, Send, UserRound, X } from 'lucide-react';
-import { Link, useParams } from 'react-router-dom';
+import { ArrowDown, ArrowLeft, ArrowUp, Building2, CalendarDays, Check, CheckCircle2, ChevronDown, Circle, Copy, ExternalLink, Flag, GitBranch, GripVertical, Mail, MessageCircle, MessageSquareText, Phone, Plus, RotateCcw, Send, Trash2, UserRound, X } from 'lucide-react';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { TaskDrawer } from '../components/TaskDrawer';
 import { SaleCelebration } from '../components/SaleCelebration';
 import { CustomSelect } from '../components/CustomSelect';
@@ -17,6 +17,8 @@ const stages: { id: DealStage; label: string }[] = [
   { id: 'proposta', label: 'Proposta' }, { id: 'negociação', label: 'Negociação' }, { id: 'ganho', label: 'Ganho' },
 ];
 const money = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
+const sourceLabels: Record<string, string> = { chat_site: 'Chat do site', contato: 'Formulário do site', manual: 'Manual', indicacao: 'Indicação', prospeccao: 'Prospecção' };
+const sourceLabel = (source: string) => sourceLabels[source] || source;
 const taskStatusOptions = [
   { value: 'pending', label: 'Pendente' },
   { value: 'in_progress', label: 'Em andamento' },
@@ -32,6 +34,7 @@ const taskStatusText: Record<TaskStatus, string> = {
 
 export const DealPage = () => {
   const { dealId = '' } = useParams();
+  const navigate = useNavigate();
   const [deal, setDeal] = useState<Detail | null>(null);
   const [notes, setNotes] = useState<Note[]>([]);
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -48,6 +51,8 @@ export const DealPage = () => {
   const [draggedTaskId, setDraggedTaskId] = useState<string | null>(null);
   const [dragOverTaskId, setDragOverTaskId] = useState<string | null>(null);
   const [checklistCopied, setChecklistCopied] = useState(false);
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   const load = async () => {
     try {
@@ -139,6 +144,19 @@ export const DealPage = () => {
     try { const note = await crm.addDealNote(dealId, body); setNotes((current) => [note as Note, ...current]); setNoteBody(''); }
     finally { setSavingNote(false); }
   };
+  const deleteLead = async () => {
+    if (!deal || deleting) return;
+    setDeleting(true); setStageFeedback(null);
+    try {
+      await crm.deleteDeal(deal.id);
+      navigate('/', { replace: true });
+    } catch (caught) {
+      console.error('Falha ao excluir lead', caught);
+      setDeleteConfirmOpen(false);
+      setStageFeedback({ type: 'error', message: caught instanceof Error ? caught.message : 'Não foi possível excluir este lead.' });
+      setDeleting(false);
+    }
+  };
 
   if (error) return <section className="detail-error"><p>{error}</p><Link to="/">Voltar ao funil</Link></section>;
   if (!deal) return <div className="detail-loading">Carregando negociação…</div>;
@@ -150,14 +168,14 @@ export const DealPage = () => {
   return <div className="deal-detail">
     <header className="deal-heading">
       <div><Link to="/"><ArrowLeft size={17} />Voltar ao funil</Link><p className="eyebrow">Negociação</p><h1>{deal.name}</h1><span>{deal.company?.name || 'Sem empresa vinculada'}</span></div>
-      <div className="deal-actions"><button disabled={Boolean(stageSaving)} onClick={() => changeStage('perdido')} className="danger-outline">{stageSaving === 'perdido' ? 'Registrando…' : 'Marcar perda'}</button><button disabled={Boolean(stageSaving)} onClick={() => changeStage('ganho')} className="primary">{stageSaving === 'ganho' ? 'Registrando…' : 'Marcar venda'}</button></div>
+      <div className="deal-actions"><button disabled={Boolean(stageSaving) || deleting} onClick={() => setDeleteConfirmOpen(true)} className="delete-outline"><Trash2 size={15} />Excluir lead</button><button disabled={Boolean(stageSaving) || deleting} onClick={() => changeStage('perdido')} className="danger-outline">{stageSaving === 'perdido' ? 'Registrando…' : 'Marcar perda'}</button><button disabled={Boolean(stageSaving) || deleting} onClick={() => changeStage('ganho')} className="primary">{stageSaving === 'ganho' ? 'Registrando…' : 'Marcar venda'}</button></div>
     </header>
     {stageFeedback && <div className={`stage-feedback ${stageFeedback.type}`} role="status">{stageFeedback.message}</div>}
     {!outcomeDismissed && (deal.stage === 'ganho' || deal.stage === 'perdido') && <div className={`deal-outcome ${deal.stage === 'ganho' ? 'won' : 'lost'}`}><div><strong>{deal.stage === 'ganho' ? 'Negociação ganha' : 'Negociação perdida'}</strong><span>{deal.stage === 'ganho' ? 'Esta oportunidade foi concluída como venda.' : 'Esta oportunidade foi encerrada como perda.'}</span></div><div className="outcome-actions"><button onClick={() => changeStage('negociação')}><RotateCcw size={14} />Reabrir</button><button onClick={() => setOutcomeDismissed(true)} aria-label="Fechar aviso"><X size={15} /></button></div></div>}
     <nav className="deal-progress">{stages.map((stage, index) => <button key={stage.id} onClick={() => changeStage(stage.id)} className={`${stage.id === deal.stage ? 'current' : ''} ${index < currentIndex ? 'passed' : ''}`}>{stage.label}</button>)}</nav>
     <div className="deal-layout">
       <aside className="deal-aside">
-        <section><h2>Negociação</h2><Info label="Valor estimado" value={money.format(Number(deal.estimated_value || 0))} /><Info label="Origem" value={deal.source} /><Info label="Campanha" value={deal.campaign || 'Não informada'} /><Info label="Criada em" value={new Date(deal.created_at).toLocaleDateString('pt-BR')} /></section>
+        <section><h2>Negociação</h2><Info label="Valor estimado" value={money.format(Number(deal.estimated_value || 0))} /><Info label="Origem" value={sourceLabel(deal.source)} /><Info label="Campanha" value={deal.campaign || 'Não informada'} /><Info label="Criada em" value={new Date(deal.created_at).toLocaleDateString('pt-BR')} /></section>
         <section><h2><Building2 size={17} />Empresa</h2><Info label="Nome" value={deal.company?.name || 'Não vinculada'} /><div className="cnpj-row"><span>CNPJ</span><div><strong>{deal.company?.cnpj || 'Não informado'}</strong><div className="registry-links"><a href="https://solucoes.receita.fazenda.gov.br/Servicos/cnpjreva/" target="_blank" rel="noopener noreferrer">REDESIM <ExternalLink size={11} /></a><a href="https://www.cadesp.fazenda.sp.gov.br/Pages/Cadastro/Consultas/ConsultaPublica/ConsultaPublica.aspx" target="_blank" rel="noopener noreferrer">CADESP <ExternalLink size={11} /></a></div></div></div><Info label="Segmento" value={deal.company?.segment || 'Não informado'} /><Info label="Site" value={deal.company?.website || 'Não informado'} /><Info label="Endereço" value={deal.company?.address || 'Não informado'} /></section>
         <section><h2><UserRound size={17} />Contato</h2><Info label="Nome" value={deal.primary_contact?.name || 'Não vinculado'} /><Info label="Cargo" value={deal.primary_contact?.role || 'Não informado'} />{deal.primary_contact?.email && <p className="contact-line"><Mail size={14} />{deal.primary_contact.email}</p>}{deal.primary_contact?.phone && <p className="contact-line"><Phone size={14} />{deal.primary_contact.phone}</p>}</section>
       </aside>
@@ -186,6 +204,7 @@ export const DealPage = () => {
     </div>
     {taskDrawerOpen && <TaskDrawer dealId={deal.id} dealName={deal.name} onClose={() => setTaskDrawerOpen(false)} onCreated={load} />}
     {celebrating && <SaleCelebration dealName={deal.name} onDone={() => setCelebrating(false)} />}
+    {deleteConfirmOpen && <div className="delete-dialog-backdrop" role="presentation" onMouseDown={() => !deleting && setDeleteConfirmOpen(false)}><section className="delete-dialog" role="alertdialog" aria-modal="true" aria-labelledby="delete-lead-title" onMouseDown={(event) => event.stopPropagation()}><div className="delete-dialog-icon"><Trash2 /></div><p className="eyebrow">Exclusão definitiva</p><h2 id="delete-lead-title">Excluir este lead?</h2><p>A negociação <strong>{deal.name}</strong>, suas tarefas, anotações e vínculos serão removidos do funil. O contato e a empresa serão preservados.</p><div><button type="button" className="secondary" disabled={deleting} onClick={() => setDeleteConfirmOpen(false)}>Cancelar</button><button type="button" className="delete-confirm" disabled={deleting} onClick={deleteLead}>{deleting ? 'Excluindo…' : 'Excluir definitivamente'}</button></div></section></div>}
   </div>;
 };
 
