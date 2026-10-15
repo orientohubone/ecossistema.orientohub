@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLocation } from 'react-router-dom';
-import { MessageCircle, X, MessageSquare, Linkedin, Mail, Sparkles, ArrowUpRight, ChevronRight, RotateCcw, Send, CheckCircle2 } from 'lucide-react';
+import { MessageCircle, X, MessageSquare, Linkedin, Mail, ArrowUpRight, ChevronRight, RotateCcw, Send, CheckCircle2 } from 'lucide-react';
 import fernandoSelecao6 from '../../assets/fernando-selecao6.png';
 import { contactService } from '../../services/contactService';
 
@@ -158,7 +158,6 @@ const ContactFab = () => {
                   </div>
                 </div>
                   <div className="min-w-0 text-left">
-                    <div className="mb-1 flex items-center gap-1.5 text-[10px] font-black uppercase tracking-[0.16em] text-[#FFF200]"><Sparkles className="h-3 w-3" />Contato direto</div>
                     <h3 className="truncate text-lg font-extrabold tracking-tight text-white">Fernando Ramalho</h3>
                     <p className="mt-0.5 text-xs text-[#9ba9bc]">Fundador da OrientoHub</p>
                     <div className="mt-2 inline-flex items-center gap-1.5 rounded-full border border-emerald-400/20 bg-emerald-400/10 px-2 py-1 text-[10px] font-bold text-emerald-300">

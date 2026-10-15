@@ -63,7 +63,9 @@ const render = (page) => {
     .replace(/<meta name="twitter:title" content="[^"]*"\s*\/>/, `<meta name="twitter:title" content="${escape(page.title)}" />`)
     .replace(/<meta name="twitter:description" content="[^"]*"\s*\/>/, `<meta name="twitter:description" content="${escape(page.description)}" />`)
     .replace('</head>', `<link rel="canonical" href="${canonical}" /><script type="application/ld+json">${structured}</script></head>`)
-    .replace('<div id="root"></div>', `<div id="root">${renderContent(page)}</div>`);
+    // Keep crawlable fallback copy without painting a temporary page before React mounts.
+    // Rendering it inside #root caused a visible flash of this simplified document.
+    .replace('<div id="root"></div>', `<div id="root"></div><noscript>${renderContent(page)}</noscript>`);
 };
 
 for (const page of pages) {
