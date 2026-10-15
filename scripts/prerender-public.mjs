@@ -49,8 +49,6 @@ const articles = [
 for (const [slug, title, description] of articles) pages.push({ path: `/blog/${slug}`, title: `${title} | Orientohub`, description, heading: title, body: description, links: [['/blog', 'Ver todos os artigos'], ['/contato', 'Fale com a Orientohub']] });
 
 const escape = (value = '') => value.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;');
-const renderContent = (page) => `<div data-static-content="true" style="min-height:100vh;background:#0c121b;color:#fff;font-family:Inter,Arial,sans-serif;padding:48px 24px"><main style="max-width:960px;margin:0 auto"><a href="/" style="color:#fff200;font-weight:800;text-decoration:none">ORIENTOHUB</a><p style="margin-top:72px;color:#fff200;font-size:12px;font-weight:800;letter-spacing:.16em;text-transform:uppercase">Estratégia, inovação e execução</p><h1 style="max-width:850px;margin:16px 0;font-size:clamp(36px,7vw,72px);line-height:1.05">${escape(page.heading)}</h1><p style="max-width:720px;color:#cbd5e1;font-size:20px;line-height:1.65">${escape(page.body)}</p><nav aria-label="Links relacionados" style="display:flex;flex-wrap:wrap;gap:12px;margin-top:32px">${page.links.map(([href, label]) => `<a href="${escape(href)}" style="border:1px solid #fff200;border-radius:10px;padding:12px 16px;color:#fff200;text-decoration:none;font-weight:700">${escape(label)}</a>`).join('')}</nav></main></div>`;
-
 const render = (page) => {
   const canonical = `${origin}${page.path === '/' ? '/' : page.path}`;
   const structured = JSON.stringify({ '@context': 'https://schema.org', '@type': page.path.startsWith('/servicos/') ? 'Service' : page.path.startsWith('/blog/') ? 'Article' : page.path === '/' ? 'Organization' : 'WebPage', name: page.title, headline: page.path.startsWith('/blog/') ? page.heading : undefined, description: page.description, url: canonical, author: page.path.startsWith('/blog/') ? { '@type': 'Person', name: 'Fernando Ramalho' } : undefined, publisher: page.path.startsWith('/blog/') ? { '@type': 'Organization', name: 'Orientohub', url: origin } : undefined, provider: page.path.startsWith('/servicos/') ? { '@type': 'Organization', name: 'Orientohub', url: origin } : undefined });
@@ -62,10 +60,7 @@ const render = (page) => {
     .replace(/<meta property="og:description" content="[^"]*"\s*\/>/, `<meta property="og:description" content="${escape(page.description)}" />`)
     .replace(/<meta name="twitter:title" content="[^"]*"\s*\/>/, `<meta name="twitter:title" content="${escape(page.title)}" />`)
     .replace(/<meta name="twitter:description" content="[^"]*"\s*\/>/, `<meta name="twitter:description" content="${escape(page.description)}" />`)
-    .replace('</head>', `<link rel="canonical" href="${canonical}" /><script type="application/ld+json">${structured}</script></head>`)
-    // Keep crawlable fallback copy without painting a temporary page before React mounts.
-    // Rendering it inside #root caused a visible flash of this simplified document.
-    .replace('<div id="root"></div>', `<div id="root"></div><noscript>${renderContent(page)}</noscript>`);
+    .replace('</head>', `<link rel="canonical" href="${canonical}" /><script type="application/ld+json">${structured}</script></head>`);
 };
 
 for (const page of pages) {

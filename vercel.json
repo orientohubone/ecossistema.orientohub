@@ -22,7 +22,7 @@
       ]
     },
     {
-      "source": "/(dashboard|checkout|cadastro)(.*)",
+      "source": "/(dashboard|checkout|cadastro|crm|academy/login)(.*)",
       "headers": [
         { "key": "X-Robots-Tag", "value": "noindex, nofollow" }
       ]

@@ -11,6 +11,20 @@ type Detail = Deal & { company: Company | null; primary_contact: Contact | null;
 type Note = { id: string; body: string; created_at: string };
 type TaskStatus = 'pending' | 'in_progress' | 'waiting_client' | 'completed';
 type Task = { id: string; title: string; description?: string | null; completed: boolean; task_status?: TaskStatus; starts_at?: string | null; ends_at?: string | null; due_at?: string | null; sort_order?: number; created_at: string };
+type DealSnapshot = { deal: Detail; notes: Note[]; tasks: Task[]; cachedAt: number };
+
+const dealCacheKey = (dealId: string) => `orientohub:crm:deal:${dealId}`;
+const readDealCache = (dealId: string): DealSnapshot | null => {
+  if (!dealId) return null;
+  try {
+    const stored = sessionStorage.getItem(dealCacheKey(dealId));
+    return stored ? JSON.parse(stored) as DealSnapshot : null;
+  } catch { return null; }
+};
+const writeDealCache = (dealId: string, snapshot: Omit<DealSnapshot, 'cachedAt'>) => {
+  try { sessionStorage.setItem(dealCacheKey(dealId), JSON.stringify({ ...snapshot, cachedAt: Date.now() })); }
+  catch { /* Cache is an enhancement; the CRM still works if storage is unavailable. */ }
+};
 
 const stages: { id: DealStage; label: string }[] = [
   { id: 'novo', label: 'Sem contato' }, { id: 'qualificando', label: 'Contato feito' },
@@ -35,9 +49,11 @@ const taskStatusText: Record<TaskStatus, string> = {
 export const DealPage = () => {
   const { dealId = '' } = useParams();
   const navigate = useNavigate();
-  const [deal, setDeal] = useState<Detail | null>(null);
-  const [notes, setNotes] = useState<Note[]>([]);
-  const [tasks, setTasks] = useState<Task[]>([]);
+  const [initialSnapshot] = useState(() => readDealCache(dealId));
+  const [deal, setDeal] = useState<Detail | null>(initialSnapshot?.deal || null);
+  const [notes, setNotes] = useState<Note[]>(initialSnapshot?.notes || []);
+  const [tasks, setTasks] = useState<Task[]>(initialSnapshot?.tasks || []);
+  const [initialLoading, setInitialLoading] = useState(!initialSnapshot);
   const [error, setError] = useState('');
   const [editingPeriod, setEditingPeriod] = useState<{ id: string; startsAt: string; endsAt: string } | null>(null);
   const [tasksCollapsed, setTasksCollapsed] = useState(true);
@@ -54,19 +70,34 @@ export const DealPage = () => {
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [deleting, setDeleting] = useState(false);
 
-  const load = async () => {
+  const load = async (targetDealId = dealId, cached = readDealCache(targetDealId)) => {
     try {
-      const detail = await crm.getDeal(dealId);
-      setDeal(detail); setError('');
-      const [dealNotes, dealTasks] = await Promise.allSettled([crm.getDealNotes(dealId), crm.getDealTasks(dealId)]);
-      setNotes(dealNotes.status === 'fulfilled' ? dealNotes.value as Note[] : []);
-      setTasks(dealTasks.status === 'fulfilled' ? dealTasks.value as Task[] : []);
+      const [detailResult, notesResult, tasksResult] = await Promise.allSettled([crm.getDeal(targetDealId), crm.getDealNotes(targetDealId), crm.getDealTasks(targetDealId)]);
+      if (detailResult.status === 'rejected') throw detailResult.reason;
+      const nextDeal = detailResult.value as Detail;
+      const nextNotes = notesResult.status === 'fulfilled' ? notesResult.value as Note[] : cached?.notes || [];
+      const nextTasks = tasksResult.status === 'fulfilled' ? tasksResult.value as Task[] : cached?.tasks || [];
+      setDeal(nextDeal); setNotes(nextNotes); setTasks(nextTasks); setError('');
+      writeDealCache(targetDealId, { deal: nextDeal, notes: nextNotes, tasks: nextTasks });
     } catch (caught) {
       console.error('Falha ao carregar negociação', caught);
-      setError('Não foi possível carregar esta negociação.');
+      if (!cached) setError('Não foi possível carregar esta negociação.');
+    } finally {
+      setInitialLoading(false);
     }
   };
-  useEffect(() => { load(); }, [dealId]);
+  useEffect(() => {
+    const cached = readDealCache(dealId);
+    if (cached) {
+      setDeal(cached.deal); setNotes(cached.notes); setTasks(cached.tasks); setInitialLoading(false); setError('');
+    } else {
+      setDeal(null); setNotes([]); setTasks([]); setInitialLoading(true);
+    }
+    void load(dealId, cached);
+  }, [dealId]);
+  useEffect(() => {
+    if (deal?.id === dealId) writeDealCache(dealId, { deal, notes, tasks });
+  }, [deal, notes, tasks, dealId]);
 
   const changeStage = async (stage: DealStage) => {
     if (!deal || stageSaving) return;
@@ -149,6 +180,7 @@ export const DealPage = () => {
     setDeleting(true); setStageFeedback(null);
     try {
       await crm.deleteDeal(deal.id);
+      try { sessionStorage.removeItem(dealCacheKey(deal.id)); } catch { /* Ignore unavailable storage. */ }
       navigate('/', { replace: true });
     } catch (caught) {
       console.error('Falha ao excluir lead', caught);
@@ -159,7 +191,7 @@ export const DealPage = () => {
   };
 
   if (error) return <section className="detail-error"><p>{error}</p><Link to="/">Voltar ao funil</Link></section>;
-  if (!deal) return <div className="detail-loading">Carregando negociação…</div>;
+  if (initialLoading || !deal) return <DealPageSkeleton />;
   const currentIndex = stages.findIndex((stage) => stage.id === deal.stage);
   const completedTaskCount = tasks.filter((task) => task.completed || task.task_status === 'completed').length;
   const taskProgress = tasks.length ? Math.round(completedTaskCount / tasks.length * 100) : 0;
@@ -209,6 +241,14 @@ export const DealPage = () => {
 };
 
 const Info = ({ label, value }: { label: string; value: string }) => <div className="info-row"><span>{label}</span><strong>{value}</strong></div>;
+const DealPageSkeleton = () => <div className="deal-skeleton" aria-label="Carregando negociação" aria-busy="true">
+  <header><div><i className="skeleton-line short" /><i className="skeleton-line title" /><i className="skeleton-line medium" /></div><div className="skeleton-actions"><i /><i /></div></header>
+  <nav>{Array.from({ length: 5 }, (_, index) => <i key={index} />)}</nav>
+  <div className="deal-skeleton-layout">
+    <aside>{Array.from({ length: 3 }, (_, index) => <section key={index}><i className="skeleton-line medium" />{Array.from({ length: 4 }, (__, row) => <div key={row}><i className="skeleton-line short" /><i className="skeleton-line medium" /></div>)}</section>)}</aside>
+    <main><section className="skeleton-highlight"><div><i className="skeleton-line short" /><i className="skeleton-line wide" /></div><i className="skeleton-square" /></section>{Array.from({ length: 3 }, (_, index) => <section key={index} className="skeleton-panel"><i className="skeleton-line medium" /><i className="skeleton-line wide" /><i className="skeleton-line wide" /><i className="skeleton-line medium" /></section>)}</main>
+  </div>
+</div>;
 const toInputDate = (value?: string | null) => value ? new Date(value).toISOString().slice(0, 16) : '';
 const formatTaskDate = (value?: string | null) => value ? new Date(value).toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' }) : 'definir';
 const formatActivityDate = (value: string) => new Date(value).toLocaleString('pt-BR', { dateStyle: 'medium', timeStyle: 'short' });

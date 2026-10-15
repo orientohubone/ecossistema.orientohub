@@ -21,7 +21,7 @@ export const Login = () => {
   };
 
   return <main className="auth-page">
-    <section className="auth-art"><img src="/Colagem de Dashboard em Preto e Amarelo.png" alt="Colagem do dashboard OrientoHub" /></section>
+    <section className="auth-art"><img src={`${import.meta.env.BASE_URL}Colagem de Dashboard em Preto e Amarelo.png`} alt="Colagem do dashboard OrientoHub" /></section>
     <section className="auth-panel">
       <form className="auth-form" onSubmit={submit}>
         <a className="auth-back" href="https://orientohub.com.br"><ArrowLeft size={16} />Voltar para a Home</a>

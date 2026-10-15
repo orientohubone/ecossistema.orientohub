@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { Briefcase, Check, Copy, ExternalLink, Maximize2, Presentation, Search } from 'lucide-react';
+import { BarChart3, Briefcase, Check, Copy, ExternalLink, Maximize2, Presentation, Search } from 'lucide-react';
 
-type MaterialCategory = 'apresentacoes' | 'servicos';
+type MaterialCategory = 'apresentacoes' | 'servicos' | 'bpo-gestao';
 type ServiceType = 'estrategias' | 'inovacao' | 'sites' | 'ecommerce';
 
 type CommercialMaterial = {
@@ -170,12 +170,33 @@ const materials: CommercialMaterial[] = [
     url: 'https://www.canva.com/design/DAHXoordqaw/oickynj0TixlAgaaHjYetg/view',
     embedUrl: 'https://www.canva.com/design/DAHXoordqaw/oickynj0TixlAgaaHjYetg/view?embed',
   },
+  {
+    id: 'apresentacao-bpo-gestao',
+    title: 'BPO Gestão',
+    description: 'Apresentação comercial da solução de BPO Gestão, sua proposta de valor, atuação e principais entregas.',
+    category: 'bpo-gestao',
+    categoryLabel: 'BPO Gestão',
+    platform: 'Canva',
+    url: 'https://www.canva.com/design/DAHYB2kCg04/u3_urXexbctH2miUqX9jlQ/view',
+    embedUrl: 'https://www.canva.com/design/DAHYB2kCg04/u3_urXexbctH2miUqX9jlQ/view?embed',
+  },
+  {
+    id: 'proposta-comercial-bpo-gestao',
+    title: 'Proposta comercial de BPO Gestão',
+    description: 'Proposta comercial para apresentar o escopo, as entregas e as condições da solução de BPO Gestão.',
+    category: 'bpo-gestao',
+    categoryLabel: 'BPO Gestão',
+    platform: 'Canva',
+    url: 'https://www.canva.com/design/DAHYB_83vMI/m0hb6ydkcGpmguS0J2Wz1w/view',
+    embedUrl: 'https://www.canva.com/design/DAHYB_83vMI/m0hb6ydkcGpmguS0J2Wz1w/view?embed',
+  },
 ];
 
 const categories = [
   { id: 'todos', label: 'Todos' },
   { id: 'apresentacoes', label: 'Apresentações' },
   { id: 'servicos', label: 'Serviços' },
+  { id: 'bpo-gestao', label: 'BPO Gestão' },
 ] as const;
 
 const services = [
@@ -251,7 +272,7 @@ export const MaterialsPage = () => {
       const key = material.service ? `${material.category}-${material.service}` : material.category;
       const current = grouped.get(key);
       if (current) current.materials.push(material);
-      else grouped.set(key, { title: material.serviceLabel || material.categoryLabel, eyebrow: material.service ? material.categoryLabel : 'Categoria', category: material.category, materials: [material] });
+      else grouped.set(key, { title: material.serviceLabel || material.categoryLabel, eyebrow: material.category === 'bpo-gestao' ? 'Serviços' : material.service ? material.categoryLabel : 'Categoria', category: material.category, materials: [material] });
     });
     return [...grouped.values()];
   }, [visibleMaterials]);
@@ -269,15 +290,15 @@ export const MaterialsPage = () => {
     </header>
 
     <section className="materials-controls" aria-label="Filtros de materiais">
-      <div className="materials-filter-stack"><div className="materials-categories">{categories.map((item) => <button key={item.id} className={category === item.id ? 'active' : ''} onClick={() => { setCategory(item.id); if (item.id === 'apresentacoes') setService('todos'); }}>{item.label}<span>{item.id === 'todos' ? materials.length : materials.filter((material) => material.category === item.id).length}</span></button>)}</div>{(category === 'servicos' || category === 'todos') && <div className="materials-services" aria-label="Filtrar por serviço"><span>Serviço</span>{services.map((item) => <button key={item.id} className={service === item.id ? 'active' : ''} onClick={() => setService(item.id)}>{item.label}</button>)}</div>}</div>
+      <div className="materials-filter-stack"><div className="materials-categories">{categories.map((item) => <button key={item.id} className={category === item.id ? 'active' : ''} onClick={() => { setCategory(item.id); if (item.id !== 'servicos') setService('todos'); }}>{item.label}<span>{item.id === 'todos' ? materials.length : materials.filter((material) => material.category === item.id).length}</span></button>)}</div>{(category === 'servicos' || category === 'todos') && <div className="materials-services" aria-label="Filtrar por serviço"><span>Serviço</span>{services.map((item) => <button key={item.id} className={service === item.id ? 'active' : ''} onClick={() => setService(item.id)}>{item.label}</button>)}</div>}</div>
       <label className="materials-search"><Search size={16} /><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Buscar material..." /></label>
     </section>
 
     {visibleMaterials.length ? <div className="materials-sections">{groups.map((group) => <section className="materials-section" key={`${group.category}-${group.title}`}>
-      <div className="materials-section-title"><div className="materials-section-icon">{group.category === 'servicos' ? <Briefcase size={20} /> : <Presentation size={20} />}</div><div><p>{group.eyebrow}</p><h2>{group.title}</h2></div><span>{group.materials.length}</span></div>
+      <div className="materials-section-title"><div className="materials-section-icon">{group.category === 'bpo-gestao' ? <BarChart3 size={20} /> : group.category === 'servicos' ? <Briefcase size={20} /> : <Presentation size={20} />}</div><div><p>{group.eyebrow}</p><h2>{group.title}</h2></div><span>{group.materials.length}</span></div>
       <div className="materials-grid">{group.materials.map((material) => <article className="material-card" key={material.id}>
         <CanvaPreview material={material} />
-        <div className="material-body"><span className="material-category">{material.category === 'servicos' ? <Briefcase size={13} /> : <Presentation size={13} />}{material.categoryLabel}{material.serviceLabel ? ` · ${material.serviceLabel}` : ''}</span><h3>{material.title}</h3><p>{material.description}</p><div className="material-actions"><a className="primary" href={material.url} target="_blank" rel="noreferrer">Visualizar <ExternalLink size={15} /></a><button className={`material-copy ${copiedId === material.id ? 'copied' : ''}`} onClick={() => void copyLink(material)}>{copiedId === material.id ? <Check size={15} /> : <Copy size={15} />}{copiedId === material.id ? 'Link copiado' : 'Copiar link'}</button></div></div>
+        <div className="material-body"><span className="material-category">{material.category === 'bpo-gestao' ? <BarChart3 size={13} /> : material.category === 'servicos' ? <Briefcase size={13} /> : <Presentation size={13} />}{material.categoryLabel}{material.serviceLabel ? ` · ${material.serviceLabel}` : ''}</span><h3>{material.title}</h3><p>{material.description}</p><div className="material-actions"><a className="primary" href={material.url} target="_blank" rel="noreferrer">Visualizar <ExternalLink size={15} /></a><button className={`material-copy ${copiedId === material.id ? 'copied' : ''}`} onClick={() => void copyLink(material)}>{copiedId === material.id ? <Check size={15} /> : <Copy size={15} />}{copiedId === material.id ? 'Link copiado' : 'Copiar link'}</button></div></div>
       </article>)}</div>
     </section>)}</div> : <section className="materials-empty"><Search size={28} /><h2>Nenhum material encontrado</h2><p>Tente buscar outro termo ou selecionar uma categoria diferente.</p><button onClick={() => { setQuery(''); setCategory('todos'); setService('todos'); }}>Limpar filtros</button></section>}
   </div>;
