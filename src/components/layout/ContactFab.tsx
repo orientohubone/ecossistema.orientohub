@@ -263,21 +263,23 @@ const ContactFab = () => {
         className="relative group"
         whileHover={{ scale: 1.08 }}
         whileTap={{ scale: 0.92 }}
+        aria-label={isOpen ? 'Fechar núcleo de conversa' : 'Abrir núcleo de conversa'}
+        aria-expanded={isOpen}
       >
         {/* Outer glow ring (visible when closed) */}
         {!isOpen && (
           <>
-            <div className="absolute -inset-2 rounded-full bg-[#FFF200]/100/20 blur-xl opacity-60 group-hover:opacity-100 transition-opacity duration-500" />
-            <div className="absolute inset-0 rounded-full bg-[#FFF200]/100 animate-ping opacity-15" />
+            <div className="absolute -inset-3 rounded-full bg-[#FFF200]/25 blur-2xl opacity-55 transition-opacity duration-500 group-hover:opacity-90" />
+            <div className="absolute inset-1 rounded-full bg-[#FFF200]/25 animate-ping opacity-20" />
           </>
         )}
 
         {/* Button body */}
         <div
-          className={`relative w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center shadow-2xl transition-all duration-300 ${
+          className={`relative flex h-16 w-16 items-center justify-center rounded-full transition-all duration-300 sm:h-[72px] sm:w-[72px] ${
             isOpen
-              ? 'bg-gray-900 border border-white/10 text-[#FFF200]'
-              : 'bg-gradient-to-br from-[#FFF200] via-[#FFF200] to-[#FFF200] text-black shadow-none'
+              ? 'border border-white/10 bg-gray-900 text-[#FFF200] shadow-2xl'
+              : 'bg-transparent text-black'
           }`}
         >
           <AnimatePresence mode="wait">
@@ -294,12 +296,13 @@ const ContactFab = () => {
             ) : (
               <motion.div
                 key="message"
-                initial={{ rotate: 90, opacity: 0 }}
-                animate={{ rotate: 0, opacity: 1 }}
-                exit={{ rotate: -90, opacity: 0 }}
-                transition={{ duration: 0.2 }}
+                className="h-full w-full"
+                initial={{ scale: 0.7, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.75, opacity: 0 }}
+                transition={{ type: 'spring', stiffness: 320, damping: 24 }}
               >
-                <MessageCircle className="w-6 h-6 sm:w-7 sm:h-7 fill-current" />
+                <img src="/Ícone de núcleo orbital elétrico.png" alt="" className="h-full w-full object-contain drop-shadow-[0_10px_24px_rgba(255,210,0,.28)]" />
               </motion.div>
             )}
           </AnimatePresence>
