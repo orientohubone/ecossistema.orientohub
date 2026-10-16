@@ -137,6 +137,7 @@ const Footer = () => {
     { to: '/sobre', label: t('nav.about') },
     { to: '/manifesto', label: 'Manifesto' },
     { to: '/ecossistema', label: t('nav.ecosystem') },
+    { to: '/parceiros', label: 'Nossos parceiros' },
     { to: '/planos', label: t('nav.pricing') },
     { to: '/blog', label: t('nav.blog') },
     { to: '/glossario', label: 'Glossário' },

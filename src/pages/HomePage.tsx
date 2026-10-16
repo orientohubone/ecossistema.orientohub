@@ -6,6 +6,7 @@ import { ArrowRight, Sparkles, Layers, Users, Target, Lightbulb, ExternalLink, C
 import SectionDivider from '../components/SectionDivider';
 import IntegrationsSection from '../components/components';
 import ClientsShowcase from '../components/ClientsShowcase';
+import HeroLeadDialog from '../components/HeroLeadDialog';
 import { Badge } from '../components/ui/Badge';
 import type { ComponentType } from 'react';
 
@@ -140,6 +141,7 @@ const quickActions: QuickAction[] = [
 
 const HomePage = () => {
   const [presentationOpen, setPresentationOpen] = useState(false);
+  const [leadDialogOpen, setLeadDialogOpen] = useState(false);
   const [heroOutcomeIndex, setHeroOutcomeIndex] = useState(0);
   const modalContentRef = useRef<HTMLDivElement | null>(null);
 
@@ -252,13 +254,14 @@ const HomePage = () => {
               className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 sm:gap-4 w-full px-2 sm:px-0"
               variants={itemVariants}
             >
-              <Link
-                to="/plataforma"
+              <button
+                type="button"
+                onClick={() => setLeadDialogOpen(true)}
                 className="group inline-flex w-full sm:w-auto items-center justify-center gap-2 px-6 sm:px-8 py-3.5 sm:py-4 bg-[#FFF200] hover:bg-[#FFF200] hover:opacity-90 text-black font-bold text-base sm:text-lg rounded-xl shadow-none transition-all duration-300 hover:scale-105 active:scale-95"
               >
-                Conheça nossa plataforma
+                Tire sua ideia do papel
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </Link>
+              </button>
 
               {/* Botão temporariamente desativado.
               <button
@@ -284,6 +287,8 @@ const HomePage = () => {
       </div>
 
       <IntegrationsSection />
+
+      <HeroLeadDialog open={leadDialogOpen} onClose={() => setLeadDialogOpen(false)} />
 
       {presentationOpen && (
         <div

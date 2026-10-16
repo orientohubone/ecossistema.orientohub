@@ -68,6 +68,7 @@ const Header = () => {
         { name: t('nav.ecosystem'), href: '/ecossistema' },
         { name: 'Serviços', href: '/servicos' },
         { name: 'Plataforma', href: '/plataforma' },
+        { name: 'Nossos parceiros', href: '/parceiros' },
         { name: 'Manifesto', href: '/manifesto' },
         { name: 'Infoprodutos', href: '#', isGroup: true },
         { name: 'SoA — Share of Attention', href: '/soa' },
