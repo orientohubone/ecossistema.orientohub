@@ -1,8 +1,8 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Sparkles, Layers, Users, Target, Lightbulb, ExternalLink, Component, MonitorPlay, Maximize2, X, TrendingUp, Rocket, Brain, GraduationCap, Mic, Briefcase, BookOpen } from 'lucide-react';
+import { ArrowRight, Sparkles, Layers, Users, Target, Lightbulb, ExternalLink, Component, MonitorPlay, Maximize2, X, TrendingUp, Rocket, Brain, GraduationCap, Mic, Briefcase, BookOpen, Instagram } from 'lucide-react';
 import SectionDivider from '../components/SectionDivider';
 import IntegrationsSection from '../components/components';
 import ClientsShowcase from '../components/ClientsShowcase';
@@ -71,7 +71,7 @@ const heroBackgroundStyle = {
   pointerEvents: 'none' as const,
 };
 
-const heroOutcomeWords = ['Conexão', 'Aceleração', 'Inovação', 'Construção', 'Evolução'];
+const heroOutcomeWords = ['direção', 'validação', 'execução', 'conexões'];
 
 const ecosystemLayers: EcosystemLayer[] = [
   {
@@ -82,8 +82,8 @@ const ecosystemLayers: EcosystemLayer[] = [
     icon: Target,
     color: 'from-amber-500 to-orange-600',
     brandColor: 'amber',
-    href: '/servicos',
-    ctaLabel: 'Conhecer os serviços',
+    href: '/ecossistema#nucleo',
+    ctaLabel: 'Explorar o Núcleo',
     tags: ['Estratégia', 'Inovação', 'Marketing', 'Construção'],
   },
   {
@@ -94,8 +94,8 @@ const ecosystemLayers: EcosystemLayer[] = [
     icon: Lightbulb,
     color: 'from-blue-500 to-cyan-600',
     brandColor: 'blue',
-    href: '/plataforma',
-    ctaLabel: 'Gerencie seus projetos',
+    href: '/ecossistema#plataforma',
+    ctaLabel: 'Explorar a Plataforma',
     tags: ['Ideação', 'Validação', 'Tração', 'Escala'],
   },
   {
@@ -108,7 +108,7 @@ const ecosystemLayers: EcosystemLayer[] = [
     brandColor: 'green',
     href: '/ecossistema#mvps',
     ctaLabel: 'Seja um cofounder',
-    tags: ['Humansys', 'Intentia', 'Forgether', 'Custfly'],
+    tags: ['Humansys', 'Intentia', 'Forgether', 'Penttia'],
   },
   {
     number: '04',
@@ -144,6 +144,7 @@ const HomePage = () => {
   const [leadDialogOpen, setLeadDialogOpen] = useState(false);
   const [heroOutcomeIndex, setHeroOutcomeIndex] = useState(0);
   const modalContentRef = useRef<HTMLDivElement | null>(null);
+  const closeLeadDialog = useCallback(() => setLeadDialogOpen(false), []);
 
   useEffect(() => {
     if (!presentationOpen) return undefined;
@@ -188,8 +189,8 @@ const HomePage = () => {
   return (
     <>
       <Helmet>
-        <title>OrientoHub - O hub para quem constrói o futuro das startups</title>
-        <meta name="description" content="Construa sua startup com metodologia, inovação, tecnologia e diversão. OrientoHub é a plataforma completa para empreendedores." />
+        <title>OrientoHub - Tire sua ideia do papel</title>
+        <meta name="description" content="Não deixe uma boa ideia travar por falta de direção, validação ou execução. A OrientoHub ajuda você a transformar intenção em um negócio real." />
       </Helmet>
 
       {/* Shared background that spans the whole page */}
@@ -212,7 +213,7 @@ const HomePage = () => {
               <Badge variant="liquid-glass" className="gap-2 px-3 py-1.5 sm:px-3.5 sm:py-2">
                 <Rocket className="h-3.5 w-3.5 text-[#FFF200] shrink-0" aria-hidden="true" />
                 <span className="text-[10px] sm:text-xs font-semibold uppercase tracking-[0.12em] text-white/90">
-                  Ecossistema de inovação
+                  Ideias travadas custam oportunidades
                 </span>
               </Badge>
             </motion.div>
@@ -221,25 +222,26 @@ const HomePage = () => {
               className="text-3xl xs:text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-center mb-4 sm:mb-6 tracking-tight leading-[1.1] sm:leading-[1.08] flex flex-col items-center"
               variants={itemVariants}
             >
-              <span className="block text-white mb-2 sm:mb-3">
-                <span className="block">Orientação e</span>
-                <span
-                  className="relative mx-auto mt-1 sm:mt-2 flex h-[1.35em] w-[13ch] xs:w-[15ch] sm:w-[16ch] items-center justify-center overflow-hidden text-center leading-[1.15]"
-                  aria-live="polite"
-                >
+              <span className="block whitespace-nowrap text-white">Boas ideias morrem</span>
+              <span
+                className="relative mx-auto flex h-[1.2em] w-[14ch] items-center justify-center overflow-hidden whitespace-nowrap leading-[1.15]"
+                aria-live="polite"
+              >
                   <AnimatePresence mode="wait" initial={false}>
                     <motion.span
                       key={heroOutcomeWords[heroOutcomeIndex]}
-                      className="absolute inset-0 flex items-center justify-center whitespace-nowrap bg-gradient-to-r from-[#FFF200] via-[#FFF200] to-[#FFF200]/80 bg-clip-text text-transparent"
+                      className="absolute inset-0 flex items-center justify-center gap-[0.22em] whitespace-nowrap"
                       initial={{ opacity: 0, y: 18, filter: 'blur(5px)' }}
                       animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
                       exit={{ opacity: 0, y: -18, filter: 'blur(5px)' }}
                       transition={{ duration: 0.45, ease: 'easeOut' }}
                     >
-                      {heroOutcomeWords[heroOutcomeIndex]}
+                      <span className="text-white">sem</span>
+                      <span className="bg-gradient-to-r from-[#FFF200] via-[#FFF200] to-[#FFF200]/80 bg-clip-text text-transparent">
+                        {heroOutcomeWords[heroOutcomeIndex]}
+                      </span>
                     </motion.span>
                   </AnimatePresence>
-                </span>
               </span>
             </motion.h1>
 
@@ -247,7 +249,7 @@ const HomePage = () => {
               className="text-base sm:text-xl md:text-2xl text-gray-300 text-center max-w-3xl mx-auto mb-8 sm:mb-12 leading-relaxed px-2"
               variants={itemVariants}
             >
-              Da estratégia à execução: serviços, plataforma, MVPs e verticais conectados para transformar ideias em negócios.
+              Sem clareza para decidir e apoio para executar, boas oportunidades ficam no papel. Nós ajudamos você a tirá-las de lá.
             </motion.p>
 
             <motion.div
@@ -259,7 +261,7 @@ const HomePage = () => {
                 onClick={() => setLeadDialogOpen(true)}
                 className="group inline-flex w-full sm:w-auto items-center justify-center gap-2 px-6 sm:px-8 py-3.5 sm:py-4 bg-[#FFF200] hover:bg-[#FFF200] hover:opacity-90 text-black font-bold text-base sm:text-lg rounded-xl shadow-none transition-all duration-300 hover:scale-105 active:scale-95"
               >
-                Tire sua ideia do papel
+                Quero destravar minha ideia
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </button>
 
@@ -288,7 +290,7 @@ const HomePage = () => {
 
       <IntegrationsSection />
 
-      <HeroLeadDialog open={leadDialogOpen} onClose={() => setLeadDialogOpen(false)} />
+      <HeroLeadDialog open={leadDialogOpen} onClose={closeLeadDialog} />
 
       {presentationOpen && (
         <div
@@ -431,13 +433,13 @@ const HomePage = () => {
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 w-full">
               <a
-                href="https://fernandoramalhobuilder.com.br"
+                href="https://www.instagram.com/fernando.ramalhooficial/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group inline-flex w-full sm:w-auto items-center justify-center gap-2 px-6 py-3.5 bg-[#FFF200] hover:bg-[#FFF200] hover:opacity-90 shadow-none text-black font-bold rounded-xl transition-all"
               >
                 Conheça Fernando
-                <ExternalLink className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                <Instagram className="h-4 w-4 transition-transform group-hover:scale-110" />
               </a>
 
               <Link
@@ -454,54 +456,13 @@ const HomePage = () => {
 
       <SectionDivider />
 
-      {/* Manifesto */}
-      <section className="relative pt-4 pb-10 overflow-hidden">
-        <div className="container-custom relative z-10">
-          <SectionHeader
-            icon={Lightbulb}
-            label="04 — Manifesto"
-            title="Pense. Crie. Acelere."
-            titleClassName="text-4xl sm:text-5xl md:text-7xl font-bold mb-6 sm:mb-8 text-white leading-tight"
-            containerClassName="max-w-4xl mx-auto px-2"
-          />
-
-          <motion.p
-            className="text-lg sm:text-xl md:text-2xl text-gray-300 leading-relaxed mb-6 max-w-2xl mx-auto text-center px-2"
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ delay: 0.2, duration: 0.6 }}
-          >
-            Método, ambição e execução conectados para transformar ideias em negócios de impacto.
-          </motion.p>
-
-          <motion.div
-            className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full px-2"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ delay: 0.3 }}
-          >
-            <Link
-              to="/manifesto"
-              className="inline-flex w-full sm:w-auto items-center justify-center gap-2 px-6 py-3.5 bg-[#FFF200] hover:bg-[#FFF200] hover:opacity-90 shadow-none text-black font-bold rounded-xl transition-all"
-            >
-              Leia o Manifesto Completo
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-          </motion.div>
-        </div>
-      </section>
-
-      <SectionDivider />
-
       {/* Final actions */}
       <section className="relative pt-2 pb-8 overflow-hidden">
         <div className="container-custom relative z-10">
           <div className="mb-10 sm:mb-14">
             <SectionHeader
               icon={ArrowRight}
-              label="05 — Próximos Passos"
+              label="04 — Próximos Passos"
               title="Sua jornada começa aqui"
               description="Escolha como você quer explorar o OrientoHub e começar a transformar suas ideias em realidade"
               titleClassName="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6 text-white"

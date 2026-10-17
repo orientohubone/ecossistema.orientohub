@@ -181,18 +181,18 @@ const Footer = () => {
               <div className="inline-flex items-center gap-2 rounded-full border border-[#FFF200]/40 bg-black/30 px-3.5 py-2 mb-6 shadow-none backdrop-blur-md">
                 <Mail className="h-3.5 w-3.5 text-[#FFF200]" aria-hidden="true" />
                 <span className="h-3 w-px bg-[#FFF200]/40" aria-hidden="true" />
-                <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-white sm:text-xs">FIQUE POR DENTRO</span>
+                <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-white sm:text-xs">IDEIAS EM MOVIMENTO</span>
               </div>
               
               <h3 className="text-3xl md:text-4xl font-bold mb-4">
-                Receba insights exclusivos sobre{' '}
+                Conteúdo para fazer suas ideias{' '}
                 <span className="bg-gradient-to-r from-[#FFF200] via-[#FFF200] to-[#FFF200]/80 bg-clip-text text-transparent">
-                  startups
+                  avançarem
                 </span>
               </h3>
               
               <p className="text-gray-400 text-lg mb-8 max-w-2xl mx-auto">
-                Receba conteúdo semanal exclusivo sobre empreendedorismo, validação e crescimento diretamente no seu e-mail.
+                Estratégia, validação, frameworks e aprendizados práticos para transformar ideias em projetos e soluções.
               </p>
 
               <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-4 max-w-xl mx-auto">
@@ -223,7 +223,7 @@ const Footer = () => {
                   disabled={status === 'loading' || status === 'success'}
                   className="group px-8 py-4 bg-[#FFF200] hover:bg-[#FFF200] hover:opacity-90 shadow-none text-black font-bold rounded-xl transition-all shadow-none hover:shadow-none flex items-center justify-center gap-2 disabled:bg-gray-600 disabled:shadow-none"
                 >
-                  {status === 'loading' ? 'Insccrevendo...' : (
+                  {status === 'loading' ? 'Inscrevendo...' : (
                     <>
                       {status === 'success' ? 'Inscrito!' : 'Inscrever-se'}
                       <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -252,7 +252,7 @@ const Footer = () => {
   </Link>
               
               <p className="text-gray-400 leading-relaxed mb-6 max-w-sm">
-                A plataforma gamificada que transforma a construção de startups em uma jornada imersiva e divertida.
+                Um ecossistema para dar direção a ideias, organizar projetos e construir soluções.
               </p>
 
               {/* Social Links */}

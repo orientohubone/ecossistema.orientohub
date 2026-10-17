@@ -22,6 +22,26 @@ const MainLayout = () => {
   const scrollIndicatorTimeoutRef = useRef<number | null>(null);
 
   useEffect(() => {
+    let secondFrame = 0;
+    const firstFrame = window.requestAnimationFrame(() => {
+      secondFrame = window.requestAnimationFrame(() => {
+        if (location.hash) {
+          const targetId = decodeURIComponent(location.hash.slice(1));
+          document.getElementById(targetId)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          return;
+        }
+
+        window.scrollTo({ top: 0, left: 0 });
+      });
+    });
+
+    return () => {
+      window.cancelAnimationFrame(firstFrame);
+      window.cancelAnimationFrame(secondFrame);
+    };
+  }, [location.pathname, location.hash]);
+
+  useEffect(() => {
     document.body.classList.toggle('home-scrollbar-hidden', usesSlimScrollIndicator);
     document.documentElement.classList.toggle('home-scrollbar-hidden', usesSlimScrollIndicator);
 

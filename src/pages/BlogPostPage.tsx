@@ -601,15 +601,15 @@ const BlogPostPage = () => {
             <div className="inline-flex items-center gap-2 bg-[#FFF200]/20 border-2 border-[#FFF200]/40 px-4 py-2 rounded-full mb-6 backdrop-blur-sm">
               <Sparkles className="w-4 h-4 text-[#FFF200]" />
               <span className="text-[#FFF200] font-bold text-sm uppercase tracking-wide">
-                Newsletter
+                Ideias em movimento
               </span>
             </div>
 
             <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white">
-              Gostou do conteúdo?
+              Continue fazendo suas ideias avançarem
             </h2>
             <p className="text-xl text-gray-300 mb-8">
-              Receba semanalmente artigos exclusivos sobre empreendedorismo e startups direto no seu e-mail.
+              Receba estratégia, validação, frameworks e aprendizados práticos para transformar ideias em projetos e soluções.
             </p>
 
             <form className="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto">

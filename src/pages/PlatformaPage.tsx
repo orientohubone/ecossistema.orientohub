@@ -1,5 +1,3 @@
-import { useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -7,44 +5,12 @@ import { Sparkles, Rocket, Zap, ArrowRight, Play, Users, BarChart2, Award, Targe
 import VideoShowcase from '../components/ui/VideoShowcase';
 import gamificacaoShowcase from '../assets/gamificação-showcase.png';
 
-// Componente de texto rotativo -->>
-
-const RotatingText = () => {
-  const words = ['metodologia', 'inovação', 'tecnologia', 'agilidade'];
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isAnimating, setIsAnimating] = useState(false);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setIsAnimating(true);
-      setTimeout(() => {
-        setCurrentIndex((prev) => (prev + 1) % words.length);
-        setIsAnimating(false);
-      }, 500);
-    }, 3000);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  return (
-    <span
-      className={`inline-block bg-gradient-to-r from-[#FFF200] via-[#FFF200] to-[#FFF200]/80 bg-clip-text text-transparent transition-all duration-500 ${isAnimating ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'
-        }`}
-      style={{ paddingBottom: '0.15em', lineHeight: '1.2' }}
-    >
-      com {words[currentIndex]}
-    </span>
-  );
-};
-
 const PlatformaPage = () => {
-  const { t } = useTranslation();
-
   return (
     <>
       <Helmet>
-        <title>Plataforma - Orientohub</title>
-        <meta name="description" content="A plataforma gamificada para construção de startups" />
+        <title>Plataforma OrientoHub - Da ideia à execução</title>
+        <meta name="description" content="Incube ideias, organize projetos, desenvolva soluções e aplique frameworks em um só lugar." />
       </Helmet>
 
       {/* Hero Section */}
@@ -68,12 +34,9 @@ const PlatformaPage = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
             >
-              <span className="block text-white mb-1.5 sm:mb-2">
-                Construa sua startup
-              </span>
-              <RotatingText />
-              <span className="block text-white mt-1.5 sm:mt-2">
-                e diversão
+              <span className="block text-white">Da ideia à execução,</span>
+              <span className="block bg-gradient-to-r from-[#FFF200] via-[#FFF200] to-[#FFF200]/80 bg-clip-text pb-[0.12em] text-transparent">
+                tudo ganha direção.
               </span>
             </motion.h1>
 
@@ -84,8 +47,7 @@ const PlatformaPage = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
             >
-              Plataforma imersiva e gamificada para construção de startups.
-              Ideal para aceleradoras, incubadoras, fundadores e aspirantes.
+              Incube ideias, organize projetos, desenvolva soluções e aplique frameworks em um só lugar.
             </motion.p>
 
             {/* Showcases da plataforma */}
@@ -110,7 +72,7 @@ const PlatformaPage = () => {
                   videoUrl: '/videos/jornada-empreendedora.mp4',
                   alt: 'Demonstração da Jornada Empreendedora',
                   title: 'Jornada Empreendedora',
-                  description: 'Etapas, missões e conquistas que orientam a evolução do negócio.',
+                  description: 'Etapas, missões e conquistas que orientam a evolução de cada iniciativa.',
                 },
               ]}
             />
@@ -127,7 +89,7 @@ const PlatformaPage = () => {
                 className="group inline-flex w-full sm:w-auto items-center justify-center gap-2 px-6 sm:px-8 py-3.5 sm:py-4 bg-[#FFF200] hover:bg-[#FFF200] hover:opacity-90 shadow-none text-black font-bold text-base sm:text-lg rounded-xl shadow-none hover:shadow-none transition-all duration-300 active:scale-95"
               >
                 <Rocket className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                Comece sua jornada
+                Comece a construir
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </a>
 
@@ -157,19 +119,19 @@ const PlatformaPage = () => {
                 {
                   icon: Sparkles,
                   title: 'Gamificada',
-                  description: 'Aprenda construindo de forma divertida e engajante',
+                  description: 'Transforme cada avanço em progresso visível e novas conquistas',
                   delay: 0.1
                 },
                 {
                   icon: Rocket,
                   title: 'Metodologia',
-                  description: 'Frameworks validados por aceleradoras de sucesso',
+                  description: 'Aplique frameworks para investigar, decidir e construir com clareza',
                   delay: 0.2
                 },
                 {
                   icon: Zap,
                   title: 'Imersiva',
-                  description: 'Experiência prática desde o primeiro dia',
+                  description: 'Concentre contexto, decisões e execução em um mesmo ambiente',
                   delay: 0.3
                 }
               ].map((feature, index) => (
@@ -207,46 +169,46 @@ const PlatformaPage = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
             >
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6 px-2">{t('home.features.title')}</h2>
-              <p className="text-base sm:text-xl text-gray-600 dark:text-gray-300 px-2">{t('home.features.subtitle')}</p>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6 px-2">Tudo o que você precisa para fazer uma ideia avançar</h2>
+              <p className="text-base sm:text-xl text-gray-600 dark:text-gray-300 px-2">Da primeira hipótese à solução em evolução, mantenha o trabalho organizado e o próximo passo sempre claro.</p>
             </motion.div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-8">
             <FeatureCard
               icon={<Users className="w-8 h-8" />}
-              title="Ecossistema Colaborativo"
-              description="Conecte-se com mentores, investidores e outros fundadores para acelerar sua jornada."
+              title="Ambiente Integrado"
+              description="Centralize ideias, projetos e soluções sem perder o contexto entre uma etapa e outra."
               delay={0.1}
             />
             <FeatureCard
               icon={<BarChart2 className="w-8 h-8" />}
-              title="Frameworks Validados"
-              description="Utilize ferramentas como Business Model Canvas, Mapa de Empatia e Jornada do Cliente."
+              title="Frameworks na Prática"
+              description="Use ferramentas como Business Model Canvas, Mapa de Empatia e Jornada do Cliente para orientar decisões."
               delay={0.2}
             />
             <FeatureCard
               icon={<Zap className="w-8 h-8" />}
-              title="Gamificação Engajadora"
-              description="Ganhe pontos, desbloqueie conquistas e acompanhe seu progresso de forma divertida."
+              title="Progresso que Engaja"
+              description="Ganhe pontos, desbloqueie conquistas e enxergue a evolução do trabalho realizado."
               delay={0.3}
             />
             <FeatureCard
               icon={<Award className="w-8 h-8" />}
-              title="Metodologia Comprovada"
-              description="Siga um processo estruturado baseado nas melhores práticas de empreendedorismo."
+              title="Processo Estruturado"
+              description="Avance com etapas e atividades que transformam incertezas em decisões mais seguras."
               delay={0.4}
             />
             <FeatureCard
               icon={<Target className="w-8 h-8" />}
-              title="Objetivos Claros"
-              description="Defina metas específicas e acompanhe seu progresso em cada fase do desenvolvimento."
+              title="Prioridades Claras"
+              description="Defina objetivos, organize tarefas e saiba qual é o próximo movimento de cada iniciativa."
               delay={0.5}
             />
             <FeatureCard
               icon={<CheckCircle className="w-8 h-8" />}
-              title="Templates Prontos"
-              description="Economize tempo com modelos pré-formatados para pitch decks, planos de negócios e mais."
+              title="Modelos para Começar"
+              description="Economize tempo com estruturas prontas para explorar problemas, oportunidades e caminhos de solução."
               delay={0.6}
             />
           </div>
@@ -298,7 +260,7 @@ const PlatformaPage = () => {
               viewport={{ once: true }}
               transition={{ delay: 0.3 }}
             >
-              {t('home.cta.title')}
+              Pronto para dar direção ao que você quer construir?
             </motion.h2>
 
             {/* Subtitle */}
@@ -309,7 +271,7 @@ const PlatformaPage = () => {
               viewport={{ once: true }}
               transition={{ delay: 0.4 }}
             >
-              {t('home.cta.subtitle')}
+              Comece com uma ideia, organize o próximo passo e transforme aprendizado em evolução contínua.
             </motion.p>
 
             {/* CTA Button */}
@@ -325,7 +287,7 @@ const PlatformaPage = () => {
                 className="group inline-flex w-full sm:w-auto items-center justify-center gap-3 px-8 sm:px-10 py-4 sm:py-5 bg-[#FFF200] hover:bg-[#FFF200] hover:opacity-90 shadow-none text-black font-bold text-lg sm:text-xl rounded-xl shadow-none hover:shadow-none hover:scale-105 transition-all duration-300"
               >
                 <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 group-hover:rotate-12 transition-transform" />
-                {t('home.cta.button')}
+                Comece gratuitamente
                 <ArrowRight className="w-5 h-5 sm:w-6 sm:h-6 group-hover:translate-x-2 transition-transform" />
               </Link>
             </motion.div>

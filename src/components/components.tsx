@@ -63,7 +63,7 @@ const IntegrationsSection = () => (
 
         <motion.div initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, amount: 0.25 }} className="order-1 text-center lg:order-2 lg:text-left">
           <div className="inline-flex rounded-full bg-gradient-to-b from-white/10 to-black/80 backdrop-blur-xl border border-[#FFF200]/50 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-white/90">
-            Ferramentas do ecossistema
+            Sua empresa no digital
           </div>
           <h2 id="tools-title" className="mt-5 text-3xl font-bold tracking-tight text-white sm:text-4xl lg:text-5xl">
             Trabalhamos onde o seu negócio acontece.

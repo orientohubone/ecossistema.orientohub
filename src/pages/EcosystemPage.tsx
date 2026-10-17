@@ -1,1234 +1,224 @@
-import React, { useRef, useState } from 'react';
-import { useAnimationFrame, useMotionTemplate, useMotionValue, useTransform } from 'framer-motion';
-import { useTranslation } from 'react-i18next';
-import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
+import { Helmet } from 'react-helmet-async';
+import { Link } from 'react-router-dom';
 import {
-  Rocket,
-  Target,
-  Users,
-  Brain,
-  BarChart3,
-  Compass,
-  GraduationCap,
-  Mic,
-  TrendingUp,
-  Lightbulb,
-  Shield,
-  Zap,
-  Network,
-  Database,
+  ArrowDown,
+  ArrowRight,
   BookOpen,
   Briefcase,
-  HandCoins,
-  ArrowRight,
   CheckCircle2,
-  CircleDot,
-  Building2,
-  Sparkles,
+  GraduationCap,
   Layers,
-  Award,
-  Heart,
-  Play,
-  CheckCircle,
-  Clock,
-  Repeat
+  Lightbulb,
+  Mic2,
+  Rocket,
+  Target,
+  TrendingUp,
+  Users,
 } from 'lucide-react';
+import type { ComponentType, ReactNode } from 'react';
+import { useState } from 'react';
 
-// Carrossel com paginação para MVPs
-const MVPCarouselPaginated = ({ children }: { children: React.ReactNode }) => {
-  const [currentPage, setCurrentPage] = useState(0);
-  const childrenArray = React.Children.toArray(children);
-  const itemsPerPage = 4;
-  const totalPages = Math.ceil(childrenArray.length / itemsPerPage);
-
-  const nextPage = () => {
-    setCurrentPage((prev) => Math.min(prev + 1, totalPages - 1));
-  };
-
-  const prevPage = () => {
-    setCurrentPage((prev) => Math.max(prev - 1, 0));
-  };
-
-  const startIndex = currentPage * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const currentItems = childrenArray.slice(startIndex, endIndex);
-
-  return (
-    <div className="relative">
-      {/* Grid de Cards */}
-      <motion.div
-        key={currentPage}
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
-        initial={{ opacity: 0, x: 20 }}
-        animate={{ opacity: 1, x: 0 }}
-        exit={{ opacity: 0, x: -20 }}
-        transition={{ duration: 0.3 }}
-      >
-        {currentItems}
-      </motion.div>
-
-      {/* Botão Anterior */}
-      {currentPage > 0 && (
-        <button
-          onClick={prevPage}
-          className="absolute left-0 md:left-0 top-1/2 -translate-y-1/2 md:-translate-x-16 bg-white dark:bg-gray-800 p-3 md:p-4 rounded-full shadow-xl hover:shadow-2xl hover:scale-110 transition-all z-10 border-2 border-[#FFF200]/30 hover:border-[#FFF200] group focus:outline-none"
-          aria-label="Página anterior"
-        >
-          <ArrowRight className="w-6 h-6 rotate-180 text-[#FFF200] group-hover:text-[#FFF200]" />
-        </button>
-      )}
-
-      {/* Botão Próximo */}
-      {currentPage < totalPages - 1 && (
-        <button
-          onClick={nextPage}
-          className="absolute right-0 md:right-0 top-1/2 -translate-y-1/2 md:translate-x-16 bg-white dark:bg-gray-800 p-3 md:p-4 rounded-full shadow-xl hover:shadow-2xl hover:scale-110 transition-all z-10 border-2 border-[#FFF200]/30 hover:border-[#FFF200] group focus:outline-none"
-          aria-label="Próxima página"
-        >
-          <ArrowRight className="w-6 h-6 text-[#FFF200] group-hover:text-[#FFF200]" />
-        </button>
-      )}
-
-      {/* Indicadores de Página */}
-      {totalPages > 1 && (
-        <div className="flex justify-center gap-2 mt-12">
-          {Array.from({ length: totalPages }).map((_, index) => (
-            <button
-              key={index}
-              onClick={() => setCurrentPage(index)}
-              className={`h-2 rounded-full transition-all ${index === currentPage
-                ? 'bg-[#FFF200]/100 w-8'
-                : 'bg-gray-300 dark:bg-gray-600 w-2 hover:bg-[#FFF200]'
-                }`}
-              aria-label={`Ir para página ${index + 1}`}
-            />
-          ))}
-        </div>
-      )}
-    </div>
-  );
-};
-
-const EcosystemPage = () => {
-  const { t } = useTranslation();
-
-  return (
-    <div className="dark min-h-screen">
-      {/* Shared fixed background */}
-      <div className="fixed inset-0 bg-gradient-to-br from-black via-gray-900 to-black -z-50" />
-      {/* Global dot grid */}
-      <div className="fixed inset-0 opacity-[0.06] pointer-events-none -z-40"
-        style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, #FFF200 1px, transparent 0)', backgroundSize: '40px 40px' }}
-      />
-      <Helmet>
-        <title>Ecossistema - Orientohub</title>
-        <meta name="description" content="Conheça a arquitetura estratégica do Orientohub: núcleo empresarial, plataforma de aceleração, MVPs conectados e verticais de expansão." />
-      </Helmet>
-
-      {/* Hero Section */}
-      <section className="relative min-h-[60vh] sm:min-h-[70vh] w-full overflow-hidden flex items-center pt-32 pb-16">
-
-
-
-
-        {/* Content */}
-        <div className="relative z-10 container-custom">
-          <div className="max-w-5xl mx-auto text-center">
-            {/* Badge */}
-            <motion.div
-              className="flex justify-center mb-8"
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-            >
-              <div className="inline-flex items-center gap-2.5 rounded-full bg-gradient-to-b from-white/10 to-black/80 backdrop-blur-xl border border-[#FFF200]/60 px-3 py-1.5 text-white shadow-none max-w-full ">
-                <Layers className="h-3.5 w-3.5 text-[#FFF200]" aria-hidden="true" />
-                <span className="h-3 w-px bg-[#FFF200]/40" aria-hidden="true" />
-                <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-white sm:text-xs">
-                  Arquitetura estratégica
-                </span>
-              </div>
-            </motion.div>
-
-            {/* Main heading */}
-            <motion.h1
-              className="text-5xl sm:text-6xl lg:text-7xl font-bold text-center mb-6 tracking-tight"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-            >
-              <span className="block text-white mb-2">
-                Orientohub
-              </span>
-              <span className="bg-gradient-to-r from-[#FFF200] via-[#FFF200] to-[#FFF200]/80 bg-clip-text text-transparent">
-                Ecossistema
-              </span>
-            </motion.h1>
-
-            {/* Description */}
-            <motion.p
-              className="text-xl sm:text-2xl text-gray-300 text-center max-w-3xl mx-auto mb-12 leading-relaxed"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-            >
-              Um ecossistema completo de inovação, aceleração e produtos conectados em 4 camadas estratégicas.
-            </motion.p>
-
-            {/* Layer Navigation */}
-            <motion.div
-              className="flex flex-wrap items-center justify-center gap-4 mb-8"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.6 }}
-            >
-              <a href="#nucleo" className="group px-6 py-3 bg-[#FFF200]/100/10 border-2 border-[#FFF200]/50 hover:border-[#FFF200] hover:bg-[#FFF200]/100/20 rounded-xl backdrop-blur-sm transition-all">
-                <div className="flex items-center gap-2">
-                  <Compass className="w-5 h-5 text-[#FFF200]" />
-                  <span className="text-[#FFF200] font-semibold">Núcleo</span>
-                </div>
-              </a>
-
-              <a href="#plataforma" className="group px-6 py-3 bg-blue-500/10 border-2 border-blue-500/50 hover:border-blue-500 hover:bg-blue-500/20 rounded-xl backdrop-blur-sm transition-all">
-                <div className="flex items-center gap-2">
-                  <Network className="w-5 h-5 text-blue-500" />
-                  <span className="text-blue-500 font-semibold">Plataforma</span>
-                </div>
-              </a>
-
-              <a href="#mvps" className="group px-6 py-3 bg-green-500/10 border-2 border-green-500/50 hover:border-green-500 hover:bg-green-500/20 rounded-xl backdrop-blur-sm transition-all">
-                <div className="flex items-center gap-2">
-                  <Rocket className="w-5 h-5 text-green-500" />
-                  <span className="text-green-500 font-semibold">MVPs</span>
-                </div>
-              </a>
-
-              <a href="#verticais" className="group px-6 py-3 bg-purple-500/10 border-2 border-purple-500/50 hover:border-purple-500 hover:bg-purple-500/20 rounded-xl backdrop-blur-sm transition-all">
-                <div className="flex items-center gap-2">
-                  <TrendingUp className="w-5 h-5 text-purple-500" />
-                  <span className="text-purple-500 font-semibold">Verticais</span>
-                </div>
-              </a>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* Núcleo Section */}
-      <section id="nucleo" className="pt-8 pb-24">
-        <div className="container-custom">
-          <motion.div
-            className="text-center mb-16"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
-          >
-            <div className="inline-flex items-center gap-2 rounded-full bg-gradient-to-b from-white/10 to-black/80 backdrop-blur-xl border border-[#FFF200]/60 px-3 py-1.5 text-white shadow-none max-w-full mb-6 ">
-              <Compass className="h-3.5 w-3.5 text-[#FFF200]" aria-hidden="true" />
-              <span className="h-3 w-px bg-[#FFF200]/40" aria-hidden="true" />
-              <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-white sm:text-xs">Núcleo</span>
-            </div>
-            <h2 className="text-3xl md:text-5xl font-bold mb-6">Orientohub Soluções Empresariais</h2>
-            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-              Base institucional e marca-mãe. Responsável por governança, cultura, metodologia e estrutura de aceleração.
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <FeatureCard
-              icon={<Shield className="w-8 h-8" />}
-              title="Gestão do Ecossistema"
-              description="Governança estratégica e alinhamento de todas as iniciativas do ecossistema."
-              delay={0.1}
-            />
-            <FeatureCard
-              icon={<Target className="w-8 h-8" />}
-              title="Curadoria de Projetos"
-              description="Seleção e acompanhamento de founders e startups de alto potencial."
-              delay={0.2}
-            />
-            <FeatureCard
-              icon={<Zap className="w-8 h-8" />}
-              title="Aceleração Ágil"
-              description="Metodologias ágeis para validação rápida e crescimento sustentável."
-              delay={0.3}
-            />
-            <FeatureCard
-              icon={<Layers className="w-8 h-8" />}
-              title="Framework de Inovação"
-              description="Estrutura proprietária para inovação contínua e sistemática."
-              delay={0.4}
-            />
-            <FeatureCard
-              icon={<Sparkles className="w-8 h-8" />}
-              title="Branding & Posicionamento"
-              description="Construção de marca e posicionamento estratégico no mercado."
-              delay={0.5}
-            />
-            <FeatureCard
-              icon={<Users className="w-8 h-8" />}
-              title="Cultura & Comunidade"
-              description="Desenvolvimento de cultura de inovação e comunidade de founders."
-              delay={0.6}
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* Camada 1 - Plataforma */}
-      <section id="plataforma" className="py-24">
-        <div className="container-custom">
-          <motion.div
-            className="text-center mb-16"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
-          >
-            <div className="inline-flex items-center gap-2 rounded-full bg-gradient-to-b from-white/10 to-black/80 backdrop-blur-xl border border-[#FFF200]/60 px-3 py-1.5 text-white shadow-none max-w-full mb-6 ">
-              <Network className="h-3.5 w-3.5 text-[#FFF200]" aria-hidden="true" />
-              <span className="h-3 w-px bg-[#FFF200]/40" aria-hidden="true" />
-              <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-white sm:text-xs">Camada 1</span>
-            </div>
-            <h2 className="text-3xl md:text-5xl font-bold mb-6">Plataforma Orientohub</h2>
-            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-              O hub digital onde startups, founders e parceiros interagem, compartilham recursos e validam ideias.
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
-            <PlatformCard
-              icon={<Users className="w-10 h-10" />}
-              title="Comunidade de Founders"
-              description="Rede exclusiva para conexão, troca de experiências e colaboração entre empreendedores."
-              features={["Networking qualificado", "Eventos exclusivos", "Grupos de mastermind", "Fórum de discussão"]}
-              delay={0.1}
-            />
-            <PlatformCard
-              icon={<Lightbulb className="w-10 h-10" />}
-              title="Framework de Aceleração"
-              description="Metodologias comprovadas: Design Thinking, OKRs, Lean Startup e mais."
-              features={["Design Thinking", "OKRs", "Lean Startup", "Business Model Canvas"]}
-              delay={0.2}
-            />
-            <PlatformCard
-              icon={<BarChart3 className="w-10 h-10" />}
-              title="Dashboard de Progresso"
-              description="Acompanhamento em tempo real do desenvolvimento das startups aceleradas."
-              features={["Métricas em tempo real", "KPIs personalizados", "Relatórios automáticos", "Analytics avançado"]}
-              delay={0.3}
-            />
-            <PlatformCard
-              icon={<Database className="w-10 h-10" />}
-              title="Repositório de Conhecimento"
-              description="Biblioteca completa de metodologias, templates e boas práticas de mercado."
-              features={["Templates prontos", "Cases de sucesso", "Documentação completa", "Vídeo-aulas"]}
-              delay={0.4}
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* Camada 2 - MVPs */}
-      <section id="mvps" className="py-24">
-        <div className="container-custom">
-          <motion.div
-            className="text-center mb-16"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
-          >
-            <div className="inline-flex items-center gap-2 rounded-full bg-gradient-to-b from-white/10 to-black/80 backdrop-blur-xl border border-[#FFF200]/60 px-3 py-1.5 text-white shadow-none max-w-full mb-6 ">
-              <Rocket className="h-3.5 w-3.5 text-[#FFF200]" aria-hidden="true" />
-              <span className="h-3 w-px bg-[#FFF200]/40" aria-hidden="true" />
-              <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-white sm:text-xs">Camada 2</span>
-            </div>
-            <h2 className="text-3xl md:text-5xl font-bold mb-6">MVPs & Soluções Conectadas</h2>
-            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-              Produtos criados ou incubados dentro do ecossistema. Cada um com autonomia, mas conectados via participação societária de 20%.
-            </p>
-          </motion.div>
-
-          <MVPCarouselPaginated>
-            <MVPCard
-              name="Humansys + BrainSys"
-              description="Plataforma de RH inteligente com algoritmo ontológico para gestão de pessoas e cultura organizacional."
-              focus="Gestão de Pessoas"
-              icon={<Brain className="w-12 h-12 text-white" />}
-              color="from-blue-500 to-cyan-500"
-              delay={0.1}
-              link="https://humansys.com.br"
-              status="active"
-              metrics={[
-                { label: 'Empresas', value: '50+' },
-                { label: 'Usuários', value: '2k+' }
-              ]}
-            />
-            <MVPCard
-              name="Intentia"
-              description="Do diagnóstico à execução: estratégia completa para mídia B2B. Analise a prontidão do seu negócio, enriqueça insights com IA, compare-se com concorrentes e monte planos táticos por canal — tudo em uma plataforma."
-              focus="Estratégia para mídia B2B"
-              icon={<Target className="w-12 h-12 text-white" />}
-              color="from-[#ff571a] to-[#ff8a3d]"
-              delay={0.4}
-              link="https://intentia.com.br"
-              status="active"
-              metrics={[
-                { label: 'Diagnóstico', value: 'B2B' },
-                { label: 'Planos', value: 'Por canal' }
-              ]}
-            />
-            <MVPCard
-              name="Forgether"
-              description="Forgether é a plataforma gamificada que transforma estudo em experiência. Ganhe XP, conquiste badges e domine o mercado tech."
-              focus="Educação Tecnológica"
-              icon={<GraduationCap className="w-12 h-12 text-white" />}
-              color="from-emerald-500 to-teal-500"
-              delay={0.5}
-              link="https://forgether.vercel.app/"
-              status="beta"
-              metrics={[
-                { label: 'Usuários', value: '1k+' },
-                { label: 'Engajamento', value: '85%' }
-              ]}
-            />
-            <MVPCard
-              name="Custfly - Customer Intelligence"
-              description="O núcleo de customer intelligence que conecta dados, comportamento e decisões em tempo real para o varejo."
-              focus="Customer Intelligence"
-              icon={<Users className="w-12 h-12 text-white" />}
-              color="from-indigo-500 to-violet-500"
-              delay={0.6}
-              link="https://custfly.lovable.app/"
-              status="active"
-              metrics={[
-                { label: 'Insights', value: 'Real-time' },
-                { label: 'Precisão', value: '92%' }
-              ]}
-            />
-          </MVPCarouselPaginated>
-
-          <motion.div
-            className="mt-12 text-center"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.6, ease: "easeOut" }}
-          >
-            <div className="inline-flex items-center gap-3 bg-gradient-to-b from-white/10 to-black/80 backdrop-blur-xl border border-[#FFF200]/60 px-4 py-2 text-white shadow-none max-w-full rounded-full">
-              <CircleDot className="w-5 h-5 text-[#FFF200]" />
-              <span className="text-gray-700 dark:text-gray-300">
-                <strong className="text-[#FFF200]">20% de participação societária</strong> em cada solução acelerada
-              </span>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Camada 3 - Verticais */}
-      <section id="verticais" className="py-24">
-        <div className="container-custom">
-          <motion.div
-            className="text-center mb-16"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
-          >
-            <div className="inline-flex items-center gap-2 rounded-full bg-gradient-to-b from-white/10 to-black/80 backdrop-blur-xl border border-[#FFF200]/60 px-3 py-1.5 text-white shadow-none max-w-full mb-6 ">
-              <TrendingUp className="h-3.5 w-3.5 text-[#FFF200]" aria-hidden="true" />
-              <span className="h-3 w-px bg-[#FFF200]/40" aria-hidden="true" />
-              <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-white sm:text-xs">Camada 3</span>
-            </div>
-            <h2 className="text-3xl md:text-5xl font-bold mb-6">Verticais de Expansão</h2>
-            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-              Produtos e iniciativas de fortalecimento da comunidade e monetização de conhecimento.
-            </p>
-          </motion.div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            <VerticalCard
-              logo="/orientados-logo.png"
-              title="Orientados"
-              emoji="🎙️"
-              description="Cada conversa é uma oportunidade de construir uma ideia, transformar uma decisão e evoluir uma trajetória."
-              features={["Episódios semanais", "Convidados especiais", "Insights exclusivos"]}
-              status="active"
-              delay={0.1}
-              actions={[
-                {
-                  href: 'https://open.spotify.com/show/SEU_LINK_SPOTIFY',
-                  label: 'Ouça no Spotify',
-                  icon: (
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="12" fill="#1DB954" /><path d="M17.25 16.13a.75.75 0 0 1-1.03.23c-2.82-1.73-6.38-2.12-10.59-1.15a.75.75 0 1 1-.33-1.46c4.56-1.04 8.48-.6 11.6 1.23a.75.75 0 0 1 .23 1.15zm1.48-2.7a.94.94 0 0 1-1.29.29c-3.23-2-8.16-2.59-11.98-1.4a.94.94 0 1 1-.54-1.8c4.23-1.28 9.57-.64 13.2 1.6.44.27.57.85.29 1.31zm.13-2.81C15.1 8.2 8.9 8.01 6.13 8.8a1.13 1.13 0 1 1-.65-2.18c3.23-.97 10.13-.75 13.77 2.01a1.13 1.13 0 0 1-1.24 1.89z" fill="#fff" /></svg>
-                  )
-                },
-                {
-                  href: 'https://youtube.com/SEU_LINK_YOUTUBE',
-                  label: 'Assista no YouTube',
-                  icon: (
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><rect width="24" height="24" rx="12" fill="#FF0000" /><path d="M10 15.5V8.5L16 12L10 15.5Z" fill="#fff" /></svg>
-                  )
-                }
-              ]}
-            />
-            <VerticalCard
-              logo="/oriento-academy-logo.png"
-              title="Oriento Academy"
-              emoji="🎓"
-              description="Plataforma de cursos e certificações orientadas a inovação e negócios"
-              features={["Cursos práticos", "Certificações", "Mentoria ao vivo"]}
-              status="active"
-              delay={0.2}
-              actions={[
-                {
-                  href: '/academy',
-                  label: 'Conheça a Oriento Academy',
-                  icon: (
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><rect width="24" height="24" rx="12" fill="#FFD600" /><path d="M12 7l7 4-7 4-7-4 7-4zm0 8c-2.21 0-4.2-.9-5.6-2.36l1.45-1.45C8.68 12.37 10.26 13 12 13s3.32-.63 4.15-1.81l1.45 1.45C16.2 14.1 14.21 15 12 15z" fill="#18181b" /></svg>
-                  )
-                }
-              ]}
-            />
-            <VerticalCard
-              logo="/oriento-ventures-logo.png"
-              title="Oriento Ventures"
-              emoji="💼"
-              description="Fundo interno de investimento anjo e equity compartilhado"
-              features={["Investimento anjo", "Equity compartilhado", "Due diligence"]}
-              status="coming-soon"
-              delay={0.3}
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* Business Model Section */}
-      <section className="py-24 relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute inset-0" style={{
-            backgroundImage: 'radial-gradient(circle at 2px 2px, #FFF200 1px, transparent 0)',
-            backgroundSize: '40px 40px'
-          }} />
-        </div>
-
-        <div className="container-custom relative z-10">
-          <motion.div
-            className="text-center mb-16"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
-          >
-            <div className="inline-flex items-center gap-2 rounded-full bg-gradient-to-b from-white/10 to-black/80 backdrop-blur-xl border border-[#FFF200]/60 px-3 py-1.5 text-white shadow-none max-w-full mb-6 ">
-              <Building2 className="h-3.5 w-3.5 text-[#FFF200]" aria-hidden="true" />
-              <span className="h-3 w-px bg-[#FFF200]/40" aria-hidden="true" />
-              <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-white sm:text-xs">Modelo de negócio</span>
-            </div>
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">Como Geramos Valor</h2>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              Um modelo de negócio diversificado que sustenta o ecossistema e gera valor para todos os participantes.
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
-            <BusinessModelCard
-              icon={HandCoins}
-              title="Coparticipação Societária"
-              description="20% de participação em startups aceleradas"
-              delay={0.1}
-            />
-            <BusinessModelCard
-              icon={GraduationCap}
-              title="Oriento Academy"
-              description="Monetização via cursos e serviços B2B"
-              delay={0.2}
-            />
-            <BusinessModelCard
-              icon={Mic}
-              title="Branding através do Orientados!"
-              description="Parcerias e patrocínios estratégicos"
-              delay={0.3}
-            />
-            <BusinessModelCard
-              icon={Repeat}
-              title="Receita Recorrente"
-              description="Membership de founders na plataforma"
-              delay={0.4}
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* Founder Journey Timeline */}
-      <section className="py-24">
-        <div className="container-custom">
-          <motion.div
-            className="text-center mb-16"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
-          >
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">Jornada do Founder</h2>
-            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-              Da validação da ideia até o crescimento escalável. Acompanhamos você em cada etapa.
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
-            <JourneyStep
-              number={1}
-              title="Validação & Entrada"
-              description="Valide sua ideia com metodologias comprovadas, receba mentoria de founders que já trilharam esse caminho e conecte-se com uma comunidade ativa de empreendedores"
-              highlights={["Análise de mercado", "Mentoria 1:1", "Network inicial"]}
-              delay={0.1}
-            />
-            <JourneyStep
-              number={2}
-              title="Desenvolvimento & MVP"
-              description="Acesse frameworks exclusivos para acelerar o desenvolvimento, construa seu MVP com suporte técnico e realize as primeiras validações com clientes reais"
-              highlights={["Frameworks prontos", "Suporte técnico", "Feedback de mercado"]}
-              delay={0.2}
-            />
-            <JourneyStep
-              number={3}
-              title="Tração & Crescimento"
-              description="Implemente estratégias de growth hacking, conecte-se com investidores alinhados à sua visão e estruture seu time para escalar"
-              highlights={["Growth hacking", "Investor matching", "Formação de time"]}
-              delay={0.3}
-            />
-            <JourneyStep
-              number={4}
-              title="Escala & Investimento"
-              description="Prepare e execute rodadas de investimento, expanda para novos mercados com estratégia sólida e consolide sua posição como líder do setor"
-              highlights={["Due diligence", "Expansão estratégica", "Consolidação"]}
-              delay={0.4}
-            />
-          </div>
-
-        </div>
-      </section>
-
-      {/* Final CTA Section */}
-      <section className="relative py-32 overflow-hidden">
-        {/* Animated background elements */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#FFF200]/100/20 rounded-full blur-3xl animate-pulse" />
-          <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-[#FFF200]/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1000ms' }} />
-        </div>
-
-        {/* Grid pattern overlay */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute inset-0" style={{
-            backgroundImage: 'radial-gradient(circle at 2px 2px, #FFF200 1px, transparent 0)',
-            backgroundSize: '40px 40px'
-          }} />
-        </div>
-
-        <div className="container-custom relative z-10">
-          <motion.div
-            className="text-center mb-16"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
-          >
-            <div className="inline-flex items-center gap-2.5 rounded-full bg-gradient-to-b from-white/10 to-black/80 backdrop-blur-xl border border-[#FFF200]/60 px-3 py-1.5 text-white shadow-none max-w-full mb-8 ">
-              <Users className="h-3.5 w-3.5 text-[#FFF200]" aria-hidden="true" />
-              <span className="h-3 w-px bg-[#FFF200]/40" aria-hidden="true" />
-              <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-white sm:text-xs">
-                Junte-se a nós
-              </span>
-            </div>
-
-            <h2 className="text-4xl md:text-6xl font-bold mb-6 text-white leading-tight">
-              Pronto para{' '}
-              <span className="bg-gradient-to-r from-[#FFF200] via-[#FFF200] to-[#FFF200]/80 bg-clip-text text-transparent">
-                Fazer Parte
-              </span>?
-            </h2>
-            <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto">
-              Escolha como você quer se conectar ao ecossistema Orientohub
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            <CTACard
-              title="Sou Founder"
-              description="Quero acelerar minha startup e fazer parte da comunidade"
-              features={["Acesso ao ecossistema", "Mentorias especializadas", "Networking qualificado"]}
-              ctaText="Aplicar Agora"
-              ctaLink="/cadastro"
-              icon={Rocket}
-              delay={0.1}
-            />
-            <CTACard
-              title="Sou Parceiro"
-              description="Quero contribuir com conhecimento e recursos"
-              features={["Visibilidade no mercado", "Acesso a startups", "Eventos exclusivos"]}
-              ctaText="Tornar-se Parceiro"
-              ctaLink="/contato"
-              icon={Users}
-              delay={0.2}
-              featured={true}
-            />
-            <CTACard
-              title="Sou Investidor"
-              description="Quero investir em startups promissoras"
-              features={["Deal flow qualificado", "Due diligence", "Co-investimento"]}
-              ctaText="Conhecer Oportunidades"
-              ctaLink="/contato"
-              icon={TrendingUp}
-              delay={0.3}
-            />
-          </div>
-        </div>
-      </section>
-    </div>
-  );
-};
-
-// ===== COMPONENTS =====
-
-interface FeatureCardProps {
-  icon: React.ReactNode;
+type Layer = {
+  number: string;
+  id: string;
   title: string;
+  role: string;
   description: string;
-  delay: number;
-}
-
-const FeatureCard = ({ icon, title, description, delay }: FeatureCardProps) => {
-  return (
-    <motion.div
-      className="group bg-gradient-to-br from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 p-6 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-[#FFF200] dark:hover:border-[#FFF200] transition-all duration-300 hover:shadow-xl"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay, ease: "easeOut" }}
-      whileHover={{ y: -5 }}
-    >
-      <div className="text-[#FFF200] mb-4 group-hover:scale-110 transition-transform duration-300">
-        {icon}
-      </div>
-      <h3 className="text-lg font-bold mb-2">{title}</h3>
-      <p className="text-gray-600 dark:text-gray-400 text-sm">{description}</p>
-    </motion.div>
-  );
+  icon: ComponentType<{ className?: string }>;
 };
 
-interface PlatformCardProps {
-  icon: React.ReactNode;
-  title: string;
-  description: string;
-  features: string[];
-  delay: number;
-}
+const layers: Layer[] = [
+  { number: '01', id: 'nucleo', title: 'Núcleo', role: 'Estratégia e execução', description: 'Serviços que entendem o desafio, definem a direção e constroem a solução.', icon: Target },
+  { number: '02', id: 'plataforma', title: 'Plataforma', role: 'Método e continuidade', description: 'Tecnologia que organiza projetos, decisões e a jornada empreendedora.', icon: Lightbulb },
+  { number: '03', id: 'mvps', title: 'MVPs', role: 'Experimentação e produtos', description: 'Problemas reais transformados em soluções que podem ser testadas e evoluídas.', icon: Rocket },
+  { number: '04', id: 'verticais', title: 'Verticais', role: 'Conhecimento e expansão', description: 'Iniciativas que ampliam o alcance da Orientohub e criam novas conexões.', icon: TrendingUp },
+];
 
-const PlatformCard = ({ icon, title, description, features, delay }: PlatformCardProps) => {
-  return (
-    <motion.div
-      className="bg-white dark:bg-gray-800 p-8 rounded-2xl border-2 border-blue-500/20 hover:border-blue-500 transition-all duration-300 hover:shadow-xl hover:shadow-blue-500/10"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay, ease: "easeOut" }}
-      whileHover={{ y: -8 }}
-    >
-      <div className="text-blue-500 mb-4">
-        {icon}
-      </div>
-      <h3 className="text-xl font-bold mb-3">{title}</h3>
-      <p className="text-gray-600 dark:text-gray-300 mb-4">{description}</p>
-      <ul className="space-y-2">
-        {features.map((feature, index) => (
-          <li key={index} className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
-            <CheckCircle2 className="w-4 h-4 text-blue-500 flex-shrink-0" />
-            {feature}
-          </li>
-        ))}
-      </ul>
-    </motion.div>
-  );
-};
+const mvps = [
+  { name: 'Humansys + BrainSys', label: 'Gestão de pessoas', preview: '/sites/Site-humansys.png', href: 'https://humansys.com.br' },
+  { name: 'Intentia', label: 'Estratégia de mídia B2B', preview: '/sites/Site-intentia.png', href: 'https://intentia.com.br' },
+  { name: 'Forgether', label: 'Educação tecnológica', preview: '/sites/Site-forgether.png', href: 'https://forgether.vercel.app/' },
+  { name: 'Penttia', label: 'Cybersecurity', preview: '/sites/Site-penttia.jpg', href: 'https://penttiacybersecurity.vercel.app' },
+];
 
-interface MVPCardProps {
-  name: string;
-  description: string;
-  focus: string;
-  icon: React.ReactNode;
-  color: string;
-  delay: number;
-  link?: string;
-  status?: 'active' | 'beta' | 'coming-soon';
-  metrics?: { label: string; value: string }[];
-}
+const verticals = [
+  { name: 'Oriento Academy', label: 'Educação prática', icon: GraduationCap, href: '/academy' },
+  { name: 'Oriento Expertise', label: 'Consultoria, mentoria e workshops', icon: BookOpen, href: '/servicos' },
+  { name: 'Oriento Ventures', label: 'Oportunidades e novos negócios', icon: Briefcase },
+  { name: 'Orientados', label: 'Conteúdo e conversas', icon: Mic2 },
+];
 
-const MVPCard = ({ name, description, focus, icon, color, delay, link, status = 'active', metrics }: MVPCardProps) => {
-  return (
-    <motion.div
-      className="group relative min-h-[520px] rounded-2xl overflow-hidden"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay, ease: "easeOut" }}
-      whileHover={{ y: -8 }}
-    >
-      {/* Main Card Container */}
-      <div className={`relative h-full bg-gradient-to-br ${color} p-[2px] rounded-2xl`}>
-        <div className="relative h-full bg-white dark:bg-gray-900 rounded-2xl overflow-hidden flex flex-col">
-          {/* Header Section with Gradient */}
-          <div className={`relative bg-gradient-to-br ${color} p-6 pb-16 flex-shrink-0`}>
-            {/* Status Badge */}
-            <div className="absolute top-4 right-4">
-              <div className={`px-3 py-1 rounded-full text-xs font-bold ${status === 'active' ? 'bg-green-500 text-white' :
-                status === 'beta' ? 'bg-[#FFF200]/100 text-black' :
-                  'bg-gray-800 text-white'
-                }`}>
-                {status === 'active' ? '✓ Ativo' : status === 'beta' ? '⚡ Beta' : '🔜 Em Breve'}
-              </div>
-            </div>
+const servicePillars = [
+  { number: '01', title: 'Estratégia', description: 'Direção, prioridades e posicionamento para orientar o crescimento.', icon: Target, services: [['Estratégia', 'estrategia'], ['Inovação', 'inovacao']] },
+  { number: '02', title: 'Marketing & demanda', description: 'Presença, autoridade e aquisição conectadas ao objetivo do negócio.', icon: TrendingUp, services: [['Marketing', 'marketing'], ['Mídia paga', 'midia-paga'], ['Google Meu Negócio', 'google-meu-negocio']] },
+  { number: '03', title: 'Marca & ativos', description: 'Identidade e propriedades que tornam a empresa reconhecível e protegida.', icon: Lightbulb, services: [['Design', 'design'], ['Marcas', 'marcas'], ['Naming', 'naming'], ['Domínio', 'dominio']] },
+  { number: '04', title: 'Produtos digitais', description: 'Tecnologia e canais digitais construídos para operar, vender e evoluir.', icon: Rocket, services: [['Sistemas inteligentes', 'sistemas-inteligentes'], ['Sites', 'sites'], ['E-commerce', 'e-commerce']] },
+];
 
-            {/* Icon */}
-            <div className="mb-4 transform group-hover:scale-110 transition-transform duration-300">
-              <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">
-                {icon}
-              </div>
-            </div>
+const journeyPhases = [
+  { name: 'Ideação', description: 'Validação inicial da sua ideia de negócio', icon: Lightbulb, missions: [['Definir problema a resolver', 'Lean Canvas · Customer Development', 100], ['Identificar público-alvo', 'Mapa de Empatia', 100], ['Levantamento de hipóteses', 'Hipóteses validáveis', 150], ['Proposta de valor única', 'Value Proposition Canvas', 150]] },
+  { name: 'Validação', description: 'Teste e validação da sua solução no mercado', icon: Target, missions: [['Criar MVP (Produto Mínimo Viável)', 'Startup Enxuta (Lean)', 200], ['Entrevistar potenciais clientes', 'Jobs to be Done', 150], ['Testar hipóteses principais', 'Experimentos', 200], ['Ajustar produto baseado em feedback', 'Product-Market Fit', 150]] },
+  { name: 'Estruturação', description: 'Construção da estrutura do negócio', icon: Users, missions: [['Formalizar a empresa', 'Estrutura empresarial', 200], ['Montar time inicial', 'Pessoas e competências', 250], ['Definir processos operacionais', 'OKRs', 200], ['Criar modelo de negócio', 'Business Model Canvas', 250]] },
+  { name: 'Tração', description: 'Crescimento e conquista de mercado', icon: TrendingUp, missions: [['Alcançar primeiros 100 clientes', 'Aquisição inicial', 300], ['Estabelecer canais de aquisição', 'Canais de crescimento', 250], ['Otimizar funil de vendas', 'SaaS B2B Estratégia', 200], ['Atingir Product-Market Fit', 'PMF Survey', 350]] },
+  { name: 'Escala', description: 'Crescimento exponencial e expansão', icon: Rocket, missions: [['Captar investimento Anjo/Seed', 'Captação', 400], ['Expandir equipe', 'SAFe · Scrum · Agile', 300], ['Escalar operações', 'Operação', 350], ['Expandir novos mercados', 'Expansão', 450]] },
+];
 
-            {/* Name */}
-            <h3 className="text-2xl font-bold text-white mb-2">{name}</h3>
+const reveal = { initial: { opacity: 0, y: 18 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true, amount: 0.12 } };
 
-            {/* Focus Tag */}
-            <div className="inline-flex items-center gap-2 bg-gradient-to-b from-white/10 to-black/80 backdrop-blur-xl border border-[#FFF200]/60 px-3 py-1.5 text-white shadow-none rounded-full max-w-full">
-              <Target className="w-4 h-4 text-white" />
-              <span className="text-white text-sm font-medium">{focus}</span>
-            </div>
-          </div>
+const EcosystemPage = () => (
+  <div className="relative isolate min-h-screen overflow-x-hidden bg-gradient-to-br from-black via-gray-900 to-black text-white">
+    <Helmet>
+      <title>Ecossistema Orientohub | Quatro camadas conectadas</title>
+      <meta name="description" content="Conheça as quatro camadas do ecossistema Orientohub: Núcleo, Plataforma, MVPs e Verticais." />
+    </Helmet>
+    <div className="pointer-events-none fixed inset-0 z-0 opacity-20" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, #FFF200 1px, transparent 0)', backgroundSize: '40px 40px' }} />
 
-          {/* Content Section */}
-          <div className="relative -mt-8 px-6 pb-6 space-y-3 flex-grow flex flex-col">
-            {/* Description Card */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-lg border border-gray-200 dark:border-gray-700">
-              <p className="text-xs text-gray-700 dark:text-gray-300 leading-relaxed">
-                {description}
-              </p>
-            </div>
+    <main className="relative z-10">
+      <section className="border-b border-white/10">
+        <div className="container-custom flex min-h-[620px] flex-col items-center justify-center py-20 text-center sm:min-h-[680px]">
+          <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} className="inline-flex items-center gap-2 rounded-full border border-[#FFF200]/40 bg-[#FFF200]/10 px-4 py-2 text-[11px] font-black uppercase tracking-[0.18em] text-[#FFF200]">
+            <Layers className="h-4 w-4" /> Arquitetura do ecossistema
+          </motion.div>
+          <motion.h1 initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.08 }} className="mt-7 max-w-5xl text-4xl font-black leading-[0.98] tracking-[-0.045em] sm:text-6xl lg:text-7xl">
+            Quatro camadas. <span className="text-[#FFF200]">Um ecossistema conectado.</span>
+          </motion.h1>
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.18 }} className="mt-6 max-w-3xl text-base leading-relaxed text-white/65 sm:text-xl">
+            Serviços, tecnologia, produtos e iniciativas de expansão trabalhando como uma única estrutura.
+          </motion.p>
+          <motion.a initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.28 }} href="#mapa" className="mt-9 inline-flex items-center gap-2 text-sm font-bold text-white/75 transition hover:text-[#FFF200]">
+            Entenda as camadas <ArrowDown className="h-4 w-4" />
+          </motion.a>
+        </div>
+      </section>
 
-            {/* Metrics (if provided) */}
-            {metrics && metrics.length > 0 && (
-              <div className="grid grid-cols-2 gap-2">
-                {metrics.map((metric, index) => (
-                  <div key={index} className="bg-gray-50 dark:bg-gray-800 rounded-lg p-2.5 border border-gray-200 dark:border-gray-700">
-                    <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">{metric.label}</div>
-                    <div className="text-lg font-bold text-gray-900 dark:text-white">{metric.value}</div>
-                  </div>
-                ))}
-              </div>
-            )}
+      <section id="mapa" className="container-custom py-16 sm:py-24">
+        <div className="max-w-3xl">
+          <p className="text-xs font-black uppercase tracking-[0.2em] text-[#FFF200]">Mapa do ecossistema</p>
+          <h2 className="mt-3 text-3xl font-black tracking-tight sm:text-5xl">Uma estrutura. Quatro funções.</h2>
+          <p className="mt-4 leading-relaxed text-white/55">As camadas não competem entre si. Cada uma resolve uma parte diferente da jornada e fortalece as demais.</p>
+        </div>
 
-            {/* Equity Badge */}
-            <div className="flex items-center justify-center gap-2 bg-[#FFF200]/100/10 border-2 border-[#FFF200]/30 rounded-lg p-2.5">
-              <CircleDot className="w-4 h-4 text-[#FFF200]" />
-              <span className="text-xs font-bold text-[#FFF200] dark:text-[#FFF200]">
-                20% Participação Societária
-              </span>
-            </div>
-
-            {/* Visit Site Button */}
-            {link && (
-              <a
-                href={link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`group/btn flex items-center justify-center gap-2 w-full px-4 py-3 bg-gradient-to-r ${color} text-white font-bold rounded-xl transition-all duration-300 hover:shadow-lg hover:scale-105 mt-auto`}
-              >
-                Visitar Site
-                <ArrowRight className="w-5 h-5 group-hover/btn:translate-x-1 transition-transform" />
+        <motion.nav {...reveal} aria-label="Camadas do ecossistema" className="relative mt-12 grid gap-0 lg:grid-cols-4">
+          <span className="absolute left-[12.5%] right-[12.5%] top-7 hidden h-px bg-gradient-to-r from-transparent via-[#FFF200]/55 to-transparent lg:block" />
+          {layers.map((layer) => {
+            const Icon = layer.icon;
+            return (
+              <a key={layer.id} href={`#${layer.id}`} className="group relative flex min-w-0 items-center gap-4 border-l border-white/10 py-5 pl-5 lg:flex-col lg:border-l-0 lg:px-4 lg:py-0 lg:text-center">
+                <span className="relative z-10 flex h-14 w-14 shrink-0 items-center justify-center rounded-full border border-[#FFF200]/45 bg-[#0d131d] text-[#FFF200] transition group-hover:bg-[#FFF200] group-hover:text-black"><Icon className="h-5 w-5" /></span>
+                <div className="min-w-0 lg:mt-5"><span className="text-[10px] font-black tracking-[0.2em] text-[#FFF200]/60">{layer.number}</span><h3 className="mt-1 text-lg font-black">{layer.title}</h3><p className="mt-1 text-xs uppercase tracking-[0.12em] text-white/40">{layer.role}</p></div>
               </a>
-            )}
-          </div>
+            );
+          })}
+        </motion.nav>
+      </section>
 
-          {/* Hover Glow Effect */}
-          <div className={`absolute inset-0 bg-gradient-to-br ${color} opacity-0 group-hover:opacity-10 transition-opacity duration-300 pointer-events-none`} />
-        </div>
-      </div>
+      <NucleusLayer />
 
-      {/* External Glow on Hover */}
-      <div className={`absolute inset-0 bg-gradient-to-br ${color} opacity-0 group-hover:opacity-20 blur-2xl -z-10 transition-opacity duration-300`} />
-    </motion.div>
-  );
-};
+      <PlatformLayer />
 
-interface VerticalCardProps {
-  logo?: string;
-  icon?: React.ReactNode;
-  title: string;
-  emoji: string;
-  description: string;
-  features: string[];
-  status: 'active' | 'coming-soon';
-  delay: number;
-}
+      <MvpLayer />
 
-const VerticalCard = ({ logo, icon, title, emoji, description, features, status, delay, actions }: VerticalCardProps & { actions?: Array<{ href: string, label: string, icon: React.ReactNode }> }) => (
-  <motion.div
-    className="group relative"
-    initial={{ opacity: 0, y: 20 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.5, delay, ease: "easeOut" }}
-  >
-    <div className="absolute -inset-0.5 bg-gradient-to-r from-[#FFF200] to-purple-600 rounded-2xl blur opacity-0 group-hover:opacity-100 transition duration-500" />
-    <div className="relative h-full bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-8 hover:shadow-2xl transition-all duration-300">
-      {/* Logo ou Icon */}
-      <div className="mb-6">
-        {logo ? (
-          <img
-            src={logo}
-            alt={title}
-            className="h-16 w-auto"
-          />
-        ) : (
-          <div className="text-[#FFF200]">
-            {icon}
-          </div>
-        )}
-      </div>
+      <VerticalLayer />
 
-      {/* Status badge */}
-      <div className="mb-4">
-        <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400 text-xs font-semibold rounded-full">
-          <Clock className="w-3 h-3" />
-          Em Breve
-        </span>
-      </div>
-
-      <h3 className="text-2xl font-bold mb-3 text-gray-900 dark:text-white group-hover:text-[#FFF200] transition-colors">
-        {emoji} {title}
-      </h3>
-      <p className="text-gray-600 dark:text-gray-300 mb-6">
-        {description}
-      </p>
-      <ul className="space-y-2">
-        {features.map((feature, index) => (
-          <li key={index} className="flex items-center text-sm text-gray-600 dark:text-gray-300">
-            <CheckCircle className="w-4 h-4 text-[#FFF200] mr-2 flex-shrink-0" />
-            {feature}
-          </li>
-        ))}
-      </ul>
-      {/* Ações externas (Spotify, YouTube) */}
-      {actions && actions.length > 0 && (
-        <div className="flex gap-3 mt-4">
-          {actions.map((action, idx) => (
-            <a
-              key={action.href}
-              href={action.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              title={action.label}
-              className="inline-flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-[#FFF200]/100 hover:text-white transition p-2 shadow"
-            >
-              {action.icon}
-            </a>
-          ))}
-        </div>
-      )}
-    </div>
-  </motion.div>
+      <section className="container-custom py-16 sm:py-24">
+        <motion.div {...reveal} className="relative overflow-hidden rounded-2xl border border-[#FFF200]/30 bg-[#0d131d] px-6 py-10 sm:px-10 sm:py-12 lg:flex lg:items-center lg:justify-between lg:gap-12">
+          <span className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#FFF200] to-transparent" />
+          <div><p className="text-xs font-black uppercase tracking-[0.18em] text-[#FFF200]">Seu ponto de entrada</p><h2 className="mt-3 max-w-2xl text-3xl font-black tracking-tight sm:text-5xl">Qual desafio trouxe sua empresa até aqui?</h2><p className="mt-4 max-w-xl leading-relaxed text-white/55">A conversa começa pelo contexto. A camada certa vem depois.</p></div>
+          <Link to="/contato" className="mt-8 inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-[#FFF200] px-6 py-3.5 text-sm font-black text-black transition hover:opacity-90 lg:mt-0">Conversar com a Orientohub <ArrowRight className="h-4 w-4" /></Link>
+        </motion.div>
+      </section>
+    </main>
+  </div>
 );
 
-interface BusinessModelCardProps {
-  icon: React.ElementType;
-  title: string;
-  description: string;
-  delay: number;
-}
-
-const BusinessModelCard = ({ icon, title, description, delay }: BusinessModelCardProps) => {
-  const Icon = icon;
-
-  return (
-    <motion.div
-      className="bg-white/5 backdrop-blur-sm p-6 rounded-xl border border-white/10 hover:border-[#FFF200]/50 transition-all duration-300 hover:bg-white/10"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay, ease: "easeOut" }}
-      whileHover={{ y: -5 }}
-    >
-      <div className="mb-4">
-        <Icon className="w-10 h-10 text-[#FFF200]" />
+const NucleusLayer = () => (
+  <section id="nucleo" className="scroll-mt-24 border-t border-white/10">
+    <motion.div {...reveal} className="container-custom py-16 sm:py-24">
+      <div className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-end">
+        <div><div className="flex items-center gap-3"><span className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#FFF200]/35 bg-[#FFF200]/10"><Target className="h-5 w-5 text-[#FFF200]" /></span><div><p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#FFF200]">Camada 01</p><p className="text-sm font-bold text-white/45">Estratégia e execução</p></div></div><h2 className="mt-7 text-3xl font-black tracking-tight sm:text-5xl">O Núcleo de serviços da Orientohub.</h2></div>
+        <div><p className="max-w-2xl leading-relaxed text-white/55">Uma operação multidisciplinar organizada em quatro frentes. O diagnóstico define quais competências entram no projeto e como elas trabalham juntas.</p><TextLink to="/servicos">Conhecer todos os serviços</TextLink></div>
       </div>
-      <h3 className="text-lg font-bold mb-2 text-white">{title}</h3>
-      <p className="text-gray-300 text-sm">{description}</p>
-    </motion.div>
-  );
-};
 
-interface JourneyStepProps {
-  number: number;
-  title: string;
-  description: string;
-  highlights: string[];
-  delay: number;
-}
-
-const JourneyStep = ({ number, title, description, highlights, delay }: JourneyStepProps) => {
-  const [isFlipped, setIsFlipped] = useState(false);
-
-  return (
-    <motion.div
-      className="relative h-[360px] w-full [perspective:2000px]"
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay, ease: "easeOut" }}
-      onMouseEnter={() => setIsFlipped(true)}
-      onMouseLeave={() => setIsFlipped(false)}
-    >
-      <div
-        className={`relative h-full w-full transition-all duration-700 [transform-style:preserve-3d] ${isFlipped ? '[transform:rotateY(180deg)]' : '[transform:rotateY(0deg)]'
-          }`}
-      >
-        {/* Front of card */}
-        <div
-          className={`absolute inset-0 h-full w-full [transform:rotateY(0deg)] [backface-visibility:hidden] overflow-hidden rounded-xl transition-all duration-700 ${isFlipped ? 'opacity-0' : 'opacity-100'
-            }`}
-        >
-          {/* Glow Border Effect - APENAS NA FRENTE */}
-          <div className="absolute inset-0 pointer-events-none rounded-xl">
-            <div className="absolute inset-0 border border-yellow-400/30 bg-gradient-to-br from-yellow-300/10 via-transparent to-amber-400/15 rounded-xl" />
-            <MovingBorderLight duration={4000} rx={12} ry={12} />
-          </div>
-
-          {/* Inner content with padding for border */}
-          <div className="absolute inset-[2px] rounded-xl bg-white dark:bg-gray-900 shadow-lg" />
-
-          {/* Content */}
-          <div className="relative m-[2px] rounded-xl h-full">
-            {/* Subtle background */}
-            <div className="absolute inset-0 bg-gradient-to-br from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 rounded-xl" />
-
-            {/* Animated progress bars */}
-            <div className="absolute inset-0 flex items-center justify-center pt-12">
-              <div className="relative flex h-[80px] w-[70%] flex-col items-center justify-center gap-2">
-                {[...Array(3)].map((_, i) => (
-                  <div
-                    key={i}
-                    className="h-2 w-full rounded-sm bg-gradient-to-r from-[#FFF200]/20 via-[#FFF200]/40 to-[#FFF200]/20 animate-[slideIn_2s_ease-in-out_infinite] opacity-0"
-                    style={{
-                      width: `${60 + Math.random() * 30}%`,
-                      animationDelay: `${i * 0.4}s`,
-                      marginLeft: `${Math.random() * 15}%`,
-                    }}
-                  />
-                ))}
-              </div>
-            </div>
-
-            {/* Bottom content */}
-            <div className="absolute right-0 bottom-0 left-0 p-5">
-              <div className="space-y-2.5">
-                <div className="flex items-center gap-2.5">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-[#FFF200] to-[#FFF200] shadow-md">
-                    <span className="text-xl font-black text-white">{number}</span>
-                  </div>
-                  <h3 className="text-xl font-bold text-gray-900 dark:text-white transition-all duration-300 hover:text-[#FFF200]">
-                    {title}
-                  </h3>
-                </div>
-                <p className="line-clamp-2 text-xs text-gray-600 dark:text-gray-400">
-                  {description}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Back of card */}
-        <div
-          className={`absolute inset-0 h-full w-full [transform:rotateY(180deg)] [backface-visibility:hidden] rounded-xl transition-all duration-700 ${!isFlipped ? 'opacity-0' : 'opacity-100'
-            }`}
-        >
-          {/* Borda simples SEM luz animada - para evitar sombra */}
-          <div className="absolute inset-0 pointer-events-none rounded-xl">
-            <div className="absolute inset-0 border-2 border-yellow-400/40 bg-gradient-to-br from-yellow-300/5 via-transparent to-amber-400/10 rounded-xl shadow-none" />
-          </div>
-
-          {/* Inner content with padding for border */}
-          <div className="absolute inset-[2px] rounded-xl bg-white dark:bg-gray-900 shadow-lg" />
-
-          {/* Content */}
-          <div className="relative m-[2px] rounded-xl h-full p-5 flex flex-col">
-            {/* Subtle background */}
-            <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-gray-50 to-white dark:from-gray-900 dark:to-gray-800" />
-
-            <div className="relative z-10 flex-1 space-y-3">
-              {/* Header */}
-              <div className="flex items-center gap-2.5 mb-1">
-                <div className="flex h-8 w-8 items-center justify-center rounded-md bg-gradient-to-br from-[#FFF200] to-[#FFF200] shadow-md">
-                  <span className="text-sm font-black text-white">{number}</span>
-                </div>
-                <h3 className="text-lg font-bold text-gray-900 dark:text-white">
-                  {title}
-                </h3>
-              </div>
-
-              {/* Description */}
-              <p className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">
-                {description}
-              </p>
-
-              {/* Highlights */}
-              <div className="space-y-2">
-                {highlights.map((highlight, index) => (
-                  <div
-                    key={index}
-                    className="flex items-center gap-2.5 text-xs text-gray-700 dark:text-gray-300 transition-all duration-500"
-                    style={{
-                      transform: isFlipped ? 'translateX(0)' : 'translateX(-10px)',
-                      opacity: isFlipped ? 1 : 0,
-                      transitionDelay: `${index * 100 + 200}ms`,
-                    }}
-                  >
-                    <div className="flex h-4 w-4 flex-shrink-0 items-center justify-center rounded bg-[#FFF200]/100/10">
-                      <span className="w-1 h-1 bg-[#FFF200]/100 rounded-full" />
-                    </div>
-                    <span className="font-medium">{highlight}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-          </div>
-        </div>
+      <div className="mt-12 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+        {servicePillars.map((pillar) => { const Icon = pillar.icon; return <article key={pillar.title} className="flex min-w-0 flex-col overflow-hidden rounded-2xl border border-white/10 bg-[#0d131d] p-5 sm:p-6"><div className="flex items-start justify-between gap-4"><span className="flex h-11 w-11 items-center justify-center rounded-xl border border-[#FFF200]/30 bg-[#FFF200]/10"><Icon className="h-5 w-5 text-[#FFF200]" /></span><span className="text-xs font-black tracking-[0.18em] text-[#FFF200]/40">{pillar.number}</span></div><h3 className="mt-6 text-xl font-black">{pillar.title}</h3><p className="mt-2 min-h-[60px] text-sm leading-relaxed text-white/45">{pillar.description}</p><div className="mt-5 border-t border-white/10 pt-2">{pillar.services.map(([name, slug]) => <Link key={slug} to={`/servicos/${slug}`} className="group flex items-center justify-between gap-3 border-b border-white/[0.06] py-3 text-sm font-semibold text-white/70 last:border-0"><span>{name}</span><ArrowRight className="h-3.5 w-3.5 shrink-0 text-white/20 transition group-hover:translate-x-1 group-hover:text-[#FFF200]" /></Link>)}</div></article>; })}
       </div>
     </motion.div>
-  );
-};
+  </section>
+);
 
-// Componente MovingBorderLight - usado APENAS na frente do card
-const MovingBorderLight = ({ duration = 2000, rx = 0, ry = 0 }: { duration?: number; rx?: number | string; ry?: number | string }) => {
-  const pathRef = useRef<SVGRectElement | null>(null);
-  const progress = useMotionValue(0);
-
-  useAnimationFrame((time: number) => {
-    if (!pathRef.current) return;
-    const length = pathRef.current.getTotalLength();
-    if (!length) return;
-    const pxPerMillisecond = length / duration;
-    progress.set((time * pxPerMillisecond) % length);
-  });
-
-  const x = useTransform(progress, (val: number) => {
-    if (!pathRef.current) return 0;
-    return pathRef.current.getPointAtLength(val).x;
-  });
-
-  const y = useTransform(progress, (val: number) => {
-    if (!pathRef.current) return 0;
-    return pathRef.current.getPointAtLength(val).y;
-  });
-
-  const transform = useMotionTemplate`translateX(${x}px) translateY(${y}px) translateX(-50%) translateY(-50%)`;
-
+const PlatformLayer = () => {
+  const [selectedPhase, setSelectedPhase] = useState(0);
+  const phase = journeyPhases[selectedPhase];
+  const PhaseIcon = phase.icon;
   return (
-    <>
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        preserveAspectRatio="none"
-        className="absolute inset-0 h-full w-full"
-        width="100%"
-        height="100%"
-        aria-hidden
-      >
-        <rect fill="none" width="100%" height="100%" rx={rx} ry={ry} ref={pathRef} />
-      </svg>
-      <motion.div
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          transform,
-          filter: 'drop-shadow(0 0 20px rgba(255, 214, 94, 0.8))',
-          pointerEvents: 'none'
-        }}
-        aria-hidden
-      >
-        <div className="h-20 w-20 opacity-80 bg-[radial-gradient(circle,rgba(255,209,92,1)_0%,rgba(255,209,92,0)_70%)] blur-lg" />
+    <section id="plataforma" className="scroll-mt-24 border-t border-white/10">
+      <motion.div {...reveal} className="container-custom py-16 sm:py-24">
+        <div className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-end">
+          <div><div className="flex items-center gap-3"><span className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#FFF200]/35 bg-[#FFF200]/10"><Lightbulb className="h-5 w-5 text-[#FFF200]" /></span><div><p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#FFF200]">Camada 02</p><p className="text-sm font-bold text-white/45">Método e continuidade</p></div></div><h2 className="mt-7 text-3xl font-black tracking-tight sm:text-5xl">A Jornada Empreendedora dentro da plataforma.</h2></div>
+          <div><p className="max-w-2xl leading-relaxed text-white/55">A mesma estrutura disponível no produto: cinco cards de fase, missões, frameworks e XP para orientar o avanço do negócio.</p><TextLink to="/dashboard/jornada">Acessar a Jornada Empreendedora</TextLink></div>
+        </div>
+
+        <div className="mt-12 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+          {journeyPhases.map((item, index) => { const Icon = item.icon; const active = selectedPhase === index; return <button key={item.name} type="button" onClick={() => setSelectedPhase(index)} className={`relative min-h-[220px] rounded-2xl border-2 p-5 text-left transition duration-300 ${active ? 'border-[#FFF200]/70 bg-[#FFF200]/10 shadow-[0_18px_50px_rgba(255,242,0,0.08)]' : 'border-white/10 bg-[#0d131d] hover:border-[#FFF200]/35 hover:bg-[#111925]'}`}><span className={`flex h-12 w-12 items-center justify-center rounded-xl ${active ? 'bg-[#FFF200] text-black' : 'bg-[#FFF200]/10 text-[#FFF200]'}`}><Icon className="h-6 w-6" /></span><p className="mt-6 text-[10px] font-black uppercase tracking-[0.16em] text-[#FFF200]/65">Fase {index + 1}</p><h3 className="mt-1 text-lg font-black">{item.name}</h3><p className="mt-2 text-xs leading-relaxed text-white/45">{item.description}</p><p className="mt-4 text-[10px] font-bold uppercase tracking-wide text-white/30">4 missões</p></button>; })}
+        </div>
+
+        <motion.div key={phase.name} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="mt-4 rounded-2xl border border-white/10 bg-[#0d131d] p-5 sm:p-7">
+          <div className="flex flex-col gap-5 border-b border-white/10 pb-6 sm:flex-row sm:items-center sm:justify-between"><div className="flex items-start gap-4"><span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-[#FFF200]/10"><PhaseIcon className="h-7 w-7 text-[#FFF200]" /></span><div><p className="text-[10px] font-black uppercase tracking-[0.16em] text-[#FFF200]">Fase {selectedPhase + 1} de 5</p><h3 className="mt-1 text-2xl font-black">{phase.name}</h3><p className="mt-1 text-sm text-white/45">{phase.description}</p></div></div><span className="text-xs font-bold text-white/35">Missões da fase</span></div>
+          <div className="mt-5 grid gap-3 md:grid-cols-2">{phase.missions.map(([mission, framework, xp]) => <div key={String(mission)} className="flex min-w-0 items-center gap-3 rounded-xl border border-white/[0.07] bg-[#151f2b] p-4"><CheckCircle2 className="h-5 w-5 shrink-0 text-[#FFF200]" /><div className="min-w-0 flex-1"><p className="text-sm font-bold text-white/85">{mission}</p><p className="mt-1 truncate text-xs text-white/40">{framework}</p></div><span className="shrink-0 rounded-full bg-[#FFF200]/10 px-2.5 py-1 text-[10px] font-black text-[#FFF200]">+{xp} XP</span></div>)}</div>
+        </motion.div>
       </motion.div>
-    </>
+    </section>
   );
 };
 
-interface StatCardProps {
-  number: string;
-  label: string;
-}
-
-const StatCard = ({ number, label }: StatCardProps) => {
-  return (
-    <div className="text-center p-6 bg-gradient-to-br from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-[#FFF200] transition-all">
-      <div className="text-3xl font-bold text-[#FFF200] mb-2">{number}</div>
-      <div className="text-sm text-gray-600 dark:text-gray-400">{label}</div>
-    </div>
-  );
-};
-
-interface CTACardProps {
-  title: string;
-  description: string;
-  features: string[];
-  ctaText: string;
-  ctaLink: string;
-  icon: React.ElementType;
-  delay: number;
-  featured?: boolean;
-}
-
-const CTACard = ({ title, description, features, ctaText, ctaLink, icon: Icon, delay, featured = false }: CTACardProps) => {
-  return (
-    <motion.div
-      className={`group relative bg-gradient-to-br from-gray-900 to-black p-8 rounded-2xl border-2 transition-all duration-300 hover:shadow-2xl ${featured
-        ? 'border-[#FFF200] shadow-xl shadow-none scale-105'
-        : 'border-gray-700 hover:border-[#FFF200] hover:shadow-none'
-        }`}
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay, ease: "easeOut" }}
-      whileHover={{ y: -8, scale: featured ? 1.05 : 1.02 }}
-    >
-      {/* Icon */}
-      <div className="relative mb-6">
-        <div className="w-16 h-16 bg-black border-2 border-[#FFF200]/30 rounded-xl flex items-center justify-center group-hover:border-[#FFF200] transition-colors">
-          <Icon className="w-8 h-8 text-[#FFF200]" />
-        </div>
+const MvpLayer = () => (
+  <section id="mvps" className="scroll-mt-24 border-t border-white/10">
+    <motion.div {...reveal} className="container-custom py-16 sm:py-24">
+      <div className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-end">
+        <div><div className="flex items-center gap-3"><span className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#FFF200]/35 bg-[#FFF200]/10"><Rocket className="h-5 w-5 text-[#FFF200]" /></span><div><p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#FFF200]">Camada 03</p><p className="text-sm font-bold text-white/45">Experimentação e produtos</p></div></div><h2 className="mt-7 text-3xl font-black tracking-tight sm:text-5xl">Aprendizado transformado em produto.</h2></div>
+        <p className="max-w-2xl leading-relaxed text-white/55">Soluções próprias em diferentes momentos de validação e evolução. Cada projeto nasce de um problema concreto e amplia a capacidade de experimentação do ecossistema.</p>
       </div>
-
-      {/* Content */}
-      <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-[#FFF200] transition-colors">
-        {title}
-      </h3>
-      <p className="text-gray-400 mb-6 leading-relaxed">
-        {description}
-      </p>
-
-      {/* Features */}
-      <ul className="space-y-3 mb-8">
-        {features.map((feature, index) => (
-          <li key={index} className="flex items-start gap-3">
-            <CheckCircle2 className="w-5 h-5 text-[#FFF200] flex-shrink-0 mt-0.5" />
-            <span className="text-gray-300 text-sm">{feature}</span>
-          </li>
-        ))}
-      </ul>
-
-      {/* CTA Button */}
-      <a
-        href={ctaLink}
-        className={`block w-full text-center px-6 py-4 rounded-xl font-bold transition-all duration-300 ${featured
-          ? 'bg-[#FFF200] hover:bg-[#FFF200] hover:opacity-90 shadow-none text-black shadow-none'
-          : 'bg-white/5 hover:bg-[#FFF200]/100 text-white hover:text-black border-2 border-[#FFF200]/30 hover:border-[#FFF200]'
-          }`}
-      >
-        {ctaText}
-      </a>
-
-      {/* Glow effect on hover */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#FFF200]/0 via-[#FFF200]/0 to-[#FFF200]/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
+      <div className="mt-10 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+        {mvps.map((item) => <MvpShowcase key={item.name} {...item} />)}
+      </div>
     </motion.div>
-  );
+  </section>
+);
+
+const MvpShowcase = ({ name, label, preview, href }: { name: string; label: string; preview?: string; href: string }) => (
+  <a href={href} target="_blank" rel="noreferrer" className="group min-w-0 overflow-hidden rounded-2xl border border-white/10 bg-[#0d131d] transition duration-300 hover:-translate-y-1 hover:border-[#FFF200]/45">
+    <div className="relative aspect-[16/8] overflow-hidden border-b border-white/10 bg-[#111925]">
+      {preview ? <img src={preview} alt={`Preview de ${name}`} className="h-full w-full object-cover object-top transition duration-500 group-hover:scale-[1.03]" /> : <div className="flex h-full items-center justify-center bg-[radial-gradient(circle_at_center,_rgba(255,242,0,0.14),_transparent_65%)]"><Rocket className="h-10 w-10 text-[#FFF200]" /></div>}
+    </div>
+    <div className="p-4">
+      <h3 className="truncate text-lg font-black">{name}</h3>
+      <div className="mt-2 flex items-end justify-between gap-3"><p className="min-w-0 truncate text-[9px] font-black uppercase tracking-[0.14em] text-[#FFF200]">{label}</p><span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-white/10 text-white/45 transition group-hover:border-[#FFF200]/40 group-hover:text-[#FFF200]"><ArrowRight className="h-3.5 w-3.5" /></span></div>
+    </div>
+  </a>
+);
+
+const VerticalLayer = () => (
+  <section id="verticais" className="scroll-mt-24 border-t border-white/10">
+    <motion.div {...reveal} className="container-custom py-16 sm:py-24">
+      <div className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-end">
+        <div><div className="flex items-center gap-3"><span className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#FFF200]/35 bg-[#FFF200]/10"><TrendingUp className="h-5 w-5 text-[#FFF200]" /></span><div><p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#FFF200]">Camada 04</p><p className="text-sm font-bold text-white/45">Conhecimento e expansão</p></div></div><h2 className="mt-7 text-3xl font-black tracking-tight sm:text-5xl">Novas formas de compartilhar e crescer.</h2></div>
+        <p className="max-w-2xl leading-relaxed text-white/55">Iniciativas com propósitos distintos em educação, conhecimento aplicado, novos negócios e conteúdo.</p>
+      </div>
+      <div className="relative mt-12 grid gap-0 lg:grid-cols-4">
+        <span className="absolute left-[12.5%] right-[12.5%] top-7 hidden h-px bg-gradient-to-r from-transparent via-[#FFF200]/45 to-transparent lg:block" />
+        {verticals.map((item, index) => <VerticalItem key={item.name} {...item} index={index} />)}
+      </div>
+    </motion.div>
+  </section>
+);
+
+const VerticalItem = ({ name, label, icon: Icon, href, index }: { name: string; label: string; icon: ComponentType<{ className?: string }>; href?: string; index: number }) => {
+  const body = <><span className="relative z-10 flex h-14 w-14 shrink-0 items-center justify-center rounded-full border border-[#FFF200]/45 bg-[#0d131d] text-[#FFF200] transition group-hover:bg-[#FFF200] group-hover:text-black"><Icon className="h-5 w-5" /></span><div className="min-w-0 lg:mt-5"><span className="text-[10px] font-black tracking-[0.2em] text-[#FFF200]/60">0{index + 1}</span><h3 className="mt-1 text-lg font-black">{name}</h3><p className="mt-1 text-xs uppercase leading-relaxed tracking-[0.1em] text-white/40">{label}</p></div></>;
+  const classes = 'group relative flex min-w-0 items-center gap-4 border-l border-white/10 py-5 pl-5 transition lg:flex-col lg:border-l-0 lg:px-4 lg:py-0 lg:text-center';
+  return href ? <Link to={href} className={classes}>{body}</Link> : <div className={classes}>{body}</div>;
 };
+
+const TextLink = ({ to, children }: { to: string; children: ReactNode }) => <Link to={to} className="mt-7 inline-flex items-center gap-2 text-sm font-black text-[#FFF200] transition hover:text-white">{children} <ArrowRight className="h-4 w-4" /></Link>;
 
 export default EcosystemPage;

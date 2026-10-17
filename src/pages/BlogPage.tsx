@@ -349,15 +349,15 @@ const BlogPage = () => {
             <div className="inline-flex items-center gap-2.5 rounded-full border border-[#FFF200]/60 bg-gradient-to-b from-white/10 to-black/80 px-3.5 py-2 shadow-none backdrop-blur-md mb-6">
               <Mail className="h-3.5 w-3.5 text-[#FFF200]" aria-hidden="true" />
               <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-white sm:text-xs">
-                Newsletter Exclusiva
+                Ideias em movimento
               </span>
             </div>
 
             <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white">
-              Não perca nenhum conteúdo
+              Conteúdo para fazer suas ideias avançarem
             </h2>
             <p className="text-xl text-gray-300 mb-8">
-              Receba semanalmente os melhores artigos sobre empreendedorismo, startups e inovação direto no seu e-mail.
+              Estratégia, validação, frameworks e aprendizados práticos para transformar ideias em projetos e soluções.
             </p>
 
             <form className="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto mb-6">
