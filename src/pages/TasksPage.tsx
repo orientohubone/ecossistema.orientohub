@@ -13,7 +13,9 @@ import {
   Circle,
   X,
   ArrowRight,
-  ListTodo
+  ListTodo,
+  List,
+  Columns3
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { dashboardService, type DashboardTask } from '../services/dashboardService';
@@ -26,6 +28,7 @@ const TasksPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [priorityFilter, setPriorityFilter] = useState('all');
+  const [viewMode, setViewMode] = useState<'list' | 'kanban'>('list');
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -138,7 +141,7 @@ const TasksPage = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="flex items-center justify-between mb-8"
+          className="mb-8 flex flex-col justify-between gap-5 sm:flex-row sm:items-end"
         >
           <div>
             <p className="mb-2 text-[11px] font-bold uppercase tracking-[0.16em] text-primary-300">Foco da execução</p>
@@ -148,6 +151,10 @@ const TasksPage = () => {
             <p className="text-[#9ba9bc]">
               Gerencie todas as tarefas dos seus projetos em um só lugar
             </p>
+          </div>
+          <div className="flex rounded-xl border border-[#34455a] bg-[#101722] p-1" aria-label="Visualização das tarefas">
+            <button type="button" onClick={() => setViewMode('list')} aria-pressed={viewMode === 'list'} className={`inline-flex items-center gap-2 rounded-lg px-3.5 py-2 text-sm font-bold transition ${viewMode === 'list' ? 'bg-primary-500 text-[#0c121b]' : 'text-[#9ba9bc] hover:text-white'}`}><List className="h-4 w-4" />Lista</button>
+            <button type="button" onClick={() => setViewMode('kanban')} aria-pressed={viewMode === 'kanban'} className={`inline-flex items-center gap-2 rounded-lg px-3.5 py-2 text-sm font-bold transition ${viewMode === 'kanban' ? 'bg-primary-500 text-[#0c121b]' : 'text-[#9ba9bc] hover:text-white'}`}><Columns3 className="h-4 w-4" />Kanban</button>
           </div>
         </motion.div>
 
@@ -222,63 +229,36 @@ const TasksPage = () => {
           </div>
         </motion.div>
 
-        {/* Tasks List */}
-        <div className="space-y-4">
-          {filteredTasks.map((task, index) => (
-            <motion.div
-              key={task.id}
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.5 + index * 0.05 }}
-              className="cursor-pointer rounded-2xl border border-[#273548] bg-[#101722] p-5 shadow-[0_12px_28px_rgba(0,0,0,0.16)] transition-all duration-300 hover:-translate-y-0.5 hover:border-primary-400/70 hover:bg-[#151f2b]"
-              onClick={() => handleTaskClick(task)}
-            >
-              <div className="flex items-start gap-4">
-                <div className="flex-shrink-0 mt-1">
-                  {getStatusIcon(task.status)}
-                </div>
-                
-                <div className="flex-1">
-                  <div className="flex items-start justify-between mb-2">
-                    <div className="flex-1">
-                      <h3 className="mb-1 text-lg font-semibold text-white">
-                        {task.title}
-                      </h3>
-                      <p className="mb-3 text-[#9ba9bc]">
-                        {task.description}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex flex-wrap items-center gap-3">
-                    <div className="flex items-center gap-2">
-                      {getTypeIcon(task.type)}
-                      <span className="text-sm text-[#9ba9bc]">
-                        {task.type === 'hypothesis' ? 'Hipótese' : task.type === 'experiment' ? 'Experimento' : 'Pesquisa'}
-                      </span>
-                    </div>
-
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${getPriorityColor(task.priority)}`}>
-                      {getPriorityLabel(task.priority)}
-                    </span>
-
-                    <div className="flex items-center gap-1 text-sm text-[#9ba9bc]">
-                      <Calendar className="w-4 h-4" />
-                      {new Date(task.dueDate).toLocaleDateString('pt-BR')}
-                    </div>
-
-                    <div className="flex items-center gap-2">
-                      <div className="w-2 h-2 rounded-full bg-blue-500" />
-                      <span className="text-sm text-[#9ba9bc]">
-                        {task.projectName}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
+        {/* Tasks views */}
+        {viewMode === 'list' ? (
+          <div className="overflow-hidden rounded-2xl border border-[#273548] bg-[#101722]">
+            {filteredTasks.map((task, index) => (
+              <motion.button key={task.id} type="button" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: index * 0.035 }} onClick={() => handleTaskClick(task)} className="group grid w-full gap-3 border-b border-[#273548] p-4 text-left transition last:border-0 hover:bg-[#151f2b] sm:grid-cols-[28px_minmax(0,1fr)_auto] sm:items-center sm:px-5">
+                <span>{getStatusIcon(task.status)}</span>
+                <span className="min-w-0"><strong className="block truncate text-sm font-bold text-white group-hover:text-primary-200">{task.title}</strong><span className="mt-1 block truncate text-xs text-[#718096]">{task.projectName} · {task.description}</span></span>
+                <span className="flex flex-wrap items-center gap-2 sm:justify-end"><span className={`rounded-full px-2 py-1 text-[10px] font-bold ${getPriorityColor(task.priority)}`}>{getPriorityLabel(task.priority)}</span><span className="flex items-center gap-1 text-xs text-[#718096]"><Calendar className="h-3.5 w-3.5" />{new Date(task.dueDate).toLocaleDateString('pt-BR')}</span><ArrowRight className="h-4 w-4 text-[#52647a] transition group-hover:translate-x-1 group-hover:text-primary-300" /></span>
+              </motion.button>
+            ))}
+          </div>
+        ) : (
+          <div className="grid items-start gap-4 lg:grid-cols-3">
+            {([
+              { id: 'todo', label: 'Pendentes', tone: 'text-slate-300', border: 'border-slate-400/20' },
+              { id: 'in_progress', label: 'Em andamento', tone: 'text-sky-300', border: 'border-sky-400/25' },
+              { id: 'completed', label: 'Concluídas', tone: 'text-emerald-300', border: 'border-emerald-400/25' },
+            ] as const).map((column) => {
+              const columnTasks = filteredTasks.filter((task) => task.status === column.id);
+              return <section key={column.id} className={`min-h-72 rounded-2xl border ${column.border} bg-[#0c121b]/55 p-3`}>
+                <div className="mb-3 flex items-center justify-between px-1"><h2 className={`text-xs font-black uppercase tracking-[0.14em] ${column.tone}`}>{column.label}</h2><span className="rounded-md border border-[#34455a] bg-[#101722] px-2 py-0.5 text-[10px] font-bold text-[#9ba9bc]">{columnTasks.length}</span></div>
+                <div className="space-y-3">{columnTasks.map((task, index) => <motion.button key={task.id} type="button" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.04 }} onClick={() => handleTaskClick(task)} className="group w-full rounded-xl border border-[#273548] bg-[#101722] p-4 text-left transition hover:-translate-y-0.5 hover:border-primary-400/60 hover:bg-[#151f2b]">
+                  <div className="flex items-start justify-between gap-3"><span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg border border-[#34455a] bg-[#0c121b] text-primary-300">{getTypeIcon(task.type)}</span><span className={`rounded-full px-2 py-1 text-[10px] font-bold ${getPriorityColor(task.priority)}`}>{getPriorityLabel(task.priority)}</span></div>
+                  <h3 className="mt-4 text-sm font-bold leading-snug text-white group-hover:text-primary-200">{task.title}</h3><p className="mt-2 line-clamp-2 text-xs leading-relaxed text-[#718096]">{task.description}</p>
+                  <div className="mt-4 flex items-center justify-between border-t border-[#273548] pt-3"><span className="max-w-[75%] truncate text-xs font-semibold text-[#9ba9bc]">{task.projectName}</span><ArrowRight className="h-4 w-4 text-[#52647a] transition group-hover:translate-x-1 group-hover:text-primary-300" /></div>
+                </motion.button>)}{!columnTasks.length && <div className="rounded-xl border border-dashed border-[#34455a] px-4 py-8 text-center text-xs text-[#52647a]">Nenhuma tarefa nesta etapa</div>}</div>
+              </section>;
+            })}
+          </div>
+        )}
 
         {/* Empty State */}
         {filteredTasks.length === 0 && (

@@ -9,6 +9,8 @@ import {
   Copy,
   ExternalLink,
   GripVertical,
+  Columns3,
+  List,
   Mail,
   MapPin,
   MessageCircle,
@@ -50,6 +52,7 @@ export const CrmWorkspace = ({ onCreateProposal }: { onCreateProposal: (client: 
   const [tasks, setTasks] = useState<CrmTask[]>([]);
   const [activity, setActivity] = useState('');
   const [taskTitle, setTaskTitle] = useState('');
+  const [taskView, setTaskView] = useState<'list' | 'kanban'>('list');
   const [draggedTaskId, setDraggedTaskId] = useState<string | null>(null);
   const [copiedChecklist, setCopiedChecklist] = useState(false);
   const [search, setSearch] = useState('');
@@ -164,6 +167,22 @@ export const CrmWorkspace = ({ onCreateProposal }: { onCreateProposal: (client: 
   const toggleTask = async (task: CrmTask) => {
     const updated = await crmService.toggleTask(task.id, !task.completed);
     setTasks((current) => current.map((item) => item.id === updated.id ? updated : item));
+  };
+
+  const moveTaskToStatus = async (completed: boolean) => {
+    if (!draggedTaskId) return;
+    const task = tasks.find((item) => item.id === draggedTaskId);
+    setDraggedTaskId(null);
+    if (!task || task.completed === completed) return;
+    const previous = tasks;
+    setTasks((current) => current.map((item) => item.id === task.id ? { ...item, completed } : item));
+    try {
+      const updated = await crmService.toggleTask(task.id, completed);
+      setTasks((current) => current.map((item) => item.id === updated.id ? updated : item));
+    } catch {
+      setTasks(previous);
+      setError('Não foi possível mover a tarefa.');
+    }
   };
 
   const removeTask = async (task: CrmTask) => {
@@ -289,9 +308,16 @@ export const CrmWorkspace = ({ onCreateProposal }: { onCreateProposal: (client: 
 
             <aside className="space-y-5 xl:sticky xl:top-5">
               <section className="rounded-2xl border border-primary-400/20 bg-primary-500/5 p-5">
-                <div className="flex items-start justify-between gap-3"><div><p className="text-xs font-bold uppercase tracking-[.14em] text-primary-300">Próximos passos</p><h3 className="mt-1 text-xl font-bold text-white">Checklist comercial</h3></div><span className="rounded-lg bg-primary-500 px-2.5 py-1 text-xs font-bold text-[#0c121b]">{completedTasks}/{tasks.length}</span></div>
+                <div className="flex flex-wrap items-start justify-between gap-3">
+                  <div><p className="text-xs font-bold uppercase tracking-[.14em] text-primary-300">Próximos passos</p><h3 className="mt-1 text-xl font-bold text-white">Tarefas comerciais</h3></div>
+                  <div className="flex items-center gap-2"><div className="flex rounded-lg border border-[#34455a] bg-[#0c121b] p-1" aria-label="Visualização das tarefas">
+                    <button type="button" onClick={() => setTaskView('list')} aria-pressed={taskView === 'list'} title="Visualização em lista" className={`grid h-7 w-8 place-items-center rounded-md transition ${taskView === 'list' ? 'bg-primary-500 text-[#0c121b]' : 'text-[#718096] hover:text-white'}`}><List className="h-4 w-4" /></button>
+                    <button type="button" onClick={() => setTaskView('kanban')} aria-pressed={taskView === 'kanban'} title="Visualização em kanban" className={`grid h-7 w-8 place-items-center rounded-md transition ${taskView === 'kanban' ? 'bg-primary-500 text-[#0c121b]' : 'text-[#718096] hover:text-white'}`}><Columns3 className="h-4 w-4" /></button>
+                  </div><span className="rounded-lg bg-primary-500 px-2.5 py-1 text-xs font-bold text-[#0c121b]">{completedTasks}/{tasks.length}</span></div>
+                </div>
                 <div className="mt-4 flex gap-2"><input value={taskTitle} onChange={(event) => setTaskTitle(event.target.value)} onKeyDown={(event) => { if (event.key === 'Enter') addTask(); }} placeholder="Adicionar próximo passo" className="min-w-0 flex-1 rounded-xl border border-[#34455a] bg-[#0c121b] px-3 py-2.5 text-sm text-white outline-none focus:border-primary-400" /><button onClick={addTask} aria-label="Adicionar próximo passo" className="rounded-xl bg-primary-500 px-3 text-[#0c121b]"><Plus className="h-4 w-4" /></button></div>
-                <div className="mt-4 space-y-2">{tasks.map((task, index) => <div key={task.id} draggable onDragStart={() => setDraggedTaskId(task.id)} onDragEnd={() => setDraggedTaskId(null)} onDragOver={(event) => event.preventDefault()} onDrop={() => moveTask(task.id)} className={`group flex items-start gap-2 rounded-xl border p-3 transition ${draggedTaskId === task.id ? 'scale-[.98] border-primary-400/50 opacity-50' : task.completed ? 'border-emerald-400/20 bg-emerald-400/5' : 'border-[#273548] bg-[#101722]'}`}><span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-primary-500/10 text-[11px] font-black text-primary-300">{index + 1}</span><button onClick={() => toggleTask(task)} className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-md border ${task.completed ? 'border-emerald-400 bg-emerald-400 text-[#0c121b]' : 'border-[#52647a] text-transparent'}`}>{task.completed ? <Check className="h-3.5 w-3.5" /> : <Circle className="h-3 w-3" />}</button><button onClick={() => toggleTask(task)} className={`min-w-0 flex-1 text-left text-sm leading-relaxed ${task.completed ? 'text-[#718096] line-through' : 'text-[#d7e0ea]'}`}>{task.title}</button><span title="Arraste para reordenar" className="cursor-grab p-1 text-[#718096] active:cursor-grabbing"><GripVertical className="h-4 w-4" /></span><button onClick={() => removeTask(task)} aria-label={`Excluir ${task.title}`} className="p-1 text-[#718096] opacity-0 transition hover:text-red-300 group-hover:opacity-100"><Trash2 className="h-3.5 w-3.5" /></button></div>)}{!tasks.length && <p className="rounded-xl border border-dashed border-[#34455a] p-5 text-center text-xs text-[#718096]">Adicione o próximo movimento deste relacionamento.</p>}</div>
+                {taskView === 'list' ? <div className="mt-4 space-y-2">{tasks.map((task, index) => <div key={task.id} draggable onDragStart={() => setDraggedTaskId(task.id)} onDragEnd={() => setDraggedTaskId(null)} onDragOver={(event) => event.preventDefault()} onDrop={() => moveTask(task.id)} className={`group flex items-start gap-2 rounded-xl border p-3 transition ${draggedTaskId === task.id ? 'scale-[.98] border-primary-400/50 opacity-50' : task.completed ? 'border-emerald-400/20 bg-emerald-400/5' : 'border-[#273548] bg-[#101722]'}`}><span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-primary-500/10 text-[11px] font-black text-primary-300">{index + 1}</span><button onClick={() => toggleTask(task)} className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-md border ${task.completed ? 'border-emerald-400 bg-emerald-400 text-[#0c121b]' : 'border-[#52647a] text-transparent'}`}>{task.completed ? <Check className="h-3.5 w-3.5" /> : <Circle className="h-3 w-3" />}</button><button onClick={() => toggleTask(task)} className={`min-w-0 flex-1 text-left text-sm leading-relaxed ${task.completed ? 'text-[#718096] line-through' : 'text-[#d7e0ea]'}`}>{task.title}</button><span title="Arraste para reordenar" className="cursor-grab p-1 text-[#718096] active:cursor-grabbing"><GripVertical className="h-4 w-4" /></span><button onClick={() => removeTask(task)} aria-label={`Excluir ${task.title}`} className="p-1 text-[#718096] opacity-0 transition hover:text-red-300 group-hover:opacity-100"><Trash2 className="h-3.5 w-3.5" /></button></div>)}{!tasks.length && <p className="rounded-xl border border-dashed border-[#34455a] p-5 text-center text-xs text-[#718096]">Adicione o próximo movimento deste relacionamento.</p>}</div> :
+                <div className="mt-4 grid gap-3 sm:grid-cols-2">{([{ completed: false, label: 'A fazer', accent: 'text-primary-300', border: 'border-primary-400/20' }, { completed: true, label: 'Concluídas', accent: 'text-emerald-300', border: 'border-emerald-400/20' }] as const).map((column) => { const columnTasks = tasks.filter((task) => task.completed === column.completed); return <div key={column.label} onDragOver={(event) => event.preventDefault()} onDrop={() => moveTaskToStatus(column.completed)} className={`min-h-44 rounded-xl border ${column.border} bg-[#0c121b]/65 p-2.5`}><div className="mb-2.5 flex items-center justify-between px-1"><span className={`text-[11px] font-black uppercase tracking-[.14em] ${column.accent}`}>{column.label}</span><span className="rounded-md bg-[#151f2b] px-2 py-0.5 text-[10px] font-bold text-[#9ba9bc]">{columnTasks.length}</span></div><div className="space-y-2">{columnTasks.map((task) => <article key={task.id} draggable onDragStart={() => setDraggedTaskId(task.id)} onDragEnd={() => setDraggedTaskId(null)} className={`group cursor-grab rounded-lg border p-3 transition active:cursor-grabbing ${draggedTaskId === task.id ? 'border-primary-400/50 opacity-50' : task.completed ? 'border-emerald-400/15 bg-emerald-400/5' : 'border-[#273548] bg-[#101722]'}`}><div className="flex items-start gap-2"><button onClick={() => toggleTask(task)} className={`mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-md border ${task.completed ? 'border-emerald-400 bg-emerald-400 text-[#0c121b]' : 'border-[#52647a] text-transparent'}`}>{task.completed ? <Check className="h-3.5 w-3.5" /> : <Circle className="h-3 w-3" />}</button><button onClick={() => toggleTask(task)} className={`min-w-0 flex-1 text-left text-xs leading-relaxed ${task.completed ? 'text-[#718096] line-through' : 'text-[#d7e0ea]'}`}>{task.title}</button><button onClick={() => removeTask(task)} aria-label={`Excluir ${task.title}`} className="text-[#718096] opacity-0 transition hover:text-red-300 group-hover:opacity-100"><Trash2 className="h-3.5 w-3.5" /></button></div></article>)}{!columnTasks.length && <div className="rounded-lg border border-dashed border-[#273548] px-3 py-6 text-center text-[11px] text-[#52647a]">Arraste uma tarefa para cá</div>}</div></div>; })}</div>}
                 <div className="mt-4 grid grid-cols-2 gap-2 border-t border-primary-400/15 pt-4"><button type="button" onClick={copyChecklist} disabled={!tasks.length} className="inline-flex items-center justify-center gap-2 rounded-xl border border-[#34455a] bg-[#101722] px-3 py-2.5 text-xs font-bold text-[#d7e0ea] transition hover:border-primary-400/50 disabled:cursor-not-allowed disabled:opacity-40"><Copy className="h-4 w-4" />{copiedChecklist ? 'Copiado!' : 'Copiar checklist'}</button><button type="button" onClick={sendChecklistToWhatsApp} disabled={!tasks.length} className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#25D366] px-3 py-2.5 text-xs font-bold text-[#07150c] transition hover:bg-[#34df75] disabled:cursor-not-allowed disabled:opacity-40"><MessageCircle className="h-4 w-4" />Enviar no WhatsApp</button></div>
               </section>
 

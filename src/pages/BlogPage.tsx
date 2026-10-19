@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
@@ -13,10 +12,10 @@ import {
   Rocket,
   Target,
   Search,
-  Filter,
-  Mail,
-  CheckCircle2
+  X
 } from 'lucide-react';
+import SectionDivider from '../components/SectionDivider';
+import { Badge } from '../components/ui/Badge';
 
 interface BlogPost {
   id: string;
@@ -36,7 +35,6 @@ interface BlogPost {
 }
 
 const BlogPage = () => {
-  const { t } = useTranslation();
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -170,20 +168,20 @@ const BlogPage = () => {
   const regularPosts = filteredPosts.filter(post => !post.featured);
 
   return (
-    <div className="dark min-h-screen">
+    <div className="relative min-h-screen overflow-x-hidden text-white">
       {/* Shared fixed background */}
       <div className="fixed inset-0 bg-gradient-to-br from-black via-gray-900 to-black -z-50" />
       {/* Global dot grid */}
-      <div className="fixed inset-0 opacity-[0.06] pointer-events-none -z-40"
+      <div className="fixed inset-0 opacity-20 pointer-events-none -z-40"
         style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, #FFF200 1px, transparent 0)', backgroundSize: '40px 40px' }}
       />
       <Helmet>
-        <title>Blog - Orientohub | Conteúdo para Founders e Startups</title>
-        <meta name="description" content="Artigos, guias e recursos exclusivos sobre empreendedorismo, startups e inovação. Aprenda com quem já trilhou esse caminho." />
+        <title>Blog | Ideias em movimento — OrientoHub</title>
+        <meta name="description" content="Estratégia, validação, inovação e aprendizados práticos para transformar ideias em projetos e soluções." />
       </Helmet>
 
       {/* Hero Section */}
-      <section className="relative min-h-[60vh] w-full overflow-hidden flex items-center">
+      <section className="relative flex min-h-[620px] w-full items-center overflow-hidden border-b border-white/10">
         {/* Animated background */}
         <div className="absolute inset-0 overflow-hidden">
           
@@ -195,68 +193,68 @@ const BlogPage = () => {
 
         <div className="container-custom relative z-10 py-20">
           <motion.div
-            className="max-w-4xl mx-auto text-center"
+            className="max-w-5xl"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
             <motion.div
-              className="inline-flex items-center gap-2.5 rounded-full border border-[#FFF200]/60 bg-gradient-to-b from-white/10 to-black/80 px-3.5 py-2 shadow-none backdrop-blur-md mb-8"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.2 }}
             >
+              <Badge variant="liquid-glass" className="gap-2 px-3 py-1.5 sm:px-3.5 sm:py-2">
               <Rocket className="h-3.5 w-3.5 text-[#FFF200]" aria-hidden="true" />
-              <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-white sm:text-xs">
+              <span className="text-[10px] font-semibold uppercase tracking-[0.12em] text-white/90 sm:text-xs">
                 Blog Orientohub
               </span>
+              </Badge>
             </motion.div>
 
-            <h1 className="text-5xl md:text-7xl font-bold mb-8 text-white leading-tight">
-              Conteúdo que{' '}
-              <span className="bg-gradient-to-r from-[#FFF200] via-[#FFF200] to-[#FFF200] bg-clip-text text-transparent">
-                acelera
-              </span>
-              {' '}sua startup
+            <h1 className="mt-8 max-w-5xl text-5xl font-black leading-[0.95] tracking-[-0.05em] text-white sm:text-7xl">
+              Ideias para pensar melhor. <span className="text-[#FFF200]">Caminhos para avançar.</span>
             </h1>
 
-            <p className="text-xl md:text-2xl text-gray-300 mb-12 leading-relaxed">
-              Artigos práticos, guias completos e insights valiosos para founders que querem transformar ideias em negócios de sucesso.
+            <p className="mb-10 mt-7 max-w-3xl text-lg leading-relaxed text-white/60 sm:text-xl">
+              Estratégia, validação, inovação e aprendizados práticos para transformar possibilidades em decisões, projetos e soluções.
             </p>
 
             {/* Search Bar */}
-            <div className="max-w-2xl mx-auto">
+            <div className="max-w-2xl">
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                  <Search className="w-5 h-5 text-gray-400" />
+                  <Search className="h-5 w-5 text-[#FFF200]" />
                 </div>
                 <input
                   type="text"
                   placeholder="Buscar artigos..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="block w-full pl-12 pr-4 py-4 bg-white/10 border-2 border-white/20 rounded-xl text-white placeholder-gray-400 focus:border-[#FFF200] focus:ring-0 transition-all backdrop-blur-sm"
+                  className="block w-full rounded-2xl border border-white/10 bg-[#0d131d]/85 py-4 pl-12 pr-12 text-white outline-none transition placeholder:text-white/25 focus:border-[#FFF200]/60 focus:ring-2 focus:ring-[#FFF200]/10"
                 />
+                {searchQuery && <button type="button" onClick={() => setSearchQuery('')} aria-label="Limpar busca" className="absolute right-3 top-1/2 grid h-8 w-8 -translate-y-1/2 place-items-center rounded-lg text-white/35 hover:bg-white/10 hover:text-white"><X className="h-4 w-4" /></button>}
               </div>
             </div>
           </motion.div>
         </div>
       </section>
 
+      <SectionDivider topSpacing="tight" />
+
       {/* Categories Filter */}
-      <section className="sticky top-0 z-40 backdrop-blur-lg bg-black/50 border-b-2 border-gray-800">
-        <div className="container-custom py-6">
-          <div className="flex items-center gap-4 overflow-x-auto scrollbar-hide">
+      <section className="relative z-30">
+        <div className="container-custom py-4">
+          <div className="flex items-center gap-2 overflow-x-auto rounded-2xl border border-white/10 bg-[#0d131d]/90 p-2 backdrop-blur-xl scrollbar-hide">
             {categories.map((category) => {
               const Icon = category.icon;
               return (
                 <button
                   key={category.id}
                   onClick={() => setSelectedCategory(category.id)}
-                  className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold whitespace-nowrap transition-all duration-300 ${
+                  className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold whitespace-nowrap transition-all duration-300 ${
                     selectedCategory === category.id
-                      ? 'bg-[#FFF200] text-black hover:opacity-90 shadow-none shadow-none shadow-none'
-                      : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+                      ? 'bg-[#FFF200] text-black'
+                      : 'border border-transparent text-white/50 hover:border-white/10 hover:bg-white/[0.04] hover:text-white'
                   }`}
                 >
                   <Icon className="w-5 h-5" />
@@ -270,17 +268,14 @@ const BlogPage = () => {
 
       {/* Featured Post */}
       {featuredPost && selectedCategory === 'all' && !searchQuery && (
-        <section className="bg-gradient-to-b from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 py-16">
+        <section className="py-16 sm:py-20">
           <div className="container-custom">
             <motion.div
               className="mb-8"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
             >
-              <h2 className="text-3xl font-bold flex items-center gap-3">
-                <Sparkles className="w-8 h-8 text-[#FFF200]" />
-                Artigo em Destaque
-              </h2>
+              <p className="text-xs font-black uppercase tracking-[0.18em] text-[#FFF200]">Leitura recomendada</p><h2 className="mt-2 text-3xl font-black">Artigo em destaque</h2>
             </motion.div>
 
             <FeaturedPostCard post={featuredPost} />
@@ -289,7 +284,7 @@ const BlogPage = () => {
       )}
 
       {/* Blog Posts Grid */}
-      <section className="bg-white dark:bg-gray-900 py-16">
+      <section className="py-16 sm:py-20">
         <div className="container-custom">
           {regularPosts.length === 0 ? (
             <motion.div
@@ -297,25 +292,25 @@ const BlogPage = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
             >
-              <Search className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+              <Search className="w-12 h-12 text-white/20 mx-auto mb-4" />
+              <h3 className="text-2xl font-bold text-white mb-2">
                 Nenhum artigo encontrado
               </h3>
-              <p className="text-gray-600 dark:text-gray-400">
+              <p className="text-white/40">
                 Tente ajustar os filtros ou buscar por outro termo
               </p>
             </motion.div>
           ) : (
             <>
               <motion.div
-                className="mb-8"
+                className="mb-8 flex items-end justify-between gap-4 border-b border-white/10 pb-5"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
               >
-                <h2 className="text-3xl font-bold">
+                <div><p className="text-xs font-black uppercase tracking-[0.18em] text-[#FFF200]">Publicações</p><h2 className="mt-2 text-3xl font-black">
                   {selectedCategory === 'all' ? 'Últimos Artigos' : `Artigos de ${categories.find(c => c.id === selectedCategory)?.label}`}
-                </h2>
-                <p className="text-gray-600 dark:text-gray-400 mt-2">
+                </h2></div>
+                <p className="text-sm font-bold text-white/35">
                   {regularPosts.length} {regularPosts.length === 1 ? 'artigo encontrado' : 'artigos encontrados'}
                 </p>
               </motion.div>
@@ -330,64 +325,54 @@ const BlogPage = () => {
         </div>
       </section>
 
-      {/* Newsletter CTA */}
-      <section className="relative py-24 overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute inset-0" style={{
-            backgroundImage: 'radial-gradient(circle at 2px 2px, #FFF200 1px, transparent 0)',
-            backgroundSize: '40px 40px'
-          }} />
-        </div>
+      <SectionDivider />
 
+      {/* Continue the journey CTA */}
+      <section className="relative overflow-hidden py-20 sm:py-28">
         <div className="container-custom relative z-10">
           <motion.div
-            className="max-w-3xl mx-auto text-center"
+            className="mx-auto grid max-w-5xl overflow-hidden rounded-3xl border border-white/10 bg-[#0d131d] lg:grid-cols-[1.1fr_0.9fr]"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <div className="inline-flex items-center gap-2.5 rounded-full border border-[#FFF200]/60 bg-gradient-to-b from-white/10 to-black/80 px-3.5 py-2 shadow-none backdrop-blur-md mb-6">
-              <Mail className="h-3.5 w-3.5 text-[#FFF200]" aria-hidden="true" />
-              <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-white sm:text-xs">
-                Ideias em movimento
-              </span>
+            <div className="flex flex-col justify-center px-6 py-12 sm:px-12 sm:py-16">
+              <div className="mb-6 inline-flex w-fit items-center gap-2.5 rounded-full border border-[#FFF200]/35 bg-[#FFF200]/10 px-3.5 py-2">
+                <Sparkles className="h-3.5 w-3.5 text-[#FFF200]" aria-hidden="true" />
+                <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-white sm:text-xs">
+                  Do conteúdo à prática
+                </span>
+              </div>
+              <h2 className="max-w-xl text-4xl font-black leading-[1.05] text-white md:text-5xl">
+                Leu. Agora escolha o próximo movimento.
+              </h2>
+              <p className="mt-6 max-w-xl text-lg leading-relaxed text-white/55">
+                Aprofunde um conceito ou leve sua ideia para um ambiente feito para organizar decisões e construir avanços.
+              </p>
             </div>
 
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white">
-              Conteúdo para fazer suas ideias avançarem
-            </h2>
-            <p className="text-xl text-gray-300 mb-8">
-              Estratégia, validação, frameworks e aprendizados práticos para transformar ideias em projetos e soluções.
-            </p>
+            <div className="grid gap-px border-t border-white/10 bg-white/10 lg:border-l lg:border-t-0">
+              <Link to="/glossario" className="group flex items-center gap-5 bg-[#101722] p-7 transition-colors hover:bg-[#151d29] sm:p-9">
+                <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl border border-[#FFF200]/25 bg-[#FFF200]/10 text-[#FFF200]">
+                  <Lightbulb className="h-5 w-5" />
+                </span>
+                <span className="min-w-0 flex-1">
+                  <strong className="block text-lg font-black text-white">Entenda um conceito</strong>
+                  <span className="mt-1 block text-sm leading-relaxed text-white/45">Consulte definições diretas no Glossário.</span>
+                </span>
+                <ArrowRight className="h-5 w-5 shrink-0 text-[#FFF200] transition-transform group-hover:translate-x-1" />
+              </Link>
 
-            <form className="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto mb-6">
-              <input
-                type="email"
-                placeholder="seu@email.com"
-                className="flex-1 px-6 py-4 rounded-xl border-2 border-[#FFF200]/30 bg-white/5 text-white placeholder-gray-400 focus:border-[#FFF200] focus:ring-0 focus:bg-white/10 transition-all backdrop-blur-sm"
-              />
-              <button
-                type="submit"
-                className="px-8 py-4 bg-[#FFF200] hover:bg-[#FFF200] hover:opacity-90 shadow-none text-black font-bold rounded-xl transition-all duration-300 hover:scale-105 shadow-none shadow-none flex items-center justify-center gap-2"
-              >
-                <Mail className="w-5 h-5" />
-                Assinar Grátis
-              </button>
-            </form>
-
-            <div className="flex items-center justify-center gap-6 text-sm text-gray-400">
-              <span className="flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-[#FFF200]" />
-                Sem spam
-              </span>
-              <span className="flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-[#FFF200]" />
-                Cancele quando quiser
-              </span>
-              <span className="flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-[#FFF200]" />
-                Conteúdo exclusivo
-              </span>
+              <Link to="/plataforma" className="group flex items-center gap-5 bg-[#101722] p-7 transition-colors hover:bg-[#151d29] sm:p-9">
+                <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl border border-[#FFF200]/25 bg-[#FFF200]/10 text-[#FFF200]">
+                  <Rocket className="h-5 w-5" />
+                </span>
+                <span className="min-w-0 flex-1">
+                  <strong className="block text-lg font-black text-white">Faça uma ideia avançar</strong>
+                  <span className="mt-1 block text-sm leading-relaxed text-white/45">Conheça a plataforma e seus recursos.</span>
+                </span>
+                <ArrowRight className="h-5 w-5 shrink-0 text-[#FFF200] transition-transform group-hover:translate-x-1" />
+              </Link>
             </div>
           </motion.div>
         </div>
@@ -410,11 +395,11 @@ const FeaturedPostCard = ({ post }: FeaturedPostCardProps) => {
     >
       <Link
         to={`/blog/${post.slug}`}
-        className="group block bg-gradient-to-br from-gray-900 to-black rounded-3xl overflow-hidden border-2 border-[#FFF200]/30 hover:border-[#FFF200] transition-all duration-300 hover:shadow-none hover:shadow-none"
+        className="group block overflow-hidden rounded-3xl border border-white/10 bg-[#0d131d] transition-all duration-300 hover:border-[#FFF200]/55"
       >
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
           {/* Image */}
-          <div className="relative h-64 lg:h-auto overflow-hidden">
+          <div className="relative min-h-[280px] overflow-hidden lg:min-h-[420px]">
             <img
               src={post.coverImage}
               alt={post.title}
@@ -430,7 +415,7 @@ const FeaturedPostCard = ({ post }: FeaturedPostCardProps) => {
           </div>
 
           {/* Content */}
-          <div className="p-8 lg:p-12 flex flex-col justify-center">
+          <div className="flex flex-col justify-center p-7 lg:p-12">
             <div className="flex items-center gap-4 mb-4">
               <img
                 src={post.author.avatar}
@@ -456,7 +441,7 @@ const FeaturedPostCard = ({ post }: FeaturedPostCardProps) => {
               </div>
             </div>
 
-            <h2 className="text-3xl lg:text-4xl font-bold text-white mb-4 group-hover:text-[#FFF200] transition-colors">
+            <h2 className="mb-4 text-3xl font-black leading-tight text-white transition-colors group-hover:text-[#FFF200] lg:text-4xl">
               {post.title}
             </h2>
             <p className="text-gray-300 text-lg mb-6 leading-relaxed">
@@ -499,10 +484,10 @@ const BlogPostCard = ({ post, delay }: BlogPostCardProps) => {
     >
       <Link
         to={`/blog/${post.slug}`}
-        className="group block bg-gradient-to-br from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 rounded-2xl border-2 border-gray-200 dark:border-gray-700 hover:border-[#FFF200] overflow-hidden transition-all duration-300 hover:shadow-none hover:-translate-y-2"
+        className="group block h-full overflow-hidden rounded-2xl border border-white/10 bg-[#0d131d]/90 transition-all duration-300 hover:-translate-y-1 hover:border-[#FFF200]/45 hover:bg-[#111925]"
       >
         {/* Image */}
-        <div className="relative h-48 overflow-hidden">
+        <div className="relative h-52 overflow-hidden border-b border-white/10">
           <img
             src={post.coverImage}
             alt={post.title}
@@ -517,7 +502,7 @@ const BlogPostCard = ({ post, delay }: BlogPostCardProps) => {
         </div>
 
         {/* Content */}
-        <div className="p-6">
+        <div className="p-5 sm:p-6">
           {/* Author */}
           <div className="flex items-center gap-3 mb-4">
             <img
@@ -529,10 +514,10 @@ const BlogPostCard = ({ post, delay }: BlogPostCardProps) => {
               }}
             />
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-semibold text-gray-900 dark:text-white truncate">
+              <p className="truncate text-sm font-semibold text-white">
                 {post.author.name}
               </p>
-              <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
+              <div className="flex items-center gap-2 text-xs text-white/35">
                 <Calendar className="w-3 h-3" />
                 <time dateTime={post.publishedAt}>
                   {new Date(post.publishedAt).toLocaleDateString('pt-BR', { day: 'numeric', month: 'short' })}
@@ -545,12 +530,12 @@ const BlogPostCard = ({ post, delay }: BlogPostCardProps) => {
           </div>
 
           {/* Title */}
-          <h3 className="text-xl font-bold mb-3 line-clamp-2 group-hover:text-[#FFF200] transition-colors">
+          <h3 className="mb-3 line-clamp-2 text-xl font-black leading-snug text-white transition-colors group-hover:text-[#FFF200]">
             {post.title}
           </h3>
 
           {/* Excerpt */}
-          <p className="text-gray-600 dark:text-gray-400 mb-4 line-clamp-3 leading-relaxed">
+          <p className="mb-5 line-clamp-3 text-sm leading-relaxed text-white/45">
             {post.excerpt}
           </p>
 
@@ -561,7 +546,7 @@ const BlogPostCard = ({ post, delay }: BlogPostCardProps) => {
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </span>
             {post.views && (
-              <span className="text-xs text-gray-500 dark:text-gray-400">
+              <span className="text-xs text-white/30">
                 {post.views.toLocaleString()} visualizações
               </span>
             )}

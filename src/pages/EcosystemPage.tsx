@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import type { ComponentType, ReactNode } from 'react';
 import { useState } from 'react';
+import SectionDivider from '../components/SectionDivider';
 
 type Layer = {
   number: string;
@@ -92,6 +93,8 @@ const EcosystemPage = () => (
         </div>
       </section>
 
+      <SectionDivider topSpacing="tight" />
+
       <section id="mapa" className="container-custom py-16 sm:py-24">
         <div className="max-w-3xl">
           <p className="text-xs font-black uppercase tracking-[0.2em] text-[#FFF200]">Mapa do ecossistema</p>
@@ -113,13 +116,23 @@ const EcosystemPage = () => (
         </motion.nav>
       </section>
 
+      <SectionDivider />
+
       <NucleusLayer />
+
+      <SectionDivider />
 
       <PlatformLayer />
 
+      <SectionDivider />
+
       <MvpLayer />
 
+      <SectionDivider />
+
       <VerticalLayer />
+
+      <SectionDivider />
 
       <section className="container-custom py-16 sm:py-24">
         <motion.div {...reveal} className="relative overflow-hidden rounded-2xl border border-[#FFF200]/30 bg-[#0d131d] px-6 py-10 sm:px-10 sm:py-12 lg:flex lg:items-center lg:justify-between lg:gap-12">

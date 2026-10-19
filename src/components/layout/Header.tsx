@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Menu, X, Sparkles, GraduationCap, Rocket, ChevronDown, Layout, Info, MessageCircle } from 'lucide-react';
+import { Menu, X, Sparkles, GraduationCap, ChevronDown, Layout, Info, MessageCircle, Layers, Briefcase, Monitor, Handshake, Compass, Share2, Building2, Newspaper, BookOpen, ArrowUpRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuthStore } from '../../stores/authStore';
 
@@ -28,6 +28,7 @@ const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null);
+  const [dismissedDropdown, setDismissedDropdown] = useState<string | null>(null);
 
   const handleNavClick = () => {
     window.scrollTo(0, 0);
@@ -65,22 +66,22 @@ const Header = () => {
       name: 'Ecossistema', 
       icon: Layout,
       subItems: [
-        { name: t('nav.ecosystem'), href: '/ecossistema' },
-        { name: 'Serviços', href: '/servicos' },
-        { name: 'Plataforma', href: '/plataforma' },
-        { name: 'Nossos parceiros', href: '/parceiros' },
-        { name: 'Manifesto', href: '/manifesto' },
+        { name: t('nav.ecosystem'), href: '/ecossistema', icon: Layers, description: 'Conheça as quatro camadas conectadas.' },
+        { name: 'Serviços', href: '/servicos', icon: Briefcase, description: 'Estratégia e execução para o seu negócio.' },
+        { name: 'Plataforma', href: '/plataforma', icon: Monitor, description: 'Ideias, projetos, soluções e frameworks.' },
+        { name: 'Nossos parceiros', href: '/parceiros', icon: Handshake, description: 'Tecnologia e serviços que ampliam entregas.' },
+        { name: 'Manifesto', href: '/manifesto', icon: Compass, description: 'Os princípios que orientam nossas escolhas.' },
         { name: 'Infoprodutos', href: '#', isGroup: true },
-        { name: 'SoA — Share of Attention', href: '/soa' },
+        { name: 'SoA — Share of Attention', href: '/soa', icon: Share2, description: 'Uma nova leitura sobre atenção e relevância.', preview: '/SoA.png' },
       ]
     },
     {
       name: 'Empresa',
       icon: Info,
       subItems: [
-        { name: t('nav.about'), href: '/sobre' },
-        { name: t('nav.blog'), href: '/blog' },
-        { name: 'Glossário', href: '/glossario' },
+        { name: t('nav.about'), href: '/sobre', icon: Building2, description: 'Nossa história, visão e forma de construir.' },
+        { name: t('nav.blog'), href: '/blog', icon: Newspaper, description: 'Ideias e aprendizados para colocar em prática.' },
+        { name: 'Glossário', href: '/glossario', icon: BookOpen, description: 'Conceitos para navegar com mais clareza.' },
       ]
     },
     { name: t('nav.pricing'), href: '/planos' },
@@ -129,19 +130,36 @@ const Header = () => {
             {/* Desktop navigation */}
             <nav className="hidden md:flex space-x-6 items-center">
               {navItems.map((item) => (
-                <div key={item.name} className="relative group">
+                <div
+                  key={item.name}
+                  className={`relative ${dismissedDropdown === item.name ? '' : 'group'}`}
+                  onMouseLeave={() => {
+                    if (dismissedDropdown === item.name) setDismissedDropdown(null);
+                  }}
+                >
                   {item.subItems ? (
                     <div className="flex items-center gap-1 cursor-pointer py-2 text-sm font-medium text-gray-700 hover:text-[#FFF200] dark:text-gray-300 dark:hover:text-[#FFF200] transition-colors">
                       {item.name}
                       <ChevronDown className="w-4 h-4 transition-transform group-hover:rotate-180" />
                       
                       {/* Dropdown Desktop */}
-                      <div className="absolute top-full left-0 mt-1 w-56 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-gray-100 dark:border-gray-700 p-2 transform origin-top scale-95 group-hover:scale-100 transition-transform">
+                      <div className={`invisible absolute left-1/2 top-full z-50 -translate-x-1/2 pt-3 opacity-0 transition-all duration-200 group-hover:visible group-hover:opacity-100 ${item.name === 'Ecossistema' ? 'w-[430px]' : 'w-[370px]'}`}>
+                        <div className="relative origin-top scale-[0.97] overflow-hidden rounded-2xl border border-white/10 bg-[#0d131d]/95 p-2.5 shadow-[0_24px_70px_rgba(0,0,0,0.48)] backdrop-blur-xl transition-transform group-hover:scale-100">
+                          <span className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#FFF200]/80 to-transparent" />
+                          <div className="mb-1 flex items-center justify-between px-3 pb-2 pt-2">
+                            <div><p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#FFF200]">Explorar</p><p className="mt-0.5 text-xs text-white/40">{item.name === 'Ecossistema' ? 'Encontre o melhor ponto de entrada.' : 'Conheça mais sobre a OrientoHub.'}</p></div>
+                            {item.icon && <item.icon className="h-5 w-5 text-[#FFF200]/70" />}
+                          </div>
                           {item.subItems.map((sub) => sub.isGroup ? (
-                            <p key={sub.name} className="mt-2 border-t border-gray-100 px-4 pt-3 text-[10px] font-bold uppercase tracking-[0.16em] text-[#FFF200] dark:border-gray-700">{sub.name}</p>
+                            <p key={sub.name} className="mx-2 mt-2 border-t border-white/10 px-2 pb-1 pt-3 text-[9px] font-black uppercase tracking-[0.18em] text-white/30">{sub.name}</p>
                           ) : (
-                            <Link key={sub.name} to={sub.href} onClick={handleNavClick} className="block px-4 py-2 text-sm rounded-lg text-gray-700 dark:text-gray-300 hover:bg-[#FFF200]/100/10 hover:text-[#FFF200] dark:hover:text-[#FFF200] transition-all font-medium">{sub.name}</Link>
+                            <Link key={sub.name} to={sub.href} onClick={() => { handleNavClick(); setDismissedDropdown(item.name); }} className={`group/link flex items-center gap-3 rounded-xl border px-3 py-3 transition-all ${location.pathname === sub.href ? 'border-[#FFF200]/35 bg-[#FFF200]/10' : 'border-transparent hover:border-white/10 hover:bg-white/[0.05]'}`}>
+                              <span className={`grid shrink-0 place-items-center overflow-hidden rounded-xl border transition ${'preview' in sub ? 'h-14 w-14' : 'h-10 w-10'} ${location.pathname === sub.href ? 'border-[#FFF200] bg-[#FFF200] text-black' : 'border-white/10 bg-white/[0.04] text-[#FFF200] group-hover/link:border-[#FFF200]/35'}`}>
+                                {'preview' in sub ? <img src={sub.preview} alt="Prévia do guia SoA" className="h-full w-full object-cover" /> : sub.icon && <sub.icon className="h-[18px] w-[18px]" />}
+                              </span>
+                              <span className="min-w-0 flex-1"><span className="block text-sm font-bold text-white">{sub.name}</span><span className="mt-0.5 block truncate text-[11px] text-white/40">{sub.description}</span></span>
+                              <ArrowUpRight className="h-4 w-4 shrink-0 text-white/20 transition group-hover/link:-translate-y-0.5 group-hover/link:translate-x-0.5 group-hover/link:text-[#FFF200]" />
+                            </Link>
                           ))}
                         </div>
                       </div>
@@ -231,12 +249,18 @@ const Header = () => {
                               initial={{ opacity: 0, height: 0 }}
                               animate={{ opacity: 1, height: 'auto' }}
                               exit={{ opacity: 0, height: 0 }}
-                              className="pl-9 space-y-1 overflow-hidden"
+                              className="space-y-1.5 overflow-hidden px-2 pb-2 pt-1"
                             >
                               {item.subItems.map((sub) => sub.isGroup ? (
-                                <p key={sub.name} className="mt-2 border-t border-gray-100 px-3 pt-3 text-[10px] font-bold uppercase tracking-[0.16em] text-[#FFF200] dark:border-gray-700">{sub.name}</p>
+                                <p key={sub.name} className="mt-2 border-t border-white/10 px-2 pt-3 text-[9px] font-black uppercase tracking-[0.18em] text-white/35">{sub.name}</p>
                               ) : (
-                                <Link key={sub.name} to={sub.href} className={`block px-3 py-2 text-sm font-medium rounded-lg ${location.pathname === sub.href ? 'text-[#FFF200] bg-[#FFF200]/100/10' : 'text-gray-600 dark:text-gray-400 hover:text-[#FFF200]'}`} onClick={handleNavClick}>{sub.name}</Link>
+                                <Link key={sub.name} to={sub.href} className={`flex items-center gap-3 rounded-xl border p-3 transition ${location.pathname === sub.href ? 'border-[#FFF200]/35 bg-[#FFF200]/10' : 'border-white/[0.07] bg-white/[0.025] hover:border-white/15'}`} onClick={handleNavClick}>
+                                  <span className={`grid shrink-0 place-items-center overflow-hidden rounded-lg ${'preview' in sub ? 'h-12 w-12' : 'h-9 w-9'} ${location.pathname === sub.href ? 'bg-[#FFF200] text-black' : 'bg-[#FFF200]/10 text-[#FFF200]'}`}>
+                                    {'preview' in sub ? <img src={sub.preview} alt="Prévia do guia SoA" className="h-full w-full object-cover" /> : sub.icon && <sub.icon className="h-4 w-4" />}
+                                  </span>
+                                  <span className="min-w-0 flex-1 text-left"><span className="block text-sm font-bold text-white">{sub.name}</span><span className="mt-0.5 block text-[11px] leading-snug text-white/40">{sub.description}</span></span>
+                                  <ArrowUpRight className="h-4 w-4 shrink-0 text-white/25" />
+                                </Link>
                               ))}
                             </motion.div>
                           )}

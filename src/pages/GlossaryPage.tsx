@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
+import { Helmet } from 'react-helmet-async';
+import { Link } from 'react-router-dom';
 import { 
+  ArrowRight,
   BookOpen,
   Search,
   TrendingUp,
@@ -13,8 +16,10 @@ import {
   Lightbulb,
   Award,
   Clock,
-  Sparkles
+  X
 } from 'lucide-react';
+import SectionDivider from '../components/SectionDivider';
+import { Badge } from '../components/ui/Badge';
 
 const GlossaryPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -201,177 +206,45 @@ const GlossaryPage = () => {
   });
 
   return (
-    <div>
-      {/* Hero Section */}
-      <section className="relative min-h-[50vh] w-full overflow-hidden flex items-center pt-24 pb-12">
+    <div className="relative min-h-screen overflow-x-hidden text-white">
+      <Helmet><title>Glossário | OrientoHub</title><meta name="description" content="Conceitos de estratégia, métricas, crescimento e investimento explicados com clareza." /></Helmet>
+      <div className="fixed inset-0 -z-50 bg-gradient-to-br from-black via-gray-900 to-black" />
+      <div className="pointer-events-none fixed inset-0 -z-50 opacity-20" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, #FFF200 1px, transparent 0)', backgroundSize: '40px 40px' }} />
 
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute inset-0" style={{
-            backgroundImage: 'radial-gradient(circle at 2px 2px, #FFF200 1px, transparent 0)',
-            backgroundSize: '40px 40px'
-          }}></div>
-        </div>
-
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 pt-16">
-          <div className="max-w-4xl mx-auto text-center">
-            <motion.div
-              className="inline-flex items-center gap-2.5 rounded-full border border-[#FFF200]/60 bg-gradient-to-b from-white/10 to-black/80 px-3.5 py-2 shadow-none backdrop-blur-md mb-8"
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.2 }}
-            >
-              <BookOpen className="h-3.5 w-3.5 shrink-0 text-[#FFF200]" aria-hidden="true" />
-              <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-white sm:text-xs">
-                Glossário de Startups
-              </span>
+      <main>
+        <section className="border-b border-white/10">
+          <div className="container-custom grid min-h-[620px] items-center gap-12 py-24 lg:grid-cols-[1fr_0.55fr]">
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>
+              <Badge variant="liquid-glass" className="gap-2 px-3 py-1.5 sm:px-3.5 sm:py-2"><BookOpen className="h-3.5 w-3.5 text-[#FFF200]" /><span className="text-[10px] font-semibold uppercase tracking-[0.12em] text-white/90 sm:text-xs">Biblioteca de conceitos</span></Badge>
+              <h1 className="mt-8 max-w-4xl text-5xl font-black leading-[0.95] tracking-[-0.05em] sm:text-7xl">Entenda os termos. <span className="text-[#FFF200]">Decida com clareza.</span></h1>
+              <p className="mt-7 max-w-2xl text-lg leading-relaxed text-white/60 sm:text-xl">Conceitos de estratégia, métricas, crescimento e investimento explicados sem complicação.</p>
             </motion.div>
-
-            <motion.h1
-              className="text-5xl md:text-7xl font-bold mb-8 text-white leading-tight"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.3 }}
-            >
-              Domine a{' '}
-              <span className="bg-gradient-to-r from-[#FFF200] via-[#FFF200] to-[#FFF200] bg-clip-text text-transparent">
-                Linguagem
-              </span>
-              {' '}das Startups
-            </motion.h1>
-
-            <motion.p
-              className="text-xl md:text-2xl text-gray-300 mb-6 leading-relaxed max-w-3xl mx-auto"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-            >
-              Termos essenciais, conceitos fundamentais e o vocabulário que todo empreendedor precisa conhecer.
-            </motion.p>
-
+            <motion.aside initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 }} className="relative overflow-hidden rounded-3xl border border-white/10 bg-[#0d131d]/90 p-7">
+              <span className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#FFF200] to-transparent" />
+              <p className="text-xs font-black uppercase tracking-[0.18em] text-[#FFF200]">Nesta biblioteca</p><p className="mt-5 text-5xl font-black">{glossaryTerms.length}</p><p className="mt-1 text-sm text-white/40">conceitos disponíveis</p>
+              <div className="mt-7 grid grid-cols-2 gap-2">{categories.slice(1).map(category => <span key={category.id} className="rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 text-xs font-semibold text-white/55">{category.name}</span>)}</div>
+            </motion.aside>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Search and Filter Section */}
-      <section className="pb-12">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-5xl mx-auto">
-            <motion.div
-              className="mb-8"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-            >
-              <div className="relative">
-                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
-                <input
-                  type="text"
-                  placeholder="Buscar termos..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-12 pr-4 py-4 bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:border-[#FFF200] focus:outline-none text-lg transition-colors"
-                />
-              </div>
-            </motion.div>
+        <SectionDivider topSpacing="tight" />
 
-            <motion.div
-              className="flex flex-wrap gap-3 justify-center"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-            >
-              {categories.map((category) => {
-                const Icon = category.icon;
-                return (
-                  <button
-                    key={category.id}
-                    onClick={() => setSelectedCategory(category.id)}
-                    className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all duration-300 ${
-                      selectedCategory === category.id
-                        ? 'bg-[#FFF200] text-black hover:opacity-90 shadow-none shadow-none shadow-none'
-                        : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-2 border-gray-200 dark:border-gray-700 hover:border-[#FFF200]'
-                    }`}
-                  >
-                    <Icon className="w-4 h-4" />
-                    {category.name}
-                  </button>
-                );
-              })}
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* Glossary Terms */}
-      <section className="py-24">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-5xl mx-auto">
-            <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
-              {filteredTerms.map((term, index) => (
-                <GlossaryCard key={index} {...term} delay={index * 0.05} />
-              ))}
-            </div>
-
-            {filteredTerms.length === 0 && (
-              <motion.div
-                className="text-center py-16"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-              >
-                <Search className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                <p className="text-xl text-gray-600 dark:text-gray-400">
-                  Nenhum termo encontrado para "{searchTerm}"
-                </p>
-              </motion.div>
-            )}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="relative py-32 overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute inset-0" style={{
-            backgroundImage: 'radial-gradient(circle at 2px 2px, #FFF200 1px, transparent 0)',
-            backgroundSize: '40px 40px'
-          }} />
-        </div>
-
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <motion.div
-            className="text-center max-w-4xl mx-auto"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <div className="mb-8">
-              <Lightbulb className="w-16 h-16 text-[#FFF200] mx-auto mb-6" />
-            </div>
-            
-            <h2 className="text-4xl md:text-6xl font-bold mb-8 text-white leading-tight">
-              Pronto para aplicar esse conhecimento
-              <br />
-              <span className="text-[#FFF200]">
-                na sua startup?
-              </span>
-            </h2>
-
-            <p className="text-xl text-gray-300 mb-12 max-w-2xl mx-auto">
-              Transforme teoria em prática com nossa plataforma gamificada de desenvolvimento de startups.
-            </p>
-
-            <div className="mt-16">
-              <a
-                href="/cadastro"
-                className="inline-flex items-center gap-3 px-10 py-5 bg-[#FFF200] hover:bg-[#FFF200] hover:opacity-90 shadow-none text-black font-bold text-xl rounded-xl shadow-none shadow-none hover:shadow-none transition-all duration-300 hover:scale-105"
-              >
-                <Rocket className="w-6 h-6" />
-                Começar Agora
-              </a>
-            </div>
+        <section className="container-custom py-12 sm:py-20">
+          <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} className="rounded-3xl border border-white/10 bg-[#0d131d]/90 p-4 sm:p-6">
+            <div className="relative"><Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-[#FFF200]" /><input type="search" placeholder="Busque por termo, significado ou contexto..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} className="w-full rounded-2xl border border-white/10 bg-black/25 py-4 pl-12 pr-12 text-base text-white outline-none transition placeholder:text-white/25 focus:border-[#FFF200]/60 focus:ring-2 focus:ring-[#FFF200]/10" />{searchTerm && <button type="button" onClick={() => setSearchTerm('')} aria-label="Limpar busca" className="absolute right-3 top-1/2 grid h-8 w-8 -translate-y-1/2 place-items-center rounded-lg text-white/35 transition hover:bg-white/10 hover:text-white"><X className="h-4 w-4" /></button>}</div>
+            <div className="mt-4 flex gap-2 overflow-x-auto pb-1">{categories.map(category => { const Icon = category.icon; const active = selectedCategory === category.id; return <button key={category.id} onClick={() => setSelectedCategory(category.id)} className={`flex shrink-0 items-center gap-2 rounded-xl border px-4 py-2.5 text-sm font-bold transition ${active ? 'border-[#FFF200] bg-[#FFF200] text-black' : 'border-white/10 bg-white/[0.03] text-white/55 hover:border-[#FFF200]/35 hover:text-white'}`}><Icon className="h-4 w-4" />{category.name}</button>; })}</div>
           </motion.div>
-        </div>
-      </section>
+
+          <div className="mb-7 mt-12 flex items-end justify-between gap-4 border-b border-white/10 pb-5"><div><p className="text-xs font-black uppercase tracking-[0.18em] text-[#FFF200]">Resultados</p><h2 className="mt-2 text-2xl font-black sm:text-3xl">{selectedCategory === 'all' ? 'Todos os conceitos' : categories.find(category => category.id === selectedCategory)?.name}</h2></div><span className="text-sm font-bold text-white/35">{filteredTerms.length} {filteredTerms.length === 1 ? 'termo' : 'termos'}</span></div>
+
+          <motion.div layout className="grid gap-4 lg:grid-cols-2">{filteredTerms.map((term, index) => <GlossaryCard key={term.term} {...term} delay={index * 0.025} />)}</motion.div>
+          {!filteredTerms.length && <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="rounded-3xl border border-dashed border-white/15 py-20 text-center"><Search className="mx-auto h-10 w-10 text-white/20" /><p className="mt-4 text-lg font-bold">Nenhum conceito encontrado</p><p className="mt-2 text-sm text-white/40">Tente outro termo ou selecione uma categoria diferente.</p></motion.div>}
+        </section>
+
+        <SectionDivider />
+
+        <section className="container-custom py-16 sm:py-28"><motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="grid gap-8 rounded-3xl border border-[#FFF200]/30 bg-[#0d131d] p-7 sm:p-12 lg:grid-cols-[1fr_auto] lg:items-end"><div><p className="text-xs font-black uppercase tracking-[0.18em] text-[#FFF200]">Do conceito à prática</p><h2 className="mt-4 max-w-3xl text-4xl font-black tracking-tight sm:text-6xl">Conhecimento ganha valor quando orienta o <span className="text-[#FFF200]">próximo passo.</span></h2><p className="mt-5 max-w-2xl text-lg leading-relaxed text-white/50">Use a plataforma para organizar ideias, aplicar frameworks e transformar entendimento em execução.</p></div><Link to="/plataforma" className="group inline-flex shrink-0 items-center justify-center gap-3 rounded-xl bg-[#FFF200] px-7 py-4 font-black text-black transition hover:bg-[#fff76a]">Conhecer a plataforma <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" /></Link></motion.div></section>
+      </main>
     </div>
   );
 };
@@ -395,31 +268,32 @@ const GlossaryCard = ({ term, fullName, category, definition, icon: Icon, delay 
 
   return (
     <motion.div
-      className="group relative bg-white dark:bg-gray-800 p-6 rounded-2xl border-2 border-gray-200 dark:border-gray-700 hover:border-[#FFF200] dark:hover:border-[#FFF200] transition-all duration-300 hover:shadow-none hover:shadow-none"
+      layout
+      className="group relative overflow-hidden rounded-2xl border border-white/10 bg-[#0d131d]/90 p-5 transition-all duration-300 hover:-translate-y-1 hover:border-[#FFF200]/45 hover:bg-[#111925] sm:p-6"
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-50px" }}
       transition={{ delay }}
-      whileHover={{ y: -4 }}
     >
+      <span className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#FFF200]/80 to-transparent opacity-25 transition group-hover:opacity-100" />
       <div className="flex items-start gap-4">
-        <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-black to-gray-900 rounded-xl flex items-center justify-center border-2 border-[#FFF200]/30 group-hover:border-[#FFF200] transition-all duration-300 group-hover:scale-110">
-          <Icon className="w-6 h-6 text-[#FFF200]" />
+        <div className="grid h-11 w-11 flex-shrink-0 place-items-center rounded-xl border border-[#FFF200]/35 bg-[#FFF200]/10 text-[#FFF200] transition-all duration-300 group-hover:bg-[#FFF200] group-hover:text-black">
+          <Icon className="h-5 w-5" />
         </div>
         
         <div className="min-w-0 flex-1">
           <div className="mb-2 flex flex-wrap items-center gap-2">
-            <h3 className="text-xl font-bold group-hover:text-[#FFF200] transition-colors">
+            <h3 className="text-xl font-black text-white transition-colors group-hover:text-[#FFF200]">
               {term}
             </h3>
-            <span className="rounded-full bg-[#FFF200]/10 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-[#FFF200] dark:text-[#FFF200]">
+            <span className="rounded-full border border-[#FFF200]/20 bg-[#FFF200]/10 px-2.5 py-1 text-[9px] font-black uppercase tracking-wide text-[#FFF200]">
               {categoryNames[category] || category}
             </span>
-            <span className="w-full text-xs text-gray-500 dark:text-gray-400 italic sm:w-auto">
+            <span className="w-full text-xs text-white/30 sm:w-auto">
               {fullName}
             </span>
           </div>
-          <p className="text-base text-gray-600 dark:text-gray-400 leading-relaxed">
+          <p className="text-sm leading-relaxed text-white/50 sm:text-[15px]">
             {definition}
           </p>
         </div>

@@ -1,29 +1,26 @@
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Sparkles, Rocket, Zap, ArrowRight, Play, Users, BarChart2, Award, Target, CheckCircle, MessageCircle } from 'lucide-react';
+import { Sparkles, Rocket, Zap, ArrowRight, Lightbulb, FolderKanban, Blocks, BarChart2, Award, CheckCircle, MessageCircle } from 'lucide-react';
 import VideoShowcase from '../components/ui/VideoShowcase';
+import SectionDivider from '../components/SectionDivider';
 import gamificacaoShowcase from '../assets/gamificação-showcase.png';
 
 const PlatformaPage = () => {
   return (
-    <>
+    <div className="relative isolate min-h-screen overflow-x-hidden bg-gradient-to-br from-black via-gray-900 to-black text-white">
       <Helmet>
         <title>Plataforma OrientoHub - Da ideia à execução</title>
         <meta name="description" content="Incube ideias, organize projetos, desenvolva soluções e aplique frameworks em um só lugar." />
       </Helmet>
 
+      <div
+        className="pointer-events-none fixed inset-0 z-0 opacity-10"
+        style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, #FFF200 1px, transparent 0)', backgroundSize: '40px 40px' }}
+      />
+
       {/* Hero Section */}
-      <section className="relative min-h-screen w-full overflow-hidden bg-gradient-to-br from-black via-gray-900 to-black">
-
-        {/* Grid pattern overlay */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute inset-0" style={{
-            backgroundImage: 'radial-gradient(circle at 2px 2px, #FFF200 1px, transparent 0)',
-            backgroundSize: '40px 40px'
-          }} />
-        </div>
-
+      <section className="relative min-h-screen w-full overflow-hidden">
         {/* Content */}
         <div className="relative z-10 container-custom pt-24 sm:pt-32 pb-16 sm:pb-24">
           <div className="max-w-5xl mx-auto">
@@ -160,8 +157,10 @@ const PlatformaPage = () => {
         </div>
       </section>
 
+      <SectionDivider topSpacing="tight" />
+
       {/* Features Section */}
-      <section className="py-12 sm:py-20 bg-white dark:bg-gray-900">
+      <section className="relative py-12 sm:py-20">
         <div className="container-custom">
           <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-16">
             <motion.div
@@ -169,62 +168,56 @@ const PlatformaPage = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
             >
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6 px-2">Tudo o que você precisa para fazer uma ideia avançar</h2>
-              <p className="text-base sm:text-xl text-gray-600 dark:text-gray-300 px-2">Da primeira hipótese à solução em evolução, mantenha o trabalho organizado e o próximo passo sempre claro.</p>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6 px-2 text-white">Um fluxo para tudo o que você quer construir</h2>
+              <p className="text-base sm:text-xl text-white/55 px-2">Capture possibilidades, organize o trabalho e conduza cada iniciativa da descoberta à evolução.</p>
             </motion.div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-8">
             <FeatureCard
-              icon={<Users className="w-8 h-8" />}
-              title="Ambiente Integrado"
-              description="Centralize ideias, projetos e soluções sem perder o contexto entre uma etapa e outra."
+              icon={<Lightbulb className="h-5 w-5" strokeWidth={2.25} />}
+              title="Incubação de ideias"
+              description="Registre oportunidades, organize evidências e amadureça hipóteses antes de investir na execução."
               delay={0.1}
             />
             <FeatureCard
-              icon={<BarChart2 className="w-8 h-8" />}
-              title="Frameworks na Prática"
-              description="Use ferramentas como Business Model Canvas, Mapa de Empatia e Jornada do Cliente para orientar decisões."
+              icon={<FolderKanban className="h-5 w-5" strokeWidth={2.25} />}
+              title="Gestão de projetos"
+              description="Transforme ideias priorizadas em projetos com contexto, tarefas e próximos passos visíveis."
               delay={0.2}
             />
             <FeatureCard
-              icon={<Zap className="w-8 h-8" />}
-              title="Progresso que Engaja"
-              description="Ganhe pontos, desbloqueie conquistas e enxergue a evolução do trabalho realizado."
+              icon={<Blocks className="h-5 w-5" strokeWidth={2.25} />}
+              title="Soluções em evolução"
+              description="Estruture soluções, conecte decisões técnicas e acompanhe o avanço de cada construção."
               delay={0.3}
             />
             <FeatureCard
-              icon={<Award className="w-8 h-8" />}
-              title="Processo Estruturado"
-              description="Avance com etapas e atividades que transformam incertezas em decisões mais seguras."
+              icon={<BarChart2 className="h-5 w-5" strokeWidth={2.25} />}
+              title="Frameworks aplicados"
+              description="Use ferramentas práticas para investigar problemas, validar caminhos e tomar decisões melhores."
               delay={0.4}
             />
             <FeatureCard
-              icon={<Target className="w-8 h-8" />}
-              title="Prioridades Claras"
-              description="Defina objetivos, organize tarefas e saiba qual é o próximo movimento de cada iniciativa."
+              icon={<Award className="h-5 w-5" strokeWidth={2.25} />}
+              title="Progresso visível"
+              description="Avance por missões, acumule experiência e transforme trabalho realizado em evolução concreta."
               delay={0.5}
             />
             <FeatureCard
-              icon={<CheckCircle className="w-8 h-8" />}
-              title="Modelos para Começar"
-              description="Economize tempo com estruturas prontas para explorar problemas, oportunidades e caminhos de solução."
+              icon={<CheckCircle className="h-5 w-5" strokeWidth={2.25} />}
+              title="Visão centralizada"
+              description="Acompanhe ideias, projetos, soluções e atividades sem perder o contexto entre as frentes."
               delay={0.6}
             />
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="relative py-16 sm:py-32 bg-gradient-to-br from-black via-gray-900 to-black overflow-hidden">
-        {/* Grid pattern overlay */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute inset-0" style={{
-            backgroundImage: 'radial-gradient(circle at 2px 2px, #FFF200 1px, transparent 0)',
-            backgroundSize: '40px 40px'
-          }} />
-        </div>
+      <SectionDivider />
 
+      {/* CTA Section */}
+      <section className="relative overflow-hidden py-16 sm:py-32">
         <div className="container-custom relative z-10">
           <motion.div
             className="relative overflow-hidden rounded-2xl sm:rounded-[2rem] border border-[#FFF200]/20 bg-white/[0.04] px-4 sm:px-6 py-10 sm:py-14 text-center shadow-none backdrop-blur-md max-w-5xl mx-auto md:px-12"
@@ -310,7 +303,7 @@ const PlatformaPage = () => {
           </motion.div>
         </div>
       </section>
-    </>
+    </div>
   );
 };
 
@@ -324,18 +317,21 @@ interface FeatureCardProps {
 const FeatureCard = ({ icon, title, description, delay }: FeatureCardProps) => {
   return (
     <motion.div
-      className="group bg-gradient-to-br from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 p-6 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-[#FFF200] dark:hover:border-[#FFF200] transition-all duration-300 hover:shadow-xl"
+      className="group relative overflow-hidden rounded-2xl border border-white/10 bg-[#0d131d]/90 p-6 transition-all duration-300 hover:-translate-y-1 hover:border-[#FFF200]/55 hover:bg-[#111925] hover:shadow-[0_20px_50px_rgba(0,0,0,0.24)]"
       initial={{ y: 15 }}
       whileInView={{ y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 0.4, delay: delay * 0.3, ease: "easeOut" }}
-      whileHover={{ y: -5 }}
     >
-      <div className="text-[#FFF200] mb-4 group-hover:scale-110 transition-transform duration-300">
-        {icon}
+      <span className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#FFF200]/80 to-transparent opacity-40 transition-opacity group-hover:opacity-100" />
+      <div className="relative mb-6 h-12 w-12">
+        <span className="absolute inset-1 rounded-xl bg-[#FFF200]/35 blur-md transition duration-300 group-hover:bg-[#FFF200]/55" />
+        <span className="relative flex h-12 w-12 items-center justify-center rounded-xl border border-[#fff76a] bg-[#FFF200] text-[#0c121b] shadow-[0_8px_22px_rgba(0,0,0,0.32)] transition duration-300 group-hover:-translate-y-0.5 group-hover:scale-105">
+          {icon}
+        </span>
       </div>
-      <h3 className="text-lg font-bold mb-2">{title}</h3>
-      <p className="text-gray-600 dark:text-gray-400 text-sm">{description}</p>
+      <h3 className="mb-2 text-lg font-bold text-white">{title}</h3>
+      <p className="text-sm leading-relaxed text-white/50">{description}</p>
     </motion.div>
   );
 };

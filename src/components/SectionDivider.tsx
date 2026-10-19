@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { ChevronDown } from 'lucide-react';
 import type { FC } from 'react';
 
 interface SectionDividerProps {
@@ -24,20 +25,14 @@ const SectionDivider: FC<SectionDividerProps> = ({ delay = 0, liftIntoHero = fal
       viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 0.6, delay, ease: 'easeOut' }}
     >
-      <motion.svg
-        width="16"
-        height="22"
-        viewBox="0 0 16 22"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
+      <motion.div
+        className="grid h-[38px] w-[38px] place-items-center rounded-[10px] border border-[#fff76a] bg-[#FFF200] text-[#0c121b] shadow-[0_8px_22px_rgba(0,0,0,0.38)]"
         animate={{ y: [0, 5, 0] }}
         transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
+        aria-hidden="true"
       >
-        {/* Vertical line */}
-        <line x1="8" y1="0" x2="8" y2="14" stroke="#FFD700" strokeWidth="1.5" strokeLinecap="round" />
-        {/* Chevron */}
-        <polyline points="2,10 8,17 14,10" stroke="#FFD700" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-      </motion.svg>
+        <ChevronDown className="h-4 w-4" strokeWidth={2.25} />
+      </motion.div>
     </motion.div>
   );
 };

@@ -1,85 +1,83 @@
-import { useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
-import { useSearchParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
-import { 
-  Mail, 
-  Phone, 
-  MapPin, 
-  Send, 
-  Sparkles, 
+import { useSearchParams } from 'react-router-dom';
+import {
+  ArrowRight,
+  CheckCircle2,
+  Mail,
+  MapPin,
   MessageSquare,
-  Clock,
-  CheckCircle,
-  Linkedin,
-  Twitter,
-  Instagram,
-  Github,
-  Rocket,
-  Users,
-  Building
+  Phone,
+  Send,
 } from 'lucide-react';
 import { contactService } from '../services/contactService';
 import { CustomSelect } from '../components/CustomSelect';
+import SectionDivider from '../components/SectionDivider';
+import { Badge } from '../components/ui/Badge';
+
+const subjects = [
+  { value: 'general', label: 'Assunto geral' },
+  { value: 'Estratégia', label: 'Estratégia' },
+  { value: 'Inovação', label: 'Inovação' },
+  { value: 'Marketing', label: 'Marketing' },
+  { value: 'Mídia paga', label: 'Mídia paga' },
+  { value: 'Google Meu Negócio', label: 'Google Meu Negócio' },
+  { value: 'Design', label: 'Design' },
+  { value: 'Sistemas inteligentes', label: 'Sistemas inteligentes' },
+  { value: 'Marcas', label: 'Marcas' },
+  { value: 'Naming', label: 'Naming' },
+  { value: 'Domínio', label: 'Domínio' },
+  { value: 'Sites', label: 'Sites' },
+  { value: 'E-commerce', label: 'E-commerce' },
+  { value: 'sales', label: 'Falar com vendas' },
+  { value: 'support', label: 'Suporte técnico' },
+  { value: 'partnership', label: 'Parcerias' },
+  { value: 'press', label: 'Imprensa' },
+  { value: 'other', label: 'Outro' },
+];
+
+const fieldClassName = 'w-full rounded-xl border border-white/10 bg-black/25 px-4 py-3.5 text-white outline-none transition placeholder:text-white/25 hover:border-white/20 focus:border-[#FFF200]/70 focus:bg-black/40';
 
 const ContactPage = () => {
-  const { t } = useTranslation();
   const [searchParams] = useSearchParams();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  
   const serviceParam = searchParams.get('service');
   const messageParam = searchParams.get('message');
-  
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    company: '',
-    subject: serviceParam || 'general',
-    message: messageParam || ''
+    name: '', email: '', phone: '', company: '', subject: serviceParam || 'general', message: messageParam || '',
   });
 
   useEffect(() => {
     if (serviceParam || messageParam) {
-      setFormData(prev => ({
-        ...prev,
-        subject: serviceParam || prev.subject,
-        message: messageParam || prev.message
+      setFormData((previous) => ({
+        ...previous,
+        subject: serviceParam || previous.subject,
+        message: messageParam || previous.message,
       }));
     }
   }, [serviceParam, messageParam]);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = event.target;
+    setFormData((previous) => ({ ...previous, [name]: value }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     setIsSubmitting(true);
-    
     try {
       const result = await contactService.sendMessage(formData);
-      
-      if (result.success) {
-        setIsSubmitted(true);
-        // Reset form after notification
-        setTimeout(() => {
-          setIsSubmitted(false);
-          setFormData({
-            name: '',
-            email: '',
-            phone: '',
-            company: '',
-            subject: 'general',
-            message: ''
-          });
-        }, 5000);
-      } else {
-        alert('Erro ao enviar mensagem: ' + result.error);
+      if (!result.success) {
+        alert(`Erro ao enviar mensagem: ${result.error}`);
+        return;
       }
+      setIsSubmitted(true);
+      setTimeout(() => {
+        setIsSubmitted(false);
+        setFormData({ name: '', email: '', phone: '', company: '', subject: 'general', message: '' });
+      }, 5000);
     } catch (error) {
       console.error('Form submission failed:', error);
       alert('Ocorreu um erro ao enviar sua mensagem. Por favor, tente novamente mais tarde.');
@@ -89,394 +87,106 @@ const ContactPage = () => {
   };
 
   const contactInfo = [
-    {
-      icon: Mail,
-      title: 'E-mail',
-      value: 'fernando@orientohub.com.br',
-      description: 'Respondemos em até 24h',
-      href: 'mailto:fernando@orientohub.com.br'
-    },
-    {
-      icon: Phone,
-      title: 'Fale direto com Founder',
-      value: '+55 (14) 99861-8547',
-      description: 'Seg-Sex, 9h às 18h',
-      href: 'tel:+5514998618547'
-    },
-    {
-      icon: MapPin,
-      title: 'Localização',
-      value: 'Pompeia, Brasil',
-      description: 'Remoto-first',
-      href: 'https://maps.google.com'
-    }
-  ];
-
-  const subjects = [
-    { value: 'general', label: 'Assunto geral' },
-    { value: 'Estratégia', label: 'Estratégia' },
-    { value: 'Inovação', label: 'Inovação' },
-    { value: 'Marketing', label: 'Marketing' },
-    { value: 'Mídia paga', label: 'Mídia paga' },
-    { value: 'Google Meu Negócio', label: 'Google Meu Negócio' },
-    { value: 'Design', label: 'Design' },
-    { value: 'Sistemas inteligentes', label: 'Sistemas inteligentes' },
-    { value: 'Marcas', label: 'Marcas' },
-    { value: 'Naming', label: 'Naming' },
-    { value: 'Domínio', label: 'Domínio' },
-    { value: 'Sites', label: 'Sites' },
-    { value: 'E-commerce', label: 'E-commerce' },
-    { value: 'sales', label: 'Falar com vendas' },
-    { value: 'support', label: 'Suporte técnico' },
-    { value: 'partnership', label: 'Parcerias' },
-    { value: 'press', label: 'Imprensa' },
-    { value: 'other', label: 'Outro' }
-  ];
-
-  const socialLinks = [
-    { icon: Twitter, href: '#', label: 'Twitter', color: 'hover:text-blue-400' },
-    { icon: Linkedin, href: 'https://www.linkedin.com/in/fernandoramalhooficial/', label: 'LinkedIn', color: 'hover:text-blue-600' },
-    { icon: Instagram, href: '#', label: 'Instagram', color: 'hover:text-pink-500' },
-    { icon: Github, href: '#', label: 'GitHub', color: 'hover:text-gray-400' },
+    { icon: Mail, eyebrow: 'E-mail', value: 'fernando@orientohub.com.br', detail: 'Resposta em até 1 dia útil', href: 'mailto:fernando@orientohub.com.br' },
+    { icon: Phone, eyebrow: 'Conversa direta', value: '+55 (14) 99861-8547', detail: 'Segunda a sexta, das 9h às 18h', href: 'tel:+5514998618547' },
+    { icon: MapPin, eyebrow: 'Base', value: 'Pompeia, SP', detail: 'Atuação remota em todo o Brasil', href: 'https://maps.google.com/?q=Pompeia,+SP' },
   ];
 
   return (
-    <div className="dark min-h-screen">
-      {/* Shared fixed background */}
-      <div className="fixed inset-0 bg-gradient-to-br from-black via-gray-900 to-black -z-50" />
-      {/* Global dot grid */}
-      <div className="fixed inset-0 opacity-[0.06] pointer-events-none -z-40"
-        style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, #FFF200 1px, transparent 0)', backgroundSize: '40px 40px' }}
-      />
+    <div className="dark min-h-screen overflow-hidden text-white">
+      <div className="fixed inset-0 -z-50 bg-gradient-to-br from-black via-gray-900 to-black" />
+      <div className="pointer-events-none fixed inset-0 -z-40 opacity-20" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, #FFF200 1px, transparent 0)', backgroundSize: '40px 40px' }} />
+
       <Helmet>
-        <title>Contato - Orientohub</title>
-        <meta name="description" content="Entre em contato conosco. Estamos prontos para ajudar você a transformar sua startup!" />
+        <title>Contato | Orientohub</title>
+        <meta name="description" content="Conte o que você quer construir, melhorar ou destravar. A Orientohub ajuda a transformar contexto em direção e próximos passos." />
       </Helmet>
 
-      {/* Hero Section */}
-      <section className="relative min-h-[40vh] w-full overflow-hidden flex items-center pt-24 pb-12">
-        {/* Animated background */}
-
-        {/* Grid pattern */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute inset-0" style={{
-            backgroundImage: 'radial-gradient(circle at 2px 2px, #FFF200 1px, transparent 0)',
-            backgroundSize: '40px 40px'
-          }} />
-        </div>
-
-        <div className="container-custom relative z-10 py-20">
-          <motion.div
-            className="max-w-4xl mx-auto text-center"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            <motion.div
-              className="inline-flex items-center gap-2.5 rounded-full border border-[#FFF200]/60 bg-gradient-to-b from-white/10 to-black/80 px-3.5 py-2 shadow-none backdrop-blur-md mb-8"
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.2 }}
-            >
-              <MessageSquare className="w-3.5 h-3.5 shrink-0 text-[#FFF200]" />
-              <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-white sm:text-xs">
-                Fale Conosco
-              </span>
-            </motion.div>
-
-            <h1 className="text-5xl md:text-7xl font-bold mb-8 text-white leading-tight">
-              Vamos conversar sobre seu{' '}
-              <span className="bg-gradient-to-r from-[#FFF200] via-[#FFF200] to-[#FFF200] bg-clip-text text-transparent">
-                negócio
-              </span>
+      <section className="relative pb-20 pt-24 sm:pb-24 sm:pt-28">
+        <div className="container-custom">
+          <motion.div className="mx-auto w-full max-w-5xl text-center" initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>
+            <Badge variant="liquid-glass" icon={<MessageSquare className="h-3.5 w-3.5" />} className="mb-6 sm:mb-8">Comece pelo que está travando</Badge>
+            <h1 className="flex flex-col items-center text-4xl font-bold leading-[1.06] tracking-tight sm:text-6xl md:text-7xl lg:text-8xl">
+              <span className="block">Quando falta clareza</span>
+              <span className="block text-[#FFF200]">o avanço para.</span>
             </h1>
-
-            <p className="text-xl md:text-2xl text-gray-300 leading-relaxed">
-              Nossa equipe está pronta para ajudar você a alcançar seus objetivos
+            <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-white/50 sm:mt-8 sm:text-lg">
+              Conte o contexto. A gente ajuda a organizar o próximo passo.
             </p>
           </motion.div>
         </div>
       </section>
 
-      {/* Contact Cards */}
-      <section className="pt-12 pb-16">
+      <SectionDivider topSpacing="tight" />
+
+      <section className="pt-20 sm:pt-28">
         <div className="container-custom">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto mb-16">
-            {contactInfo.map((info, index) => (
-              <motion.a
-                key={index}
-                href={info.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group bg-white dark:bg-gray-800 p-6 rounded-2xl border-2 border-gray-200 dark:border-gray-700 hover:border-[#FFF200] transition-all duration-300 shadow-none hover:shadow-none"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                whileHover={{ y: -5 }}
-              >
-                <div className="w-14 h-14 bg-[#FFF200]/10 rounded-xl flex items-center justify-center mb-4 group-hover:bg-[#FFF200]/20 transition-colors">
-                  <info.icon className="w-7 h-7 text-[#FFF200]" />
-                </div>
-                <h3 className="text-lg font-bold mb-2">{info.title}</h3>
-                <p className="text-xl font-semibold text-gray-900 dark:text-white mb-1">
-                  {info.value}
-                </p>
-                <p className="text-sm text-gray-500 dark:text-gray-400">
-                  {info.description}
-                </p>
-              </motion.a>
-            ))}
-          </div>
+          <motion.div className="mb-12 max-w-3xl" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
+            <p className="text-xs font-black uppercase tracking-[0.22em] text-[#FFF200]">Comece pelo contexto</p>
+            <h2 className="mt-4 text-4xl font-black leading-[1.02] tracking-tight sm:text-6xl">Sem apresentação longa.<br />Sem solução genérica.</h2>
+          </motion.div>
 
-          {/* Main Content - Form + Info */}
-          <div className="max-w-6xl mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              {/* Contact Form */}
-              <motion.div
-                className="lg:col-span-2"
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.2 }}
-              >
-                <div className="bg-white dark:bg-gray-800 p-8 rounded-2xl border-2 border-gray-200 dark:border-gray-700 shadow-none">
-                  <div className="flex items-center gap-3 mb-6">
-                    <div className="w-12 h-12 bg-[#FFF200]/20 rounded-xl flex items-center justify-center">
-                      <Send className="w-6 h-6 text-[#FFF200]" />
-                    </div>
-                    <div>
-                      <h2 className="text-2xl font-bold">Envie sua mensagem</h2>
-                      <p className="text-sm text-gray-500 dark:text-gray-400">
-                        Responderemos o mais breve possível
-                      </p>
-                    </div>
+          <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_340px] lg:items-start">
+            <motion.div className="rounded-3xl border border-white/10 bg-[#0d131d] p-6 sm:p-9 lg:p-10" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
+              {isSubmitted ? (
+                <motion.div className="flex min-h-[520px] flex-col items-center justify-center text-center" initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }}>
+                  <span className="grid h-20 w-20 place-items-center rounded-full border border-emerald-400/30 bg-emerald-400/10"><CheckCircle2 className="h-9 w-9 text-emerald-300" /></span>
+                  <h2 className="mt-7 text-3xl font-black">Contexto recebido.</h2>
+                  <p className="mt-3 max-w-md leading-relaxed text-white/50">Vamos analisar sua mensagem e retornar com a conversa já direcionada.</p>
+                </motion.div>
+              ) : (
+                <>
+                  <div className="mb-8 flex items-center gap-4 border-b border-white/10 pb-6">
+                    <span className="grid h-11 w-11 place-items-center rounded-xl bg-[#FFF200] text-black"><Send className="h-5 w-5" /></span>
+                    <div><h3 className="text-xl font-black">Conte o que está acontecendo</h3><p className="mt-1 text-sm text-white/40">Nós retornamos em até 1 dia útil.</p></div>
                   </div>
-
-                  {isSubmitted ? (
-                    <motion.div
-                      className="py-12 text-center"
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                    >
-                      <div className="w-20 h-20 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <CheckCircle className="w-10 h-10 text-green-500" />
-                      </div>
-                      <h3 className="text-2xl font-bold mb-2">Mensagem enviada!</h3>
-                      <p className="text-gray-600 dark:text-gray-400">
-                        Recebemos sua mensagem e responderemos em breve.
-                      </p>
-                    </motion.div>
-                  ) : (
-                    <form onSubmit={handleSubmit} className="space-y-6">
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                          <label htmlFor="name" className="block text-sm font-medium mb-2">
-                            Nome completo *
-                          </label>
-                          <input
-                            type="text"
-                            id="name"
-                            name="name"
-                            required
-                            value={formData.name}
-                            onChange={handleInputChange}
-                            className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-900 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:border-[#FFF200] focus:outline-none transition-all"
-                            placeholder="João Silva"
-                          />
-                        </div>
-
-                        <div>
-                          <label htmlFor="email" className="block text-sm font-medium mb-2">
-                            E-mail *
-                          </label>
-                          <input
-                            type="email"
-                            id="email"
-                            name="email"
-                            required
-                            value={formData.email}
-                            onChange={handleInputChange}
-                            className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-900 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:border-[#FFF200] focus:outline-none transition-all"
-                            placeholder="joao@email.com"
-                          />
-                        </div>
-
-                        <div>
-                          <label htmlFor="phone" className="block text-sm font-medium mb-2">
-                            Telefone
-                          </label>
-                          <input
-                            type="tel"
-                            id="phone"
-                            name="phone"
-                            value={formData.phone}
-                            onChange={handleInputChange}
-                            className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-900 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:border-[#FFF200] focus:outline-none transition-all"
-                            placeholder="(11) 99999-9999"
-                          />
-                        </div>
-
-                        <div>
-                          <label htmlFor="company" className="block text-sm font-medium mb-2">
-                            Empresa/Startup
-                          </label>
-                          <input
-                            type="text"
-                            id="company"
-                            name="company"
-                            value={formData.company}
-                            onChange={handleInputChange}
-                            className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-900 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:border-[#FFF200] focus:outline-none transition-all"
-                            placeholder="Sua Startup"
-                          />
-                        </div>
-                      </div>
-
-                      <div>
-                        <CustomSelect
-                          value={formData.subject}
-                          onChange={(value) => handleInputChange({ target: { name: 'subject', value } } as any)}
-                          options={subjects}
-                          label="Assunto"
-                          required
-                        />
-                      </div>
-
-                      <div>
-                        <label htmlFor="message" className="block text-sm font-medium mb-2">
-                          Mensagem *
-                        </label>
-                        <textarea
-                          id="message"
-                          name="message"
-                          required
-                          rows={6}
-                          spellCheck="false"
-                          value={formData.message}
-                          onChange={handleInputChange}
-                          className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-900 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:border-[#FFF200] focus:outline-none transition-all resize-none"
-                          placeholder="Conte-nos como podemos ajudar..."
-                        />
-                      </div>
-
-                      <motion.button
-                        type="submit"
-                        disabled={isSubmitting}
-                        whileHover={{ scale: 1.01 }}
-                        whileTap={{ scale: 0.99 }}
-                        className="w-full flex items-center justify-center gap-3 px-8 py-4 bg-gradient-to-r from-[#FFF200] to-[#FFF200] hover:from-[#FFF200] hover:to-[#FFF200] text-black font-bold text-lg rounded-xl shadow-none shadow-none hover:shadow-none hover:shadow-none transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-                      >
-                        {isSubmitting ? (
-                          <>
-                            <svg className="animate-spin h-5 w-5 text-black" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                            </svg>
-                            Enviando...
-                          </>
-                        ) : (
-                          <>
-                            <Send className="w-5 h-5" />
-                            Enviar Mensagem
-                          </>
-                        )}
-                      </motion.button>
-                    </form>
-                  )}
-                </div>
-              </motion.div>
-
-              {/* Sidebar Info */}
-              <motion.div
-                className="lg:col-span-1"
-                initial={{ opacity: 0, x: 20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.3 }}
-              >
-                <div className="space-y-6">
-                  {/* Quick Links */}
-                  <div className="bg-gradient-to-br from-[#FFF200] to-[#FFF200] p-6 rounded-2xl text-black">
-                    <div className="flex items-center gap-2 mb-4">
-                      <Rocket className="w-6 h-6" />
-                      <h3 className="text-lg font-bold">Pronto para começar?</h3>
+                  <form onSubmit={handleSubmit} className="space-y-4">
+                    <div className="grid gap-4 sm:grid-cols-2">
+                      <Field label="Nome" required><input className={fieldClassName} id="name" name="name" required autoComplete="name" value={formData.name} onChange={handleInputChange} placeholder="Como podemos chamar você?" /></Field>
+                      <Field label="E-mail" required><input className={fieldClassName} id="email" name="email" type="email" required autoComplete="email" value={formData.email} onChange={handleInputChange} placeholder="voce@email.com" /></Field>
+                      <Field label="Telefone"><input className={fieldClassName} id="phone" name="phone" type="tel" autoComplete="tel" value={formData.phone} onChange={handleInputChange} placeholder="(00) 00000-0000" /></Field>
+                      <Field label="Empresa, projeto ou ideia"><input className={fieldClassName} id="company" name="company" autoComplete="organization" value={formData.company} onChange={handleInputChange} placeholder="Como podemos identificar?" /></Field>
                     </div>
-                    <p className="text-sm mb-4 text-black/80">
-                      Experimente o Orientohub gratuitamente e transforme sua startup hoje!
-                    </p>
-                    <a
-                      href="/cadastro"
-                      className="block w-full px-4 py-3 bg-black hover:bg-gray-900 text-[#FFF200] font-bold text-center rounded-xl transition-all"
-                    >
-                      Começar Grátis
-                    </a>
-                  </div>
+                    <CustomSelect value={formData.subject} onChange={(value) => setFormData((previous) => ({ ...previous, subject: value }))} options={subjects} label="Sobre o que vamos conversar?" required />
+                    <Field label="Qual é o desafio?" required>
+                      <textarea className={`${fieldClassName} min-h-32 resize-none leading-relaxed`} id="message" name="message" required minLength={20} maxLength={1200} value={formData.message} onChange={handleInputChange} placeholder="O que você quer fazer avançar e o que está impedindo isso hoje?" />
+                    </Field>
+                    <button type="submit" disabled={isSubmitting} className="group flex w-full items-center justify-center gap-2 rounded-xl bg-[#FFF200] px-7 py-4 font-black text-black transition hover:bg-[#fff64d] disabled:cursor-wait disabled:opacity-60">
+                      {isSubmitting ? 'Enviando contexto…' : <>Iniciar conversa <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" /></>}
+                    </button>
+                  </form>
+                </>
+              )}
+            </motion.div>
 
-                  {/* Business Hours */}
-                  <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl border-2 border-gray-200 dark:border-gray-700">
-                    <div className="flex items-center gap-2 mb-4">
-                      <Clock className="w-5 h-5 text-[#FFF200]" />
-                      <h3 className="font-bold">Horário de Atendimento</h3>
-                    </div>
-                    <div className="space-y-2 text-sm">
-                      <div className="flex justify-between">
-                        <span className="text-gray-600 dark:text-gray-400">Segunda - Sexta</span>
-                        <span className="font-medium">9h - 18h</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-600 dark:text-gray-400">Sábado</span>
-                        <span className="font-medium">Fechado</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-600 dark:text-gray-400">Domingo</span>
-                        <span className="font-medium">Fechado</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Social Media */}
-                  <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl border-2 border-gray-200 dark:border-gray-700">
-                    <h3 className="font-bold mb-4">Redes Sociais</h3>
-                    <div className="flex gap-3">
-                      {socialLinks.map((social, index) => (
-                        <a
-                          key={index}
-                          href={social.href}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className={`w-12 h-12 bg-gray-100 dark:bg-gray-700 hover:bg-[#FFF200]/20 rounded-xl flex items-center justify-center transition-all ${social.color}`}
-                        >
-                          <social.icon className="w-5 h-5" />
-                        </a>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Enterprise */}
-                  <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl border-2 border-gray-200 dark:border-gray-700">
-                    <div className="flex items-center gap-2 mb-3">
-                      <Building className="w-5 h-5 text-[#FFF200]" />
-                      <h3 className="font-bold">Enterprise</h3>
-                    </div>
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-                      Soluções personalizadas para aceleradoras e grandes empresas
-                    </p>
-                    <a
-                      href="/planos"
-                      className="text-sm text-[#FFF200] font-medium hover:underline"
-                    >
-                      Ver planos Enterprise →
-                    </a>
-                  </div>
-                </div>
-              </motion.div>
-            </div>
+            <motion.aside className="overflow-hidden rounded-3xl border border-white/10 bg-[#0d131d]" initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}>
+              <div className="border-b border-white/10 p-6">
+                <span className="text-[11px] font-black uppercase tracking-[0.18em] text-[#FFF200]">Prefere outro canal?</span>
+                <p className="mt-2 text-sm leading-relaxed text-white/40">Fale diretamente por onde for mais simples.</p>
+              </div>
+              <div>
+                {contactInfo.map((info) => (
+                  <a key={info.eyebrow} href={info.href} target={info.eyebrow === 'Base' ? '_blank' : undefined} rel={info.eyebrow === 'Base' ? 'noopener noreferrer' : undefined} className="group flex gap-4 border-b border-white/10 p-6 transition last:border-0 hover:bg-white/[0.03]">
+                    <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-[#FFF200]/20 bg-[#FFF200]/10 text-[#FFF200]"><info.icon className="h-4 w-4" /></span>
+                    <span className="min-w-0"><span className="block text-[10px] font-black uppercase tracking-[0.16em] text-white/30">{info.eyebrow}</span><strong className="mt-1 block break-words text-sm text-white">{info.value}</strong><span className="mt-1 block text-xs leading-relaxed text-white/35">{info.detail}</span></span>
+                  </a>
+                ))}
+              </div>
+            </motion.aside>
           </div>
         </div>
+        <div className="h-32 sm:h-44" aria-hidden="true" />
+        <div className="h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" aria-hidden="true" />
       </section>
     </div>
   );
 };
+
+const Field = ({ label, required, children }: { label: string; required?: boolean; children: React.ReactNode }) => (
+  <label className="block text-sm font-bold text-white/70">
+    <span className="mb-2 block">{label}{required && <span className="ml-1 text-[#FFF200]">*</span>}</span>
+    {children}
+  </label>
+);
 
 export default ContactPage;
