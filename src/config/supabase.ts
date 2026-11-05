@@ -1,8 +1,10 @@
 import { createClient } from '@supabase/supabase-js';
+import { invalidateCache } from '../lib/memoryCache';
 
 const processEnv = (globalThis as any).process?.env;
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || processEnv?.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || processEnv?.VITE_SUPABASE_ANON_KEY;
+export const supabaseProjectUrl = supabaseUrl as string;
 
 if (!supabaseUrl || !supabaseAnonKey) {
   throw new Error('Missing Supabase environment variables. Please check your .env file.');
@@ -22,10 +24,16 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   },
 });
 
+let currentCacheUser: string | null = null;
+supabase.auth.onAuthStateChange((_event, session) => {
+  const next = session?.user.id || null;
+  if (next !== currentCacheUser) { currentCacheUser = next; invalidateCache(); }
+});
+
 // Test connection and provide better error handling
 export const testSupabaseConnection = async () => {
   try {
-    const { data, error } = await supabase.from('solutions').select('count', { count: 'exact', head: true });
+    const { error } = await supabase.from('solutions').select('count', { count: 'exact', head: true });
     if (error && error.code === 'PGRST116') {
       // Table doesn't exist yet, but connection is working
       return { connected: true, tableExists: false };

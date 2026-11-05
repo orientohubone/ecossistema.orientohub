@@ -59,7 +59,7 @@ export const KPICards = ({ analytics }: KPICardsProps) => {
 
             <Card className="border-violet-400/20 bg-violet-400/10">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 p-4 pb-2 sm:p-6">
-                    <CardTitle className="text-sm font-medium">Clientes Ativos</CardTitle>
+                    <CardTitle className="text-sm font-medium">Assinaturas ativas</CardTitle>
                     <Users className="h-4 w-4 text-violet-300" />
                 </CardHeader>
                 <CardContent className="p-4 pt-0 sm:p-6 sm:pt-0">
@@ -67,7 +67,7 @@ export const KPICards = ({ analytics }: KPICardsProps) => {
                         {analytics.customers.active_customers}
                     </div>
                     <div className="text-xs text-gray-400 mt-1">
-                        +{analytics.customers.new_customers_this_month} novos este mês
+                        {analytics.customers.new_customers_this_month} cadastros neste mês
                     </div>
                 </CardContent>
             </Card>
@@ -75,18 +75,16 @@ export const KPICards = ({ analytics }: KPICardsProps) => {
             <Card className="border-amber-400/20 bg-amber-400/10">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 p-4 pb-2 sm:p-6">
                     <CardTitle className="text-sm font-medium">
-                        <MetricTooltip metric="health_score">
-                            <span>Health Score</span>
-                        </MetricTooltip>
+                        <span>Usuários ativos em 7 dias</span>
                     </CardTitle>
                     <Activity className="h-4 w-4 text-amber-300" />
                 </CardHeader>
                 <CardContent className="p-4 pt-0 sm:p-6 sm:pt-0">
                     <div className="text-xl font-bold text-white sm:text-2xl">
-                        {analytics.health.avg_health_score}%
+                        {analytics.engagement.weekly_active_users}
                     </div>
                     <div className="text-xs text-gray-400 mt-1">
-                        {analytics.health.at_risk_customers} em risco
+                        Presença ou login registrado
                     </div>
                 </CardContent>
             </Card>

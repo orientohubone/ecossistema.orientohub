@@ -1,7 +1,6 @@
 import { useState, useEffect, memo } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet-async';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import {
   Plus,
   X,
@@ -19,7 +18,6 @@ import {
   Star,
   GitCommit,
   Trash2,
-  Settings,
   RefreshCw,
   FileCode,
   Bug,
@@ -27,24 +25,23 @@ import {
   Target,
   ArrowLeft,
   Shield,
-  Zap,
   Package,
   BarChart2,
   Award,
-  ExternalLink,
   ChevronRight,
   Pencil
 } from 'lucide-react';
 import { useAuthStore } from '../stores/authStore';
 import DashboardPageSkeleton from '../components/ui/DashboardPageSkeleton';
-import { solutionsService, Solution } from '../services/solutionsService';
+import { solutionsService, Solution, type GithubData } from '../services/solutionsService';
+import AddSolutionModal from '../components/modals/AddSolutionModal';
 
 const SolutionsPage = () => {
   const { user } = useAuthStore();
-  const [solutions, setSolutions] = useState<Solution[]>(solutionsService.getCachedSolutions() || []);
+  const [solutions, setSolutions] = useState<Solution[]>(solutionsService.getCachedSolutions(user?.id) || []);
   const [selectedSolution, setSelectedSolution] = useState<Solution | null>(null);
   const [showAddModal, setShowAddModal] = useState(false);
-  const [isLoading, setIsLoading] = useState(!solutionsService.getCachedSolutions());
+  const [isLoading, setIsLoading] = useState(!solutionsService.getCachedSolutions(user?.id));
   const [isSyncing, setIsSyncing] = useState(false);
   const [isEditingSolution, setIsEditingSolution] = useState(false);
   const [isSavingSolution, setIsSavingSolution] = useState(false);
@@ -64,22 +61,17 @@ const SolutionsPage = () => {
     active_users: '',
   });
   const [error, setError] = useState<string | null>(null);
-  const [newSolution, setNewSolution] = useState<Partial<Solution>>({
-    name: '',
-    logo_url: '',
-    solution_url: '',
-    stage: 'Ideação',
-    git_url: '',
-  });
+  const [success, setSuccess] = useState<string | null>(null);
 
   useEffect(() => {
     fetchSolutions(false); // Silent load no mount (tenta cache primeiro)
   }, [user]);
 
   const fetchSolutions = async (forceRefresh = false) => {
+    if (forceRefresh) setIsSyncing(true);
     try {
       // Só mostra Skeleton se o cache estiver vazio e não houver dados no estado local
-      if (solutions.length === 0 && !solutionsService.getCachedSolutions()) {
+      if (solutions.length === 0 && !solutionsService.getCachedSolutions(user?.id)) {
         setIsLoading(true);
       }
       
@@ -90,27 +82,17 @@ const SolutionsPage = () => {
       setError(err.message);
     } finally {
       setIsLoading(false);
+      setIsSyncing(false);
     }
   };
 
-  const handleAddSolution = async () => {
-    if (!newSolution.name || !newSolution.solution_url) return;
-    try {
-      setIsSyncing(true);
-      const solutionToCreate = {
-        ...newSolution,
-        user_id: user?.id,
-        logo_url: newSolution.logo_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(newSolution.name)}&background=FFD700&color=000&bold=true`,
-      };
-      await solutionsService.create(solutionToCreate);
-      setShowAddModal(false);
-      setNewSolution({ name: '', logo_url: '', solution_url: '', stage: 'Ideação', git_url: '' });
-      await fetchSolutions();
-    } catch (err: any) {
-      setError(err.message);
-    } finally {
-      setIsSyncing(false);
-    }
+  const handleAddSolution = async (newSolution: Partial<Solution>) => {
+    if (!user?.id) throw new Error('Sua sessão expirou. Entre novamente para cadastrar a solução.');
+    const created = await solutionsService.create({ ...newSolution, user_id: user.id });
+    setSolutions(current => [created, ...current.filter(solution => solution.id !== created.id)]);
+    setError(null);
+    setSuccess(`A solução “${created.name}” foi cadastrada.`);
+    setShowAddModal(false);
   };
 
   const handleRemoveSolution = async (id: string) => {
@@ -164,7 +146,7 @@ const SolutionsPage = () => {
         active_users: Number(editForm.active_users) || 0,
       });
 
-      const updatedSolution = { ...selectedSolution, ...updated, github_data: selectedSolution.github_data };
+      const updatedSolution = { ...selectedSolution, ...updated, github_data: updated.git_url === selectedSolution.git_url ? selectedSolution.github_data : undefined };
       setSelectedSolution(updatedSolution);
       setSolutions((currentSolutions) => currentSolutions.map((solution) => (
         solution.id === updatedSolution.id ? updatedSolution : solution
@@ -179,9 +161,9 @@ const SolutionsPage = () => {
 
   const handleViewDetails = async (solution: Solution) => {
     setSelectedSolution(solution);
-    if (solution.git_url && !solution.github_data) {
+    if (solution.git_url && (!solution.github_data || solution.github_data.error)) {
       try {
-        const freshGithub = await solutionsService.fetchGithubData(solution.git_url);
+        const freshGithub = await solutionsService.fetchGithubData(solution, Boolean(solution.github_data?.error));
         if (freshGithub) {
           const updated = { ...solution, github_data: freshGithub };
           setSelectedSolution(updated);
@@ -224,6 +206,8 @@ const SolutionsPage = () => {
       <Helmet><title>Minhas Soluções - Orientohub</title></Helmet>
 
       <div className="min-h-screen bg-[#0c121b]">
+        {error && <div role="alert" className="container-custom pt-5 text-sm text-red-300">{error}</div>}
+        {success && <div role="status" className="container-custom flex items-center gap-2 pt-5 text-sm text-emerald-300"><CheckCircle className="h-4 w-4" />{success}<button type="button" aria-label="Fechar confirmação" onClick={() => setSuccess(null)} className="ml-auto p-2"><X className="h-4 w-4" /></button></div>}
         {!selectedSolution ? (
           <div
             key="list"
@@ -258,7 +242,7 @@ const SolutionsPage = () => {
                     solution={solution}
                     index={index}
                     onViewDetails={() => handleViewDetails(solution)}
-                    onUpdateData={(data) => updateSolutionGithubData(solution.id, data)}
+                    onUpdateData={(data: GithubData) => updateSolutionGithubData(solution.id, data)}
                     onRemove={() => handleRemoveSolution(solution.id)}
                     getHealthColor={getHealthColor}
                     getHealthLabel={getHealthLabel}
@@ -294,7 +278,7 @@ const SolutionsPage = () => {
         )}
       </div>
 
-      <AddSolutionModal show={showAddModal} onClose={() => setShowAddModal(false)} newSolution={newSolution} setNewSolution={setNewSolution} onSave={handleAddSolution} isSyncing={isSyncing} />
+      {showAddModal && <AddSolutionModal key={user?.id} userId={user?.id} onClose={() => setShowAddModal(false)} onSave={handleAddSolution} />}
       <EditSolutionModal
         show={isEditingSolution}
         solution={selectedSolution}
@@ -336,7 +320,7 @@ const SolutionCard = memo(({ solution, index, onViewDetails, onUpdateData, onRem
       const load = async () => {
         setIsFetching(true);
         try {
-          const data = await solutionsService.fetchGithubData(solution.git_url!);
+          const data = await solutionsService.fetchGithubData(solution);
           if (data) onUpdateData(data);
         } catch (e) { console.error(e); } finally { setIsFetching(false); }
       };
@@ -802,33 +786,6 @@ const EditSolutionModal = ({ show, solution, editForm, setEditForm, isSaving, on
           <button onClick={onSave} disabled={isSaving || !editForm.name.trim() || !editForm.solution_url.trim()} className="rounded-xl bg-primary-500 px-6 py-2.5 text-sm font-bold text-black transition-colors hover:bg-primary-600 disabled:cursor-not-allowed disabled:opacity-50">
             {isSaving ? 'Salvando...' : 'Salvar alterações'}
           </button>
-        </div>
-      </motion.div>
-    </div>
-  );
-};
-
-const AddSolutionModal = ({ show, onClose, newSolution, setNewSolution, onSave, isSyncing }: any) => {
-  if (!show) return null;
-  const inputClass = "w-full px-5 py-3.5 bg-gray-50 dark:bg-gray-800 border-2 border-gray-100 dark:border-gray-700 rounded-xl focus:border-primary-500 outline-none transition-all font-bold text-sm";
-  return (
-    <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-      <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="bg-white dark:bg-gray-900 rounded-[2.5rem] w-full max-w-2xl overflow-hidden border-2 border-gray-200 dark:border-gray-700 shadow-3xl">
-        <div className="p-10 border-b-2 border-gray-100 dark:border-gray-700 flex justify-between items-center bg-gray-50 dark:bg-gray-900">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 bg-primary-500/10 rounded-xl flex items-center justify-center border border-primary-500/20"><Rocket className="w-6 h-6 text-primary-500" /></div>
-            <h2 className="text-2xl font-bold tracking-tight">Integrar Solução</h2>
-          </div>
-          <button onClick={onClose} className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl transition-all font-bold"><X className="w-6 h-6" /></button>
-        </div>
-        <div className="p-10 space-y-6">
-          <input className={inputClass} value={newSolution.name} onChange={e => setNewSolution({ ...newSolution, name: e.target.value })} placeholder="Nome da Solução" />
-          <input className={inputClass} value={newSolution.git_url} onChange={e => setNewSolution({ ...newSolution, git_url: e.target.value })} placeholder="URL Pública do GitHub" />
-          <input className={inputClass} value={newSolution.solution_url} onChange={e => setNewSolution({ ...newSolution, solution_url: e.target.value })} placeholder="URL do Produto (Ex: https://app.meu.link)" />
-        </div>
-        <div className="p-10 bg-gray-50 dark:bg-gray-800 flex justify-end gap-6 border-t-2 border-gray-100 dark:border-gray-700">
-          <button onClick={onClose} className="font-bold text-gray-500 text-sm uppercase tracking-widest">Cancelar</button>
-          <button onClick={onSave} disabled={isSyncing} className="px-10 py-3.5 bg-primary-500 text-black font-bold rounded-2xl shadow-xl transition-all shadow-primary-500/30 active:scale-95">CONFIRMAR</button>
         </div>
       </motion.div>
     </div>

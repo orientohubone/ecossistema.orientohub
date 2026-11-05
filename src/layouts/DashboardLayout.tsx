@@ -18,15 +18,12 @@ import {
   Search,
   Crown,
   Sparkles,
-  User as UserIcon,
-  RefreshCw,
-  Save,
-  Check,
   GraduationCap,
 } from 'lucide-react';
 import { useAuthStore } from '../stores/authStore';
 import ContactFab from '../components/layout/ContactFab';
 import { supabase } from '../config/supabase';
+import { useDashboardPresence } from '../hooks/useDashboardPresence';
 
 interface DashboardLayoutProps {
   showcaseContent?: ReactNode;
@@ -43,6 +40,7 @@ const DashboardLayout = ({ showcaseContent, showcaseUser, showcasePlan, showcase
   const location = useLocation();
   const navigate = useNavigate();
   const { user: authenticatedUser, logout } = useAuthStore();
+  useDashboardPresence(authenticatedUser?.id, location.pathname, Boolean(showcaseUser || showcaseContent));
   const user = showcaseUser ?? authenticatedUser;
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(initialCollapsed);
@@ -211,7 +209,7 @@ const SidebarHeader = ({ user, collapsed = false }: { user?: any; collapsed?: bo
         />
       ) : null}
       <div className={`w-full h-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center ${user?.user_metadata?.avatar_url ? 'hidden' : ''}`}>
-        {user?.user_metadata?.name?.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2) || user?.email?.charAt(0)?.toUpperCase() || 'U'}
+        {user?.user_metadata?.name?.split(' ').map((n: string) => n[0]).join('').toUpperCase().slice(0, 2) || user?.email?.charAt(0)?.toUpperCase() || 'U'}
       </div>
     </div>
       {!collapsed && (

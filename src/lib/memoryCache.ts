@@ -5,6 +5,7 @@ type CacheEntry<T> = {
 
 const cache = new Map<string, CacheEntry<unknown>>();
 const inflight = new Map<string, Promise<unknown>>();
+let sessionRevision = 0;
 
 export const getCachedValue = <T>(key: string): T | null => {
   const entry = cache.get(key);
@@ -36,14 +37,18 @@ export const getOrLoadCachedValue = async <T>(
   const currentPromise = inflight.get(key);
   if (currentPromise) return currentPromise as Promise<T>;
 
+  const revision = sessionRevision;
   const promise = loader()
     .then((result) => {
-      setCachedValue(key, result, ttlMs);
-      inflight.delete(key);
+      if (revision !== sessionRevision) throw new Error('A sessão mudou durante o carregamento. Atualize a tela.');
+      if (inflight.get(key) === promise) {
+        setCachedValue(key, result, ttlMs);
+        inflight.delete(key);
+      }
       return result;
     })
     .catch((error) => {
-      inflight.delete(key);
+      if (inflight.get(key) === promise) inflight.delete(key);
       throw error;
     });
 
@@ -53,6 +58,7 @@ export const getOrLoadCachedValue = async <T>(
 
 export const invalidateCache = (matcher?: string | RegExp) => {
   if (!matcher) {
+    sessionRevision++;
     cache.clear();
     inflight.clear();
     return;

@@ -1,0 +1,144 @@
+{
+  "checkedAt": "2026-11-05T16:32:47.211Z",
+  "credentialScope": "anonymous",
+  "githubBrowserTokenConfigured": true,
+  "checks": [
+    {
+      "table": "projects",
+      "status": 401,
+      "anonymousRowVisible": false,
+      "code": "42501"
+    },
+    {
+      "table": "solutions",
+      "status": 200,
+      "anonymousRowVisible": false
+    },
+    {
+      "table": "hypotheses",
+      "status": 401,
+      "anonymousRowVisible": false,
+      "code": "42501"
+    },
+    {
+      "table": "experiments",
+      "status": 401,
+      "anonymousRowVisible": false,
+      "code": "42501"
+    },
+    {
+      "table": "interviews",
+      "status": 401,
+      "anonymousRowVisible": false,
+      "code": "42501"
+    },
+    {
+      "table": "ideas",
+      "status": 401,
+      "anonymousRowVisible": false,
+      "code": "42501"
+    },
+    {
+      "table": "idea_hypotheses",
+      "status": 401,
+      "anonymousRowVisible": false,
+      "code": "42501"
+    },
+    {
+      "table": "events",
+      "status": 200,
+      "anonymousRowVisible": false
+    },
+    {
+      "table": "user_activity",
+      "status": 401,
+      "anonymousRowVisible": false,
+      "code": "42501"
+    },
+    {
+      "table": "contact_messages",
+      "status": 200,
+      "anonymousRowVisible": false
+    },
+    {
+      "table": "newsletter_subscriptions",
+      "status": 200,
+      "anonymousRowVisible": false
+    },
+    {
+      "table": "crm_clients",
+      "status": 200,
+      "anonymousRowVisible": false
+    },
+    {
+      "table": "crm_contacts",
+      "status": 200,
+      "anonymousRowVisible": false
+    },
+    {
+      "table": "crm_companies",
+      "status": 200,
+      "anonymousRowVisible": false
+    },
+    {
+      "table": "crm_deals",
+      "status": 200,
+      "anonymousRowVisible": false
+    },
+    {
+      "table": "crm_deal_contacts",
+      "status": 200,
+      "anonymousRowVisible": false
+    },
+    {
+      "table": "crm_notes",
+      "status": 200,
+      "anonymousRowVisible": false
+    },
+    {
+      "table": "crm_tasks",
+      "status": 200,
+      "anonymousRowVisible": false
+    },
+    {
+      "table": "billing_subscriptions",
+      "status": 401,
+      "anonymousRowVisible": false,
+      "code": "42501"
+    },
+    {
+      "table": "community_post_bookmarks",
+      "status": 200,
+      "anonymousRowVisible": false
+    },
+    {
+      "table": "user_resource_limits",
+      "status": 401,
+      "anonymousRowVisible": false,
+      "code": "42501"
+    },
+    {
+      "table": "founder_user_followups",
+      "status": 401,
+      "anonymousRowVisible": false,
+      "code": "42501"
+    },
+    {
+      "rpc": "get_founder_companies",
+      "status": 200,
+      "anonymousDataVisible": false
+    },
+    {
+      "rpc": "get_founder_metrics",
+      "status": 401,
+      "anonymousDataVisible": false,
+      "code": "42501"
+    },
+    {
+      "rpc": "get_founder_user_tracking",
+      "status": 401,
+      "anonymousDataVisible": false,
+      "code": "42501"
+    }
+  ]
+}

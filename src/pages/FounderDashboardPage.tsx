@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Crown, TrendingUp, Users, DollarSign, Activity, FileText, GitBranch, Download } from 'lucide-react';
+import { Crown, TrendingUp, DollarSign, Activity, FileText, GitBranch } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { DashboardHeader } from '../components/founder/DashboardHeader';
 import { KPICards } from '../components/founder/metrics/KPICards';
@@ -8,10 +8,13 @@ import { useFounderData } from '../hooks/useFounderData';
 import { Company } from '../types/founder';
 import DashboardPageSkeleton from '../components/ui/DashboardPageSkeleton';
 import { FeatureFlagsPanel } from '../components/founder/FeatureFlagsPanel';
+import { FounderUsersPanel } from '../components/founder/FounderUsersPanel';
 
 const FounderDashboardPage = () => {
     const [activeTab, setActiveTab] = useState('overview');
-    const { analytics, companies, revenueChart, isLoading, error, refetch } = useFounderData();
+    const { analytics, companies, isLoading, error, refetch } = useFounderData();
+    const [trackingRefreshKey, setTrackingRefreshKey] = useState(0);
+    const refreshAll = () => { setTrackingRefreshKey(value => value + 1); void refetch(); };
 
     const tabs = [
         { id: 'overview', label: 'Visão Geral', icon: Crown },
@@ -51,15 +54,16 @@ const FounderDashboardPage = () => {
 
     if (error || !analytics) {
         return (
-            <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 dark:from-black dark:via-gray-900 dark:to-black">
-                <div className="text-center">
-                    <p className="text-red-500 dark:text-red-400">{error || 'Erro ao carregar dados'}</p>
+            <div className="min-h-screen bg-[#0c121b] py-8 text-white">
+                <div className="container-custom">
+                    <p className="text-red-500 dark:text-red-400">{error || 'Erro ao carregar métricas financeiras'}</p>
                     <button
-                        onClick={refetch}
+                        onClick={refreshAll}
                         className="mt-4 px-4 py-2 bg-primary-500 text-black rounded-lg hover:bg-primary-600"
                     >
                         Tentar Novamente
                     </button>
+                    <div className="mt-8 text-left"><FounderUsersPanel refreshKey={trackingRefreshKey} /></div>
                 </div>
             </div>
         );
@@ -76,7 +80,7 @@ const FounderDashboardPage = () => {
                 <div className="container-custom space-y-5 py-4 sm:space-y-6 sm:py-6 md:py-8">
                     {/* Header */}
                     <DashboardHeader
-                        onRefetch={refetch}
+                        onRefetch={refreshAll}
                         onExport={handleExport}
                         companies={companies}
                     />
@@ -117,27 +121,7 @@ const FounderDashboardPage = () => {
                             className="min-h-[400px]"
                         >
                             {activeTab === 'overview' && (
-                                <div className="grid gap-6">
-                                    <div className="rounded-2xl border border-[#273548] bg-[#101722] p-4 sm:p-6">
-                                        <p className="mb-2 text-xs font-semibold uppercase tracking-[0.15em] text-primary-300">Pulso da operação</p>
-                                        <h3 className="mb-2 text-xl font-bold text-white">Visão Geral</h3>
-                                        <p className="text-[#9ba9bc]">
-                                            Dashboard completo com métricas de negócio, receita e engajamento.
-                                        </p>
-                                        <div className="mt-6 grid gap-4 md:grid-cols-2">
-                                            <div className="rounded-xl border border-[#273548] bg-[#151f2b] p-4">
-                                                <p className="text-sm text-[#9ba9bc]">Total de Empresas</p>
-                                                <p className="text-2xl font-bold text-white">{companies.length}</p>
-                                            </div>
-                                            <div className="rounded-xl border border-primary-400/20 bg-primary-500/10 p-4">
-                                                <p className="text-sm text-primary-200">Receita Mensal</p>
-                                                <p className="text-2xl font-bold text-primary-500">
-                                                    R$ {analytics.revenue.total_mrr.toLocaleString('pt-BR')}
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                <FounderUsersPanel refreshKey={trackingRefreshKey} />
                             )}
 
                             {activeTab === 'flags' && <FeatureFlagsPanel />}
@@ -187,7 +171,7 @@ const FounderDashboardPage = () => {
                                             <div className="rounded-xl border border-orange-400/20 bg-orange-400/10 p-4">
                                                 <p className="mb-1 text-sm font-medium text-orange-200">Churn Rate</p>
                                                 <p className="text-2xl font-bold text-white sm:text-3xl">
-                                                    {((analytics.customers.churned_customers / analytics.customers.active_customers) * 100).toFixed(1)}%
+                                                    {analytics.customers.active_customers > 0 ? ((analytics.customers.churned_customers / analytics.customers.active_customers) * 100).toFixed(1) : '0.0'}%
                                                 </p>
                                                 <p className="text-xs text-orange-600 dark:text-orange-400 mt-2">
                                                     {analytics.customers.churned_customers} clientes este mês
@@ -226,15 +210,15 @@ const FounderDashboardPage = () => {
                                     <h3 className="mb-4 text-xl font-bold text-white">Métricas de Engajamento</h3>
                                     <div className="grid gap-4 md:grid-cols-3 mt-6">
                                         <div className="rounded-xl border border-[#273548] bg-[#151f2b] p-4">
-                                            <p className="text-sm text-[#9ba9bc]">DAU</p>
+                                            <p className="text-sm text-[#9ba9bc]">Ativos nas últimas 24 horas</p>
                                             <p className="text-2xl font-bold text-white">{analytics.engagement.daily_active_users}</p>
                                         </div>
                                         <div className="rounded-xl border border-[#273548] bg-[#151f2b] p-4">
-                                            <p className="text-sm text-gray-600 dark:text-gray-400">WAU</p>
+                                            <p className="text-sm text-gray-600 dark:text-gray-400">Ativos nos últimos 7 dias</p>
                                             <p className="text-2xl font-bold text-gray-900 dark:text-white">{analytics.engagement.weekly_active_users}</p>
                                         </div>
                                         <div className="rounded-xl border border-[#273548] bg-[#151f2b] p-4">
-                                            <p className="text-sm text-gray-600 dark:text-gray-400">MAU</p>
+                                            <p className="text-sm text-gray-600 dark:text-gray-400">Ativos nos últimos 30 dias</p>
                                             <p className="text-2xl font-bold text-gray-900 dark:text-white">{analytics.engagement.monthly_active_users}</p>
                                         </div>
                                     </div>

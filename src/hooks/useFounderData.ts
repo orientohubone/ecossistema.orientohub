@@ -1,14 +1,17 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { founderService } from '../services/founderService';
 import { FounderAnalytics, Company, RevenueChartData } from '../types/founder';
 import { getCachedValue, getOrLoadCachedValue } from '../lib/memoryCache';
+import { useAuthStore } from '../stores/authStore';
 
 export const useFounderData = () => {
+    const userId = useAuthStore(state => state.user?.id);
+    const cacheKey = `founder:data:${userId || 'anonymous'}`;
     const cachedFounderData = getCachedValue<{
         analytics: FounderAnalytics;
         companies: Company[];
         revenueChart: RevenueChartData[];
-    }>('founder:data');
+    }>(cacheKey);
 
     const [analytics, setAnalytics] = useState<FounderAnalytics | null>(cachedFounderData?.analytics || null);
     const [companies, setCompanies] = useState<Company[]>(cachedFounderData?.companies || []);
@@ -16,28 +19,27 @@ export const useFounderData = () => {
     const [isLoading, setIsLoading] = useState(!cachedFounderData);
     const [error, setError] = useState<string | null>(null);
 
-    const fetchData = async () => {
-        if (!cachedFounderData) {
-            setIsLoading(true);
-        }
+    const fetchData = useCallback(async (forceRefresh = false) => {
+        if (!userId) { setIsLoading(false); return; }
         setError(null);
         try {
             const founderData = await getOrLoadCachedValue(
-                'founder:data',
+                cacheKey,
                 60000,
                 async () => {
-                    const [analyticsData, companiesData, revenueData] = await Promise.all([
+                    const [analyticsResult, companiesResult] = await Promise.allSettled([
                         founderService.getAnalytics(),
                         founderService.getCompanies(),
-                        founderService.getRevenueChart(),
                     ]);
-
+                    if (analyticsResult.status === 'rejected') throw analyticsResult.reason;
+                    const analyticsData = analyticsResult.value;
+                    if (companiesResult.status === 'rejected') throw companiesResult.reason;
                     return {
                         analytics: analyticsData,
-                        companies: companiesData,
-                        revenueChart: revenueData,
+                        companies: companiesResult.value,
+                        revenueChart: [{ month: 'Atual', mrr: analyticsData.revenue.total_mrr, arr: analyticsData.revenue.total_arr, new_mrr: 0, churned_mrr: 0 }],
                     };
-                }
+                }, { forceRefresh }
             );
 
             setAnalytics(founderData.analytics);
@@ -49,11 +51,11 @@ export const useFounderData = () => {
         } finally {
             setIsLoading(false);
         }
-    };
+    }, [cacheKey, userId]);
 
     useEffect(() => {
-        fetchData();
-    }, []);
+        void fetchData();
+    }, [fetchData]);
 
     return {
         analytics,
@@ -61,6 +63,6 @@ export const useFounderData = () => {
         revenueChart,
         isLoading,
         error,
-        refetch: fetchData,
+        refetch: () => fetchData(true),
     };
 };

@@ -11,7 +11,7 @@ const statusByEvent: Record<string, 'active' | 'past_due' | 'cancelled'> = {
 
 export default async function handler(request: VercelRequest, response: VercelResponse) {
   if (request.method !== 'POST') return response.status(405).json({ message: 'Método não permitido.' });
-  if (request.headers['asaas-access-token'] !== process.env.ASAAS_WEBHOOK_TOKEN) {
+  if (!process.env.ASAAS_WEBHOOK_TOKEN || request.headers['asaas-access-token'] !== process.env.ASAAS_WEBHOOK_TOKEN) {
     return response.status(401).json({ message: 'Webhook não autorizado.' });
   }
 

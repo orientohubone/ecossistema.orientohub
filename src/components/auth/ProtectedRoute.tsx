@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { Fragment, ReactNode } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAuthStore } from '../../stores/authStore';
 import ProtectedRouteSkeleton from './ProtectedRouteSkeleton';
@@ -8,7 +8,7 @@ interface ProtectedRouteProps {
 }
 
 const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
-  const { isAuthenticated, isLoading } = useAuthStore();
+  const { user, isAuthenticated, isLoading } = useAuthStore();
   const location = useLocation();
 
   if (isLoading) {
@@ -20,7 +20,7 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
     return <Navigate to="/entrar" state={{ from: location }} replace />;
   }
 
-  return <>{children}</>;
+  return <Fragment key={user?.id}>{children}</Fragment>;
 };
 
 export default ProtectedRoute;

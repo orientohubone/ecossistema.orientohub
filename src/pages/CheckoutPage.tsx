@@ -37,7 +37,6 @@ const CheckoutPage = () => {
     setIsSubmitting(true);
     try {
       let { data: sessionData } = await supabase.auth.getSession();
-      let newUserId: string | undefined;
 
       if (!sessionData.session) {
         if (!name.trim()) throw new Error('Informe seu nome completo.');
@@ -54,8 +53,8 @@ const CheckoutPage = () => {
         if (!signupData.user || signupData.user.identities?.length === 0) {
           throw new Error('Este e-mail já possui uma conta. Faça login antes de continuar.');
         }
-        newUserId = signupData.user.id;
         sessionData = { session: signupData.session };
+        if (!signupData.session) throw new Error('Confirme seu e-mail e faça login para continuar o pagamento. Sua conta já foi criada.');
       }
 
       const result = await fetch('/api/create-mercadopago-checkout', {
@@ -64,7 +63,7 @@ const CheckoutPage = () => {
           'Content-Type': 'application/json',
           ...(sessionData.session?.access_token ? { Authorization: `Bearer ${sessionData.session.access_token}` } : {}),
         },
-        body: JSON.stringify({ plan, billing, email, newUserId }),
+        body: JSON.stringify({ plan, billing, email }),
       });
       const contentType = result.headers.get('content-type') || '';
       const data = contentType.includes('application/json') ? await result.json() : {};

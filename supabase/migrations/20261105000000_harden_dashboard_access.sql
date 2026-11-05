@@ -1,4 +1,4 @@
-﻿begin;
+begin;
 
 -- A restrictive policy is ANDed with existing permissive policies, so an older
 -- broad SELECT policy cannot expose another account's private dashboard data.
