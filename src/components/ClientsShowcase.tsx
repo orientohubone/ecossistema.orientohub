@@ -25,12 +25,12 @@ const marqueeLogoSize = (client: Client) =>
 
 const MarqueeCard = ({ client }: { client: Client }) => (
   <div className="mx-2 flex h-32 w-36 shrink-0 flex-col overflow-hidden rounded-2xl border border-black/15 bg-white shadow-[0_6px_18px_rgba(0,0,0,0.12)] transition duration-300 sm:mx-3 sm:h-48 sm:w-56 sm:rounded-3xl sm:shadow-[0_12px_28px_rgba(0,0,0,0.15)] lg:h-52 lg:w-64 lg:hover:-translate-y-1 lg:hover:shadow-[0_20px_38px_rgba(0,0,0,0.2)]">
-    <div className="flex min-h-0 flex-1 items-center justify-center p-2 sm:p-5">
+    <div className="flex min-h-0 flex-1 items-center justify-center overflow-hidden p-2 sm:p-5">
       <img src={client.logo} alt={`Logo ${client.name}`} loading="lazy"
         style={client.outlined ? { filter: 'drop-shadow(1px 0 0 #111820) drop-shadow(-1px 0 0 #111820) drop-shadow(0 1px 0 #111820) drop-shadow(0 -1px 0 #111820)' } : undefined}
         className={marqueeLogoSize(client)} />
     </div>
-    <span className="flex min-h-7 w-full items-center justify-center bg-[#111820] px-2 py-1 text-center text-[9px] font-bold leading-tight text-white sm:min-h-11 sm:px-4 sm:py-2 sm:text-xs">{client.name}</span>
+    <span className="flex min-h-7 w-full shrink-0 items-center justify-center bg-[#111820] px-2 py-1 text-center text-[9px] font-bold leading-tight text-white sm:min-h-11 sm:px-4 sm:py-2 sm:text-xs">{client.name}</span>
   </div>
 );
 

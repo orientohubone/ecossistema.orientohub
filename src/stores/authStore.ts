@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { supabase, testSupabaseConnection } from '../config/supabase';
 import type { User } from '@supabase/supabase-js';
 import { invalidateCache } from '../lib/memoryCache';
+import { syncServerSession } from '../lib/serverSession';
 
 interface AuthState {
   user: User | null;
@@ -87,6 +88,7 @@ export const useAuthStore = create<AuthState>((set) => ({
           error: 'Sessão expirada. Faça login novamente.',
         });
       } else if (session?.user) {
+        await syncServerSession(session.access_token);
         set({ 
           user: session.user,
           isAuthenticated: true,
@@ -104,6 +106,11 @@ export const useAuthStore = create<AuthState>((set) => ({
       
       // Set up auth state listener
       supabase.auth.onAuthStateChange((event, session) => {
+        if (event === 'TOKEN_REFRESHED' && session) {
+          void syncServerSession(session.access_token).catch(() => set({ isAuthenticated: false }));
+        } else if (event === 'SIGNED_OUT') {
+          void syncServerSession().catch(() => set({ error: 'Não foi possível encerrar a sessão do servidor.' }));
+        }
         if (event === 'SIGNED_IN' && session?.user) {
           set({ 
             user: session.user,
@@ -142,17 +149,20 @@ export const useAuthStore = create<AuthState>((set) => ({
         throw new Error('Não foi possível conectar ao servidor. Verifique se o projeto Supabase está ativo.');
       }
       
-      const { error } = await supabase.auth.signInWithPassword({
+      const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
       
       if (error) throw error;
 
+      await syncServerSession(data.session?.access_token);
+
       clearLoginGuard();
       set({ isLoading: false });
     } catch (error: any) {
       let errorMessage = 'Falha no login';
+      set({ isAuthenticated: false });
 
       const isRateLimited = error?.status === 429 || error?.code === 'over_request_rate_limit' || error.message?.toLowerCase().includes('rate limit');
       const isInvalidCredentials = error.message?.includes('Invalid login credentials');
@@ -228,6 +238,7 @@ export const useAuthStore = create<AuthState>((set) => ({
   logout: async () => {
     try {
       set({ isLoading: true, error: null });
+      await syncServerSession();
       
       const { error } = await supabase.auth.signOut();
       

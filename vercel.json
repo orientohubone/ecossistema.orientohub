@@ -22,11 +22,15 @@
       ]
     },
     {
-      "source": "/(dashboard|checkout|cadastro|crm|academy/login)(.*)",
+      "source": "/(checkout|cadastro|crm)(.*)",
       "headers": [
         { "key": "X-Robots-Tag", "value": "noindex, nofollow" }
       ]
-    }
+    },
+    { "source": "/dashboard", "headers": [{ "key": "X-Robots-Tag", "value": "noindex, nofollow" }, { "key": "Cache-Control", "value": "private, no-store" }] },
+    { "source": "/dashboard/:path*", "headers": [{ "key": "X-Robots-Tag", "value": "noindex, nofollow" }, { "key": "Cache-Control", "value": "private, no-store" }] },
+    { "source": "/academy/login", "headers": [{ "key": "X-Robots-Tag", "value": "noindex, nofollow" }, { "key": "Cache-Control", "value": "no-store" }] },
+    { "source": "/academy/login/:path*", "headers": [{ "key": "X-Robots-Tag", "value": "noindex, nofollow" }, { "key": "Cache-Control", "value": "no-store" }] }
   ],
   "rewrites": [
     { "source": "/blog/50-ideias-negocios-baixo-investimento", "destination": "/blog/50-ideias-negocios-baixo-investimento/index.html" },

@@ -9,4 +9,5 @@ export const clientShowcase = [
   { name: 'Start Resgate', logo: '/logos-clientes/logo-startresgate.png', featured: true, outlined: true },
   { name: 'Venda Simples', logo: '/logos-clientes/VENDASIMPLES.png', featured: true, mediumLogo: true },
   { name: "Breda's Sistemas", logo: '/logos-clientes/logo-bredas.webp', featured: true, mediumLogo: true },
+  { name: 'ALK Soluções Financeiras', logo: '/logos-clientes/Logo%20ALK%20Dourado%20em%20Fundo%20Branco.png', canvasCrop: true, compactCrop: true },
 ];
