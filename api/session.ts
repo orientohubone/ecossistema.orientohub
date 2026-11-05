@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { SESSION_COOKIE, privateHeaders, verifyUser } from '../server/dashboardAuth';
+import { SESSION_COOKIE, privateHeaders, verifyUser } from '../server/dashboardAuth.js';
 
 export default async function handler(request: VercelRequest, response: VercelResponse) {
   for (const [key, value] of Object.entries(privateHeaders)) response.setHeader(key, value);

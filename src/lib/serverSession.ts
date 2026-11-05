@@ -6,5 +6,9 @@ export async function syncServerSession(accessToken?: string) {
     method: accessToken ? 'POST' : 'DELETE', credentials: 'same-origin',
     headers: accessToken ? { Authorization: `Bearer ${accessToken}` } : {},
   });
-  if (!result.ok) throw new Error('Não foi possível validar a sessão no servidor.');
+  if (!result.ok) {
+    // Do not interpret a server outage as invalid Supabase credentials.
+    if (result.status >= 500) throw new Error('O serviço de sessão está temporariamente indisponível. Tente novamente em instantes.');
+    throw new Error('Não foi possível validar a sessão no servidor. Faça login novamente.');
+  }
 }

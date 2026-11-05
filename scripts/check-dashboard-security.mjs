@@ -8,14 +8,16 @@ import { pathToFileURL } from 'node:url';
 const dir = await mkdtemp(join(tmpdir(), 'orientohub-auth-'));
 const originalFetch = globalThis.fetch;
 try {
+  await writeFile(join(dir, 'package.json'), '{"type":"module"}');
   for (const file of ['middleware.ts', 'api/session.ts', 'server/dashboardAuth.ts']) {
-    const target = join(dir, file.replace('.ts', '.mjs'));
+    const target = join(dir, file.replace('.ts', '.js'));
     await mkdir(join(target, '..'), { recursive: true });
-    const source = (await readFile(file, 'utf8')).replaceAll("/server/dashboardAuth'", "/server/dashboardAuth.mjs'");
+    // Preserve imports exactly as emitted for Node ESM in production.
+    const source = await readFile(file, 'utf8');
     await writeFile(target, ts.transpileModule(source, { compilerOptions: { module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2022 } }).outputText);
   }
-  const { default: guard } = await import(pathToFileURL(join(dir, 'middleware.mjs')));
-  const { default: session } = await import(pathToFileURL(join(dir, 'api/session.mjs')));
+  const { default: guard } = await import(pathToFileURL(join(dir, 'middleware.js')));
+  const { default: session } = await import(pathToFileURL(join(dir, 'api/session.js')));
   process.env.SUPABASE_URL = 'https://auth.example';
   process.env.SUPABASE_ANON_KEY = 'public-test-key';
   let calls = 0;
@@ -53,6 +55,8 @@ try {
     return result;
   }
   assert.equal((await callSession('POST')).statusCode, 401);
+  assert.equal((await callSession('GET')).statusCode, 405);
+  assert.equal((await callSession('POST', 'outage')).statusCode, 503);
   assert.equal((await callSession('POST', 'forged')).statusCode, 401);
   assert.equal((await callSession('POST', 'valid', 'https://attacker.example')).statusCode, 403);
   const loggedIn = await callSession('POST', 'valid');

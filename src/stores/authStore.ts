@@ -129,7 +129,7 @@ export const useAuthStore = create<AuthState>((set) => ({
     } catch (error) {
       console.error('Auth initialization error:', error);
       set({ 
-        error: 'Falha ao inicializar autenticação. Verifique sua conexão.',
+        error: error instanceof Error ? error.message : 'Falha ao inicializar autenticação. Verifique sua conexão.',
         connectionStatus: 'disconnected',
         isLoading: false,
       });
@@ -185,6 +185,8 @@ export const useAuthStore = create<AuthState>((set) => ({
         errorMessage = 'Servidor temporariamente indisponível. Tente novamente em alguns minutos.';
       } else if (error.message?.includes('Email not confirmed')) {
         errorMessage = 'E-mail não confirmado. Verifique sua caixa de entrada.';
+      } else if (error.message?.includes('serviço de sessão') || error.message?.includes('validar a sessão no servidor')) {
+        errorMessage = error.message;
       }
       
       set({ 

@@ -1,4 +1,4 @@
-import { SESSION_COOKIE, privateHeaders, verifyFounder, verifyUser } from './server/dashboardAuth';
+import { SESSION_COOKIE, privateHeaders, verifyFounder, verifyUser } from './server/dashboardAuth.js';
 
 export const config = { matcher: ['/dashboard/:path*', '/api/dashboard/:path*'] };
 
