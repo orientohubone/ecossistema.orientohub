@@ -29,6 +29,14 @@ const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const [resendSuccess, setResendSuccess] = useState(false);
+  const [confirmationEmail,setConfirmationEmail]=useState('');
+  const [resendCooldown,setResendCooldown]=useState(0);
+  const resending=useRef(false);
+  useEffect(()=>{
+    if(!resendCooldown)return;
+    const timer=window.setTimeout(()=>setResendCooldown(value=>Math.max(0,value-1)),1000);
+    return()=>window.clearTimeout(timer);
+  },[resendCooldown]);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isScrollIndicatorVisible, setIsScrollIndicatorVisible] = useState(false);
   const scrollIndicatorTimeoutRef = useRef<number | null>(null);
@@ -43,16 +51,23 @@ const LoginPage = () => {
       await login(email, password);
       navigate(from, { replace: true });
     } catch {
+      if(/email not confirmed|e-mail não confirmado/i.test(useAuthStore.getState().error||''))setConfirmationEmail(email.trim());
       // A mensagem sanitizada é exibida pelo estado de autenticação.
     }
   };
 
   const handleResendConfirmation = async () => {
+    if(resending.current||isLoading||resendCooldown>0)return;
+    resending.current=true;
+    setConfirmationEmail(current=>current||email.trim());
+    setResendSuccess(false);
     try {
-      await resendConfirmationEmail(email);
-      setResendSuccess(true);
+      await resendConfirmationEmail(confirmationEmail||email.trim());
+      if(!useAuthStore.getState().error){setResendSuccess(true);setResendCooldown(60);}
     } catch (error) {
       console.error('Failed to resend confirmation email:', error);
+    } finally {
+      resending.current=false;
     }
   };
 
@@ -60,7 +75,7 @@ const LoginPage = () => {
     await initAuth();
   };
 
-  const isEmailNotConfirmed = error?.includes('Email not confirmed');
+  const isEmailNotConfirmed = /email not confirmed|e-mail não confirmado/i.test(error||'');
   const isConnectionError = connectionStatus === 'disconnected' || error?.includes('servidor') || error?.includes('Servidor');
 
   useEffect(() => {
@@ -118,7 +133,7 @@ const LoginPage = () => {
         {/* Right Side - Form */}
         <div className="w-full lg:w-1/2 h-full flex items-center justify-center p-6 sm:p-8 lg:p-12 overflow-y-auto">
           <motion.div 
-            className="w-full max-w-md relative z-10"
+            className="w-full max-w-md relative z-10 my-auto"
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
@@ -168,23 +183,32 @@ const LoginPage = () => {
             )}
 
             {/* Error Messages */}
-            {error && !isConnectionError && (
+            {(isEmailNotConfirmed||confirmationEmail)&&<motion.section
+              role="status" aria-labelledby="email-confirmation-heading"
+              initial={{opacity:0,y:-8}} animate={{opacity:1,y:0}}
+              className="mb-6 overflow-hidden rounded-2xl border border-[#FFF200]/25 bg-[#121212] shadow-lg"
+            >
+              <div className="flex items-start gap-3 p-5">
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-[#FFF200]/20 bg-[#FFF200]/10 text-[#FFF200]"><Mail className="h-5 w-5" aria-hidden="true" /></span>
+                <div className="min-w-0">
+                  <p className="mb-1 text-[10px] font-bold uppercase tracking-[0.16em] text-[#FFF200]">Ativação da conta</p>
+                  <h2 id="email-confirmation-heading" className="text-base font-bold text-white">Só falta confirmar seu e-mail</h2>
+                  <p className="mt-2 text-sm leading-relaxed text-gray-400">Abra o link de confirmação enviado para <strong className="font-medium text-gray-200 [overflow-wrap:anywhere]">{confirmationEmail||email.trim()}</strong> para liberar seu acesso.</p>
+                  <p className="mt-2 text-xs leading-relaxed text-gray-500">Não encontrou? Confira as pastas de spam e lixo eletrônico ou solicite um novo envio.</p>
+                </div>
+              </div>
+              <div className="border-t border-white/5 bg-black/20 px-5 py-4">
+                <button type="button" onClick={()=>void handleResendConfirmation()} disabled={isLoading||resendCooldown>0||!email.trim()} className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#FFF200] px-4 py-3 text-sm font-bold text-black transition-colors hover:bg-[#FFF200]/90 disabled:cursor-not-allowed disabled:opacity-50"><RefreshCw aria-hidden="true" className={`h-4 w-4 ${isLoading?'animate-spin':''}`} />{isLoading?'Reenviando...':resendCooldown>0?`Reenviar novamente em ${resendCooldown}s`:'Reenviar e-mail de confirmação'}</button>
+                {resendSuccess&&<p className="mt-3 flex items-start gap-2 text-xs leading-relaxed text-emerald-300"><CheckCircle2 aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0" />Novo envio solicitado. Confira sua caixa de entrada; o e-mail pode levar alguns minutos.</p>}
+              </div>
+            </motion.section>}
+            {error && !isConnectionError && !isEmailNotConfirmed && (
               <motion.div
                 className="bg-red-500/10 border border-red-500/20 rounded-xl p-4 mb-6"
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
               >
                 <p className="text-sm text-red-400">{error}</p>
-                {isEmailNotConfirmed && (
-                  <div className="mt-3 pt-3 border-t border-red-500/20">
-                    <button type="button" onClick={handleResendConfirmation} disabled={isLoading} className="text-sm text-red-400 hover:underline">
-                      Reenviar e-mail de confirmação
-                    </button>
-                    {resendSuccess && (
-                      <p className="text-sm text-green-400 mt-2 flex items-center gap-2"><CheckCircle2 className="w-4 h-4" /> E-mail reenviado com sucesso!</p>
-                    )}
-                  </div>
-                )}
               </motion.div>
             )}
 
@@ -201,7 +225,7 @@ const LoginPage = () => {
                   </div>
                   <input
                     id="email" name="email" type="email" autoComplete="email" required
-                    value={email} onChange={(e) => setEmail(e.target.value)} disabled={connectionStatus === 'disconnected'}
+                    value={email} onChange={(e) => {setEmail(e.target.value);if(confirmationEmail||isEmailNotConfirmed){setConfirmationEmail('');setResendSuccess(false);useAuthStore.setState({error:null});}}} disabled={connectionStatus === 'disconnected'}
                     className="block w-full pl-12 pr-4 py-2.5 bg-[#121212] border border-gray-800 rounded-xl text-white placeholder-gray-500 focus:border-[#FFF200] focus:ring-1 focus:ring-[#FFF200] outline-none transition-all"
                     placeholder="seu@email.com"
                   />

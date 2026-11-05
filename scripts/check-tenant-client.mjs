@@ -67,8 +67,8 @@ assert.equal(privateIdeaImagePath('A/../B/image.png','A',base), null);
 assert.equal(privateIdeaImagePath('https://evil.example/storage/v1/object/public/idea-images/A/image.png','A',base), null);
 
 // Test the real handlers in Node ESM, with no network or production credentials.
-for (const file of ['api/webhook.ts','api/create-mercadopago-checkout.ts']) {
-  await writeFile(`scratch/tenant-audit/${file.split('/').pop().replace('.ts','.mjs')}`, transpile(await readFile(file,'utf8')));
+for (const file of ['api/webhook.ts','api/create-mercadopago-checkout.ts','server/checkoutUrls.ts']) {
+  await writeFile(`scratch/tenant-audit/${file.split('/').pop().replace('.ts','.mjs')}`, transpile((await readFile(file,'utf8')).replace('../server/checkoutUrls.js','./checkoutUrls.mjs')));
 }
 const { default: webhook } = await import(pathToFileURL(resolve('scratch/tenant-audit/webhook.mjs')));
 const { default: checkout } = await import(pathToFileURL(resolve('scratch/tenant-audit/create-mercadopago-checkout.mjs')));

@@ -106,7 +106,7 @@ const CheckoutPage = () => {
 
               <div className="mt-8 border-t border-white/10 pt-7">
                 <p className="mb-4 text-sm font-semibold text-gray-300">Tudo que você recebe no Pro</p>
-                <ul className="grid gap-4 sm:grid-cols-2">{['Frameworks e templates premium', 'Projetos ilimitados', 'Mentorias mensais', 'Suporte prioritário', 'Integrações avançadas', 'Networking exclusivo'].map((feature) => <li key={feature} className="flex gap-2.5 text-sm text-gray-300"><span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary-400/15"><Check className="h-3.5 w-3.5 text-primary-400" /></span>{feature}</li>)}</ul>
+                <ul className="grid gap-4 sm:grid-cols-2">{['Acesso ao Oriento Academy', 'Ideias ilimitadas', 'Até 5 soluções', 'Frameworks e templates premium', 'Projetos ilimitados', 'Mentorias mensais', 'Suporte prioritário', 'Integrações avançadas', 'Networking exclusivo'].map((feature) => <li key={feature} className="flex gap-2.5 text-sm text-gray-300"><span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary-400/15"><Check className="h-3.5 w-3.5 text-primary-400" /></span>{feature}</li>)}</ul>
               </div>
             </div>
 

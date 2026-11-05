@@ -1,5 +1,5 @@
 // HTTP cookies are allowed only in the explicitly local development server.
-export const localDevelopment = process.env.ORIENTOHUB_LOCAL_DEV === '1' && process.env.NODE_ENV !== 'production' && /^http:\/\/(localhost|127\.0\.0\.1):5173$/.test(process.env.APP_URL || '');
+export const localDevelopment = process.env.ORIENTOHUB_LOCAL_DEV === '1' && process.env.NODE_ENV !== 'production' && /^http:\/\/(localhost|127\.0\.0\.1):5173$/.test(process.env.ORIENTOHUB_LOCAL_ORIGIN || '');
 export const cookieAttributes = `Path=/; HttpOnly; ${localDevelopment ? '' : 'Secure; '}SameSite=Lax`;
 export const SESSION_COOKIE = localDevelopment ? 'orientohub-local-session' : '__Host-orientohub-session';
 export const privateHeaders = { 'Cache-Control': 'private, no-store', 'X-Robots-Tag': 'noindex, nofollow' };

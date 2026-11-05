@@ -1,18 +1,13 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { randomUUID } from 'node:crypto';
 import { createClient } from '@supabase/supabase-js';
+import { checkoutPublicOrigin } from '../server/checkoutUrls.js';
 
 type BillingCycle = 'monthly' | 'annual';
 
 const OFFERS: Record<BillingCycle, { reason: string; amount: number; frequency: number }> = {
   monthly: { reason: 'OrientoHub Pro Mensal', amount: 97, frequency: 1 },
   annual: { reason: 'OrientoHub Pro Anual', amount: 970, frequency: 12 },
-};
-
-const getOrigin = (request: VercelRequest) => {
-  if (process.env.APP_URL) return process.env.APP_URL.replace(/\/$/, '');
-  const protocol = request.headers['x-forwarded-proto'] || 'https';
-  return `${protocol}://${request.headers.host}`;
 };
 
 const parseResponse = async (response: Response) => {
@@ -56,7 +51,8 @@ export default async function handler(request: VercelRequest, response: VercelRe
   const cycle = billing as BillingCycle;
   const offer = OFFERS[cycle];
   const externalReference = `orientohub:${userId}:pro:${cycle}:${Date.now()}`;
-  const origin = getOrigin(request);
+  let origin:string;
+  try{origin=checkoutPublicOrigin();}catch(error){return response.status(503).json({message:(error as Error).message});}
 
   try {
     const mercadoPagoResponse = await fetch('https://api.mercadopago.com/preapproval', {

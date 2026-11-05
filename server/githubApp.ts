@@ -10,7 +10,7 @@ export const hash=(value:string)=>createHash('sha256').update(value).digest('hex
 export const oauthCookie=localDevelopment?'orientohub-local-github-oauth':'__Host-orientohub-github-oauth';
 export function appConfigured(){return ['GITHUB_APP_ID','GITHUB_APP_SLUG','GITHUB_APP_CLIENT_ID','GITHUB_APP_CLIENT_SECRET','GITHUB_APP_ENCRYPTION_KEY','GITHUB_APP_WEBHOOK_SECRET','SUPABASE_SERVICE_ROLE_KEY','APP_URL'].every(key=>Boolean(process.env[key]));}
 export function appOrigin(){
-  const url=new URL(process.env.APP_URL||'');
+  const url=new URL((localDevelopment?process.env.ORIENTOHUB_LOCAL_ORIGIN:process.env.APP_URL)||'');
   if(url.protocol!=='https:'&&!(url.protocol==='http:'&&['localhost','127.0.0.1'].includes(url.hostname)))throw new GithubAppError(503,'Conexão GitHub ainda não configurada.');
   return url.origin;
 }

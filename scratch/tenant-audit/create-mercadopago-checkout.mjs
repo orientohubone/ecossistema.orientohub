@@ -1,14 +1,9 @@
 import { randomUUID } from 'node:crypto';
 import { createClient } from '@supabase/supabase-js';
+import { checkoutPublicOrigin } from './checkoutUrls.mjs';
 const OFFERS = {
     monthly: { reason: 'OrientoHub Pro Mensal', amount: 97, frequency: 1 },
     annual: { reason: 'OrientoHub Pro Anual', amount: 970, frequency: 12 },
-};
-const getOrigin = (request) => {
-    if (process.env.APP_URL)
-        return process.env.APP_URL.replace(/\/$/, '');
-    const protocol = request.headers['x-forwarded-proto'] || 'https';
-    return `${protocol}://${request.headers.host}`;
 };
 const parseResponse = async (response) => {
     const text = await response.text();
@@ -53,7 +48,13 @@ export default async function handler(request, response) {
     const cycle = billing;
     const offer = OFFERS[cycle];
     const externalReference = `orientohub:${userId}:pro:${cycle}:${Date.now()}`;
-    const origin = getOrigin(request);
+    let origin;
+    try {
+        origin = checkoutPublicOrigin();
+    }
+    catch (error) {
+        return response.status(503).json({ message: error.message });
+    }
     try {
         const mercadoPagoResponse = await fetch('https://api.mercadopago.com/preapproval', {
             method: 'POST',

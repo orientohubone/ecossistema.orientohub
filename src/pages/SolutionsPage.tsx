@@ -36,6 +36,7 @@ import { useAuthStore } from '../stores/authStore';
 import DashboardPageSkeleton from '../components/ui/DashboardPageSkeleton';
 import { solutionsService, Solution, type GithubData } from '../services/solutionsService';
 import AddSolutionModal from '../components/modals/AddSolutionModal';
+import DeleteSolutionModal from '../components/modals/DeleteSolutionModal';
 import GithubConnectionPanel from '../components/solutions/GithubConnectionPanel';
 
 const SolutionsPage = () => {
@@ -44,6 +45,10 @@ const SolutionsPage = () => {
   const openedCallbackSolution = useRef('');
   const [solutions, setSolutions] = useState<Solution[]>(solutionsService.getCachedSolutions(user?.id) || []);
   const [selectedSolution, setSelectedSolution] = useState<Solution | null>(null);
+  const [solutionToDelete,setSolutionToDelete]=useState<Solution|null>(null);
+  const [isDeletingSolution,setIsDeletingSolution]=useState(false);
+  const [deleteError,setDeleteError]=useState<string|null>(null);
+  const deletingSolutionRef=useRef(false);
   const [showAddModal, setShowAddModal] = useState(false);
   const [isLoading, setIsLoading] = useState(!solutionsService.getCachedSolutions(user?.id));
   const [isSyncing, setIsSyncing] = useState(false);
@@ -107,13 +112,31 @@ const SolutionsPage = () => {
     setShowAddModal(false);
   };
 
-  const handleRemoveSolution = async (id: string) => {
-    if (!confirm('Remover esta solução?')) return;
+  const handleRemoveSolution = (id: string) => {
+    const solution=solutions.find(item=>item.id===id)||(selectedSolution?.id===id?selectedSolution:null);
+    if(!solution||deletingSolutionRef.current)return;
+    setDeleteError(null);
+    setSolutionToDelete(solution);
+  };
+
+  const confirmRemoveSolution = async () => {
+    if(!solutionToDelete||deletingSolutionRef.current)return;
+    const target=solutionToDelete;
+    deletingSolutionRef.current=true;
+    setIsDeletingSolution(true);
+    setDeleteError(null);
     try {
-      await solutionsService.delete(id);
-      await fetchSolutions();
+      await solutionsService.delete(target.id);
+      setSolutions(current=>current.filter(item=>item.id!==target.id));
+      setSelectedSolution(current=>current?.id===target.id?null:current);
+      setSolutionToDelete(null);
+      setError(null);
+      setSuccess(`A solução “${target.name}” foi excluída.`);
     } catch (err: any) {
-      setError(err.message);
+      setDeleteError(err.message||'Não foi possível excluir a solução. Tente novamente.');
+    } finally {
+      deletingSolutionRef.current=false;
+      setIsDeletingSolution(false);
     }
   };
 
@@ -305,6 +328,7 @@ const SolutionsPage = () => {
       </div>
 
       {showAddModal && <AddSolutionModal key={user?.id} userId={user?.id} onClose={() => setShowAddModal(false)} onSave={handleAddSolution} />}
+      {solutionToDelete&&<DeleteSolutionModal solution={solutionToDelete} deleting={isDeletingSolution} error={deleteError} onClose={()=>{if(!deletingSolutionRef.current){setSolutionToDelete(null);setDeleteError(null);}}} onConfirm={()=>void confirmRemoveSolution()} />}
       <EditSolutionModal
         show={isEditingSolution}
         solution={selectedSolution}

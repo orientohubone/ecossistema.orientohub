@@ -22,7 +22,16 @@ import { useAuthStore } from '../stores/authStore';
 const SignupPage = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { signup, isLoading, error } = useAuthStore();
+  const { signup, resendConfirmationEmail, isLoading, error } = useAuthStore();
+  const [confirmationEmail,setConfirmationEmail]=useState('');
+  const [resendCooldown,setResendCooldown]=useState(0);
+  const [resendNotice,setResendNotice]=useState('');
+  const submitting=useRef(false);
+  useEffect(()=>{
+    if(!resendCooldown)return;
+    const timer=window.setTimeout(()=>setResendCooldown(value=>Math.max(0,value-1)),1000);
+    return()=>window.clearTimeout(timer);
+  },[resendCooldown]);
   
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -44,6 +53,7 @@ const SignupPage = () => {
   
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if(submitting.current||isLoading)return;
     
     if (password !== confirmPassword) {
       setPasswordError('As senhas não coincidem');
@@ -63,10 +73,20 @@ const SignupPage = () => {
     setPasswordError('');
     
     try {
-      await signup(email, password, { name });
-      navigate('/dashboard');
+      submitting.current=true;
+      const normalizedEmail=email.trim();
+      const result=await signup(normalizedEmail, password, { name:name.trim() });
+      if(result.confirmationRequired){
+        setConfirmationEmail(normalizedEmail);
+        setPassword('');setConfirmPassword('');
+        setResendCooldown(60);
+      }else{
+        navigate('/dashboard');
+      }
     } catch (error) {
       console.error('Signup failed:', error);
+    } finally {
+      submitting.current=false;
     }
   };
 
@@ -114,6 +134,28 @@ const SignupPage = () => {
     };
   }, []);
   
+  if(confirmationEmail)return <>
+    <Helmet><title>Confirme seu e-mail - Orientohub</title></Helmet>
+    <main className="flex min-h-screen items-center justify-center bg-[#0A0A0A] px-5 py-12 text-white">
+      <section className="w-full max-w-md rounded-2xl border border-gray-800 bg-[#121212] p-6 sm:p-8" aria-labelledby="signup-confirmation-title">
+        <Link to="/" className="mb-8 inline-block"><img src="/orientohub.png" alt="Orientohub" className="h-8 w-auto" /></Link>
+        <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-2xl border border-[#FFF200]/25 bg-[#FFF200]/10 text-[#FFF200]"><Mail className="h-7 w-7" /></div>
+        <h1 id="signup-confirmation-title" className="text-2xl font-bold">Confirme seu e-mail para continuar</h1>
+        <p role="status" className="mt-4 text-sm leading-relaxed text-gray-400">Enviamos um link de confirmação para <strong className="font-semibold text-white [overflow-wrap:anywhere]">{confirmationEmail}</strong>. Abra o e-mail e clique no link para ativar sua conta antes de fazer login.</p>
+        <p className="mt-3 text-sm leading-relaxed text-gray-400">Confira também as pastas de spam e lixo eletrônico. O envio pode levar alguns minutos.</p>
+        {error&&<p role="alert" className="mt-4 rounded-xl border border-red-500/20 bg-red-500/10 p-3 text-sm text-red-300">{error}</p>}
+        {resendNotice&&<p role="status" className="mt-4 text-sm text-[#FFF200]">{resendNotice}</p>}
+        <Link to="/entrar" className="mt-7 flex items-center justify-center gap-2 rounded-xl bg-[#FFF200] px-4 py-3 text-sm font-bold text-black">Já confirmei, ir para o login<ArrowRight className="h-4 w-4" /></Link>
+        <button type="button" disabled={isLoading||resendCooldown>0} onClick={async()=>{
+          setResendNotice('');
+          await resendConfirmationEmail(confirmationEmail);
+          if(!useAuthStore.getState().error){setResendNotice('Novo e-mail de confirmação solicitado. Confira sua caixa de entrada.');setResendCooldown(60);}
+        }} className="mt-3 w-full rounded-xl border border-gray-700 px-4 py-3 text-sm font-semibold text-white disabled:opacity-50">{isLoading?'Reenviando...':resendCooldown>0?`Reenviar e-mail em ${resendCooldown}s`:'Reenviar e-mail de confirmação'}</button>
+        <button type="button" disabled={isLoading} onClick={()=>{setConfirmationEmail('');setResendNotice('');useAuthStore.setState({error:null});}} className="mt-5 w-full text-sm text-gray-400 hover:text-white">Corrigir o e-mail informado</button>
+      </section>
+    </main>
+  </>;
+
   return (
     <>
       <Helmet>

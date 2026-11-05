@@ -1,12 +1,12 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { SESSION_COOKIE, cookieAttributes, privateHeaders, verifyUser } from '../server/dashboardAuth.js';
+import { SESSION_COOKIE, cookieAttributes, localDevelopment, privateHeaders, verifyUser } from '../server/dashboardAuth.js';
 
 export default async function handler(request: VercelRequest, response: VercelResponse) {
   for (const [key, value] of Object.entries(privateHeaders)) response.setHeader(key, value);
   if (!['POST', 'DELETE'].includes(request.method || '')) return response.status(405).end();
   // Cookie changes are same-origin only. Protected data APIs continue to use bearer JWTs + RLS.
   const origin = request.headers.origin;
-  if (!origin || ![process.env.APP_URL?.replace(/\/$/, ''), `https://${request.headers.host}`].includes(origin)) {
+  if (!origin || ![process.env.APP_URL?.replace(/\/$/, ''), `https://${request.headers.host}`,localDevelopment?process.env.ORIENTOHUB_LOCAL_ORIGIN:undefined].includes(origin)) {
     return response.status(403).json({ message: 'Origem não permitida.' });
   }
   const cookie = `${SESSION_COOKIE}=; ${cookieAttributes}; Max-Age=0`;

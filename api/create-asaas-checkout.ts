@@ -1,15 +1,10 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { createClient } from '@supabase/supabase-js';
+import { checkoutPublicOrigin } from '../server/checkoutUrls.js';
 
 const PLANS = {
   pro: { value: 97, name: 'OrientoHub Pro' },
 } as const;
-
-const getOrigin = (request: VercelRequest) => {
-  if (process.env.APP_URL) return process.env.APP_URL.replace(/\/$/, '');
-  const protocol = request.headers['x-forwarded-proto'] || 'https';
-  return `${protocol}://${request.headers.host}`;
-};
 
 export default async function handler(request: VercelRequest, response: VercelResponse) {
   if (request.method !== 'POST') return response.status(405).json({ message: 'Método não permitido.' });
@@ -41,7 +36,8 @@ export default async function handler(request: VercelRequest, response: VercelRe
     return response.status(400).json({ message: 'Plano ou ciclo de cobrança inválido.' });
   }
 
-  const origin = getOrigin(request);
+  let origin:string;
+  try{origin=checkoutPublicOrigin();}catch(error){return response.status(503).json({message:(error as Error).message});}
   const externalReference = `orientohub:${authData.user.id}:${plan}:${Date.now()}`;
   const asaasBaseUrl = process.env.ASAAS_API_URL || 'https://api-sandbox.asaas.com/v3';
   const today = new Date().toISOString().slice(0, 10);

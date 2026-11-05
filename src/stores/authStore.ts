@@ -12,7 +12,7 @@ interface AuthState {
   connectionStatus: 'checking' | 'connected' | 'disconnected';
   initAuth: () => Promise<void>;
   login: (email: string, password: string) => Promise<void>;
-  signup: (email: string, password: string, metadata?: any) => Promise<void>;
+  signup: (email: string, password: string, metadata?: any) => Promise<{confirmationRequired:boolean}>;
   logout: () => Promise<void>;
   resetPassword: (email: string) => Promise<void>;
   resendConfirmationEmail: (email: string) => Promise<void>;
@@ -207,7 +207,7 @@ export const useAuthStore = create<AuthState>((set) => ({
         throw new Error('Não foi possível conectar ao servidor. Verifique se o projeto Supabase está ativo.');
       }
       
-      const { error } = await supabase.auth.signUp({
+      const { data, error } = await supabase.auth.signUp({
         email,
         password,
         options: {
@@ -217,7 +217,13 @@ export const useAuthStore = create<AuthState>((set) => ({
       
       if (error) throw error;
       
-      set({ isLoading: false });
+      if(data.session){
+        await syncServerSession(data.session.access_token);
+        set({user:data.session.user,isAuthenticated:true,isLoading:false});
+      }else{
+        set({isLoading:false});
+      }
+      return {confirmationRequired:!data.session};
     } catch (error: any) {
       console.error('Signup error:', error);
       let errorMessage = 'Falha no cadastro';
@@ -234,6 +240,7 @@ export const useAuthStore = create<AuthState>((set) => ({
         error: errorMessage,
         isLoading: false,
       });
+      throw new Error(errorMessage);
     }
   },
   

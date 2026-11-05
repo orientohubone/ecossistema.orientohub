@@ -201,10 +201,13 @@ const SettingsPage = () => {
       description: 'Perfeito para começar',
       current: currentPlan === 'free',
       features: [
-        { name: 'Até 3 projetos', included: true },
-        { name: '1 solução ativa', included: true },
+        { name: 'Até 10 ideias', included: true },
+        { name: 'Até 5 projetos', included: true },
+        { name: 'Até 2 soluções', included: true },
         { name: 'Frameworks básicos', included: true },
         { name: 'Comunidade', included: true },
+        { name: 'Recursos de gamificação', included: true },
+        { name: 'Oriento Academy', included: false },
         { name: 'Mentorias 1:1', included: false },
         { name: 'Análises avançadas', included: false },
         { name: 'Suporte prioritário', included: false }
@@ -219,8 +222,11 @@ const SettingsPage = () => {
       popular: true,
       current: currentPlan === 'pro',
       features: [
+        { name: 'Tudo do plano Free', included: true },
+        { name: 'Acesso ao Oriento Academy', included: true },
+        { name: 'Ideias ilimitadas', included: true },
         { name: 'Projetos ilimitados', included: true },
-        { name: '5 soluções ativas', included: true },
+        { name: 'Até 5 soluções', included: true },
         { name: 'Todos os frameworks', included: true },
         { name: 'Comunidade premium', included: true },
         { name: '2 mentorias/mês', included: true },

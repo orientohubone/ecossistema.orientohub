@@ -105,7 +105,7 @@ const ContactPage = () => {
       <section className="relative pb-20 pt-24 sm:pb-24 sm:pt-28">
         <div className="container-custom">
           <motion.div className="mx-auto w-full max-w-5xl text-center" initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>
-            <Badge variant="liquid-glass" icon={<MessageSquare className="h-3.5 w-3.5" />} className="mb-6 sm:mb-8">Comece pelo que está travando</Badge>
+            <Badge variant="liquid-glass" className="mb-6 gap-2.5 !px-5 !py-2.5 !text-sm sm:mb-8 sm:!px-6 sm:!py-3 sm:!text-base"><MessageSquare aria-hidden="true" className="h-4 w-4 shrink-0 text-[#FFF200] sm:h-5 sm:w-5" />Comece pelo que está travando</Badge>
             <h1 className="flex flex-col items-center text-4xl font-bold leading-[1.06] tracking-tight sm:text-6xl md:text-7xl lg:text-8xl">
               <span className="block">Quando falta clareza</span>
               <span className="block text-[#FFF200]">o avanço para.</span>

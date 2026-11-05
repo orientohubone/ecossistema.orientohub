@@ -77,7 +77,7 @@ Execute:
 npm run dev
 ```
 
-Abra **http://localhost:5173**. O Vite executa os mesmos handlers `/api` no servidor Node, carrega `.env` e `.env.local` e define APP_URL localmente. A porta 5173 é fixa: se estiver ocupada, o servidor avisa em vez de mudar o callback. Use localhost no navegador para coincidir com a URI cadastrada.
+Abra **http://localhost:5173**. O Vite executa os mesmos handlers `/api` no servidor Node, carrega `.env` e `.env.local` e configura uma origem local separada para GitHub e sessão, sem substituir APP_URL. A porta 5173 é fixa: se estiver ocupada, o servidor avisa em vez de mudar o callback. Use localhost no navegador para coincidir com a URI cadastrada.
 
 Em produção, mantenha APP_URL=https://orientohub.com.br. Cookies de produção continuam Secure, HttpOnly e com prefixo __Host-; somente o servidor de desenvolvimento local usa cookies HttpOnly separados para HTTP.
 

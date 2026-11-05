@@ -12,7 +12,7 @@ export function localApi():Plugin {
       const env=loadEnv(server.config.mode,server.config.root,'');
       for(const [key,value] of Object.entries(env))if(process.env[key]===undefined)process.env[key]=value;
       process.env.ORIENTOHUB_LOCAL_DEV='1';
-      process.env.APP_URL='http://localhost:5173';
+      process.env.ORIENTOHUB_LOCAL_ORIGIN='http://localhost:5173';
       server.middlewares.use(async(req,res,next)=>{
         const url=new URL(req.url||'/','http://localhost:5173');
         if(!url.pathname.startsWith('/api/'))return next();
