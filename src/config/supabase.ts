@@ -1,9 +1,8 @@
 import { createClient } from '@supabase/supabase-js';
 import { invalidateCache } from '../lib/memoryCache';
 
-const processEnv = (globalThis as any).process?.env;
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || processEnv?.VITE_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || processEnv?.VITE_SUPABASE_ANON_KEY;
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 export const supabaseProjectUrl = supabaseUrl as string;
 
 if (!supabaseUrl || !supabaseAnonKey) {

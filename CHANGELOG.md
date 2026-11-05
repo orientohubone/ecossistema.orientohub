@@ -1,5 +1,13 @@
 # Histórico de alterações
 
+## 2026-11-05 — Validação de configuração no deploy
+
+- Site e CRM validam as variáveis públicas do Supabase antes de compilar; a ausência interrompe o build com os nomes das configurações necessárias.
+- O build aceita os aliases de servidor SUPABASE_URL e SUPABASE_ANON_KEY e injeta somente os dois valores públicos no frontend.
+- Chaves service_role e secret são recusadas na configuração pública.
+- A configuração Vercel fixa o framework Vite, o comando npm run build e a saída dist.
+- Testes verificam configuração ausente, aliases, precedência e incorporação dos valores públicos em um build Vite real.
+
 ## 2026-11-05 — Integração GitHub por usuário
 
 - Conexão individual por GitHub App com OAuth e PKCE, tokens criptografados e renovação no servidor.
