@@ -1,6 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { privateHeaders, verifyFounder, verifyUser } from '../server/dashboardAuth.js';
-import { explicitRepositoryAccess, GithubUpstreamError, githubRequest, parseGithubRepository, repositoryInsights } from '../server/githubRepository.js';
+import { privateHeaders, verifyUser } from '../server/dashboardAuth.js';
+import { GithubUpstreamError, githubRequest, parseGithubRepository, repositoryInsights } from '../server/githubRepository.js';
+import { appConfigured,authorizedRepository,GithubAppError,githubUserToken,readBinding,readConnection } from '../server/githubApp.js';
 import type { GithubData } from '../src/types/github.js';
 
 export const maxDuration = 30;
@@ -27,24 +28,37 @@ export default async function handler(request: VercelRequest, response: VercelRe
     if (!result.ok) throw new Error('Solution lookup unavailable');
     const rows = await result.json();
     if (!Array.isArray(rows) || !rows.length) return response.status(404).json({ message:'Solução não encontrada.' });
-    const repository = parseGithubRepository(rows[0].git_url || '');
+    let repository = parseGithubRepository(rows[0].git_url || '');
     if (!repository) return response.status(400).json({ message:'Cadastre uma URL de repositório GitHub válida nesta solução.' });
-    // A member cannot gain access to the founder's private repositories merely
-    // by saving their URL on a solution owned by that member.
-    const privateAccess = explicitRepositoryAccess(user.id, repository) || await verifyFounder(token);
-    const cacheKey = `${user.id}:${solutionId}:${repository.toLowerCase()}:${privateAccess}`;
+    const binding=appConfigured()?await readBinding(user.id,solutionId):null;
+    let githubToken:string|undefined,generation='public',repo:any;
+    if(binding){
+      const connection=await githubUserToken(user.id);
+      // Revalidate membership and repository selection before using any cache.
+      repo=await authorizedRepository(connection.token,binding.installation_id,binding.repository_id);
+      repository=parseGithubRepository(`https://github.com/${repo.full_name}`);
+      if(!repository)throw new GithubAppError(502,'O GitHub retornou um repositório inválido.');
+      githubToken=connection.token;generation=connection.connection.generation;
+    }else if(appConfigured()&&await readConnection(user.id)){
+      // Public repositories also use the user's quota. Private reads still require a binding below.
+      const connection=await githubUserToken(user.id);
+      githubToken=connection.token;generation=`unbound:${connection.connection.generation}`;
+    }
+    const cacheKey = `${user.id}:${solutionId}:${repository.toLowerCase()}:${generation}`;
     const cached = cache.get(cacheKey);
     if (cached && cached.expires > Date.now()) return response.status(200).json(cached.data);
-    const repoResponse = await githubRequest(repository);
-    const repo = await repoResponse.json();
+    if(!repo){const repoResponse=await githubRequest(repository,'',githubToken);repo=await repoResponse.json();}
     if (typeof repo?.private !== 'boolean') throw new Error('Invalid GitHub repository response');
-    if ((repo.private || (repo.visibility && repo.visibility !== 'public')) && !privateAccess) return response.status(404).json({ message:'Repositório não encontrado ou sem acesso autorizado.' });
-    const data = await repositoryInsights(repository,repo);
+    if ((repo.private || (repo.visibility && repo.visibility !== 'public')) && !binding) return response.status(404).json({ message:'Conecte sua conta GitHub e autorize este repositório na solução.' });
+    const data = await repositoryInsights(repository,repo,githubToken);
     if (cache.size >= 200) cache.delete(cache.keys().next().value!);
     cache.set(cacheKey,{ expires:Date.now()+60000, data });
     return response.status(200).json(data);
   } catch (error) {
-    if (error instanceof GithubUpstreamError) return response.status(error.status).json({ message:error.message });
+    if (error instanceof GithubUpstreamError||error instanceof GithubAppError) {
+      if(error.retryAfter)response.setHeader('Retry-After',String(error.retryAfter));
+      return response.status(error.status).json({ message:error.message });
+    }
     return response.status(503).json({ message:'Integração GitHub temporariamente indisponível. Tente novamente.' });
   }
 }

@@ -1,7 +1,7 @@
 {
   "engine": "PostgreSQL/PGlite",
   "environment": "isolated synthetic fixture",
-  "assertions": 44,
+  "assertions": 58,
   "migrationRerun": "passed",
   "productionAccountsUsed": false
 }

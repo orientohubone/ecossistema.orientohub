@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { SESSION_COOKIE, privateHeaders, verifyUser } from '../server/dashboardAuth.js';
+import { SESSION_COOKIE, cookieAttributes, privateHeaders, verifyUser } from '../server/dashboardAuth.js';
 
 export default async function handler(request: VercelRequest, response: VercelResponse) {
   for (const [key, value] of Object.entries(privateHeaders)) response.setHeader(key, value);
@@ -9,7 +9,7 @@ export default async function handler(request: VercelRequest, response: VercelRe
   if (!origin || ![process.env.APP_URL?.replace(/\/$/, ''), `https://${request.headers.host}`].includes(origin)) {
     return response.status(403).json({ message: 'Origem não permitida.' });
   }
-  const cookie = `${SESSION_COOKIE}=; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=0`;
+  const cookie = `${SESSION_COOKIE}=; ${cookieAttributes}; Max-Age=0`;
   if (request.method === 'DELETE') {
     response.setHeader('Set-Cookie', cookie);
     return response.status(204).end();
@@ -21,7 +21,7 @@ export default async function handler(request: VercelRequest, response: VercelRe
       response.setHeader('Set-Cookie', cookie);
       return response.status(401).json({ message: 'Sessão inválida.' });
     }
-    response.setHeader('Set-Cookie', `${SESSION_COOKIE}=${token}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=3600`);
+    response.setHeader('Set-Cookie', `${SESSION_COOKIE}=${token}; ${cookieAttributes}; Max-Age=3600`);
     return response.status(204).end();
   } catch {
     return response.status(503).json({ message: 'Autenticação temporariamente indisponível.' });

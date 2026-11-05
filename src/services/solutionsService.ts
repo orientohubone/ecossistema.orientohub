@@ -25,6 +25,15 @@ export type { GithubData } from '../types/github';
 
 // Cache em memória para soluções (banco) e GitHub
 const githubCache: Record<string, { data: GithubData; timestamp: number }> = {};
+const githubPending = new Map<string,Promise<GithubData|null>>();
+const githubCooldown = new Map<string,{until:number;data:GithubData}>();
+let githubActive=0;
+const githubQueue:Array<()=>void>=[];
+async function githubSlot(){
+  if(githubActive>=2)await new Promise<void>(resolve=>githubQueue.push(resolve));
+  else githubActive++;
+  return ()=>{const next=githubQueue.shift();if(next)next();else githubActive--;};
+}
 let solutionsCache: { userId: string; data: Solution[] } | null = null;
 let authRevision = 0;
 let currentUserId: string | null = null;
@@ -43,6 +52,7 @@ const authenticatedOwner = async () => {
 const CACHE_DURATION = 5 * 60 * 1000; // 5 minutos
 
 export const solutionsService = {
+  clearGithubCache() { for (const key of Object.keys(githubCache)) delete githubCache[key];githubCooldown.clear(); },
   async getAll(forceRefresh = false): Promise<Solution[]> {
     // Retorno imediato do cache se disponível e não for refresh forçado
     const userId = await authenticatedOwner();
@@ -120,6 +130,26 @@ export const solutionsService = {
   },
 
   async fetchGithubData(solution: Pick<Solution, 'id' | 'git_url'>, forceRefresh = false): Promise<GithubData | null> {
+    if(!solution.git_url)return null;
+    const owner=await authenticatedOwner();
+    const revision=authRevision;
+    const key=`${owner}:${revision}:${solution.id}:${solution.git_url}`;
+    const existing=githubPending.get(key);
+    if(existing)return existing;
+    const task=(async()=>{
+      const release=await githubSlot();
+      try{
+        if(revision!==authRevision)throw new Error('A sessão mudou. Atualize a tela.');
+        const cooldown=githubCooldown.get(owner);
+        if(cooldown&&cooldown.until>Date.now())return cooldown.data;
+        return await solutionsService.fetchGithubDataRequest(solution,forceRefresh);
+      }finally{release();}
+    })();
+    githubPending.set(key,task);
+    try{return await task;}finally{if(githubPending.get(key)===task)githubPending.delete(key);}
+  },
+
+  async fetchGithubDataRequest(solution: Pick<Solution, 'id' | 'git_url'>, forceRefresh = false): Promise<GithubData | null> {
     if (!solution.git_url) return null;
     const failed = (message: string): GithubData => ({ stars:0, forks:0, commits:0, contributors:0, open_issues:0, last_commit:null, health_score:0, languages:[], error:message });
     const userId = await authenticatedOwner();
@@ -135,7 +165,14 @@ export const solutionsService = {
       });
       const body = result.headers.get('content-type')?.includes('application/json') ? await result.json() : null;
       if (revision !== authRevision) throw new Error('A sessão mudou. Atualize a tela.');
-      if (!result.ok) return failed(body?.message || 'Não foi possível consultar a integração GitHub.');
+      if (!result.ok) {
+        const data=failed(body?.message || 'Não foi possível consultar a integração GitHub.');
+        if(result.status===429){
+          const seconds=Math.max(1,Math.min(3600,Number(result.headers.get('retry-after'))||60));
+          githubCooldown.set(userId,{until:Date.now()+seconds*1000,data});
+        }
+        return data;
+      }
       if (!body || !Array.isArray(body.languages)) return failed('A API GitHub não está disponível neste ambiente.');
       githubCache[cacheKey] = { data:body, timestamp:Date.now() };
       return body as GithubData;

@@ -9,7 +9,7 @@ for(const line of fs.readFileSync('.env','utf8').split(/\r?\n/)) {
 const files=[];
 const walk=dir=>{for(const entry of fs.readdirSync(dir,{withFileTypes:true})) {const full=path.join(dir,entry.name); if(entry.isDirectory()) walk(full); else if(/\.(?:js|html|map)$/.test(entry.name)) files.push(full);}};
 walk('dist');
-const checks=['GITHUB_TOKEN','VITE_GITHUB_TOKEN','SUPABASE_SERVICE_ROLE_KEY','VITE_SUPABASE_SERVICE_ROLE_KEY'].map(name=>({
+const checks=['GITHUB_TOKEN','VITE_GITHUB_TOKEN','SUPABASE_SERVICE_ROLE_KEY','VITE_SUPABASE_SERVICE_ROLE_KEY','GITHUB_APP_CLIENT_SECRET','GITHUB_APP_ENCRYPTION_KEY','GITHUB_APP_WEBHOOK_SECRET'].map(name=>({
   credential:name,configured:Boolean(env[name]),foundInBuiltAssets:Boolean(env[name] && files.some(file=>fs.readFileSync(file,'utf8').includes(env[name]))),
 }));
 console.log(JSON.stringify({assetsChecked:files.length,checks},null,2));

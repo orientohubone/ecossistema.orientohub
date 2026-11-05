@@ -13,30 +13,24 @@ export function parseGithubRepository(value: string): string | null {
   } catch { return null; }
 }
 
-export function explicitRepositoryAccess(userId: string, repository: string): boolean {
-  const config = process.env.GITHUB_REPOSITORY_ACCESS;
-  if (!config) return false;
-  const rules = JSON.parse(config) as Record<string, unknown>;
-  if (!rules || typeof rules !== 'object' || Array.isArray(rules)) throw new Error('Invalid GitHub access configuration');
-  const allowed = rules[userId];
-  return Array.isArray(allowed) && allowed.some(value => typeof value === 'string' && value.toLowerCase() === repository.toLowerCase());
-}
-
 export class GithubUpstreamError extends Error {
-  constructor(public status: number, message: string) { super(message); }
+  constructor(public status: number, message: string,public retryAfter?:number) { super(message); }
 }
 
-export async function githubRequest(repository: string, suffix = '') {
-  const token = process.env.GITHUB_TOKEN;
+export async function githubRequest(repository: string, suffix = '', token?: string) {
   const result = await fetch(`https://api.github.com/repos/${repository}${suffix}`, {
     headers: { Accept: 'application/vnd.github+json', 'User-Agent': 'OrientoHub-Repository-Insights', ...(token ? { Authorization: `Bearer ${token}` } : {}) },
     redirect: 'error', cache: 'no-store', signal: AbortSignal.timeout(8000),
   });
   if (result.status === 403 || result.status === 429) {
-    if (result.headers.get('x-ratelimit-remaining') === '0' || result.status === 429) throw new GithubUpstreamError(429, 'Limite de consultas ao GitHub atingido. Tente novamente mais tarde.');
+    if (result.headers.get('x-ratelimit-remaining') === '0' || result.status === 429) {
+      const reset=Number(result.headers.get('x-ratelimit-reset'))*1000;
+      const seconds=Math.max(1,Math.min(3600,Number(result.headers.get('retry-after'))||(reset>Date.now()?Math.ceil((reset-Date.now())/1000):60)));
+      throw new GithubUpstreamError(429, `Limite de consultas ao GitHub atingido. Aguarde cerca de ${Math.ceil(seconds/60)} min para tentar novamente.`,seconds);
+    }
     throw new GithubUpstreamError(502, 'A integração não tem permissão para consultar este repositório. Revise o acesso do token no GitHub.');
   }
-  if (result.status === 401) throw new GithubUpstreamError(502, 'A credencial da integração GitHub está inválida ou expirada. Atualize o token no servidor.');
+  if (result.status === 401) throw new GithubUpstreamError(409, 'Sua autorização GitHub expirou ou foi revogada. Conecte novamente.');
   if (result.status === 404) throw new GithubUpstreamError(404, 'Repositório não encontrado ou sem acesso autorizado.');
   if (!result.ok && result.status !== 409) throw new GithubUpstreamError(502, 'O GitHub está indisponível para esta consulta. Tente novamente.');
   return result;
@@ -52,9 +46,9 @@ const pagedCount = (response: Response, rows: unknown[]) => {
   return typeof page === 'number' && Number.isSafeInteger(page) && page > 0 ? page : rows.length;
 };
 
-export async function repositoryInsights(repository: string, repo: Record<string, any>): Promise<GithubData> {
+export async function repositoryInsights(repository: string, repo: Record<string, any>, token?: string): Promise<GithubData> {
   const [commitsResponse, languagesResponse, contributorsResponse] = await Promise.all([
-    githubRequest(repository, '/commits?per_page=1'), githubRequest(repository, '/languages'), githubRequest(repository, '/contributors?per_page=1&anon=1'),
+    githubRequest(repository, '/commits?per_page=1',token), githubRequest(repository, '/languages',token), githubRequest(repository, '/contributors?per_page=1&anon=1',token),
   ]);
   const commits = commitsResponse.status === 409 ? [] : await commitsResponse.json();
   const contributors = [204,409].includes(contributorsResponse.status) ? [] : await contributorsResponse.json();

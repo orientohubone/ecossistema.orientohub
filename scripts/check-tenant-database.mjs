@@ -51,7 +51,7 @@ try {
     insert into auth.users(id,email,raw_user_meta_data) values ('${A}','a@example.test','{"role":"founder"}'),('${B}','b@example.test','{}'),('${F}','fersouluramal@gmail.com','{}');
   `);
   const migrations = [
-    '20250604011725_copper_term.sql','20251112_fix_projects_rls.sql','20260731000000_create_community.sql',
+    '20250604011725_copper_term.sql','20251112_fix_projects_rls.sql','20260730000000_extend_solutions_metadata.sql','20260731000000_create_community.sql',
     '20260806000000_create_billing_subscriptions.sql','20260806000001_create_events.sql',
     '20260807000000_plans_founder_and_feature_flags.sql','20260807000001_feature_flag_rules_and_founder_metrics.sql',
     '20260807000002_apply_feature_flag_rules.sql','20260807000003_feature_access_message.sql',
@@ -131,6 +131,40 @@ try {
   ok((await query('select * from public.founder_user_followups')).rows.length === 1, 'Founder can persist followup');
   await db.exec('reset role');
   ok((await query(`select name from public.projects where id='${PB}'`)).rows[0].name === 'B', 'Victim data remains untouched');
+  const githubMigration=await readFile('supabase/migrations/20261105000005_github_app_connections.sql','utf8');
+  await db.exec(githubMigration);await db.exec(githubMigration);
+  const solutionA=(await query(`select id from public.solutions where user_id='${A}' limit 1`)).rows[0].id;
+  const solutionB=(await query(`insert into public.solutions(user_id,name) values('${B}','B app solution') returning id`)).rows[0].id;
+  const service=async()=>{
+    await db.exec('reset role');await query(`select set_config('request.jwt.claims','{"role":"service_role"}',false)`);await db.exec('set role service_role');
+  };
+  await user(A);
+  for(const table of ['github_app_connections','github_oauth_states','github_solution_repositories','github_webhook_deliveries'])await denied(`select * from public.${table}`,`Member cannot read ${table}`);
+  await denied(`select public.replace_github_connection('${A}',11,'a','cipher-a','cipher-r',now(),now())`,'Member cannot inject own GitHub authorization');
+  await service();
+  await db.exec(`select public.replace_github_connection('${A}',11,'a','cipher-a','cipher-r',now()-interval '1 minute',now()+interval '1 day')`);
+  let generation=(await query(`select generation from public.github_app_connections where user_id='${A}'`)).rows[0].generation;
+  const lease='90000000-0000-4000-8000-000000000001';
+  ok((await query(`select * from public.claim_github_token_refresh('${A}','${generation}','${lease}')`)).rows.length===1,'One token refresh obtains the database lease');
+  ok((await query(`select * from public.claim_github_token_refresh('${A}','${generation}','90000000-0000-4000-8000-000000000002')`)).rows.length===0,'Concurrent refresh cannot reuse the rotating token');
+  await db.exec(`select public.bind_github_solution('${A}','${generation}','${solutionA}',501,101,'org/private-a',true)`);
+  ok((await query(`select * from public.github_solution_repositories where user_id='${A}'`)).rows.length===1,'Verified own repository binding persists');
+  await denied(`select public.bind_github_solution('${A}','${generation}','${solutionB}',501,101,'org/private-a',true)`,'Even service RPC cannot attach A connection to B solution');
+  await user(B);
+  await denied(`select public.bind_github_solution('${A}','${generation}','${solutionB}',501,101,'org/private-a',true)`,'Member cannot invoke privileged binding RPC');
+  await service();
+  await db.exec(`select public.replace_github_connection('${A}',11,'a','new-cipher-a','new-cipher-r',now()+interval '1 hour',now()+interval '1 day')`);
+  ok((await query(`select * from public.github_solution_repositories where user_id='${A}'`)).rows.length===0,'Reconnection invalidates old bindings atomically');
+  await denied(`select public.bind_github_solution('${A}','${generation}','${solutionA}',501,101,'org/private-a',true)`,'Old connection generation cannot bind after reconnect');
+  generation=(await query(`select generation from public.github_app_connections where user_id='${A}'`)).rows[0].generation;
+  await db.exec(`select public.bind_github_solution('${A}','${generation}','${solutionA}',501,101,'org/private-a',true)`);
+  await user(A);
+  await query(`update public.solutions set git_url='https://github.com/org/other' where id='${solutionA}'`);
+  await service();
+  ok((await query(`select * from public.github_solution_repositories where user_id='${A}'`)).rows.length===0,'Editing repository URL removes old verified binding');
+  await db.exec(`select public.bind_github_solution('${A}','${generation}','${solutionA}',501,101,'org/private-a',true)`);
+  await query(`delete from public.github_app_connections where user_id='${A}'`);
+  ok((await query(`select * from public.github_solution_repositories where user_id='${A}'`)).rows.length===0,'Disconnect cascades all own bindings');
   const report = { engine: 'PostgreSQL/PGlite', environment: 'isolated synthetic fixture', assertions, migrationRerun: 'passed', productionAccountsUsed: false };
   await writeFile('scratch/tenant-audit/database-tests.json', JSON.stringify(report, null, 2));
   console.log(JSON.stringify(report, null, 2));

@@ -1,4 +1,7 @@
-export const SESSION_COOKIE = '__Host-orientohub-session';
+// HTTP cookies are allowed only in the explicitly local development server.
+export const localDevelopment = process.env.ORIENTOHUB_LOCAL_DEV === '1' && process.env.NODE_ENV !== 'production' && /^http:\/\/(localhost|127\.0\.0\.1):5173$/.test(process.env.APP_URL || '');
+export const cookieAttributes = `Path=/; HttpOnly; ${localDevelopment ? '' : 'Secure; '}SameSite=Lax`;
+export const SESSION_COOKIE = localDevelopment ? 'orientohub-local-session' : '__Host-orientohub-session';
 export const privateHeaders = { 'Cache-Control': 'private, no-store', 'X-Robots-Tag': 'noindex, nofollow' };
 
 // Validate with the auth server, never trust decoded JWT claims or browser metadata.

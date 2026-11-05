@@ -1,4 +1,5 @@
-import { useState, useEffect, memo } from 'react';
+import { useState, useEffect, useRef, memo } from 'react';
+import { useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
 import {
@@ -35,9 +36,12 @@ import { useAuthStore } from '../stores/authStore';
 import DashboardPageSkeleton from '../components/ui/DashboardPageSkeleton';
 import { solutionsService, Solution, type GithubData } from '../services/solutionsService';
 import AddSolutionModal from '../components/modals/AddSolutionModal';
+import GithubConnectionPanel from '../components/solutions/GithubConnectionPanel';
 
 const SolutionsPage = () => {
   const { user } = useAuthStore();
+  const location = useLocation();
+  const openedCallbackSolution = useRef('');
   const [solutions, setSolutions] = useState<Solution[]>(solutionsService.getCachedSolutions(user?.id) || []);
   const [selectedSolution, setSelectedSolution] = useState<Solution | null>(null);
   const [showAddModal, setShowAddModal] = useState(false);
@@ -66,6 +70,14 @@ const SolutionsPage = () => {
   useEffect(() => {
     fetchSolutions(false); // Silent load no mount (tenta cache primeiro)
   }, [user]);
+  useEffect(() => {
+    const id = new URLSearchParams(location.search).get('solution');
+    const solution = id && solutions.find(item => item.id === id);
+    if (solution && openedCallbackSolution.current !== id) {
+      openedCallbackSolution.current = id;
+      void handleViewDetails(solution);
+    }
+  }, [solutions, location.search]);
 
   const fetchSolutions = async (forceRefresh = false) => {
     if (forceRefresh) setIsSyncing(true);
@@ -178,6 +190,19 @@ const SolutionsPage = () => {
   const updateSolutionGithubData = (id: string, data: any) => {
     setSolutions(prev => prev.map(s => s.id === id ? { ...s, github_data: data } : s));
   };
+  const handleGithubUpdated = (changed?: {id:string;git_url:string|null}) => {
+    solutionsService.clearGithubCache();
+    setSolutions(current => current.map(solution => !changed||changed.id===solution.id ? {...solution,...(changed||{}),github_data:undefined} : solution));
+    setSelectedSolution(current => current&&(!changed||changed.id===current.id) ? {...current,...(changed||{}),github_data:undefined} : current);
+    if (changed?.git_url) {
+      const updated={id:changed.id,git_url:changed.git_url};
+      void solutionsService.fetchGithubData(updated,true).then(data=>{
+        if(!data)return;
+        setSolutions(current=>current.map(solution=>solution.id===changed.id?{...solution,github_data:data}:solution));
+        setSelectedSolution(current=>current?.id===changed.id?{...current,github_data:data}:current);
+      }).catch(()=>{});
+    }
+  };
 
   const getHealthColor = (score: number) => {
     if (score >= 80) return 'text-green-500';
@@ -206,6 +231,7 @@ const SolutionsPage = () => {
       <Helmet><title>Minhas Soluções - Orientohub</title></Helmet>
 
       <div className="min-h-screen bg-[#0c121b]">
+        <div className="container-custom pt-6"><GithubConnectionPanel solution={selectedSolution||undefined} onUpdated={handleGithubUpdated} /></div>
         {error && <div role="alert" className="container-custom pt-5 text-sm text-red-300">{error}</div>}
         {success && <div role="status" className="container-custom flex items-center gap-2 pt-5 text-sm text-emerald-300"><CheckCircle className="h-4 w-4" />{success}<button type="button" aria-label="Fechar confirmação" onClick={() => setSuccess(null)} className="ml-auto p-2"><X className="h-4 w-4" /></button></div>}
         {!selectedSolution ? (
@@ -322,7 +348,9 @@ const SolutionCard = memo(({ solution, index, onViewDetails, onUpdateData, onRem
         try {
           const data = await solutionsService.fetchGithubData(solution);
           if (data) onUpdateData(data);
-        } catch (e) { console.error(e); } finally { setIsFetching(false); }
+        } catch {
+          onUpdateData({stars:0,forks:0,commits:0,contributors:0,open_issues:0,last_commit:null,health_score:0,languages:[],error:'Não foi possível sincronizar. Atualize a conexão e tente novamente.'});
+        } finally { setIsFetching(false); }
       };
       load();
     }
@@ -358,7 +386,7 @@ const SolutionCard = memo(({ solution, index, onViewDetails, onUpdateData, onRem
             <div>
               <p className="text-[10px] font-black uppercase tracking-wider text-[#718096]">Saúde técnica</p>
               <p className={`text-sm font-bold ${solution.github_data?.error ? 'text-red-500' : hasGithub ? getHealthColor(healthScore) : 'text-gray-400'}`}>
-                {solution.github_data ? (solution.github_data.error || `${healthScore}% · ${getHealthLabel(healthScore)}`) : 'Sincronizando dados...'}
+                {solution.github_data ? (solution.github_data.error || `${healthScore}% · ${getHealthLabel(healthScore)}`) : solution.git_url ? (isFetching?'Sincronizando dados...':'Aguardando sincronização...') : 'Repositório não informado'}
               </p>
             </div>
           </div>
