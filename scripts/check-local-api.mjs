@@ -32,6 +32,19 @@ try{
   assert.ok(auth.cookieAttributes.includes('HttpOnly'));checks++;
   const app=await server.ssrLoadModule('/server/githubApp.ts');
   assert.equal(app.callbackUrl(),'http://localhost:5173/api/github-app?action=callback');checks++;
+  const savedOrigin=process.env.APP_URL;
+  const required=['GITHUB_APP_ID','GITHUB_APP_SLUG','GITHUB_APP_CLIENT_ID','GITHUB_APP_CLIENT_SECRET','GITHUB_APP_ENCRYPTION_KEY','GITHUB_APP_WEBHOOK_SECRET','SUPABASE_SERVICE_ROLE_KEY'];
+  const savedKeys=Object.fromEntries(required.map(key=>[key,process.env[key]]));
+  try{
+    delete process.env.APP_URL;
+    for(const key of required)process.env[key]||='local-test-placeholder';
+    assert.equal(app.appConfigured(),true);checks++;
+    delete process.env.GITHUB_APP_CLIENT_SECRET;
+    assert.equal(app.appConfigured(),false);checks++;
+  }finally{
+    if(savedOrigin===undefined)delete process.env.APP_URL;else process.env.APP_URL=savedOrigin;
+    for(const key of required){if(savedKeys[key]===undefined)delete process.env[key];else process.env[key]=savedKeys[key];}
+  }
   const raw=await call('/api/github-app-webhook',{method:'POST',body:'{}'});
   assert.ok([401,503].includes(raw.status));checks++;
   const previousMode=process.env.NODE_ENV;

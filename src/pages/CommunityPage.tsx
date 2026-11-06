@@ -29,6 +29,7 @@ import {
   Sparkles
 } from 'lucide-react';
 import { communityService, type CommunityComment } from '../services/communityService';
+import NewPostModal from '../components/modals/NewCommunityPostModal';
 
 interface Post {
   id: string;
@@ -598,134 +599,6 @@ const PostCard = ({ post, index, onLike, onBookmark, onCommentAdded, onShare, ge
         </div>
       )}
     </motion.div>
-  );
-};
-
-// New Post Modal
-interface NewPostModalProps {
-  show: boolean;
-  onClose: () => void;
-  onSubmit: (data: { title: string; content: string; category: Post['category'] }) => Promise<void>;
-}
-
-const NewPostModal = ({ show, onClose, onSubmit }: NewPostModalProps) => {
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
-  const [category, setCategory] = useState<Post['category']>('discussion');
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitError, setSubmitError] = useState<string | null>(null);
-  const fieldClassName = "w-full rounded-xl border border-[#34455a] bg-[#0c121b] px-4 py-3 text-sm text-gray-100 outline-none transition focus:border-primary-400 focus:ring-2 focus:ring-primary-400/15 placeholder:text-[#718096]";
-
-  const handleSubmit = async () => {
-    if (!title.trim() || !content.trim() || isSubmitting) return;
-    setIsSubmitting(true);
-    setSubmitError(null);
-    try {
-      await onSubmit({ title, content, category });
-      setTitle('');
-      setContent('');
-      setCategory('discussion');
-    } catch (error) {
-      setSubmitError(error instanceof Error ? error.message : 'Não foi possível publicar agora.');
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  if (!show) return null;
-
-  return (
-    <AnimatePresence>
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4"
-        onClick={onClose}
-      >
-        <motion.div
-          initial={{ scale: 0.9, y: 20 }}
-          animate={{ scale: 1, y: 0 }}
-          exit={{ scale: 0.9, y: 20 }}
-          onClick={(e) => e.stopPropagation()}
-          className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl border border-[#34455a] bg-[#101722] p-6 shadow-2xl"
-        >
-          <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center gap-3">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-primary-400/25 bg-primary-400/10">
-                <Plus className="h-6 w-6 text-primary-300" />
-              </div>
-              <div>
-                <p className="mb-1 text-[11px] font-bold uppercase tracking-[0.14em] text-primary-300">Compartilhe com a rede</p>
-                <h2 className="text-2xl font-bold text-white">Nova Publicação</h2>
-                <p className="text-sm text-[#9ba9bc]">
-                  Compartilhe conhecimento com a comunidade
-                </p>
-              </div>
-            </div>
-            <button onClick={onClose} className="rounded-lg p-2 text-gray-300 transition hover:bg-[#151f2b] hover:text-white">
-              <X className="h-5 w-5" />
-            </button>
-          </div>
-
-          <div className="space-y-4">
-            <div>
-              <label className="mb-2 block text-sm font-semibold text-gray-100">Categoria</label>
-              <select
-                value={category}
-                onChange={(e) => setCategory(e.target.value as Post['category'])}
-                className={fieldClassName}
-              >
-                <option value="discussion">Discussão</option>
-                <option value="question">Pergunta</option>
-                <option value="showcase">Showcase</option>
-                <option value="announcement">Anúncio</option>
-              </select>
-            </div>
-
-            <div>
-              <label className="mb-2 block text-sm font-semibold text-gray-100">Título</label>
-              <input
-                type="text"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                className={fieldClassName}
-                placeholder="Ex: Como validei minha startup em 30 dias"
-              />
-            </div>
-
-            <div>
-              <label className="mb-2 block text-sm font-semibold text-gray-100">Conteúdo</label>
-              <textarea
-                value={content}
-                onChange={(e) => setContent(e.target.value)}
-                rows={6}
-                className={fieldClassName}
-                placeholder="Compartilhe sua experiência, pergunta ou conquista..."
-              />
-            </div>
-
-            {submitError && <div className="rounded-xl border border-red-400/25 bg-red-400/10 px-4 py-3 text-sm text-red-200">{submitError}</div>}
-            <div className="flex gap-3 border-t border-[#273548] pt-6">
-              <button
-                onClick={onClose}
-                className="flex-1 rounded-xl border border-[#34455a] bg-[#151f2b] px-6 py-3 font-medium text-gray-300 transition hover:border-[#4c6078] hover:text-white"
-              >
-                Cancelar
-              </button>
-              <button
-                onClick={() => void handleSubmit()}
-                disabled={!title.trim() || !content.trim() || isSubmitting}
-                className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-primary-500 px-6 py-3 font-bold text-black transition hover:bg-primary-400 disabled:cursor-not-allowed disabled:opacity-50"
-              >
-                <Send className="w-5 h-5" />
-                {isSubmitting ? 'Publicando...' : 'Publicar'}
-              </button>
-            </div>
-          </div>
-        </motion.div>
-      </motion.div>
-    </AnimatePresence>
   );
 };
 

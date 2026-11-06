@@ -13,6 +13,10 @@ interface CustomSelectProps {
   options: SelectOption[];
   label?: string;
   required?: boolean;
+  disabled?: boolean;
+  buttonClassName?: string;
+  placeholder?: string;
+  ariaLabel?: string;
 }
 
 export const CustomSelect = ({ 
@@ -20,7 +24,11 @@ export const CustomSelect = ({
   onChange, 
   options, 
   label,
-  required = false 
+  required = false,
+  disabled = false,
+  buttonClassName,
+  placeholder = 'Selecione uma opção',
+  ariaLabel,
 }: CustomSelectProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -80,6 +88,7 @@ export const CustomSelect = ({
   }, [isOpen,updateMenuPosition]);
 
   const selectedOption = options.find(opt => opt.value === value);
+  useEffect(()=>{if(disabled)setIsOpen(false);},[disabled]);
 
   return (
     <div ref={ref} className="relative">
@@ -96,17 +105,19 @@ export const CustomSelect = ({
         aria-expanded={isOpen}
         aria-controls={isOpen?`${id}-options`:undefined}
         type="button"
+        disabled={disabled}
+        aria-label={ariaLabel}
         onClick={() => {
           if (!isOpen) updateMenuPosition();
           setIsOpen(!isOpen);
         }}
-        className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-900 border-2 border-gray-200 dark:border-gray-700 rounded-xl text-left flex items-center justify-between hover:border-gray-300 dark:hover:border-gray-600 transition-all"
+        className={`${buttonClassName||'w-full px-4 py-3 bg-gray-50 dark:bg-gray-900 border-2 border-gray-200 dark:border-gray-700 rounded-xl hover:border-gray-300 dark:hover:border-gray-600 transition-all'} flex min-w-0 items-center justify-between gap-3 text-left disabled:cursor-not-allowed disabled:opacity-50`}
       >
-        <span className="text-gray-900 dark:text-gray-100 font-medium">
-          {selectedOption?.label}
+        <span className={`${buttonClassName?'text-white':'text-gray-900 dark:text-gray-100'} min-w-0 whitespace-normal font-medium [overflow-wrap:anywhere]`}>
+          {selectedOption?.label||placeholder}
         </span>
         <ChevronDown 
-          className={`w-5 h-5 text-[#FFF200] transition-transform ${isOpen ? 'rotate-180' : ''}`}
+          className={`h-4 w-4 shrink-0 text-[#FFF200] transition-transform ${isOpen ? 'rotate-180' : ''}`}
         />
       </button>
 
