@@ -37,6 +37,7 @@ import ExperimentsList from '../components/projects/ExperimentsList';
 import InterviewsList from '../components/projects/InterviewsList';
 import ValidationChecklist from '../components/projects/ValidationChecklist';
 import DashboardPageSkeleton from '../components/ui/DashboardPageSkeleton';
+import AddProjectModal, {type ProjectDraft} from '../components/modals/AddProjectModal';
 
 // Imports dos hooks e serviços
 import { useProjects, useProject } from '../hooks/useProjects';
@@ -69,7 +70,7 @@ const ProjectsPage = () => {
   const currentProjectId = projectId || null;
   const { project: selectedProjectData, loading: loadingProject } = useProject(currentProjectId);
   const [showAddModal, setShowAddModal] = useState(false);
-  const [newProject, setNewProject] = useState({
+  const [newProject, setNewProject] = useState<ProjectDraft>({
     name: '',
     description: '',
     stage: 'ideation' as const,
@@ -636,6 +637,7 @@ const ProjectsPage = () => {
         newProject={newProject}
         setNewProject={setNewProject}
         onSave={handleCreateProject}
+        error={errorMessage}
       />
 
       <ConvertProjectModal
@@ -927,114 +929,6 @@ const ConvertProjectModal = ({
                 className="flex-1 rounded-xl bg-primary-500 px-4 py-2.5 font-bold text-black transition-colors hover:bg-primary-600 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 {isConverting ? 'Convertendo...' : 'Criar solução'}
-              </button>
-            </div>
-          </div>
-        </motion.div>
-      </motion.div>
-    </AnimatePresence>
-  );
-};
-
-// Add Project Modal
-interface AddProjectModalProps {
-  show: boolean;
-  onClose: () => void;
-  newProject: any;
-  setNewProject: (project: any) => void;
-  onSave: () => void;
-}
-
-const AddProjectModal = ({ show, onClose, newProject, setNewProject, onSave }: AddProjectModalProps) => {
-  if (!show) return null;
-
-  const fieldClassName = "w-full px-4 py-2.5 border-2 border-gray-200 dark:border-gray-600 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 focus:outline-none bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 transition-colors";
-
-  return (
-    <AnimatePresence>
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4"
-        onClick={onClose}
-      >
-        <motion.div
-          initial={{ scale: 0.9, y: 20 }}
-          animate={{ scale: 1, y: 0 }}
-          exit={{ scale: 0.9, y: 20 }}
-          onClick={(e) => e.stopPropagation()}
-          className="bg-white dark:bg-gray-800 rounded-2xl p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto border-2 border-gray-200 dark:border-gray-700"
-        >
-          <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-blue-500/10 rounded-xl flex items-center justify-center">
-                <Lightbulb className="w-6 h-6 text-blue-500" />
-              </div>
-              <div>
-                <h2 className="text-2xl font-bold">Novo Projeto</h2>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
-                  Comece validando sua ideia
-                </p>
-              </div>
-            </div>
-            <button onClick={onClose} className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
-              <X className="w-5 h-5" />
-            </button>
-          </div>
-
-          <div className="space-y-6">
-            <div>
-              <label className="block text-sm font-medium mb-2">Nome do Projeto *</label>
-              <input
-                type="text"
-                value={newProject.name}
-                onChange={(e) => setNewProject({ ...newProject, name: e.target.value })}
-                className={fieldClassName}
-                placeholder="Ex: App de Delivery para Pets"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium mb-2">Descrição *</label>
-              <textarea
-                value={newProject.description}
-                onChange={(e) => setNewProject({ ...newProject, description: e.target.value })}
-                rows={3}
-                className={fieldClassName}
-                placeholder="Descreva sua ideia em poucas palavras..."
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium mb-2">Estágio Atual</label>
-              <select
-                value={newProject.stage}
-                onChange={(e) => setNewProject({ ...newProject, stage: e.target.value })}
-                className={fieldClassName}
-              >
-                <option value="ideation">💡 Ideação</option>
-                <option value="validation">🎯 Validação</option>
-                <option value="mvp">🚀 MVP</option>
-                <option value="traction">📈 Tração</option>
-                <option value="growth">🌱 Crescimento</option>
-              </select>
-            </div>
-
-            <div className="flex gap-3 pt-6 border-t border-gray-200 dark:border-gray-700">
-              <button
-                onClick={onClose}
-                className="flex-1 px-6 py-3 border-2 border-gray-300 dark:border-gray-600 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 font-medium"
-              >
-                Cancelar
-              </button>
-              <button
-                onClick={onSave}
-                disabled={!newProject.name || !newProject.description}
-                className="flex-1 px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-              >
-                <PlusCircle className="w-5 h-5" />
-                Criar Projeto
               </button>
             </div>
           </div>
