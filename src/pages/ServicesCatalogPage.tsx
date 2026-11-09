@@ -1,33 +1,9 @@
-import { useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
-import { Link } from 'react-router-dom';
-import { ArrowDown, ArrowRight, BarChart3, Check, ChevronRight, ClipboardList, MoveUpRight, Search, Target } from 'lucide-react';
-import { serviceCatalog } from '../data/serviceCatalog';
-import type { ServiceCatalogItem } from '../data/serviceCatalog';
-
-const money = (value: number) => value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-const priceLabel = (service: ServiceCatalogItem) => {
-  const price = service.pricing;
-  if (!price) return 'Escopo personalizado';
-  if (price.customText) return price.customText;
-  if (price.fixed !== undefined) return money(price.fixed);
-  if (price.promotional !== undefined) return money(price.promotional);
-  if (price.startingAt !== undefined) return `A partir de ${money(price.startingAt)}${price.suffix ?? ''}`;
-  return 'Escopo personalizado';
-};
+import { ArrowDown, ArrowRight, BarChart3, ClipboardList, Search, Target } from 'lucide-react';
+import ServiceDeck from '../components/ServiceDeck';
 
 const ServicesCatalogPage = () => {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const serviceDetailRef = useRef<HTMLElement>(null);
-  const activeService = serviceCatalog[activeIndex];
-  const selectService = (index: number) => {
-    setActiveIndex(index);
-    if (window.matchMedia('(max-width: 1023px)').matches) {
-      requestAnimationFrame(() => serviceDetailRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
-    }
-  };
-
   return <>
     <Helmet><title>Serviços | OrientoHub</title><meta name="description" content="Estratégia e execução conectadas para destravar o próximo movimento do seu negócio." /></Helmet>
     <main className="relative isolate overflow-hidden bg-gradient-to-br from-black via-gray-900 to-black text-white">
@@ -41,18 +17,7 @@ const ServicesCatalogPage = () => {
 
       <section id="catalogo" className="container-custom relative z-10 py-16 sm:py-24">
         <div className="mb-10 flex flex-col gap-5 border-b border-white/15 pb-8 sm:flex-row sm:items-end sm:justify-between"><div><p className="text-xs font-bold uppercase tracking-[0.24em] text-[#FFF200]">O que fazemos</p><h2 className="mt-3 max-w-2xl text-3xl font-bold tracking-tight sm:text-5xl">Escolha o desafio. Nós conectamos a solução.</h2></div><p className="max-w-md text-sm leading-relaxed text-white/50">Cada frente pode ser contratada separadamente ou combinada em uma operação sob medida para o momento da sua empresa.</p></div>
-        <div className="grid gap-8 lg:grid-cols-[minmax(280px,0.72fr)_minmax(0,1.55fr)] lg:gap-14">
-          <nav aria-label="Catálogo de serviços" className="border-t border-white/15">{serviceCatalog.map((service, index) => <button key={service.slug} type="button" onClick={() => selectService(index)} className={`group flex w-full items-center gap-4 border-b px-1 py-4 text-left transition sm:py-5 ${activeIndex === index ? 'border-[#FFF200] text-white' : 'border-white/10 text-white/45 hover:border-white/30 hover:text-white'}`}><span className={`w-7 text-xs font-bold ${activeIndex === index ? 'text-[#FFF200]' : 'text-white/25'}`}>{String(index + 1).padStart(2, '0')}</span><span className="flex-1 text-base font-semibold sm:text-lg">{service.title}</span><ChevronRight className={`h-4 w-4 transition ${activeIndex === index ? 'text-[#FFF200]' : '-translate-x-2 opacity-0 group-hover:translate-x-0 group-hover:opacity-100'}`} /></button>)}</nav>
-
-          <motion.article ref={serviceDetailRef} key={activeService.slug} initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.25 }} className="relative min-h-[600px] scroll-mt-24 overflow-hidden rounded-2xl border border-[#FFF200]/35 bg-gray-900/85 p-6 shadow-[0_18px_50px_rgba(0,0,0,0.22),0_0_28px_rgba(255,242,0,0.04)] backdrop-blur-md transition-colors hover:border-[#FFF200]/60 sm:p-10 lg:p-12">
-            <span className="pointer-events-none absolute -right-3 -top-12 text-[180px] font-black leading-none text-white/[0.025] sm:text-[260px]">{String(activeIndex + 1).padStart(2, '0')}</span>
-            <div className="relative flex h-full flex-col"><div className="flex flex-wrap items-center justify-between gap-4"><p className="text-xs font-bold uppercase tracking-[0.22em] text-[#FFF200]">{activeService.eyebrow}</p><span className="border border-[#FFF200]/45 bg-[#FFF200]/10 px-4 py-2 text-sm font-black text-[#FFF200] shadow-[0_0_24px_rgba(255,242,0,0.08)]">{priceLabel(activeService)}</span></div>
-              <h3 className="mt-10 max-w-3xl text-4xl font-black leading-[0.95] tracking-[-0.04em] sm:text-6xl">{activeService.hero}</h3><p className="mt-6 max-w-2xl text-lg leading-relaxed text-white/55">{activeService.outcome}</p>
-              <div className="mt-10 grid gap-8 border-t border-white/15 pt-8 sm:grid-cols-2"><div><p className="mb-5 text-xs font-bold uppercase tracking-[0.2em] text-white/35">O que entregamos</p><ul className="space-y-4">{activeService.deliverables.map(item => <li key={item} className="flex gap-3 text-sm leading-relaxed text-white/75"><Check className="mt-0.5 h-4 w-4 shrink-0 text-[#FFF200]" />{item}</li>)}</ul></div><div><p className="mb-5 text-xs font-bold uppercase tracking-[0.2em] text-white/35">Como avançamos</p><ol className="space-y-4">{activeService.process.map((step, index) => <li key={step.title} className="grid grid-cols-[28px_1fr] gap-3"><span className="text-xs font-bold text-[#FFF200]">0{index + 1}</span><div><strong className="text-sm">{step.title}</strong><p className="mt-1 text-sm leading-relaxed text-white/45">{step.description}</p></div></li>)}</ol></div></div>
-              <div className="mt-auto flex flex-col gap-3 pt-10 sm:flex-row"><Link to={`/servicos/${activeService.slug}`} className="inline-flex items-center justify-center gap-2 bg-[#FFF200] px-6 py-4 text-sm font-black uppercase tracking-wide text-black transition hover:bg-white">Ver solução completa <MoveUpRight className="h-4 w-4" /></Link><Link to="/contato" className="inline-flex items-center justify-center gap-2 border border-white/20 px-6 py-4 text-sm font-bold transition hover:border-[#FFF200] hover:text-[#FFF200]">Falar com especialista <ArrowRight className="h-4 w-4" /></Link></div>
-            </div>
-          </motion.article>
-        </div>
+        <ServiceDeck />
       </section>
 
       <section className="relative z-10 bg-[#FFF200] text-black">
