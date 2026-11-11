@@ -60,7 +60,7 @@
   .service-metal-card > div > div:last-child { padding-top: 14px; }
   .service-metal-card a { margin-top: 16px; padding: 12px 14px; }
   .service-deck-arrow { display: none; }
-  .service-card-drag-handle { touch-action: none; user-select: none; -webkit-user-select: none; cursor: grab; min-height: 44px; }
+  .service-metal-card { touch-action: pinch-zoom; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; cursor: grab; }
   .service-deck-track { cursor: grab; }
   .service-deck-track.is-dragging { cursor: grabbing; user-select: none; }
   .service-metal-card.is-active { transform: translateX(var(--deck-drag, 0px)); }
