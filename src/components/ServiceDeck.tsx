@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react';
+import type { CSSProperties } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, Check, MoveUpRight } from 'lucide-react';
 import { serviceCatalog } from '../data/serviceCatalog';
@@ -10,7 +11,9 @@ export default function ServiceDeck() {
   const [active, setActive] = useState(0);
   const [opening, setOpening] = useState<string | null>(null);
   const navigate = useNavigate();
-  const touchStart = useRef<{ x: number; y: number } | null>(null);
+  const pointerStart = useRef<{ x: number; y: number; id: number; horizontal: boolean } | null>(null);
+  const suppressClick = useRef(false);
+  const [dragX, setDragX] = useState(0);
   const select = (index: number) => {
     if (!opening) setActive((index + serviceCatalog.length) % serviceCatalog.length);
   };
@@ -24,22 +27,39 @@ export default function ServiceDeck() {
     </div>
     <div className={`service-deck-stage ${opening ? 'is-gathering' : ''}`}>
     <button type="button" aria-label="Serviço anterior" onClick={() => select(active - 1)} className="service-deck-arrow service-deck-arrow--previous"><ArrowLeft className="h-5 w-5" /></button>
-    <div role="region" aria-roledescription="carrossel" aria-label="Nossos serviços" tabIndex={0} className="service-deck-track" onKeyDown={event => {
+    <div role="region" aria-roledescription="carrossel" aria-label="Nossos serviços" tabIndex={0} className={`service-deck-track ${dragX ? 'is-dragging' : ''}`} style={{ '--deck-drag': `${dragX}px` } as CSSProperties} onClickCapture={event => {
+      if (suppressClick.current) { event.preventDefault(); event.stopPropagation(); suppressClick.current = false; }
+    }} onKeyDown={event => {
       if (event.target !== event.currentTarget) return;
       if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') { event.preventDefault(); select(active + (event.key === 'ArrowRight' ? 1 : -1)); }
       if (event.key === 'Home' || event.key === 'End') { event.preventDefault(); select(event.key === 'Home' ? 0 : serviceCatalog.length - 1); }
-    }} onTouchStart={event => {
-      const touch = event.touches[0];
-      touchStart.current = { x: touch.clientX, y: touch.clientY };
-    }} onTouchCancel={() => { touchStart.current = null; }} onTouchEnd={event => {
-      const start = touchStart.current;
-      touchStart.current = null;
-      if (!start) return;
-      const touch = event.changedTouches[0];
-      const dx = touch.clientX - start.x;
-      const dy = touch.clientY - start.y;
-      if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) select(active + (dx < 0 ? 1 : -1));
-    }}>
+    }} onPointerDown={event => {
+      suppressClick.current = false;
+      if (opening || !event.isPrimary || event.button !== 0 || !window.matchMedia('(max-width: 767px)').matches) return;
+      pointerStart.current = { x: event.clientX, y: event.clientY, id: event.pointerId, horizontal: false };
+    }} onPointerMove={event => {
+      const start = pointerStart.current;
+      if (!start || start.id !== event.pointerId) return;
+      const dx = event.clientX - start.x;
+      const dy = event.clientY - start.y;
+      if (!start.horizontal) {
+        if (Math.abs(dy) > 10 && Math.abs(dy) > Math.abs(dx)) { pointerStart.current = null; return; }
+        if (Math.abs(dx) < 10 || Math.abs(dx) < Math.abs(dy) * 1.3) return;
+        start.horizontal = true;
+        event.currentTarget.setPointerCapture(event.pointerId);
+      }
+      suppressClick.current = true;
+      setDragX(Math.max(-120, Math.min(120, dx * .7)));
+    }} onPointerUp={event => {
+      const start = pointerStart.current;
+      pointerStart.current = null;
+      setDragX(0);
+      if (!start || start.id !== event.pointerId) return;
+      if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId);
+      const dx = event.clientX - start.x;
+      if (start.horizontal && Math.abs(dx) > 44) select(active + (dx < 0 ? 1 : -1));
+    }} onPointerCancel={() => { pointerStart.current = null; setDragX(0); }} onLostPointerCapture={() => { pointerStart.current = null; setDragX(0); }}>
+
       {serviceCatalog.map((service, index) => {
         const offset = (index - active + serviceCatalog.length) % serviceCatalog.length;
         const position = offset > serviceCatalog.length / 2 ? offset - serviceCatalog.length : offset;

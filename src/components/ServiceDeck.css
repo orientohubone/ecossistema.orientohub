@@ -40,6 +40,30 @@
 .service-deck-arrow:disabled { opacity: .25; cursor: default; }
 .service-deck-arrow:focus-visible { outline: 2px solid #fff200; outline-offset: 4px; }
 @media (max-width: 1023px) { .service-metal-card { width: 42cqw; } .service-metal-card.is-far-before, .service-metal-card.is-far-after { opacity: 0; visibility: hidden; } .service-metal-card.is-before { transform: translateX(-65%) scale(.9) rotate(-2deg); } .service-metal-card.is-after { transform: translateX(65%) scale(.9) rotate(2deg); } }
-@media (max-width: 767px) { .service-deck { width: 100%; } .service-deck-controls { flex-wrap: wrap; justify-content: center; gap: 12px; } .service-deck-controls > p { width: 100%; text-align: center; } .service-deck-track { padding: 32px 0 48px; } .service-metal-card { width: 74cqw; padding: 24px 20px; border-radius: 20px; } .service-metal-card.is-before { transform: translateX(-24%) scale(.86) rotate(-2deg); } .service-metal-card.is-after { transform: translateX(24%) scale(.86) rotate(2deg); } }
+@media (max-width: 767px) {
+  .service-deck { width: 100%; }
+  .service-deck-controls { flex-wrap: wrap; justify-content: center; gap: 12px; }
+  .service-deck-controls > p { width: 100%; text-align: center; }
+  .service-deck-track { padding: 24px 0 32px; }
+  .service-metal-card { width: calc(100% - 40px); padding: 20px; border-radius: 20px; }
+  /* Only the selected card determines the deck height on small screens. */
+  .service-metal-card:not(.is-active) { contain: size; overflow: hidden; background: #080808eb; }
+  .service-metal-card.is-before { transform: translateX(-12px) scale(.97) rotate(-1.5deg); }
+  .service-metal-card.is-after { transform: translateX(12px) scale(.97) rotate(1.5deg); }
+  .service-metal-card > div > div:first-child { padding-bottom: 14px; gap: 8px; }
+  .service-metal-card > div > p { margin-top: 12px; }
+  .service-metal-card h3 { margin-top: 8px; font-size: clamp(1.625rem, 7vw, 2rem); line-height: 1.15; overflow-wrap: normal; }
+  .service-metal-card > div > p:nth-of-type(2) { font-size: 14px; line-height: 1.6; }
+  .service-metal-card ul { margin-top: 18px; margin-bottom: 18px; }
+  .service-metal-card li { font-size: 13px; line-height: 1.5; }
+  .service-metal-card li + li { margin-top: 8px; }
+  .service-metal-card > div > div:last-child { padding-top: 14px; }
+  .service-metal-card a { margin-top: 16px; padding: 12px 14px; }
+  .service-deck-arrow { display: none; }
+  .service-deck-track { cursor: grab; }
+  .service-deck-track.is-dragging { cursor: grabbing; user-select: none; }
+  .service-metal-card.is-active { transform: translateX(var(--deck-drag, 0px)); }
+  .is-dragging .service-metal-card.is-active { transition: none; }
+}
 @media (prefers-reduced-motion: reduce) { .service-metal-card, .service-deck-arrow { transition: none; } }
 @media (prefers-reduced-motion: reduce) { .service-deck-stage.is-gathering .service-metal-card, .service-metal-card.is-opening::before, .service-metal-card.is-opening::after { animation-duration: .01ms; } }
