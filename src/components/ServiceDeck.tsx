@@ -11,7 +11,7 @@ export default function ServiceDeck() {
   const [active, setActive] = useState(0);
   const [opening, setOpening] = useState<string | null>(null);
   const navigate = useNavigate();
-  const pointerStart = useRef<{ x: number; y: number; id: number; horizontal: boolean } | null>(null);
+  const pointerStart = useRef<{ x: number; y: number; id: number; horizontal: boolean; fromHeader: boolean } | null>(null);
   const suppressClick = useRef(false);
   const [dragX, setDragX] = useState(0);
   const select = (index: number) => {
@@ -36,15 +36,17 @@ export default function ServiceDeck() {
     }} onPointerDown={event => {
       suppressClick.current = false;
       if (opening || !event.isPrimary || event.button !== 0 || !window.matchMedia('(max-width: 767px)').matches) return;
-      pointerStart.current = { x: event.clientX, y: event.clientY, id: event.pointerId, horizontal: false };
+      const fromHeader = event.target instanceof Element && !!event.target.closest('.service-card-drag-handle');
+      pointerStart.current = { x: event.clientX, y: event.clientY, id: event.pointerId, horizontal: false, fromHeader };
+      if (fromHeader) event.currentTarget.setPointerCapture(event.pointerId);
     }} onPointerMove={event => {
       const start = pointerStart.current;
       if (!start || start.id !== event.pointerId) return;
       const dx = event.clientX - start.x;
       const dy = event.clientY - start.y;
       if (!start.horizontal) {
-        if (Math.abs(dy) > 10 && Math.abs(dy) > Math.abs(dx)) { pointerStart.current = null; return; }
-        if (Math.abs(dx) < 10 || Math.abs(dx) < Math.abs(dy) * 1.3) return;
+        if (!start.fromHeader && Math.abs(dy) > 10 && Math.abs(dy) > Math.abs(dx)) { pointerStart.current = null; return; }
+        if (Math.abs(dx) < 6 || (!start.fromHeader && Math.abs(dx) < Math.abs(dy) * 1.1)) return;
         start.horizontal = true;
         event.currentTarget.setPointerCapture(event.pointerId);
       }
@@ -70,7 +72,7 @@ export default function ServiceDeck() {
           if (event.target === event.currentTarget && event.animationName === 'service-deck-open' && opening === service.slug) navigate(`/servicos/${service.slug}`);
         }}>
           <div className="relative flex h-full flex-col">
-            <div className="flex items-center justify-between gap-4 border-b border-white/20 pb-5"><span className="text-[10px] font-bold uppercase tracking-[0.22em] text-white/60">OrientoHub / Serviços</span><span className="font-mono text-sm text-[#FFF200]">{String(index + 1).padStart(2, '0')} / {serviceCatalog.length}</span></div>
+            <div className="service-card-drag-handle flex items-center justify-between gap-4 border-b border-white/20 pb-5"><span className="text-[10px] font-bold uppercase tracking-[0.22em] text-white/60">OrientoHub / Serviços</span><span className="font-mono text-sm text-[#FFF200]">{String(index + 1).padStart(2, '0')} / {serviceCatalog.length}</span></div>
             <p className="mt-7 text-xs font-semibold uppercase tracking-[0.15em] text-[#FFF200]">{service.eyebrow}</p>
             <h3 className="mt-3 text-4xl font-bold tracking-tight sm:text-5xl">{service.title}</h3>
             <p className="mt-4 text-base leading-relaxed text-white/80 sm:text-lg">{service.outcome}</p>
