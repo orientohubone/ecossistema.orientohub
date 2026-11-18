@@ -52,7 +52,7 @@ export default function ServiceDeck() {
       }
       event.preventDefault();
       suppressClick.current = true;
-      setDragX(Math.max(-120, Math.min(120, dx * .7)));
+      setDragX(Math.max(-160, Math.min(160, dx)));
     }} onPointerUp={event => {
       const start = pointerStart.current;
       pointerStart.current = null;
@@ -60,7 +60,7 @@ export default function ServiceDeck() {
       if (!start || start.id !== event.pointerId) return;
       if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId);
       const dx = event.clientX - start.x;
-      if (start.horizontal && Math.abs(dx) > 44) select(active + (dx < 0 ? 1 : -1));
+      if (start.horizontal && Math.abs(dx) >= 24) select(active + (dx < 0 ? 1 : -1));
     }} onPointerCancel={() => { pointerStart.current = null; setDragX(0); }} onLostPointerCapture={() => { pointerStart.current = null; setDragX(0); }}>
 
       {serviceCatalog.map((service, index) => {
