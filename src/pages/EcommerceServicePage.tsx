@@ -8,7 +8,7 @@ import { siGoogle, siInstagram, siMeta, siShopee, siTiktok } from 'simple-icons'
 import type { SimpleIcon } from 'simple-icons';
 import BlackFridaySeal from '../bf-2026/BlackFridaySeal';
 import trayLogo from '../assets/tray-logo-branca.svg';
-import nuvemshopLogo from '../assets/nuvemshop-seeklogo.svg';
+import nuvemshopLogo from '../assets/nuvemshop-logo-branca.png';
 
 type SalesChannel = { name: string; color: string; icon?: SimpleIcon; customIcon?: typeof MercadoLibre; customLogo?: 'tray' | 'nuvemshop' };
 
@@ -34,7 +34,7 @@ const SalesChannelMark = ({ channel }: { channel: SalesChannel }) => {
   }
 
   if (channel.customLogo === 'nuvemshop') {
-    return <div className="flex h-10 w-[140px] items-center justify-center overflow-hidden" aria-hidden="true"><img src={nuvemshopLogo} alt="" className="h-[112px] w-[140px] max-w-none object-cover object-center brightness-0 invert" /></div>;
+    return <img src={nuvemshopLogo} alt="" className="h-7 max-w-full object-contain" />;
   }
 
   return <img src={trayLogo} alt="" className="h-9 w-auto object-contain" />;
