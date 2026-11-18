@@ -35,7 +35,7 @@ const HeaderBlackFridayMarquee = () => {
   ));
 
   return (
-    <div className="h-6 overflow-hidden bg-[#FFF200] text-black" aria-label="Black Friday OrientoHub">
+    <div role="img" aria-label="Black Friday OrientoHub" className="h-6 overflow-hidden bg-[#FFF200] text-black">
       <div className="flex h-full items-center overflow-hidden">
         <motion.div
           className="flex h-6 w-max shrink-0 items-center whitespace-nowrap"
