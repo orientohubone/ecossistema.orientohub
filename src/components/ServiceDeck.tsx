@@ -14,6 +14,7 @@ export default function ServiceDeck() {
   const [opening, setOpening] = useState<string | null>(null);
   const navigate = useNavigate();
   const pointerStart = useRef<{ x: number; y: number; id: number; horizontal: boolean } | null>(null);
+  const touchStart = useRef<{ x: number; y: number } | null>(null);
   const suppressClick = useRef(false);
   const [dragX, setDragX] = useState(0);
   const select = (index: number) => {
@@ -31,13 +32,39 @@ export default function ServiceDeck() {
     <button type="button" aria-label="Serviço anterior" onClick={() => select(active - 1)} className="service-deck-arrow service-deck-arrow--previous"><ArrowLeft className="h-5 w-5" /></button>
     <div role="region" aria-roledescription="carrossel" aria-label="Nossos serviços" tabIndex={0} className={`service-deck-track ${dragX ? 'is-dragging' : ''}`} style={{ '--deck-drag': `${dragX}px` } as CSSProperties} onClickCapture={event => {
       if (suppressClick.current) { event.preventDefault(); event.stopPropagation(); suppressClick.current = false; }
+    }} onTouchStartCapture={event => {
+      suppressClick.current = false;
+      if (opening || event.touches.length !== 1) { touchStart.current = null; return; }
+      touchStart.current = { x: event.touches[0].clientX, y: event.touches[0].clientY };
+    }} onTouchMoveCapture={event => {
+      const start = touchStart.current;
+      if (!start || event.touches.length !== 1) return;
+      const touch = event.touches[0];
+      const dx = touch.clientX - start.x;
+      const dy = touch.clientY - start.y;
+      if (Math.abs(dy) > 8 && Math.abs(dy) > Math.abs(dx)) { touchStart.current = null; return; }
+      if (Math.abs(dx) < 6) return;
+      suppressClick.current = true;
+      setDragX(Math.max(-160, Math.min(160, dx)));
+    }} onTouchEndCapture={event => {
+      const start = touchStart.current;
+      touchStart.current = null;
+      setDragX(0);
+      if (!start) return;
+      const touch = event.changedTouches[0];
+      const dx = touch.clientX - start.x;
+      if (Math.abs(dx) >= 16) select(active + (dx < 0 ? 1 : -1));
+      if (suppressClick.current) window.setTimeout(() => { suppressClick.current = false; }, 400);
+    }} onTouchCancelCapture={() => {
+      touchStart.current = null;
+      setDragX(0);
     }} onKeyDown={event => {
       if (event.target !== event.currentTarget) return;
       if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') { event.preventDefault(); select(active + (event.key === 'ArrowRight' ? 1 : -1)); }
       if (event.key === 'Home' || event.key === 'End') { event.preventDefault(); select(event.key === 'Home' ? 0 : serviceCatalog.length - 1); }
     }} onDragStart={event => event.preventDefault()} onPointerDown={event => {
       suppressClick.current = false;
-      if (opening || !event.isPrimary || (event.pointerType === 'mouse' && event.button !== 0) || !window.matchMedia('(max-width: 767px)').matches) return;
+      if (opening || event.pointerType === 'touch' || !event.isPrimary || (event.pointerType === 'mouse' && event.button !== 0) || !window.matchMedia('(max-width: 767px)').matches) return;
       pointerStart.current = { x: event.clientX, y: event.clientY, id: event.pointerId, horizontal: false };
     }} onPointerMove={event => {
       const start = pointerStart.current;
@@ -60,7 +87,8 @@ export default function ServiceDeck() {
       if (!start || start.id !== event.pointerId) return;
       if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId);
       const dx = event.clientX - start.x;
-      if (start.horizontal && Math.abs(dx) >= 24) select(active + (dx < 0 ? 1 : -1));
+      if (start.horizontal && Math.abs(dx) >= 16) select(active + (dx < 0 ? 1 : -1));
+      if (suppressClick.current) window.setTimeout(() => { suppressClick.current = false; }, 400);
     }} onPointerCancel={() => { pointerStart.current = null; setDragX(0); }} onLostPointerCapture={() => { pointerStart.current = null; setDragX(0); }}>
 
       {serviceCatalog.map((service, index) => {
