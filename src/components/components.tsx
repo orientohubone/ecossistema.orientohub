@@ -4,6 +4,7 @@ import { ArrowRight } from 'lucide-react';
 import MercadoLibre from '@thesvg/react/mercado-libre';
 import { siGoogle, siInstagram, siMeta, siShopee, siTiktok } from 'simple-icons';
 import type { SimpleIcon } from 'simple-icons';
+import BlackFridaySeal from '../bf-2026/BlackFridaySeal';
 
 type Brand = {
   name: string;
@@ -62,6 +63,15 @@ const IntegrationsSection = () => (
         </motion.div>
 
         <motion.div initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, amount: 0.25 }} className="order-1 text-center lg:order-2 lg:text-left">
+          <div className="mb-5 flex justify-center lg:justify-start">
+            <div className="inline-flex rounded-2xl bg-gradient-to-r from-[#b89b00] via-[#fff9a6] to-[#b89b00] p-px shadow-[0_10px_35px_rgba(0,0,0,0.45)]">
+              <div className="inline-flex items-center gap-3 rounded-[15px] bg-gradient-to-br from-[#2a2a2a] via-[#080808] to-[#1b1b1b] px-4 py-2.5 sm:gap-4 sm:px-5 sm:py-3">
+                <BlackFridaySeal className="h-12 w-auto sm:h-16" />
+                <span className="h-9 w-px bg-gradient-to-b from-transparent via-[#FFF200]/70 to-transparent sm:h-11" aria-hidden="true" />
+                <span className="text-left text-lg font-black uppercase leading-[0.95] tracking-[-0.04em] text-white sm:text-2xl">50% OFF<br /><span className="text-sm font-black tracking-normal text-[#FFF200] sm:text-base">em diversos serviços</span></span>
+              </div>
+            </div>
+          </div>
           <div className="inline-flex rounded-full bg-gradient-to-b from-white/10 to-black/80 backdrop-blur-xl border border-[#FFF200]/50 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-white/90">
             Sua empresa no digital
           </div>

@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, Blocks, Bot, Building2, Check, Code2, Gauge, Lightbulb, Search, Workflow } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import type { ServiceCatalogItem } from '../data/serviceCatalog';
+import BlackFridaySeal from '../bf-2026/BlackFridaySeal';
 
 const IntelligentSystemsServicePage = ({ service }: { service: ServiceCatalogItem }) => {
   const deliveryIcons = [Blocks, Code2, Workflow, Gauge];
@@ -45,10 +46,12 @@ const IntelligentSystemsServicePage = ({ service }: { service: ServiceCatalogIte
               </motion.div>
 
               <motion.aside initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="rounded-2xl border border-[#FFF200]/35 bg-gray-900/85 p-7 backdrop-blur-md sm:p-9">
-                <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#FFF200] text-black"><Bot className="h-6 w-6" /></span>
+                <div className="flex items-center justify-between"><span className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#FFF200] text-black"><Bot className="h-6 w-6" /></span><BlackFridaySeal className="h-16 w-auto sm:h-20" /></div>
                 <p className="mt-8 text-xs font-black uppercase tracking-[0.2em] text-[#FFF200]">Projetos a partir de</p>
-                <p className="mt-2 text-4xl font-black text-[#FFF200]">R$ 2.549</p>
-                <p className="mt-5 border-t border-white/10 pt-5 text-sm leading-relaxed text-white/50">O valor final varia conforme o escopo, a complexidade e as integrações necessárias. O orçamento é definido após o diagnóstico do projeto.</p>
+                <p className="mt-2 text-sm text-white/40 line-through">De R$ 3.500,00</p>
+                <p className="mt-1 text-4xl font-black text-[#FFF200]">R$ 1.750,00</p>
+                <p className="mt-2 text-xs font-black uppercase tracking-wider text-[#FFF200]">50% OFF · Black Friday</p>
+                <p className="mt-5 border-t border-white/10 pt-5 text-sm leading-relaxed text-white/50">O valor parte de um escopo inicial e varia conforme telas, design, dados, segurança e configurações. Manutenção e evolução contínua são avaliadas à parte, conforme a necessidade do projeto.</p>
               </motion.aside>
             </div>
           </div>
@@ -127,17 +130,17 @@ const InternalProcessShowcase = () => {
   return (
     <div className="mt-8 border-t border-[#FFF200]/25 pt-8">
       <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between"><div><p className="text-xs font-black uppercase tracking-[0.22em] text-[#FFF200]">Sistemas em operação</p><h3 className="mt-2 text-3xl font-black">Processos internos da OrientoHub</h3></div><span className="text-xs font-bold uppercase tracking-[0.14em] text-white/35">Dados demonstrativos</span></div>
-      <div className="mt-6 grid gap-6 xl:grid-cols-2">
+      <div className="mt-6 grid min-w-0 gap-6">
         <article className="overflow-hidden rounded-2xl border border-white/10 bg-[#171c24] p-4 sm:p-5">
           <div className="flex items-start justify-between gap-4"><div><p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#FFF200]">Pré-projeto</p><h4 className="mt-1 text-xl font-bold">Ideias e incubação</h4><p className="mt-1 text-xs text-[#9ba9bc]">Da captura à decisão de transformar uma ideia em projeto.</p></div><span className="rounded-lg bg-[#FFF200] px-2 py-1 text-[10px] font-black text-black">Nova ideia</span></div>
           <div className="relative mt-4"><Search className="absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-[#718096]" /><div className="rounded-lg border border-[#273548] bg-[#101722] py-2 pl-9 text-[11px] text-[#718096]">Buscar ideias, público ou problema</div></div>
-          <div className="mt-4 grid gap-2 sm:grid-cols-5">{ideaStages.map(stage => <div key={stage.name} className="min-h-36 rounded-xl border border-[#273548] bg-[#101722] p-2"><p className={`text-[9px] font-black uppercase tracking-wide ${stage.color}`}>{stage.name}</p><div className="mt-3 space-y-2">{stage.items.map(item => <div key={item} className="rounded-lg border border-[#273548] bg-[#151f2b] p-2"><div className="flex gap-1.5"><Lightbulb className="mt-0.5 h-3 w-3 shrink-0 text-[#FFF200]" /><p className="text-[10px] font-bold leading-tight">{item}</p></div><p className="mt-2 text-right text-[8px] text-[#FFF200]">Curadoria demonstrativa</p></div>)}</div></div>)}</div>
+          <div className="mt-4 grid min-w-0 grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-5">{ideaStages.map(stage => <div key={stage.name} className="min-h-28 min-w-0 rounded-xl border border-[#273548] bg-[#101722] p-3 sm:min-h-32"><p className={`text-[10px] font-black uppercase tracking-wide ${stage.color}`}>{stage.name}</p><div className="mt-3 space-y-2">{stage.items.map(item => <div key={item} className="min-w-0 rounded-lg border border-[#273548] bg-[#151f2b] p-2.5"><div className="flex gap-1.5"><Lightbulb className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#FFF200]" /><p className="min-w-0 break-words text-xs font-bold leading-snug">{item}</p></div><p className="mt-2 text-right text-[9px] text-[#FFF200]">Curadoria demonstrativa</p></div>)}</div></div>)}</div>
         </article>
 
         <article className="overflow-hidden rounded-2xl border border-white/10 bg-[#171c24] p-4 sm:p-5">
           <div className="flex items-start justify-between gap-4"><div><p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#FFF200]">Relacionamento comercial</p><h4 className="mt-1 text-xl font-bold">CRM comercial</h4><p className="mt-1 text-xs text-[#9ba9bc]">Oportunidades organizadas por etapa e próximo passo.</p></div><span className="rounded-lg bg-[#FFF200] px-2 py-1 text-[10px] font-black text-black">Novo cliente</span></div>
           <div className="relative mt-4"><Search className="absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-[#718096]" /><div className="rounded-lg border border-[#273548] bg-[#101722] py-2 pl-9 text-[11px] text-[#718096]">Buscar oportunidades</div></div>
-          <div className="mt-4 grid gap-2 sm:grid-cols-4">{crmStages.map(stage => <div key={stage.name} className="min-h-36 rounded-xl border border-[#273548] bg-[#0c121b]/50 p-2"><div className="flex items-center justify-between"><p className="text-[9px] font-black uppercase tracking-wide text-[#d7e0ea]">{stage.name}</p><span className="text-[9px] text-[#FFF200]">1</span></div><div className="mt-3 space-y-2">{stage.items.map(item => <div key={item} className="rounded-lg border border-[#273548] bg-[#101722] p-2"><div className="flex gap-1.5"><Building2 className="mt-0.5 h-3 w-3 shrink-0 text-[#FFF200]" /><p className="text-[10px] font-bold leading-tight">{item}</p></div><p className="mt-2 text-[8px] text-[#9ba9bc]">Próximo passo demonstrativo</p></div>)}</div></div>)}</div>
+          <div className="mt-4 grid min-w-0 grid-cols-1 gap-2 sm:grid-cols-2 xl:grid-cols-4">{crmStages.map(stage => <div key={stage.name} className="min-h-28 min-w-0 rounded-xl border border-[#273548] bg-[#0c121b]/50 p-3 sm:min-h-32"><div className="flex items-center justify-between gap-2"><p className="text-[10px] font-black uppercase tracking-wide text-[#d7e0ea]">{stage.name}</p><span className="text-[10px] text-[#FFF200]">1</span></div><div className="mt-3 space-y-2">{stage.items.map(item => <div key={item} className="min-w-0 rounded-lg border border-[#273548] bg-[#101722] p-2.5"><div className="flex gap-1.5"><Building2 className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#FFF200]" /><p className="min-w-0 break-words text-xs font-bold leading-snug">{item}</p></div><p className="mt-2 text-[9px] leading-relaxed text-[#9ba9bc]">Próximo passo demonstrativo</p></div>)}</div></div>)}</div>
         </article>
       </div>
     </div>

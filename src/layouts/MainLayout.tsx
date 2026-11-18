@@ -4,6 +4,7 @@ import Header from '../components/layout/Header';
 import Footer from '../components/layout/Footer';
 import ContactFab from '../components/layout/ContactFab';
 import { motion } from 'framer-motion';
+import BlackFridayBanner from '../bf-2026/BlackFridayBanner';
 
 const MainLayout = () => {
   const location = useLocation();
@@ -88,6 +89,7 @@ const MainLayout = () => {
 
   return (
     <div className="flex flex-col min-h-screen">
+      <BlackFridayBanner />
       <Header />
       {usesSlimScrollIndicator && (
         <div className="pointer-events-none fixed right-0 top-24 bottom-0 z-40 hidden md:flex items-center">

@@ -391,11 +391,8 @@ const PricingCard = ({ plan, isAnnual, delay }: PricingCardProps) => {
         >
           {/* Glow effect */}
           <div className="absolute inset-0 bg-[#FFF200] rounded-full blur-2xl opacity-0 group-hover:opacity-60 transition-opacity duration-300 scale-150" />
-          
-          {/* Icon */}
           <Icon className="relative w-14 h-14 text-[#FFF200] drop-shadow-none group-hover:drop-shadow-none transition-all duration-300" />
         </motion.div>
-        
         {!plan.featured && (
           <span className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase">
             {plan.tagline}
@@ -403,13 +400,11 @@ const PricingCard = ({ plan, isAnnual, delay }: PricingCardProps) => {
         )}
       </div>
 
-      {/* Plan info */}
       <h3 className="text-3xl font-bold mb-2">{plan.name}</h3>
       <p className="text-gray-600 dark:text-gray-400 mb-6">
         {plan.description}
       </p>
 
-      {/* Price */}
       <div className="mb-8">
         <div className="flex items-baseline gap-2">
           <span className="text-5xl font-bold text-gray-900 dark:text-white">
@@ -428,7 +423,6 @@ const PricingCard = ({ plan, isAnnual, delay }: PricingCardProps) => {
         )}
       </div>
 
-      {/* Features */}
       <ul className="space-y-4 mb-8">
         {plan.features.map((feature, index) => (
           <li key={index} className="flex items-start gap-3">
@@ -438,7 +432,6 @@ const PricingCard = ({ plan, isAnnual, delay }: PricingCardProps) => {
         ))}
       </ul>
 
-      {/* CTA */}
       <Link
        to={`${plan.href}${plan.href.includes('?') ? '&' : '?'}billing=${isAnnual ? 'annual' : 'monthly'}`}
         className={`block w-full text-center px-6 py-4 rounded-xl font-bold transition-all duration-300 ${

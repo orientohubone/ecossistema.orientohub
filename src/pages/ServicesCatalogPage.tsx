@@ -1,7 +1,9 @@
 import { motion } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 import { ArrowDown, ArrowRight, BarChart3, ClipboardList, Search, Target } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import ServiceDeck from '../components/ServiceDeck';
+import BlackFridaySeal from '../bf-2026/BlackFridaySeal';
 
 const ServicesCatalogPage = () => {
   return <>
@@ -10,7 +12,7 @@ const ServicesCatalogPage = () => {
       <div className="pointer-events-none absolute inset-0 z-0 opacity-20" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, #FFF200 1px, transparent 0)', backgroundSize: '40px 40px' }} />
       <section className="relative z-10 overflow-hidden border-b border-white/10">
         <div className="container-custom relative py-20 sm:py-28 lg:py-36"><div className="grid gap-12 lg:grid-cols-[1fr_360px] lg:items-end">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}><p className="mb-6 flex items-center gap-3 text-xs font-bold uppercase tracking-[0.24em] text-[#FFF200]"><span className="h-px w-10 bg-[#FFF200]" />Núcleo de serviços</p><h1 className="max-w-5xl text-5xl font-black leading-[0.9] tracking-[-0.05em] sm:text-7xl lg:text-[96px]">Estratégia que<br /><span className="text-[#FFF200]">vira execução.</span></h1></motion.div>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}><div className="mb-3 inline-flex rounded-2xl bg-gradient-to-r from-[#b89b00] via-[#fff9a6] to-[#b89b00] p-[1px] shadow-[0_10px_35px_rgba(0,0,0,0.45)]"><div className="inline-flex items-center gap-3 rounded-[15px] bg-gradient-to-br from-[#2a2a2a] via-[#080808] to-[#1b1b1b] px-4 py-2.5 sm:gap-4 sm:px-5 sm:py-3"><BlackFridaySeal className="h-12 w-auto sm:h-16" /><span className="h-9 w-px bg-gradient-to-b from-transparent via-[#FFF200]/70 to-transparent sm:h-11" aria-hidden="true" /><span className="text-left text-lg font-black uppercase leading-[0.95] tracking-[-0.04em] text-white sm:text-2xl">50% OFF<br /><span className="text-sm font-black tracking-normal text-[#FFF200] sm:text-base">em diversos serviços</span></span></div></div><div className="mb-6"><Link to="/regulamento-black-friday" className="text-xs font-semibold text-white/50 underline decoration-white/20 underline-offset-4 transition hover:text-[#FFF200] hover:decoration-[#FFF200]">Consulte o regulamento da campanha</Link></div><p className="mb-6 flex items-center gap-3 text-xs font-bold uppercase tracking-[0.24em] text-[#FFF200]"><span className="h-px w-10 bg-[#FFF200]" />Núcleo de serviços</p><h1 className="max-w-5xl text-5xl font-black leading-[0.9] tracking-[-0.05em] sm:text-7xl lg:text-[96px]">Estratégia que<br /><span className="text-[#FFF200]">vira execução.</span></h1></motion.div>
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.15 }} className="border-l border-[#FFF200] pl-6"><p className="text-lg leading-relaxed text-white/65">Conectamos negócio, marca, marketing e tecnologia para resolver o que realmente limita o seu crescimento.</p><a href="#catalogo" className="mt-7 inline-flex items-center gap-3 text-sm font-bold uppercase tracking-wider transition hover:text-[#FFF200]">Explorar soluções <ArrowDown className="h-4 w-4" /></a></motion.div>
         </div></div>
       </section>

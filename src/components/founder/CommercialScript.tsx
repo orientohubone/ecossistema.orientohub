@@ -112,7 +112,7 @@ const cadence = [
 
 const offerLadder = [
   ['Entrada rápida', 'Baixa fricção e resultado visível', 'Google Meu Negócio · Design · Naming · Domínio', 'R$ 40–450+'],
-  ['Projeto de caixa', 'Resolve um gargalo comercial concreto', 'Site · E-commerce · Sistemas inteligentes', 'R$ 849–2.549+'],
+  ['Projeto de caixa', 'Resolve um gargalo comercial concreto', 'Site · E-commerce · Sistemas inteligentes', 'R$ 849–3.500+'],
   ['Receita recorrente', 'Execução contínua e previsibilidade', 'Marketing · Mídia paga', 'R$ 600–5.997/mês'],
   ['Expansão', 'Aprofunda a relação após confiança', 'Estratégia · Inovação · novas frentes', 'Sob diagnóstico'],
 ];

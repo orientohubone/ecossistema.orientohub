@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, Check, ClipboardCheck, FileSearch, Search, ShieldCheck } from 'lucide-react';
 import type { ServiceCatalogItem } from '../data/serviceCatalog';
+import BlackFridaySeal from '../bf-2026/BlackFridaySeal';
 
 const BrandsServicePage = ({ service }: { service: ServiceCatalogItem }) => {
   const processIcons = [Search, ClipboardCheck, FileSearch];
@@ -29,9 +30,10 @@ const BrandsServicePage = ({ service }: { service: ServiceCatalogItem }) => {
               </motion.div>
 
               <motion.aside initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="rounded-2xl border border-[#FFF200]/35 bg-gray-900/85 p-7 backdrop-blur-md sm:p-9">
-                <div className="flex items-center justify-between"><span className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#FFF200] text-black"><ShieldCheck className="h-6 w-6" /></span><span className="rounded-full border border-[#FFF200]/35 bg-[#FFF200]/10 px-3 py-1 text-xs font-black uppercase tracking-wider text-[#FFF200]">Oferta especial</span></div>
-                <p className="mt-8 text-sm text-white/40 line-through">De R$ 850,00</p>
-                <p className="mt-1 text-5xl font-black text-[#FFF200]">R$ 450,00</p>
+                <div className="flex items-center justify-between"><span className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#FFF200] text-black"><ShieldCheck className="h-6 w-6" /></span><BlackFridaySeal className="h-16 w-auto sm:h-20" /></div>
+                <p className="mt-8 text-sm text-white/40 line-through">De R$ 425,00</p>
+                <p className="mt-1 text-5xl font-black text-[#FFF200]">R$ 212,50</p>
+                <p className="mt-2 text-xs font-black uppercase tracking-wider text-[#FFF200]">50% OFF · Black Friday</p>
                 <p className="mt-2 text-sm font-semibold text-white/70">Honorários do serviço</p>
                 <p className="mt-5 border-t border-white/10 pt-5 text-sm leading-relaxed text-white/50">A taxa oficial do INPI é cobrada separadamente e varia conforme o enquadramento do solicitante.</p>
               </motion.aside>
@@ -43,6 +45,29 @@ const BrandsServicePage = ({ service }: { service: ServiceCatalogItem }) => {
           <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
             <div><p className="text-xs font-black uppercase tracking-[0.22em] text-[#FFF200]">Antes do protocolo</p><h2 className="mt-4 text-4xl font-black tracking-[-0.04em] sm:text-5xl">Registrar começa por analisar.</h2><p className="mt-5 text-lg leading-relaxed text-white/50">Nome, segmento, classes e marcas anteriores influenciam a viabilidade do pedido. Uma análise inicial ajuda a identificar riscos e escolher um caminho mais consistente.</p></div>
             <div className="grid gap-4 sm:grid-cols-2">{service.deliverables.map((item, index) => <motion.article key={item} initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="rounded-2xl border border-[#FFF200]/30 bg-gray-900/70 p-6"><span className="text-xs font-black text-[#FFF200]">0{index + 1}</span><p className="mt-8 text-lg font-bold">{item}</p></motion.article>)}</div>
+          </div>
+        </section>
+
+        <section className="relative z-10 border-y border-white/10 bg-black/35">
+          <div className="container-custom py-14 sm:py-16">
+            <div className="mx-auto max-w-3xl text-center">
+              <p className="text-xs font-black uppercase tracking-[0.22em] text-[#FFF200]">A importância do suporte profissional</p>
+              <h2 className="mt-3 text-3xl font-black tracking-tight sm:text-4xl">Registrar com orientação faz diferença em cada etapa.</h2>
+              <p className="mt-4 leading-relaxed text-white/55">O processo envolve requisitos, prazos e decisões técnicas. Um profissional ajuda a preparar a solicitação corretamente e acompanha sua evolução junto ao INPI.</p>
+            </div>
+            <div className="mx-auto mt-8 grid max-w-6xl gap-4 md:grid-cols-3">
+              {[
+                { icon: Search, title: 'Solicitação bem preparada', text: 'Análise da marca, escolha das classes e organização das informações para reduzir erros antes do protocolo.' },
+                { icon: ClipboardCheck, title: 'Etapas do INPI', text: 'Orientação para conduzir a solicitação conforme os requisitos e as etapas estabelecidas pelo Instituto.' },
+                { icon: FileSearch, title: 'Acompanhamento contínuo', text: 'Monitoramento das movimentações e orientação sobre os próximos passos ao longo do processo.' },
+              ].map(({ icon: Icon, title, text }) => (
+                <article key={title} className="rounded-2xl border border-[#FFF200]/20 bg-gradient-to-br from-[#151515] to-[#090909] p-6 sm:p-7">
+                  <Icon className="h-6 w-6 text-[#FFF200]" />
+                  <h3 className="mt-5 text-lg font-black">{title}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-white/55">{text}</p>
+                </article>
+              ))}
+            </div>
           </div>
         </section>
 

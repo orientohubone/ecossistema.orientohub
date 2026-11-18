@@ -3,9 +3,11 @@ import type { CSSProperties } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, Check, MoveUpRight } from 'lucide-react';
 import { serviceCatalog } from '../data/serviceCatalog';
+import BlackFridaySeal from '../bf-2026/BlackFridaySeal';
 import './ServiceDeck.css';
 
 const money = (value: number) => value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+const blackFridayExcluded = new Set(['estrategia', 'inovacao', 'marketing', 'dominio', 'design']);
 
 export default function ServiceDeck() {
   const [active, setActive] = useState(0);
@@ -64,6 +66,9 @@ export default function ServiceDeck() {
         const cardClass = position === 0 ? 'is-active' : position === -1 ? 'is-before' : position === 1 ? 'is-after' : position === -2 ? 'is-far-before' : position === 2 ? 'is-far-after' : '';
         const price = service.pricing;
         const value = price?.fixed ?? price?.promotional ?? price?.startingAt;
+        const hasBlackFridayOffer = !blackFridayExcluded.has(service.slug) && value !== undefined;
+        const originalValue = hasBlackFridayOffer ? price?.original ?? value : undefined;
+        const discountedValue = originalValue === undefined ? value : originalValue / 2;
         return <article key={service.slug} role="group" aria-roledescription="slide" aria-label={`${index + 1} de ${serviceCatalog.length}: ${service.title}`} aria-hidden={active !== index} aria-busy={opening === service.slug} className={`service-metal-card ${cardClass} ${opening === service.slug ? 'is-opening' : ''}`} onAnimationEnd={event => {
           if (event.target === event.currentTarget && event.animationName === 'service-deck-open' && opening === service.slug) navigate(`/servicos/${service.slug}`);
         }}>
@@ -75,9 +80,13 @@ export default function ServiceDeck() {
             <ul className="my-7 space-y-3">{service.deliverables.map(item => <li key={item} className="flex gap-3 text-sm leading-relaxed text-white/75"><Check className="mt-0.5 h-4 w-4 shrink-0 text-[#FFF200]" />{item}</li>)}</ul>
             <div className="mt-auto border-t border-white/20 pt-5">
               <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-white/55">{price?.startingAt !== undefined && price.fixed === undefined && price.promotional === undefined ? price.startingAtLabel ?? 'A partir de' : 'Investimento'}</p>
-              {price?.original !== undefined && price.promotional !== undefined && <span className="mt-1 block text-sm text-white/50 line-through">{money(price.original)}</span>}
-              <p className="mt-1 text-2xl font-bold">{price?.customText ?? (value !== undefined ? money(value) : 'Escopo personalizado')}<span className="text-sm font-normal text-white/65">{price?.suffix}</span></p>
-              {price?.alternative && <p className="mt-2 text-xs text-white/65">{price.alternative.label}: {money(price.alternative.value)}</p>}
+              {hasBlackFridayOffer && originalValue !== undefined && <span className="mt-1 block text-sm text-white/50 line-through">{money(originalValue)}</span>}
+              {!hasBlackFridayOffer && price?.original !== undefined && price.promotional !== undefined && <span className="mt-1 block text-sm text-white/50 line-through">{money(price.original)}</span>}
+              <div className="-mt-1 flex flex-wrap items-center gap-x-3 gap-y-1">
+                <p className="text-2xl font-bold">{price?.customText ?? (discountedValue !== undefined ? money(discountedValue) : 'Escopo personalizado')}<span className="text-sm font-normal text-white/65">{price?.suffix}</span></p>
+                {hasBlackFridayOffer && <BlackFridaySeal className="h-12 w-auto shrink-0" />}
+              </div>
+              {price?.alternative && <p className="mt-2 text-xs text-white/65">{price.alternative.label}: {hasBlackFridayOffer ? <><span className="mr-1 line-through opacity-60">{money(price.alternative.value)}</span>{money(price.alternative.value / 2)}</> : money(price.alternative.value)}</p>}
               {price?.note && <p className="mt-2 text-xs leading-relaxed text-white/60">{price.note}</p>}
               <Link to={`/servicos/${service.slug}`} tabIndex={active === index ? 0 : -1} onClick={event => {
                 if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;

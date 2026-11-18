@@ -2,8 +2,9 @@ import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Menu, X, Sparkles, GraduationCap, ChevronDown, Layout, Info, MessageCircle, Layers, Briefcase, Monitor, Handshake, Compass, Share2, Building2, Newspaper, BookOpen, ArrowUpRight } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { useAuthStore } from '../../stores/authStore';
+import blackFridayMarqueeArt from '../../bf-2026/faixa-black-friday-recortada.png';
 
 const applyTheme = (isDark: boolean) => {
   document.documentElement.classList.add('[&_*]:transition-colors', '[&_*]:duration-200');
@@ -19,6 +20,35 @@ const applyTheme = (isDark: boolean) => {
   window.setTimeout(() => {
     document.documentElement.classList.remove('[&_*]:transition-colors', '[&_*]:duration-200');
   }, 220);
+};
+
+const HeaderBlackFridayMarquee = () => {
+  const reduceMotion = useReducedMotion();
+  const items = Array.from({ length: 4 }, (_, index) => (
+    <img
+      key={index}
+      src={blackFridayMarqueeArt}
+      alt=""
+      draggable={false}
+      className="h-6 w-auto max-w-none shrink-0 object-contain"
+    />
+  ));
+
+  return (
+    <div className="h-6 overflow-hidden bg-[#FFF200] text-black" aria-label="Black Friday OrientoHub">
+      <div className="flex h-full items-center overflow-hidden">
+        <motion.div
+          className="flex h-6 w-max shrink-0 items-center whitespace-nowrap"
+          animate={reduceMotion ? undefined : { x: ['0%', '-50%'] }}
+          transition={reduceMotion ? undefined : { duration: 52, ease: 'linear', repeat: Infinity }}
+          aria-hidden="true"
+        >
+          <div className="flex shrink-0 items-center">{items}</div>
+          <div className="flex shrink-0 items-center">{items}</div>
+        </motion.div>
+      </div>
+    </div>
+  );
 };
 
 const Header = () => {
@@ -89,24 +119,8 @@ const Header = () => {
   ];
 
   return (
-    <>      {/* Launch Banner */}
-      <div className="bg-gradient-to-r from-[#FFF200] to-[#FFF200] px-3 py-1.5 sm:px-4 sm:py-2">
-        <div className="container-custom">
-          <div className="mx-auto flex max-w-4xl items-center justify-center gap-1.5 sm:gap-2.5 text-center text-[11px] sm:text-sm font-bold sm:font-semibold leading-tight text-black">
-            <span className="inline-flex h-5 w-5 sm:h-6 sm:w-6 shrink-0 items-center justify-center rounded-full bg-black/10">
-              <MessageCircle className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-black" />
-            </span>
-            <a 
-              href="https://wa.me/551433331071?text=Olá!%20Vim%20pelo%20site%20e%20gostaria%20de%20saber%20mais." 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="hover:underline decoration-black/50 underline-offset-4 whitespace-normal"
-            >
-              Possui alguma ideia e deseja tirar do papel?
-            </a>
-          </div>
-        </div>
-      </div>
+    <>
+      <HeaderBlackFridayMarquee />
       
       <header className={`sticky top-0 z-50 transition-all duration-200 ${scrolled ? 'bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm shadow-sm' : 'bg-transparent dark:bg-[#14181f]/35'}`}>
         <div className="container-custom">

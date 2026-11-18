@@ -3,6 +3,42 @@ import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, BarChart3, Boxes, Check, CreditCard, PackageCheck, Settings2, ShoppingCart, Store, Truck } from 'lucide-react';
 import type { ServiceCatalogItem } from '../data/serviceCatalog';
+import MercadoLibre from '@thesvg/react/mercado-libre';
+import { siGoogle, siInstagram, siMeta, siShopee, siTiktok } from 'simple-icons';
+import type { SimpleIcon } from 'simple-icons';
+import BlackFridaySeal from '../bf-2026/BlackFridaySeal';
+import trayLogo from '../assets/tray-logo-branca.svg';
+import nuvemshopLogo from '../assets/nuvemshop-seeklogo.svg';
+
+type SalesChannel = { name: string; color: string; icon?: SimpleIcon; customIcon?: typeof MercadoLibre; customLogo?: 'tray' | 'nuvemshop' };
+
+const salesChannels: SalesChannel[] = [
+  { name: 'Instagram', icon: siInstagram, color: '#E4405F' },
+  { name: 'TikTok', icon: siTiktok, color: '#FFFFFF' },
+  { name: 'Shopee', icon: siShopee, color: '#EE4D2D' },
+  { name: 'Mercado Livre', customIcon: MercadoLibre, color: '#FFE600' },
+  { name: 'Google', icon: siGoogle, color: '#4285F4' },
+  { name: 'Meta', icon: siMeta, color: '#0866FF' },
+  { name: 'Tray Commerce', color: '#34A9D5', customLogo: 'tray' },
+  { name: 'Nuvemshop', color: '#5B9FE3', customLogo: 'nuvemshop' },
+];
+
+const SalesChannelMark = ({ channel }: { channel: SalesChannel }) => {
+  if (channel.customIcon) {
+    const Icon = channel.customIcon;
+    return <Icon className="h-9 w-9" aria-hidden="true" />;
+  }
+
+  if (channel.icon) {
+    return <svg viewBox="0 0 24 24" className="h-9 w-9" aria-hidden="true" fill="currentColor"><path d={channel.icon.path} /></svg>;
+  }
+
+  if (channel.customLogo === 'nuvemshop') {
+    return <div className="flex h-10 w-[140px] items-center justify-center overflow-hidden" aria-hidden="true"><img src={nuvemshopLogo} alt="" className="h-[112px] w-[140px] max-w-none object-cover object-center brightness-0 invert" /></div>;
+  }
+
+  return <img src={trayLogo} alt="" className="h-9 w-auto object-contain" />;
+};
 
 const EcommerceServicePage = ({ service }: { service: ServiceCatalogItem }) => {
   const processIcons = [Boxes, Settings2, BarChart3];
@@ -35,11 +71,31 @@ const EcommerceServicePage = ({ service }: { service: ServiceCatalogItem }) => {
               </motion.div>
 
               <motion.aside initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="rounded-2xl border border-[#FFF200]/35 bg-gray-900/85 p-7 backdrop-blur-md sm:p-9">
-                <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#FFF200] text-black"><ShoppingCart className="h-6 w-6" /></span>
+                <div className="flex items-center justify-between"><span className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#FFF200] text-black"><ShoppingCart className="h-6 w-6" /></span><BlackFridaySeal className="h-16 w-auto sm:h-20" /></div>
                 <p className="mt-8 text-xs font-black uppercase tracking-[0.2em] text-[#FFF200]">Implantação a partir de</p>
-                <p className="mt-2 text-5xl font-black text-[#FFF200]">R$ 849</p>
+                <p className="mt-2 text-sm text-white/40 line-through">De R$ 849,00</p>
+                <p className="mt-1 text-5xl font-black text-[#FFF200]">R$ 424,50</p>
+                <p className="mt-2 text-xs font-black uppercase tracking-wider text-[#FFF200]">50% OFF · Black Friday</p>
                 <p className="mt-5 border-t border-white/10 pt-5 text-sm leading-relaxed text-white/50">O valor varia conforme catálogo, plataforma, integrações e regras da operação. Mensalidade da plataforma, tarifas de pagamento e gestão recorrente não estão incluídas.</p>
               </motion.aside>
+            </div>
+          </div>
+        </section>
+
+        <section aria-labelledby="sales-channels-title" className="relative z-10 border-b border-white/10">
+          <div className="container-custom py-14 sm:py-16">
+            <div className="mx-auto max-w-3xl text-center">
+              <p className="text-xs font-black uppercase tracking-[0.22em] text-[#FFF200]">Ecossistema conectado</p>
+              <h2 id="sales-channels-title" className="mt-3 text-3xl font-black tracking-[-0.04em] sm:text-4xl">Sua loja conectada aos canais de venda.</h2>
+              <p className="mt-4 leading-relaxed text-white/55">Integramos as plataformas e os canais que fazem parte da rotina do seu e-commerce.</p>
+            </div>
+            <div className="mx-auto mt-8 grid max-w-5xl grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
+              {salesChannels.map((channel) => (
+                <div key={channel.name} className="flex min-h-24 flex-col items-center justify-center gap-2 rounded-2xl border border-white/10 bg-[#101722]/85 p-4 text-center transition hover:border-[#FFF200]/35">
+                  <span className="flex h-10 items-center justify-center" style={{ color: channel.color }}><SalesChannelMark channel={channel} /></span>
+                  <span className="text-xs font-semibold text-white/70">{channel.name}</span>
+                </div>
+              ))}
             </div>
           </div>
         </section>

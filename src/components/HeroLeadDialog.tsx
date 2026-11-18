@@ -70,13 +70,13 @@ const HeroLeadDialog = ({ open, onClose }: HeroLeadDialogProps) => {
     setSent(true);
   };
 
-  const fieldClassName = 'mt-2 w-full rounded-xl border border-white/10 bg-[#0a1018] px-4 py-3 text-sm text-white outline-none transition placeholder:text-[#536174] focus:border-[#FFF200]/70 focus:ring-2 focus:ring-[#FFF200]/10';
+  const fieldClassName = 'mt-1.5 w-full rounded-lg border border-white/10 bg-[#0a1018] px-3 py-2 text-sm text-white outline-none transition placeholder:text-[#536174] focus:border-[#FFF200]/70 focus:ring-2 focus:ring-[#FFF200]/10';
 
   return (
     <AnimatePresence>
       {open && (
         <motion.div
-          className="fixed inset-0 z-[120] flex items-center justify-center overflow-y-auto bg-black/75 p-4 backdrop-blur-md"
+          className="fixed inset-0 z-[120] flex items-center justify-center overflow-y-auto bg-black/75 p-4"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -86,7 +86,7 @@ const HeroLeadDialog = ({ open, onClose }: HeroLeadDialogProps) => {
             role="dialog"
             aria-modal="true"
             aria-labelledby="hero-lead-title"
-            className="relative my-auto w-full max-w-xl overflow-hidden rounded-[28px] border border-[#FFF200]/25 bg-[#101722] shadow-[0_32px_100px_rgba(0,0,0,.7)]"
+            className="relative my-auto w-full max-w-2xl overflow-hidden rounded-[24px] border border-[#FFF200]/25 bg-[#101722] shadow-[0_32px_100px_rgba(0,0,0,.7)]"
             initial={{ opacity: 0, scale: 0.94, y: 24 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.96, y: 16 }}
@@ -107,34 +107,35 @@ const HeroLeadDialog = ({ open, onClose }: HeroLeadDialogProps) => {
                 <button type="button" onClick={close} className="mt-8 rounded-xl bg-[#FFF200] px-6 py-3 text-sm font-black text-black transition hover:bg-[#fff64d]">Voltar ao site</button>
               </div>
             ) : (
-              <div className="relative p-6 sm:p-8">
-                <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#FFF200]/10 text-[#FFF200]"><Lightbulb className="h-6 w-6" /></span>
-                <p className="mt-6 text-xs font-black uppercase tracking-[.2em] text-[#FFF200]">Conversa inicial</p>
-                <h2 id="hero-lead-title" className="mt-2 pr-10 text-3xl font-black tracking-tight text-white sm:text-4xl">Conte o que você quer tirar do papel.</h2>
-                <p className="mt-3 max-w-lg text-sm leading-relaxed text-[#9ba9bc] sm:text-base">Compartilhe seu momento. Vamos entender o desafio antes de recomendar o próximo passo.</p>
+              <div className="relative p-5 sm:p-6">
+                <button type="button" onClick={close} disabled={submitting} className="mb-3 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[.16em] text-[#FFF200] sm:mb-4" aria-label="Conversa inicial">
+                  <Lightbulb className="h-4 w-4" /> Conversa inicial
+                </button>
+                <h2 id="hero-lead-title" className="pr-10 text-2xl font-black tracking-tight text-white sm:text-3xl">Vamos tirar sua ideia do papel.</h2>
+                <p className="mt-1.5 max-w-lg text-xs leading-relaxed text-[#9ba9bc] sm:text-sm">Conte o essencial. A gente entende o desafio e indica o próximo passo.</p>
 
-                <form onSubmit={submit} className="mt-7 grid gap-4 sm:grid-cols-2">
+                <form onSubmit={submit} className="mt-4 grid gap-3 sm:grid-cols-2">
                   <label className="text-xs font-bold text-[#d7e0ea]">Nome
                     <input ref={nameInputRef} required maxLength={100} autoComplete="name" value={form.name} onChange={(event) => setForm({ ...form, name: event.target.value })} placeholder="Como podemos chamar você?" className={fieldClassName} />
                   </label>
                   <label className="text-xs font-bold text-[#d7e0ea]">Empresa ou projeto
                     <input required maxLength={120} autoComplete="organization" value={form.company} onChange={(event) => setForm({ ...form, company: event.target.value })} placeholder="Nome da empresa ou ideia" className={fieldClassName} />
                   </label>
-                  <label className="text-xs font-bold text-[#d7e0ea] sm:col-span-2">Telefone / WhatsApp
+                  <label className="text-xs font-bold text-[#d7e0ea]">
+                    Telefone / WhatsApp
                     <input required type="tel" minLength={8} maxLength={30} autoComplete="tel" inputMode="tel" value={form.phone} onChange={(event) => setForm({ ...form, phone: event.target.value })} placeholder="(00) 00000-0000" className={fieldClassName} />
                   </label>
                   <label className="text-xs font-bold text-[#d7e0ea] sm:col-span-2">Qual é o contexto?
-                    <textarea required minLength={20} maxLength={800} value={form.context} onChange={(event) => setForm({ ...form, context: event.target.value })} placeholder="O que você quer construir, em que estágio está e qual é o principal desafio hoje?" className={`${fieldClassName} min-h-28 resize-none leading-relaxed`} />
-                    <span className="mt-1.5 block text-right text-[10px] font-medium text-[#718096]">{form.context.length}/800</span>
+                    <textarea required minLength={20} maxLength={800} value={form.context} onChange={(event) => setForm({ ...form, context: event.target.value })} placeholder="O que você quer construir e qual é o principal desafio hoje?" className={`${fieldClassName} min-h-16 resize-none leading-relaxed`} />
                   </label>
 
                   {error && <p role="alert" className="rounded-xl border border-red-400/20 bg-red-400/[0.07] px-4 py-3 text-sm text-red-200 sm:col-span-2">{error}</p>}
 
                   <div className="sm:col-span-2">
-                    <button type="submit" disabled={submitting} className="group flex w-full items-center justify-center gap-2 rounded-xl bg-[#FFF200] px-6 py-3.5 text-sm font-black text-black transition hover:bg-[#fff64d] disabled:cursor-wait disabled:opacity-60">
-                      {submitting ? <><Loader2 className="h-4 w-4 animate-spin" /> Enviando contexto…</> : <>Quero tirar minha ideia do papel <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" /></>}
+                    <button type="submit" disabled={submitting} className="group flex w-full items-center justify-center gap-2 rounded-xl bg-[#FFF200] px-5 py-3 text-sm font-black text-black transition hover:bg-[#fff64d] disabled:cursor-wait disabled:opacity-60">
+                      {submitting ? <><Loader2 className="h-4 w-4 animate-spin" /> Enviando…</> : <>Quero destravar minha ideia <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" /></>}
                     </button>
-                    <p className="mt-3 text-center text-[11px] leading-relaxed text-[#718096]">Seus dados serão usados apenas para este contato comercial.</p>
+                    <p className="mt-2 text-center text-[10px] leading-relaxed text-[#718096]">Seus dados serão usados apenas para este contato.</p>
                   </div>
                 </form>
               </div>

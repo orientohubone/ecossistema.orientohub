@@ -129,7 +129,7 @@ const ContactFab = () => {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.85, y: 30 }}
               transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-              className="absolute bottom-20 right-0 flex max-h-[calc(100vh-120px)] w-[calc(100vw-32px)] max-w-[390px] flex-col overflow-hidden rounded-[24px] sm:max-h-[570px] sm:w-[390px]"
+              className="absolute bottom-20 right-0 flex h-[min(490px,calc(100dvh-8rem))] w-[calc(100vw-32px)] max-w-[390px] origin-bottom-right scale-[.92] flex-col overflow-hidden rounded-[22px] sm:h-[min(540px,calc(100dvh-9rem))] sm:w-[390px] sm:scale-95"
               style={{
                 background: 'linear-gradient(160deg, rgba(16,23,34,0.99), rgba(8,13,20,0.99))',
                 boxShadow: '0 32px 90px -18px rgba(0,0,0,0.82), inset 0 1px 0 rgba(255,255,255,0.07)',
@@ -137,7 +137,7 @@ const ContactFab = () => {
               }}
             >
               {/* Header */}
-              <div className="relative flex-shrink-0 border-b border-white/[0.07] bg-[#0d141e] px-5 pb-5 pt-5 sm:px-6">
+              <div className="relative flex-shrink-0 border-b border-white/[0.07] bg-[#0d141e] px-4 pb-3.5 pt-4 sm:px-5 sm:pb-4 sm:pt-4">
                 <div className="pointer-events-none absolute inset-0 opacity-20" style={{
                     backgroundImage: 'radial-gradient(circle at 2px 2px, rgba(255,242,0,0.35) 1px, transparent 0)',
                     backgroundSize: '24px 24px'
@@ -151,14 +151,14 @@ const ContactFab = () => {
                   <img
                     src={fernandoSelecao6}
                     alt="Fernando Ramalho"
-                    className="relative h-[72px] w-[72px] rounded-2xl border-[3px] border-[#0d141e] object-cover object-top"
+                    className="relative h-14 w-14 rounded-xl border-[3px] border-[#0d141e] object-cover object-top sm:h-16 sm:w-16"
                   />
                   <div className="absolute -bottom-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full border-[3px] border-[#0d141e] bg-emerald-400">
                     <span className="h-1.5 w-1.5 rounded-full bg-[#07110c]" />
                   </div>
                 </div>
                   <div className="min-w-0 text-left">
-                    <h3 className="truncate text-lg font-extrabold tracking-tight text-white">Fernando Ramalho</h3>
+                    <h3 className="truncate text-base font-extrabold tracking-tight text-white sm:text-[17px]">Fernando Ramalho</h3>
                     <p className="mt-0.5 text-xs text-[#9ba9bc]">Fundador da OrientoHub</p>
                     <div className="mt-2 inline-flex items-center gap-1.5 rounded-full border border-emerald-400/20 bg-emerald-400/10 px-2 py-1 text-[10px] font-bold text-emerald-300">
                       <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" /> Disponível para conversar
@@ -168,19 +168,19 @@ const ContactFab = () => {
               </div>
 
               {/* Content */}
-              <div className="flex-1 overflow-y-auto px-5 pb-5 pt-5 sm:px-6">
+              <div className="min-h-0 flex-1 overflow-y-auto px-4 pb-4 pt-4 sm:px-5 sm:pb-5 sm:pt-4">
                 <AnimatePresence mode="wait" initial={false}>
                   {conversationStep === 'scenario' && (
                     <motion.div key="scenario" initial={{ opacity: 0, x: 12 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -12 }}>
-                      <div className="mb-4 rounded-2xl border border-[#FFF200]/20 bg-[#FFF200]/[0.055] p-4 text-left">
-                        <p className="text-base font-extrabold text-white">Olá! Em que cenário você está?</p>
-                        <p className="mt-1.5 text-sm leading-relaxed text-[#b8c4d4]">Escolha a opção mais próxima. Vou organizar o contexto antes de você decidir como continuar.</p>
+                      <div className="mb-3 rounded-2xl border border-[#FFF200]/20 bg-[#FFF200]/[0.055] p-3 text-left">
+                        <p className="text-sm font-extrabold text-white">Olá! Em que cenário você está?</p>
+                        <p className="mt-1 text-xs leading-relaxed text-[#b8c4d4]">Escolha a opção mais próxima. Vou organizar o contexto antes de você decidir como continuar.</p>
                       </div>
                       <div className="space-y-2">
                         {scenarios.map((scenario, index) => (
-                          <motion.button key={scenario.id} type="button" onClick={() => { setScenarioId(scenario.id); setConversationStep('context'); }} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * .05 }} className="group flex w-full items-center gap-3 rounded-xl border border-white/[0.08] bg-white/[0.035] px-3.5 py-3 text-left transition hover:border-[#FFF200]/35 hover:bg-[#FFF200]/[0.06]">
-                            <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#FFF200]/10 text-xs font-black text-[#FFF200]">{index + 1}</span>
-                            <span className="flex-1 text-sm font-semibold text-[#d7e0ea] group-hover:text-white">{scenario.label}</span>
+                          <motion.button key={scenario.id} type="button" onClick={() => { setScenarioId(scenario.id); setConversationStep('context'); }} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * .05 }} className="group flex w-full items-center gap-2.5 rounded-xl border border-white/[0.08] bg-white/[0.035] px-3 py-2.5 text-left transition hover:border-[#FFF200]/35 hover:bg-[#FFF200]/[0.06]">
+                            <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-[#FFF200]/10 text-[11px] font-black text-[#FFF200]">{index + 1}</span>
+                            <span className="flex-1 text-[13px] font-semibold text-[#d7e0ea] group-hover:text-white">{scenario.label}</span>
                             <ChevronRight className="h-4 w-4 text-[#4a5d73] group-hover:text-[#FFF200]" />
                           </motion.button>
                         ))}
@@ -248,7 +248,7 @@ const ContactFab = () => {
                 </AnimatePresence>
               </div>
 
-              <div className="flex items-center justify-center gap-2 border-t border-white/[0.06] bg-black/20 px-5 py-3.5 sm:px-6">
+              <div className="flex items-center justify-center gap-2 border-t border-white/[0.06] bg-black/20 px-4 py-2.5 sm:px-5">
                 <MessageCircle className="h-3.5 w-3.5 text-[#FFF200]" />
                 <p className="text-[10px] font-semibold text-[#718096]">Orientação inicial por fluxo — contato final direto comigo.</p>
               </div>

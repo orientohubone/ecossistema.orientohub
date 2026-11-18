@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Github, Linkedin, Instagram, Mail, MapPin, Phone, Rocket, Sparkles, ArrowRight, Heart, ArrowUp } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { newsletterService } from '../../services/newsletterService';
+import BlackFridaySeal from '../../bf-2026/BlackFridaySeal';
 
 const BackToTopButton = memo(({ onClick }: { onClick: () => void }) => (
   <div
@@ -142,6 +143,7 @@ const Footer = () => {
     { to: '/blog', label: t('nav.blog') },
     { to: '/glossario', label: 'Glossário' },
     { to: '/academy', label: 'Academy' },
+    { to: '/regulamento-black-friday', label: 'Regulamento Black Friday' },
   ];
 
   const legalLinks = [
@@ -270,6 +272,13 @@ const Footer = () => {
                     <span className="sr-only">{social.label}</span>
                   </motion.a>
                 ))}
+              </div>
+              <div className="mt-4 inline-flex rounded-xl bg-gradient-to-r from-[#b89b00] via-[#fff9a6] to-[#b89b00] p-px shadow-[0_8px_24px_rgba(0,0,0,0.4)]">
+                <div className="inline-flex items-center gap-2 rounded-[11px] bg-gradient-to-br from-[#292929] via-[#080808] to-[#1b1b1b] px-2.5 py-2 sm:gap-3 sm:px-3">
+                  <BlackFridaySeal className="h-8 w-auto" />
+                  <span className="h-7 w-px bg-gradient-to-b from-transparent via-[#FFF200]/70 to-transparent" aria-hidden="true" />
+                  <span className="text-xs font-black uppercase leading-tight tracking-tight text-white">50% OFF <span className="text-[#FFF200]">em diversos serviços</span></span>
+                </div>
               </div>
             </div>
             

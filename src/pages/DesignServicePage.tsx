@@ -5,6 +5,7 @@ import { ArrowLeft, ArrowRight, Check, Layers3, MousePointer2, Palette, PenTool,
 import { useEffect, useRef, useState } from 'react';
 import type { ServiceCatalogItem } from '../data/serviceCatalog';
 
+
 const formatPrice = (value: number) =>
   value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 0 });
 

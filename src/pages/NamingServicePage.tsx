@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, Check, FileSearch, Lightbulb, Search, Tags } from 'lucide-react';
 import NamingGenerator from '../components/NamingGenerator';
 import type { ServiceCatalogItem } from '../data/serviceCatalog';
+import BlackFridaySeal from '../bf-2026/BlackFridaySeal';
 
 const NamingServicePage = ({ service }: { service: ServiceCatalogItem }) => {
   const processIcons = [Search, Lightbulb, FileSearch];
@@ -30,9 +31,11 @@ const NamingServicePage = ({ service }: { service: ServiceCatalogItem }) => {
               </motion.div>
 
               <motion.aside initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="rounded-2xl border border-[#FFF200]/35 bg-gray-900/85 p-7 backdrop-blur-md sm:p-9">
-                <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#FFF200] text-black"><Tags className="h-6 w-6" /></span>
+                <div className="flex items-center justify-between"><span className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#FFF200] text-black"><Tags className="h-6 w-6" /></span><BlackFridaySeal className="h-16 w-auto sm:h-20" /></div>
                 <p className="mt-8 text-xs font-black uppercase tracking-[0.2em] text-[#FFF200]">Análise completa</p>
-                <p className="mt-2 text-5xl font-black text-[#FFF200]">R$ 349,00</p>
+                <p className="mt-2 text-sm text-white/40 line-through">De R$ 349,00</p>
+                <p className="mt-1 text-5xl font-black text-[#FFF200]">R$ 174,50</p>
+                <p className="mt-2 text-xs font-black uppercase tracking-wider text-[#FFF200]">50% OFF · Black Friday</p>
                 <p className="mt-5 border-t border-white/10 pt-5 text-sm leading-relaxed text-white/50">Briefing, construção de rotas de nome e análise inicial de viabilidade no INPI.</p>
               </motion.aside>
             </div>
