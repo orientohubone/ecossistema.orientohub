@@ -13,7 +13,7 @@ export default function ServiceDeck() {
   const [active, setActive] = useState(0);
   const [opening, setOpening] = useState<string | null>(null);
   const navigate = useNavigate();
-  const pointerStart = useRef<{ x: number; id: number; horizontal: boolean } | null>(null);
+  const pointerStart = useRef<{ x: number; y: number; id: number; horizontal: boolean } | null>(null);
   const suppressClick = useRef(false);
   const [dragX, setDragX] = useState(0);
   const select = (index: number) => {
@@ -37,17 +37,20 @@ export default function ServiceDeck() {
       if (event.key === 'Home' || event.key === 'End') { event.preventDefault(); select(event.key === 'Home' ? 0 : serviceCatalog.length - 1); }
     }} onDragStart={event => event.preventDefault()} onPointerDown={event => {
       suppressClick.current = false;
-      if (opening || !event.isPrimary || event.button !== 0 || !window.matchMedia('(max-width: 767px)').matches) return;
-      pointerStart.current = { x: event.clientX, id: event.pointerId, horizontal: false };
+      if (opening || !event.isPrimary || (event.pointerType === 'mouse' && event.button !== 0) || !window.matchMedia('(max-width: 767px)').matches) return;
+      pointerStart.current = { x: event.clientX, y: event.clientY, id: event.pointerId, horizontal: false };
     }} onPointerMove={event => {
       const start = pointerStart.current;
       if (!start || start.id !== event.pointerId) return;
       const dx = event.clientX - start.x;
+      const dy = event.clientY - start.y;
       if (!start.horizontal) {
+        if (Math.abs(dy) > 8 && Math.abs(dy) > Math.abs(dx)) { pointerStart.current = null; return; }
         if (Math.abs(dx) < 6) return;
         start.horizontal = true;
         event.currentTarget.setPointerCapture(event.pointerId);
       }
+      event.preventDefault();
       suppressClick.current = true;
       setDragX(Math.max(-120, Math.min(120, dx * .7)));
     }} onPointerUp={event => {
