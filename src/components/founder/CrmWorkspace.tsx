@@ -28,7 +28,7 @@ import type { CrmClient, CrmNote, CrmStage, CrmTask } from '../../services/crmSe
 const stages: { id: CrmStage; label: string; color: string }[] = [
   { id: 'novo', label: 'Novos', color: 'border-sky-400/30 bg-sky-400/10 text-sky-200' },
   { id: 'qualificando', label: 'Qualificando', color: 'border-violet-400/30 bg-violet-400/10 text-violet-200' },
-  { id: 'proposta', label: 'Proposta', color: 'border-amber-400/30 bg-amber-400/10 text-amber-200' },
+  { id: 'proposta', label: 'Proposta', color: 'border-primary-400/30 bg-primary-400/10 text-primary-200' },
   { id: 'negociação', label: 'Negociação', color: 'border-orange-400/30 bg-orange-400/10 text-orange-200' },
   { id: 'ganho', label: 'Ganhos', color: 'border-emerald-400/30 bg-emerald-400/10 text-emerald-200' },
   { id: 'perdido', label: 'Perdidos', color: 'border-slate-400/30 bg-slate-400/10 text-slate-300' },

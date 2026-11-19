@@ -4,10 +4,10 @@ import { motion } from 'framer-motion';
 import type { DashboardData } from '../services/dashboardService';
 import DashboardPageSkeleton from '../components/ui/DashboardPageSkeleton';
 import { getCachedValue, getOrLoadCachedValue, invalidateCache } from '../lib/memoryCache';
-import { 
-  CheckSquare, 
-  FileText, 
-  Target, 
+import {
+  CheckSquare,
+  FileText,
+  Target,
   Zap,
   Rocket,
   Users,
@@ -44,7 +44,7 @@ const DashboardPage = ({ initialDashboardData, showcaseFrame }: DashboardPagePro
   const [dashboardData, setDashboardData] = useState<DashboardData | null>(cachedDashboardData);
   const [isLoading, setIsLoading] = useState(!cachedDashboardData);
   const [error, setError] = useState<string | null>(null);
-  
+
   // Carregar dados do dashboard
   useEffect(() => {
     const loadDashboardData = async () => {
@@ -69,7 +69,7 @@ const DashboardPage = ({ initialDashboardData, showcaseFrame }: DashboardPagePro
         setIsLoading(false);
       }
     };
-    
+
     loadDashboardData();
   }, [initialDashboardData]);
 
@@ -82,7 +82,7 @@ const DashboardPage = ({ initialDashboardData, showcaseFrame }: DashboardPagePro
       <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 flex items-center justify-center">
         <div className="text-center">
           <p className="text-red-600 dark:text-red-400 mb-4">{error || 'Dados não disponíveis'}</p>
-          <button 
+          <button
             onClick={() => window.location.reload()}
             className="px-4 py-2 bg-primary-500 text-black rounded-lg hover:bg-primary-600 transition-colors"
           >
@@ -128,11 +128,11 @@ const DashboardPage = ({ initialDashboardData, showcaseFrame }: DashboardPagePro
     try {
       const isCompleting = !task.completed;
       const newProgress = isCompleting ? 100 : 0;
-      
+
       // Atualização otimista na UI
       setDashboardData(prev => {
         if (!prev) return prev;
-        
+
         const newTasks = prev.tasks.map(t => {
           if (t.id === task.id) {
             return {
@@ -157,7 +157,7 @@ const DashboardPage = ({ initialDashboardData, showcaseFrame }: DashboardPagePro
       // Atualizar no backend
       const { dashboardService } = await import('../services/dashboardService');
       await dashboardService.updateTaskProgress(task.id, newProgress);
-      
+
       // Invalidar o cache da dashboard para refletir as mudanças permanentemente
       invalidateCache('dashboard:data');
     } catch (err: any) {
@@ -233,13 +233,13 @@ const DashboardPage = ({ initialDashboardData, showcaseFrame }: DashboardPagePro
       },
     },
     tasks: dashboardData.tasks.map((task, index) => index === 0 && showcaseTaskCompleted
-      ? {...task, completed: true, progress: 100, priority: 'low'}
+      ? { ...task, completed: true, progress: 100, priority: 'low' }
       : task),
     frameworks: dashboardData.frameworks.map((framework, index) => index === 0 && showcaseFrameworkProgress !== null
-      ? {...framework, progress: showcaseFrameworkProgress, status: showcaseFrameworkProgress >= 75 ? 'Quase concluído' : 'Em andamento'}
+      ? { ...framework, progress: showcaseFrameworkProgress, status: showcaseFrameworkProgress >= 75 ? 'Quase concluído' : 'Em andamento' }
       : framework),
     activity: showcaseTaskCompleted
-      ? [{id: 'showcase-task', action: 'Tarefa concluída', target: dashboardData.tasks[0]?.title || 'Validação concluída', xp: 100, time: 'Agora', icon: 'CheckSquare'}, ...dashboardData.activity]
+      ? [{ id: 'showcase-task', action: 'Tarefa concluída', target: dashboardData.tasks[0]?.title || 'Validação concluída', xp: 100, time: 'Agora', icon: 'CheckSquare' }, ...dashboardData.activity]
       : dashboardData.activity,
   };
   const userData = showcaseData.userProfile;
@@ -249,8 +249,8 @@ const DashboardPage = ({ initialDashboardData, showcaseFrame }: DashboardPagePro
       icon: Trophy,
       label: 'Conquistas',
       value: `${showcaseData.stats.achievements.completed}/${showcaseData.stats.achievements.total}`,
-      color: 'from-yellow-400 to-yellow-600',
-      bgColor: 'bg-yellow-500/10',
+      color: 'from-primary-400 to-primary-600',
+      bgColor: 'bg-primary-500/10',
       change: '+3 esta semana'
     },
     {
@@ -282,7 +282,7 @@ const DashboardPage = ({ initialDashboardData, showcaseFrame }: DashboardPagePro
     if (showcaseFrame === undefined) return undefined;
     const progress = Math.max(0, Math.min(1, (showcaseFrame - start) / 18));
     const eased = 1 - Math.pow(1 - progress, 3);
-    return {opacity: eased, transform: `translateY(${(1 - eased) * 26}px) scale(${0.94 + eased * 0.06})`};
+    return { opacity: eased, transform: `translateY(${(1 - eased) * 26}px) scale(${0.94 + eased * 0.06})` };
   };
   const recentTasks = showcaseData.tasks;
   const frameworks = showcaseData.frameworks;
@@ -329,12 +329,12 @@ const DashboardPage = ({ initialDashboardData, showcaseFrame }: DashboardPagePro
                       </div>
                     )}
                   </div>
-                  
+
                   {/* Badge de nível com animação */}
                   <div className="absolute -bottom-2 -right-2 bg-gradient-to-r from-primary-500 to-primary-600 text-black w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm shadow-lg border-2 border-gray-900 transition-all duration-300 group-hover:scale-110">
                     {userData.level}
                   </div>
-                  
+
                   {/* Efeito de brilho no hover */}
                   <div className="absolute inset-0 rounded-full bg-primary-500/20 scale-0 group-hover:scale-100 transition-transform duration-300 -z-10" />
                 </div>
@@ -414,12 +414,11 @@ const DashboardPage = ({ initialDashboardData, showcaseFrame }: DashboardPagePro
                 >
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#34455a] bg-[#0c121b] transition-transform group-hover:scale-105 sm:h-12 sm:w-12">
-                      <Icon className={`h-5 w-5 sm:h-6 sm:w-6 ${
-                        stat.bgColor.includes('orange') ? 'text-orange-300' :
-                        stat.bgColor.includes('yellow') ? 'text-yellow-300' :
-                        stat.bgColor.includes('blue') ? 'text-blue-300' :
-                        stat.bgColor.includes('purple') ? 'text-purple-300' : 'text-primary-300'
-                      }`} />
+                      <Icon className={`h-5 w-5 sm:h-6 sm:w-6 ${stat.bgColor.includes('orange') ? 'text-orange-300' :
+                        stat.bgColor.includes('primary') ? 'text-primary-300' :
+                          stat.bgColor.includes('blue') ? 'text-blue-300' :
+                            stat.bgColor.includes('purple') ? 'text-purple-300' : 'text-primary-300'
+                        }`} />
                     </div>
                   </div>
                   <h3 className="mb-1 text-sm font-medium text-[#9ba9bc]">
@@ -462,32 +461,28 @@ const DashboardPage = ({ initialDashboardData, showcaseFrame }: DashboardPagePro
                     <div key={phase.id} style={showcaseReveal(120 + index * 12)} className="relative flex flex-1 flex-col items-center">
                       {/* Connector Line */}
                       {index < phases.length - 1 && (
-                        <div className={`absolute top-6 left-1/2 w-full h-1 ${
-                          phase.completed ? 'bg-primary-500' : 'bg-[#273548]'
-                        }`} style={{ zIndex: 0 }} />
+                        <div className={`absolute top-6 left-1/2 w-full h-1 ${phase.completed ? 'bg-primary-500' : 'bg-[#273548]'
+                          }`} style={{ zIndex: 0 }} />
                       )}
 
                       {/* Phase Icon */}
-                      <div className={`relative z-10 w-12 h-12 rounded-full flex items-center justify-center border-4 transition-all duration-300 ${
-                        phase.active 
-                          ? 'bg-primary-500 border-primary-300 shadow-lg shadow-primary-500/50 scale-110' 
-                          : phase.completed
+                      <div className={`relative z-10 w-12 h-12 rounded-full flex items-center justify-center border-4 transition-all duration-300 ${phase.active
+                        ? 'bg-primary-500 border-primary-300 shadow-lg shadow-primary-500/50 scale-110'
+                        : phase.completed
                           ? 'bg-green-500 border-green-300'
                           : 'bg-[#151f2b] border-[#34455a]'
-                      }`}>
-                        <Icon className={`w-6 h-6 ${
-                          phase.active || phase.completed ? 'text-white' : 'text-[#718096]'
-                        }`} />
+                        }`}>
+                        <Icon className={`w-6 h-6 ${phase.active || phase.completed ? 'text-white' : 'text-[#718096]'
+                          }`} />
                       </div>
 
                       {/* Phase Label */}
-                      <p className={`mt-3 text-sm font-medium text-center ${
-                        phase.active 
-                          ? 'text-primary-500' 
-                          : phase.completed
+                      <p className={`mt-3 text-sm font-medium text-center ${phase.active
+                        ? 'text-primary-500'
+                        : phase.completed
                           ? 'text-green-600 dark:text-green-400'
                           : 'text-[#718096]'
-                      }`}>
+                        }`}>
                         {phase.name}
                       </p>
 
@@ -540,11 +535,10 @@ const DashboardPage = ({ initialDashboardData, showcaseFrame }: DashboardPagePro
                         transform: `scale(${1 + Math.sin(Math.min(1, (showcaseFrame - 324) / 18) * Math.PI) * 0.018})`,
                         boxShadow: `0 0 ${Math.max(0, 34 - Math.abs(showcaseFrame - 342))}px rgba(52,211,153,.48)`,
                       } : undefined}
-                      className={`group p-4 rounded-xl border-2 transition-all duration-300 ${
-                        task.completed
-                          ? 'bg-emerald-400/5 border-emerald-400/25'
-                          : 'bg-[#0c121b] border-[#273548] hover:border-primary-400/70'
-                      }`}
+                      className={`group p-4 rounded-xl border-2 transition-all duration-300 ${task.completed
+                        ? 'bg-emerald-400/5 border-emerald-400/25'
+                        : 'bg-[#0c121b] border-[#273548] hover:border-primary-400/70'
+                        }`}
                     >
                       <div className="flex items-start gap-3 sm:gap-4">
                         <div className="flex-shrink-0 mt-1">
@@ -559,17 +553,15 @@ const DashboardPage = ({ initialDashboardData, showcaseFrame }: DashboardPagePro
                         <div className="flex-1 min-w-0">
                           <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
                             <div>
-                              <h3 className={`font-semibold mb-1 ${
-                                task.completed ? 'line-through text-[#718096]' : 'text-white'
-                              }`}>
+                              <h3 className={`font-semibold mb-1 ${task.completed ? 'line-through text-[#718096]' : 'text-white'
+                                }`}>
                                 {task.title}
                               </h3>
                               <div className="flex flex-wrap items-center gap-2 text-sm sm:gap-3">
-                                <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${
-                                  task.priority === 'high' ? 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400' :
-                                  task.priority === 'medium' ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400' :
-                                  'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400'
-                                }`}>
+                                <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${task.priority === 'high' ? 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400' :
+                                  task.priority === 'medium' ? 'bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-400' :
+                                    'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400'
+                                  }`}>
                                   {task.category}
                                 </span>
                                 <span className="flex items-center gap-1 text-[#9ba9bc]">
@@ -597,7 +589,7 @@ const DashboardPage = ({ initialDashboardData, showcaseFrame }: DashboardPagePro
                                 <span>{task.progress}%</span>
                               </div>
                               <div className="h-2 overflow-hidden rounded-full bg-[#151f2b]">
-                                <div 
+                                <div
                                   className="h-full bg-primary-500 rounded-full transition-all duration-300"
                                   style={{ width: `${task.progress}%` }}
                                 />
@@ -643,65 +635,64 @@ const DashboardPage = ({ initialDashboardData, showcaseFrame }: DashboardPagePro
                   {frameworks.map((framework, index) => {
                     const FrameworkIcon = iconMap[framework.icon] || Target;
                     return (
-                    <motion.div
-                      key={framework.id}
-                      initial={showcaseFrame === undefined ? { opacity: 0, scale: 0.9 } : false}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ delay: 0.8 + index * 0.1 }}
-                      style={showcaseFrame !== undefined && index === 0 && showcaseFrame >= 438 && showcaseFrame <= 500 ? {
-                        boxShadow: `0 0 ${12 + Math.sin((showcaseFrame - 438) / 62 * Math.PI) * 28}px rgba(250,204,21,.28)`,
-                        borderColor: 'rgba(250,204,21,.55)',
-                      } : undefined}
-                      className="group cursor-pointer rounded-xl border border-[#273548] bg-[#0c121b] p-5 transition-all duration-300 hover:border-primary-400/70 hover:bg-[#151f2b]"
-                    >
-                      <div className="flex items-start justify-between mb-3">
-                        <div className="flex items-center gap-3">
-                          <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#34455a] bg-[#151f2b] text-primary-300">
-                            <FrameworkIcon className="h-5 w-5" />
-                          </div>
-                          <div>
-                            <h3 className="font-bold text-white transition-colors group-hover:text-primary-300">
-                              {framework.name}
-                            </h3>
-                            <p className="text-xs text-[#718096]">
-                              {framework.lastUpdate}
-                            </p>
-                          </div>
-                        </div>
-                        {(framework as any).badge === 'new' && (
-                          <span className="px-2 py-1 bg-green-500 text-white text-xs font-bold rounded-full">
-                            NOVO
-                          </span>
-                        )}
-                      </div>
-
-                      <div className="space-y-2">
-                        <div className="flex items-center justify-between text-sm">
-                          <span className="text-[#9ba9bc]">{framework.status}</span>
-                          <span className="font-bold text-primary-300">{framework.progress}%</span>
-                        </div>
-                        <div className="h-3 overflow-hidden rounded-full bg-[#151f2b]">
-                          <motion.div
-                            className={`h-full rounded-full ${
-                              framework.progress === 100 ? 'bg-green-500' : 'bg-gradient-to-r from-primary-400 to-primary-600'
-                            }`}
-                            initial={showcaseFrame === undefined ? { width: 0 } : false}
-                            animate={{ width: `${framework.progress}%` }}
-                            transition={{ duration: 1, delay: 0.9 + index * 0.1 }}
-                          />
-                        </div>
-                      </div>
-
-                      <button
-                        className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg bg-primary-500/10 py-2 font-medium text-primary-300 transition-all duration-300 hover:bg-primary-500 hover:text-black"
-                        onClick={() => handleFrameworkClick(framework)}
+                      <motion.div
+                        key={framework.id}
+                        initial={showcaseFrame === undefined ? { opacity: 0, scale: 0.9 } : false}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 0.8 + index * 0.1 }}
+                        style={showcaseFrame !== undefined && index === 0 && showcaseFrame >= 438 && showcaseFrame <= 500 ? {
+                          boxShadow: `0 0 ${12 + Math.sin((showcaseFrame - 438) / 62 * Math.PI) * 28}px rgba(250,204,21,.28)`,
+                          borderColor: 'rgba(250,204,21,.55)',
+                        } : undefined}
+                        className="group cursor-pointer rounded-xl border border-[#273548] bg-[#0c121b] p-5 transition-all duration-300 hover:border-primary-400/70 hover:bg-[#151f2b]"
                       >
-                        <Play className="w-4 h-4" />
-                        Continuar
-                      </button>
-                    </motion.div>
-                  );
-                })}
+                        <div className="flex items-start justify-between mb-3">
+                          <div className="flex items-center gap-3">
+                            <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#34455a] bg-[#151f2b] text-primary-300">
+                              <FrameworkIcon className="h-5 w-5" />
+                            </div>
+                            <div>
+                              <h3 className="font-bold text-white transition-colors group-hover:text-primary-300">
+                                {framework.name}
+                              </h3>
+                              <p className="text-xs text-[#718096]">
+                                {framework.lastUpdate}
+                              </p>
+                            </div>
+                          </div>
+                          {(framework as any).badge === 'new' && (
+                            <span className="px-2 py-1 bg-green-500 text-white text-xs font-bold rounded-full">
+                              NOVO
+                            </span>
+                          )}
+                        </div>
+
+                        <div className="space-y-2">
+                          <div className="flex items-center justify-between text-sm">
+                            <span className="text-[#9ba9bc]">{framework.status}</span>
+                            <span className="font-bold text-primary-300">{framework.progress}%</span>
+                          </div>
+                          <div className="h-3 overflow-hidden rounded-full bg-[#151f2b]">
+                            <motion.div
+                              className={`h-full rounded-full ${framework.progress === 100 ? 'bg-green-500' : 'bg-gradient-to-r from-primary-400 to-primary-600'
+                                }`}
+                              initial={showcaseFrame === undefined ? { width: 0 } : false}
+                              animate={{ width: `${framework.progress}%` }}
+                              transition={{ duration: 1, delay: 0.9 + index * 0.1 }}
+                            />
+                          </div>
+                        </div>
+
+                        <button
+                          className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg bg-primary-500/10 py-2 font-medium text-primary-300 transition-all duration-300 hover:bg-primary-500 hover:text-black"
+                          onClick={() => handleFrameworkClick(framework)}
+                        >
+                          <Play className="w-4 h-4" />
+                          Continuar
+                        </button>
+                      </motion.div>
+                    );
+                  })}
                 </div>
               </motion.div>
             </div>
@@ -790,16 +781,14 @@ const DashboardPage = ({ initialDashboardData, showcaseFrame }: DashboardPagePro
                         className="rounded-xl border border-[#273548] bg-[#0c121b] p-4"
                       >
                         <div className="flex items-start gap-3 mb-3">
-                          <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
-                            rec.color === 'primary' ? 'bg-primary-500/10' :
+                          <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${rec.color === 'primary' ? 'bg-primary-500/10' :
                             rec.color === 'blue' ? 'bg-blue-500/10' :
-                            'bg-purple-500/10'
-                          }`}>
-                            <Icon className={`w-5 h-5 ${
-                              rec.color === 'primary' ? 'text-primary-600 dark:text-primary-500' :
+                              'bg-purple-500/10'
+                            }`}>
+                            <Icon className={`w-5 h-5 ${rec.color === 'primary' ? 'text-primary-600 dark:text-primary-500' :
                               rec.color === 'blue' ? 'text-blue-600 dark:text-blue-500' :
-                              'text-purple-600 dark:text-purple-500'
-                            }`} />
+                                'text-purple-600 dark:text-purple-500'
+                              }`} />
                           </div>
                           <div className="flex-1">
                             <h4 className="mb-1 text-sm font-semibold text-white">{rec.title}</h4>
@@ -807,11 +796,10 @@ const DashboardPage = ({ initialDashboardData, showcaseFrame }: DashboardPagePro
                           </div>
                         </div>
                         <button
-                          className={`w-full py-2 rounded-lg font-medium text-sm transition-all ${
-                            rec.color === 'primary' ? 'bg-primary-500 hover:bg-primary-600 text-black' :
+                          className={`w-full py-2 rounded-lg font-medium text-sm transition-all ${rec.color === 'primary' ? 'bg-primary-500 hover:bg-primary-600 text-black' :
                             rec.color === 'blue' ? 'bg-blue-500 hover:bg-blue-600 text-white' :
-                            'bg-purple-500 hover:bg-purple-600 text-white'
-                          }`}
+                              'bg-purple-500 hover:bg-purple-600 text-white'
+                            }`}
                           onClick={() => handleRecommendationClick(rec)}
                         >
                           {rec.action}

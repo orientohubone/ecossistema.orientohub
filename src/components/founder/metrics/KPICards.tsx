@@ -72,12 +72,12 @@ export const KPICards = ({ analytics }: KPICardsProps) => {
                 </CardContent>
             </Card>
 
-            <Card className="border-amber-400/20 bg-amber-400/10">
+            <Card className="border-primary-400/20 bg-primary-400/10">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 p-4 pb-2 sm:p-6">
                     <CardTitle className="text-sm font-medium">
                         <span>Usuários ativos em 7 dias</span>
                     </CardTitle>
-                    <Activity className="h-4 w-4 text-amber-300" />
+                    <Activity className="h-4 w-4 text-primary-300" />
                 </CardHeader>
                 <CardContent className="p-4 pt-0 sm:p-6 sm:pt-0">
                     <div className="text-xl font-bold text-white sm:text-2xl">

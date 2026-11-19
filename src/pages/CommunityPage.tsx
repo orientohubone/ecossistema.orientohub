@@ -175,7 +175,7 @@ const CommunityPage = () => {
       discussion: { label: 'Discussão', color: 'bg-blue-500', icon: MessageSquare },
       question: { label: 'Pergunta', color: 'bg-purple-500', icon: MessageCircle },
       showcase: { label: 'Showcase', color: 'bg-green-500', icon: Sparkles },
-      announcement: { label: 'Anúncio', color: 'bg-yellow-500', icon: Zap }
+      announcement: { label: 'Anúncio', color: 'bg-primary-500', icon: Zap }
     };
     return categories[category];
   };
@@ -183,7 +183,7 @@ const CommunityPage = () => {
   const filteredPosts = posts.filter(post => {
     const matchesCategory = selectedCategory === 'all' || post.category === selectedCategory;
     const matchesSearch = post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         post.content.toLowerCase().includes(searchQuery.toLowerCase());
+      post.content.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
   });
 
@@ -234,7 +234,7 @@ const CommunityPage = () => {
               { label: 'Membros Ativos', value: topMembers.length, icon: Users, color: 'from-blue-500 to-blue-600', bgColor: 'bg-blue-500/10' },
               { label: 'Publicações', value: posts.length, icon: MessageSquare, color: 'from-purple-500 to-purple-600', bgColor: 'bg-purple-500/10' },
               { label: 'Showcases', value: posts.filter(post => post.category === 'showcase').length, icon: Target, color: 'from-green-500 to-green-600', bgColor: 'bg-green-500/10' },
-              { label: 'Interações', value: totalLikes + totalComments, icon: Zap, color: 'from-yellow-500 to-yellow-600', bgColor: 'bg-yellow-500/10' }
+              { label: 'Interações', value: totalLikes + totalComments, icon: Zap, color: 'from-primary-500 to-primary-600', bgColor: 'bg-primary-500/10' }
             ].map((stat, index) => {
               const Icon = stat.icon;
               return (
@@ -247,7 +247,7 @@ const CommunityPage = () => {
                 >
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#34455a] bg-[#0c121b] transition-transform group-hover:scale-105 sm:h-12 sm:w-12">
-                      <Icon className={`h-5 w-5 ${stat.bgColor.includes('blue') ? 'text-blue-300' : stat.bgColor.includes('purple') ? 'text-purple-300' : stat.bgColor.includes('green') ? 'text-emerald-300' : 'text-yellow-300'}`} />
+                      <Icon className={`h-5 w-5 ${stat.bgColor.includes('blue') ? 'text-blue-300' : stat.bgColor.includes('purple') ? 'text-purple-300' : stat.bgColor.includes('green') ? 'text-emerald-300' : 'text-primary-300'}`} />
                     </div>
                   </div>
                   <p className="mb-1 text-sm text-[#9ba9bc]">{stat.label}</p>
@@ -299,11 +299,10 @@ const CommunityPage = () => {
                         onClick={() => setSelectedCategory(category.id)}
                         role="tab"
                         aria-selected={selectedCategory === category.id}
-                        className={`min-w-0 rounded-xl px-3 py-2 text-sm font-medium transition-all sm:px-4 ${
-                          selectedCategory === category.id
-                            ? 'bg-primary-500 text-black'
-                            : 'border border-[#34455a] bg-[#151f2b] text-gray-300 hover:border-primary-400 hover:text-white'
-                        }`}
+                        className={`min-w-0 rounded-xl px-3 py-2 text-sm font-medium transition-all sm:px-4 ${selectedCategory === category.id
+                          ? 'bg-primary-500 text-black'
+                          : 'border border-[#34455a] bg-[#151f2b] text-gray-300 hover:border-primary-400 hover:text-white'
+                          }`}
                       >
                         {category.label}
                       </button>
@@ -348,7 +347,7 @@ const CommunityPage = () => {
               {/* Top Members */}
               <div className="rounded-2xl border border-[#273548] bg-[#101722] p-4 shadow-[0_12px_28px_rgba(0,0,0,0.16)] sm:p-6">
                 <div className="flex items-center gap-2 mb-4">
-                  <Trophy className="w-5 h-5 text-yellow-500" />
+                  <Trophy className="w-5 h-5 text-primary-500" />
                   <h3 className="text-lg font-bold text-white">Top Membros</h3>
                 </div>
                 <div className="space-y-4">
@@ -361,7 +360,7 @@ const CommunityPage = () => {
                           ) : member.avatar}
                         </div>
                         {index < 3 && (
-                          <div className="absolute -top-1 -right-1 w-6 h-6 bg-yellow-500 rounded-full flex items-center justify-center text-xs font-bold text-white">
+                          <div className="absolute -top-1 -right-1 w-6 h-6 bg-primary-500 rounded-full flex items-center justify-center text-xs font-bold text-black">
                             {index + 1}
                           </div>
                         )}
@@ -371,7 +370,7 @@ const CommunityPage = () => {
                         <p className="text-xs text-[#9ba9bc]">{member.role}</p>
                       </div>
                       <div className="text-right">
-                        <div className="flex items-center gap-1 text-yellow-500">
+                        <div className="flex items-center gap-1 text-primary-400">
                           <Star className="w-4 h-4 fill-current" />
                           <span className="text-sm font-bold">{member.reputation}</span>
                         </div>
@@ -454,13 +453,13 @@ const PostCard = ({ post, index, onLike, onBookmark, onCommentAdded, onShare, ge
   const [commentsLoading, setCommentsLoading] = useState(false);
   const [commentError, setCommentError] = useState<string | null>(null);
   const [isSendingComment, setIsSendingComment] = useState(false);
-  
+
   const getTimeAgo = (date: string) => {
     const now = new Date();
     const posted = new Date(date);
     const diffMs = now.getTime() - posted.getTime();
     const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
-    
+
     if (diffHours < 1) return 'agora';
     if (diffHours < 24) return `${diffHours}h atrás`;
     return `${Math.floor(diffHours / 24)}d atrás`;
@@ -549,11 +548,10 @@ const PostCard = ({ post, index, onLike, onBookmark, onCommentAdded, onShare, ge
         <div className="flex items-center gap-1 sm:gap-4">
           <button
             onClick={() => onLike(post.id)}
-            className={`flex items-center gap-2 px-3 py-1.5 rounded-lg transition-all ${
-              post.isLiked
-                ? 'bg-red-400/10 text-red-300'
-                : 'text-gray-300 hover:bg-[#151f2b]'
-            }`}
+            className={`flex items-center gap-2 px-3 py-1.5 rounded-lg transition-all ${post.isLiked
+              ? 'bg-red-400/10 text-red-300'
+              : 'text-gray-300 hover:bg-[#151f2b]'
+              }`}
           >
             <Heart className={`w-4 h-4 ${post.isLiked ? 'fill-current' : ''}`} />
             <span className="text-sm font-medium">{post.likes}</span>
@@ -573,11 +571,10 @@ const PostCard = ({ post, index, onLike, onBookmark, onCommentAdded, onShare, ge
         <div className="flex items-center gap-2">
           <button
             onClick={() => onBookmark(post.id)}
-            className={`p-2 rounded-lg transition-all ${
-              post.isBookmarked
-                ? 'bg-yellow-400/10 text-yellow-300'
-                : 'text-gray-300 hover:bg-[#151f2b]'
-            }`}
+            className={`p-2 rounded-lg transition-all ${post.isBookmarked
+              ? 'bg-primary-400/10 text-primary-300'
+              : 'text-gray-300 hover:bg-[#151f2b]'
+              }`}
           >
             <Bookmark className={`w-4 h-4 ${post.isBookmarked ? 'fill-current' : ''}`} />
           </button>

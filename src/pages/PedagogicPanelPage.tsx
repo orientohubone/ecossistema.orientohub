@@ -253,7 +253,7 @@ const PedagogicPanelPage = () => {
 
       <div className="border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950">
         <div className="container-custom py-12 space-y-4">
-          <div className="inline-flex items-center gap-2 rounded-full bg-amber-100 dark:bg-amber-500/10 px-4 py-1 text-sm font-semibold text-amber-800 dark:text-amber-400">
+          <div className="inline-flex items-center gap-2 rounded-full bg-primary-100 dark:bg-primary-500/10 px-4 py-1 text-sm font-semibold text-primary-800 dark:text-primary-300">
             <ShieldCheck size={16} /> Acesso restrito ao founder
           </div>
           <h1 className="text-3xl md:text-4xl font-bold">Governança pedagógica da Oriento Academy</h1>
@@ -298,7 +298,7 @@ const PedagogicPanelPage = () => {
                 >
                   <h4 className="font-semibold">{course.title}</h4>
                   <div className="mt-2 flex items-center gap-3 text-xs text-slate-500">
-                    <span className={`px-2 py-0.5 rounded-full ${course.isPremium ? 'bg-amber-100 text-amber-700' : 'bg-green-100 text-green-700'}`}>
+                    <span className={`px-2 py-0.5 rounded-full ${course.isPremium ? 'bg-primary-100 text-primary-800' : 'bg-green-100 text-green-700'}`}>
                       {course.isPremium ? 'Premium' : 'Gratuito'}
                     </span>
                     <span>{course.modules?.length || 0} módulos</span>

@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { motion, Reorder } from 'framer-motion';
-import { 
-  Plus, 
-  MoreVertical, 
-  Calendar, 
+import {
+  Plus,
+  MoreVertical,
+  Calendar,
   Flag,
   Clock,
   User,
@@ -43,23 +43,23 @@ const KanbanBoard = ({ tasks, onUpdate }: KanbanBoardProps) => {
   const compactFieldClassName = "rounded-lg border border-[#34455a] bg-[#0c121b] px-3 py-2 text-white outline-none transition-colors focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20";
 
   const columns = [
-    { 
-      id: 'todo', 
-      title: 'A Fazer', 
+    {
+      id: 'todo',
+      title: 'A Fazer',
       color: 'from-gray-500 to-gray-600',
       bgColor: 'bg-[#151f2b]',
       borderColor: 'border-[#34455a]'
     },
-    { 
-      id: 'doing', 
-      title: 'Fazendo', 
+    {
+      id: 'doing',
+      title: 'Fazendo',
       color: 'from-blue-500 to-blue-600',
       bgColor: 'bg-primary-500/10',
       borderColor: 'border-primary-400/25'
     },
-    { 
-      id: 'done', 
-      title: 'Concluído', 
+    {
+      id: 'done',
+      title: 'Concluído',
       color: 'from-green-500 to-green-600',
       bgColor: 'bg-emerald-400/10',
       borderColor: 'border-emerald-400/25'
@@ -95,7 +95,7 @@ const KanbanBoard = ({ tasks, onUpdate }: KanbanBoardProps) => {
   };
 
   const handleUpdateTask = (taskId: string, updates: Partial<Task>) => {
-    onUpdate(tasks.map(task => 
+    onUpdate(tasks.map(task =>
       task.id === taskId ? { ...task, ...updates } : task
     ));
   };
@@ -112,7 +112,7 @@ const KanbanBoard = ({ tasks, onUpdate }: KanbanBoardProps) => {
   const getPriorityColor = (priority: Task['priority']) => {
     const colors = {
       low: 'border border-primary-400/20 bg-primary-500/10 text-primary-200',
-      medium: 'border border-amber-400/20 bg-amber-400/10 text-amber-200',
+      medium: 'border border-primary-400/20 bg-primary-400/10 text-primary-200',
       high: 'border border-red-400/20 bg-red-400/10 text-red-200'
     };
     return colors[priority];
@@ -280,10 +280,10 @@ interface TaskCardProps {
   getPriorityIcon: (priority: Task['priority']) => string;
 }
 
-const TaskCard = ({ 
-  task, 
-  index, 
-  onUpdate, 
+const TaskCard = ({
+  task,
+  index,
+  onUpdate,
   onDelete,
   getPriorityColor,
   getPriorityIcon
@@ -375,7 +375,7 @@ const TaskCard = ({
                       setIsEditing(true);
                       setShowMenu(false);
                     }}
-                  className="flex w-full items-center gap-2 px-4 py-2 text-left text-sm text-[#d7e0ea] hover:bg-[#151f2b]"
+                    className="flex w-full items-center gap-2 px-4 py-2 text-left text-sm text-[#d7e0ea] hover:bg-[#151f2b]"
                   >
                     <Edit className="w-4 h-4" />
                     Editar
@@ -385,7 +385,7 @@ const TaskCard = ({
                       onDelete();
                       setShowMenu(false);
                     }}
-                  className="flex w-full items-center gap-2 px-4 py-2 text-left text-sm text-red-300 hover:bg-red-400/10"
+                    className="flex w-full items-center gap-2 px-4 py-2 text-left text-sm text-red-300 hover:bg-red-400/10"
                   >
                     <Trash2 className="w-4 h-4" />
                     Excluir
@@ -404,7 +404,7 @@ const TaskCard = ({
           <div className="flex items-center gap-2 flex-wrap">
             {/* Priority */}
             <div className="flex items-center gap-1">
-              <Flag className={`w-3 h-3 ${task.priority === 'high' ? 'text-red-500' : task.priority === 'medium' ? 'text-yellow-500' : 'text-blue-500'}`} />
+              <Flag className={`w-3 h-3 ${task.priority === 'high' ? 'text-red-500' : task.priority === 'medium' ? 'text-primary-400' : 'text-blue-500'}`} />
               <span className={`text-xs px-2 py-0.5 rounded-full ${getPriorityColor(task.priority)}`}>
                 {task.priority === 'high' ? 'Alta' : task.priority === 'medium' ? 'Média' : 'Baixa'}
               </span>

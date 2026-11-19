@@ -80,7 +80,7 @@ const ecosystemLayers: EcosystemLayer[] = [
     shortDescription: 'A origem da OrientoHub: serviços de estratégia, inovação e construção que deram início ao ecossistema.',
     description: 'A OrientoHub nasceu como uma operação de serviços. O Núcleo continua sendo essa raiz institucional, reunindo estratégia, inovação, IA, marketing, design e construção de negócios para orientar toda a expansão do ecossistema.',
     icon: Target,
-    color: 'from-amber-500 to-orange-600',
+    color: 'from-primary-500 to-orange-600',
     brandColor: 'amber',
     href: '/ecossistema#nucleo',
     ctaLabel: 'Explorar o Núcleo',
@@ -227,21 +227,21 @@ const HomePage = () => {
                 className="relative mx-auto flex h-[1.2em] w-[14ch] items-center justify-center overflow-hidden whitespace-nowrap leading-[1.15]"
                 aria-live="polite"
               >
-                  <AnimatePresence mode="wait" initial={false}>
-                    <motion.span
-                      key={heroOutcomeWords[heroOutcomeIndex]}
-                      className="absolute inset-0 flex items-center justify-center gap-[0.22em] whitespace-nowrap"
-                      initial={{ opacity: 0, y: 18, filter: 'blur(5px)' }}
-                      animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-                      exit={{ opacity: 0, y: -18, filter: 'blur(5px)' }}
-                      transition={{ duration: 0.45, ease: 'easeOut' }}
-                    >
-                      <span className="text-white">sem</span>
-                      <span className="bg-gradient-to-r from-[#FFF200] via-[#FFF200] to-[#FFF200]/80 bg-clip-text text-transparent">
-                        {heroOutcomeWords[heroOutcomeIndex]}
-                      </span>
-                    </motion.span>
-                  </AnimatePresence>
+                <AnimatePresence mode="wait" initial={false}>
+                  <motion.span
+                    key={heroOutcomeWords[heroOutcomeIndex]}
+                    className="absolute inset-0 flex items-center justify-center gap-[0.22em] whitespace-nowrap"
+                    initial={{ opacity: 0, y: 18, filter: 'blur(5px)' }}
+                    animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                    exit={{ opacity: 0, y: -18, filter: 'blur(5px)' }}
+                    transition={{ duration: 0.45, ease: 'easeOut' }}
+                  >
+                    <span className="text-white">sem</span>
+                    <span className="bg-gradient-to-r from-[#FFF200] via-[#FFF200] to-[#FFF200]/80 bg-clip-text text-transparent">
+                      {heroOutcomeWords[heroOutcomeIndex]}
+                    </span>
+                  </motion.span>
+                </AnimatePresence>
               </span>
             </motion.h1>
 
@@ -607,8 +607,8 @@ const EcosystemCard = ({ layer, compact = false, expanded = false, onToggleExpan
   return (
     <motion.div
       className={`group relative overflow-hidden rounded-2xl border bg-[#0d131d] transition-all duration-300 active:scale-[0.995] ${expanded
-          ? 'border-[#FFF200]/60 shadow-[0_24px_70px_rgba(0,0,0,0.24)]'
-          : 'border-white/10 hover:-translate-y-1 hover:border-[#FFF200]/55 hover:bg-[#111925]'
+        ? 'border-[#FFF200]/60 shadow-[0_24px_70px_rgba(0,0,0,0.24)]'
+        : 'border-white/10 hover:-translate-y-1 hover:border-[#FFF200]/55 hover:bg-[#111925]'
         } ${shellPadding} h-full ${expanded ? 'min-h-[260px] sm:min-h-[320px]' : 'min-h-[260px] sm:min-h-[280px]'} ${canExpand || expanded ? 'cursor-pointer' : 'cursor-default'}`}
       variants={itemVariants}
       role={canExpand ? 'button' : undefined}
@@ -676,7 +676,7 @@ const EcosystemCard = ({ layer, compact = false, expanded = false, onToggleExpan
                     </div>
                   ))}
                 </div>
-                
+
                 <Link
                   to="/servicos"
                   className="inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-3 bg-[#FFF200] hover:bg-[#FFF200] hover:opacity-90 shadow-none text-black font-bold rounded-xl transition-all w-full sm:w-fit group text-sm"
@@ -709,7 +709,7 @@ const EcosystemCard = ({ layer, compact = false, expanded = false, onToggleExpan
                     );
                   })}
                 </div>
-                
+
                 <div className="p-3.5 sm:p-4 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800/50 dark:to-gray-800/80 rounded-xl border border-gray-200 dark:border-gray-700">
                   <h4 className="text-gray-900 dark:text-white font-bold mb-1 flex items-center gap-2 text-xs sm:text-base">
                     <Sparkles className="w-4 h-4 text-[#FFF200] shrink-0" />
@@ -736,11 +736,11 @@ const EcosystemCard = ({ layer, compact = false, expanded = false, onToggleExpan
                           <div className={`w-9 h-9 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl flex items-center justify-center bg-gray-50 dark:bg-gray-900/50 border ${mvp.border}`}>
                             <MvpIcon className={`w-4 h-4 sm:w-6 sm:h-6 ${mvp.color}`} />
                           </div>
-                          <span className={`text-[9px] sm:text-[10px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wider ${mvp.status === 'Beta' ? 'bg-amber-100 dark:bg-amber-500/10 text-amber-700 dark:text-amber-400' : 'bg-primary-50 dark:bg-[#FFF200]/10 text-primary-700 dark:text-[#FFF200]'}`}>
+                          <span className={`text-[9px] sm:text-[10px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wider ${mvp.status === 'Beta' ? 'bg-primary-100 dark:bg-primary-500/10 text-primary-800 dark:text-primary-300' : 'bg-primary-50 dark:bg-[#FFF200]/10 text-primary-700 dark:text-[#FFF200]'}`}>
                             {mvp.status}
                           </span>
                         </div>
-                        
+
                         <div className="mt-auto">
                           <h4 className="font-bold text-xs sm:text-base text-gray-900 dark:text-white mb-0.5 sm:mb-1 leading-tight">{mvp.title}</h4>
                           <span className="text-[11px] sm:text-[13px] font-medium text-gray-500 dark:text-gray-400">
@@ -751,7 +751,7 @@ const EcosystemCard = ({ layer, compact = false, expanded = false, onToggleExpan
                     )
                   })}
                 </div>
-                
+
                 <div className="p-3.5 sm:p-4 bg-gradient-to-br from-blue-50 to-blue-100/30 dark:from-blue-900/10 dark:to-transparent rounded-xl border border-blue-100 dark:border-gray-800">
                   <h4 className="text-gray-900 dark:text-white font-bold mb-1 flex items-center gap-2 text-xs sm:text-base">
                     <Sparkles className="w-4 h-4 text-blue-500 shrink-0" />
@@ -767,7 +767,7 @@ const EcosystemCard = ({ layer, compact = false, expanded = false, onToggleExpan
                 <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-2.5 sm:gap-4">
                   {[
                     { title: "Orientados", desc: "Conversas que constroem.", status: "Em Breve", icon: Mic, color: "text-purple-500", border: 'border-purple-500/20' },
-                    { title: "Oriento Academy", desc: "Cursos voltados à inovação.", status: "Em Breve", icon: GraduationCap, color: "text-amber-500", border: 'border-amber-500/20' },
+                    { title: "Oriento Academy", desc: "Cursos voltados à inovação.", status: "Em Breve", icon: GraduationCap, color: "text-primary-500", border: 'border-primary-500/20' },
                     { title: "Oriento Ventures", desc: "Fundo interno de investimento.", status: "Em Breve", icon: Briefcase, color: "text-gray-500", border: 'border-gray-500/20' },
                     { title: "Oriento Expertise", desc: "Conhecimento que gera resultado.", subItems: ["Consultoria", "Mentoria", "Workshops"], status: "Ativo", icon: BookOpen, color: "text-blue-500", border: 'border-blue-500/20' }
                   ].map((vert, idx) => {
@@ -782,13 +782,13 @@ const EcosystemCard = ({ layer, compact = false, expanded = false, onToggleExpan
                             {vert.status}
                           </span>
                         </div>
-                        
+
                         <div className="mt-auto flex flex-col">
                           <h4 className="font-bold text-xs sm:text-base text-gray-900 dark:text-white mb-1 leading-tight">{vert.title}</h4>
                           <p className="text-[11px] sm:text-[13px] font-medium text-gray-500 dark:text-gray-400 leading-relaxed mb-2.5">
                             {vert.desc}
                           </p>
-                          
+
                           {vert.subItems && (
                             <div className="flex flex-wrap gap-1">
                               {vert.subItems.map((item, itemIdx) => (

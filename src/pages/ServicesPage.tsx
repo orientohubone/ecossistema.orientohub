@@ -48,7 +48,7 @@ const servicePriceColors: Record<ServiceAccent, { wrapper: string; glow: string;
   pink: { wrapper: 'border-pink-400/30 from-pink-500/[0.16] group-hover:border-pink-400/60', glow: 'bg-pink-400/15', line: 'via-pink-300/80', label: 'text-pink-300/75', value: 'text-pink-300' },
   violet: { wrapper: 'border-violet-400/30 from-violet-500/[0.16] group-hover:border-violet-400/60', glow: 'bg-violet-400/15', line: 'via-violet-300/80', label: 'text-violet-300/75', value: 'text-violet-300' },
   sky: { wrapper: 'border-sky-400/30 from-sky-500/[0.16] group-hover:border-sky-400/60', glow: 'bg-sky-400/15', line: 'via-sky-300/80', label: 'text-sky-300/75', value: 'text-sky-300' },
-  amber: { wrapper: 'border-amber-400/30 from-amber-500/[0.16] group-hover:border-amber-400/60', glow: 'bg-amber-400/15', line: 'via-amber-300/80', label: 'text-amber-300/75', value: 'text-amber-300' },
+  amber: { wrapper: 'border-primary-400/30 from-primary-500/[0.16] group-hover:border-primary-400/60', glow: 'bg-primary-400/15', line: 'via-primary-300/80', label: 'text-primary-300/75', value: 'text-primary-300' },
   cyan: { wrapper: 'border-cyan-400/30 from-cyan-500/[0.16] group-hover:border-cyan-400/60', glow: 'bg-cyan-400/15', line: 'via-cyan-300/80', label: 'text-cyan-300/75', value: 'text-cyan-300' },
   green: { wrapper: 'border-green-400/30 from-green-500/[0.16] group-hover:border-green-400/60', glow: 'bg-green-400/15', line: 'via-green-300/80', label: 'text-green-300/75', value: 'text-green-300' },
 };
@@ -57,49 +57,49 @@ const ServicePriceTag = ({ pricing, accent }: { pricing: ServicePricing; accent:
   const colors = servicePriceColors[accent];
 
   return (
-  <div className={`relative flex w-full shrink-0 flex-col justify-center overflow-hidden rounded-2xl border bg-gradient-to-br via-[#171b20] to-[#0c121b] p-4 shadow-none transition duration-300 group-hover:shadow-none sm:w-[180px] ${colors.wrapper}`}>
-    <div className={`pointer-events-none absolute -right-8 -top-10 h-24 w-24 rounded-full blur-2xl ${colors.glow}`} />
-    <span className={`absolute inset-x-5 top-0 h-px bg-gradient-to-r from-transparent to-transparent ${colors.line}`} />
+    <div className={`relative flex w-full shrink-0 flex-col justify-center overflow-hidden rounded-2xl border bg-gradient-to-br via-[#171b20] to-[#0c121b] p-4 shadow-none transition duration-300 group-hover:shadow-none sm:w-[180px] ${colors.wrapper}`}>
+      <div className={`pointer-events-none absolute -right-8 -top-10 h-24 w-24 rounded-full blur-2xl ${colors.glow}`} />
+      <span className={`absolute inset-x-5 top-0 h-px bg-gradient-to-r from-transparent to-transparent ${colors.line}`} />
 
-    {pricing.customText ? (
-      <>
-        <span className={`text-[10px] font-bold uppercase tracking-[0.18em] ${colors.label}`}>Investimento</span>
-        <strong className={`mt-1 text-2xl leading-tight ${colors.value}`}>{pricing.customText}</strong>
-      </>
-    ) : pricing.fixed !== undefined ? (
-      <>
-        <span className={`text-[10px] font-bold uppercase tracking-[0.18em] ${colors.label}`}>Investimento</span>
-        <strong className={`mt-1 text-2xl leading-tight ${colors.value}`}>{formatPrice(pricing.fixed)}</strong>
-      </>
-    ) : pricing.startingAt !== undefined ? (
-      <>
-        <span className={`text-[10px] font-bold uppercase tracking-[0.14em] ${colors.label}`}>{pricing.startingAtLabel ?? 'A partir de'}</span>
-        <strong className={`mt-1 whitespace-nowrap text-2xl leading-tight ${colors.value}`}>
-          {formatPrice(pricing.startingAt)}
-          {pricing.suffix && <small className={`mt-1 block text-xs font-bold uppercase tracking-[0.12em] ${colors.label}`}>{pricing.suffix}</small>}
-        </strong>
-      </>
-    ) : pricing.original !== undefined && pricing.promotional !== undefined ? (
-      <>
-        <div className="flex items-center justify-between gap-2">
-          <span className="text-xs text-gray-500 line-through">{formatPrice(pricing.original)}</span>
-          <span className="rounded-full border border-emerald-400/20 bg-emerald-400/10 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-emerald-300">
-            {getDiscountPercentage(pricing.original, pricing.promotional)}% OFF
-          </span>
+      {pricing.customText ? (
+        <>
+          <span className={`text-[10px] font-bold uppercase tracking-[0.18em] ${colors.label}`}>Investimento</span>
+          <strong className={`mt-1 text-2xl leading-tight ${colors.value}`}>{pricing.customText}</strong>
+        </>
+      ) : pricing.fixed !== undefined ? (
+        <>
+          <span className={`text-[10px] font-bold uppercase tracking-[0.18em] ${colors.label}`}>Investimento</span>
+          <strong className={`mt-1 text-2xl leading-tight ${colors.value}`}>{formatPrice(pricing.fixed)}</strong>
+        </>
+      ) : pricing.startingAt !== undefined ? (
+        <>
+          <span className={`text-[10px] font-bold uppercase tracking-[0.14em] ${colors.label}`}>{pricing.startingAtLabel ?? 'A partir de'}</span>
+          <strong className={`mt-1 whitespace-nowrap text-2xl leading-tight ${colors.value}`}>
+            {formatPrice(pricing.startingAt)}
+            {pricing.suffix && <small className={`mt-1 block text-xs font-bold uppercase tracking-[0.12em] ${colors.label}`}>{pricing.suffix}</small>}
+          </strong>
+        </>
+      ) : pricing.original !== undefined && pricing.promotional !== undefined ? (
+        <>
+          <div className="flex items-center justify-between gap-2">
+            <span className="text-xs text-gray-500 line-through">{formatPrice(pricing.original)}</span>
+            <span className="rounded-full border border-emerald-400/20 bg-emerald-400/10 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-emerald-300">
+              {getDiscountPercentage(pricing.original, pricing.promotional)}% OFF
+            </span>
+          </div>
+          <span className={`mt-1 text-[10px] font-bold uppercase tracking-[0.14em] ${colors.label}`}>Por apenas</span>
+          <strong className={`mt-0.5 text-2xl leading-tight ${colors.value}`}>{formatPrice(pricing.promotional)}</strong>
+        </>
+      ) : null}
+
+      {pricing.alternative && (
+        <div className="mt-3 border-t border-white/10 pt-3 text-xs text-gray-300">
+          <span className="block">{pricing.alternative.label}</span>
+          <strong className="mt-0.5 block text-base text-white">{formatPrice(pricing.alternative.value)}</strong>
         </div>
-        <span className={`mt-1 text-[10px] font-bold uppercase tracking-[0.14em] ${colors.label}`}>Por apenas</span>
-        <strong className={`mt-0.5 text-2xl leading-tight ${colors.value}`}>{formatPrice(pricing.promotional)}</strong>
-      </>
-    ) : null}
-
-    {pricing.alternative && (
-      <div className="mt-3 border-t border-white/10 pt-3 text-xs text-gray-300">
-        <span className="block">{pricing.alternative.label}</span>
-        <strong className="mt-0.5 block text-base text-white">{formatPrice(pricing.alternative.value)}</strong>
-      </div>
-    )}
-    {pricing.note && <p className="mt-3 border-t border-white/10 pt-3 text-[10px] font-medium leading-relaxed text-gray-400">{pricing.note}</p>}
-  </div>
+      )}
+      {pricing.note && <p className="mt-3 border-t border-white/10 pt-3 text-[10px] font-medium leading-relaxed text-gray-400">{pricing.note}</p>}
+    </div>
   );
 };
 
@@ -111,7 +111,7 @@ const ServicesPage = () => (
     </Helmet>
 
     <div className="relative overflow-hidden bg-gradient-to-br from-black via-gray-900 to-black text-white">
-      <div className="pointer-events-none absolute inset-0 opacity-[0.12]" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, #facc15 1px, transparent 0)', backgroundSize: '40px 40px' }} />
+      <div className="pointer-events-none absolute inset-0 opacity-[0.12]" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, #FFF200 1px, transparent 0)', backgroundSize: '40px 40px' }} />
 
       <section className="container-custom relative z-10 py-16 sm:py-20 lg:py-28">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.55 }} className="mx-auto max-w-6xl">
@@ -145,27 +145,27 @@ const ServicesPage = () => (
                   <div className="flex min-w-0 flex-1 gap-4">
                     <span className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border ${serviceColors[service.accent]}`}><Icon className="h-5 w-5" /></span>
                     <div className="flex min-w-0 flex-1 flex-col">
-                    <h2 className="text-lg font-bold sm:text-xl">{service.title}</h2>
-                    <p className="mt-1 text-base leading-relaxed text-gray-400">{service.description}</p>
-                    
-                    {service.slug === 'google-meu-negocio' && (
-                      <div className="mt-4 relative group/badge overflow-hidden rounded-full border border-[#FFF200]/40 bg-gradient-to-r from-[#FFF200]/20 via-yellow-400/10 to-[#FFF200]/20 shadow-none transition-all duration-300 hover:border-[#FFF200] hover:shadow-none">
-                        <span className="absolute inset-[1px] rounded-full bg-[#131820] transition-colors duration-300 group-hover/badge:bg-[#131820]/40" />
-                        <div className="relative flex w-fit items-center gap-2 px-3.5 py-1.5 text-[10px] font-bold uppercase tracking-widest text-[#FFF200]">
-                          <Sparkles className="h-3.5 w-3.5 text-[#FFF200]" /> Experimente nosso simulador
-                        </div>
-                      </div>
-                    )}
-                    {service.slug === 'naming' && (
-                      <div className="mt-4 relative group/badge overflow-hidden rounded-full border border-[#FFF200]/40 bg-gradient-to-r from-[#FFF200]/20 via-yellow-400/10 to-[#FFF200]/20 shadow-none transition-all duration-300 hover:border-[#FFF200] hover:shadow-none">
-                        <span className="absolute inset-[1px] rounded-full bg-[#131820] transition-colors duration-300 group-hover/badge:bg-[#131820]/40" />
-                        <div className="relative flex w-fit items-center gap-2 px-3.5 py-1.5 text-[10px] font-bold uppercase tracking-widest text-[#FFF200]">
-                          <Sparkles className="h-3.5 w-3.5 text-[#FFF200]" /> Experimente nosso gerador
-                        </div>
-                      </div>
-                    )}
+                      <h2 className="text-lg font-bold sm:text-xl">{service.title}</h2>
+                      <p className="mt-1 text-base leading-relaxed text-gray-400">{service.description}</p>
 
-                    <span className="mt-auto inline-flex items-center gap-1 pt-5 text-sm font-semibold text-[#FFF200] transition group-hover:gap-2">Conhecer serviço <ArrowRight className="h-4 w-4" /></span>
+                      {service.slug === 'google-meu-negocio' && (
+                        <div className="mt-4 relative group/badge overflow-hidden rounded-full border border-[#FFF200]/40 bg-gradient-to-r from-[#FFF200]/20 via-[#FFF200]/10 to-[#FFF200]/20 shadow-none transition-all duration-300 hover:border-[#FFF200] hover:shadow-none">
+                          <span className="absolute inset-[1px] rounded-full bg-[#131820] transition-colors duration-300 group-hover/badge:bg-[#131820]/40" />
+                          <div className="relative flex w-fit items-center gap-2 px-3.5 py-1.5 text-[10px] font-bold uppercase tracking-widest text-[#FFF200]">
+                            <Sparkles className="h-3.5 w-3.5 text-[#FFF200]" /> Experimente nosso simulador
+                          </div>
+                        </div>
+                      )}
+                      {service.slug === 'naming' && (
+                        <div className="mt-4 relative group/badge overflow-hidden rounded-full border border-[#FFF200]/40 bg-gradient-to-r from-[#FFF200]/20 via-[#FFF200]/10 to-[#FFF200]/20 shadow-none transition-all duration-300 hover:border-[#FFF200] hover:shadow-none">
+                          <span className="absolute inset-[1px] rounded-full bg-[#131820] transition-colors duration-300 group-hover/badge:bg-[#131820]/40" />
+                          <div className="relative flex w-fit items-center gap-2 px-3.5 py-1.5 text-[10px] font-bold uppercase tracking-widest text-[#FFF200]">
+                            <Sparkles className="h-3.5 w-3.5 text-[#FFF200]" /> Experimente nosso gerador
+                          </div>
+                        </div>
+                      )}
+
+                      <span className="mt-auto inline-flex items-center gap-1 pt-5 text-sm font-semibold text-[#FFF200] transition group-hover:gap-2">Conhecer serviço <ArrowRight className="h-4 w-4" /></span>
                     </div>
                   </div>
                   {service.pricing && <ServicePriceTag pricing={service.pricing} accent={service.accent} />}

@@ -46,7 +46,7 @@ const accentStyles: Record<ServiceAccent, { card: string; glow: string }> = {
   pink: { card: 'text-pink-300', glow: 'bg-pink-400/15' },
   violet: { card: 'text-violet-300', glow: 'bg-violet-400/15' },
   sky: { card: 'text-sky-300', glow: 'bg-sky-400/15' },
-  amber: { card: 'text-amber-300', glow: 'bg-amber-400/15' },
+  amber: { card: 'text-primary-300', glow: 'bg-primary-400/15' },
   cyan: { card: 'text-cyan-300', glow: 'bg-cyan-400/15' },
   green: { card: 'text-green-300', glow: 'bg-green-400/15' },
 };
@@ -66,7 +66,7 @@ const AssetsPage = () => (
     </Helmet>
 
     <main className="relative min-h-screen overflow-hidden bg-gradient-to-br from-black via-gray-900 to-black px-4 py-16 text-white">
-      <div className="pointer-events-none absolute inset-0 opacity-[0.12]" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, #facc15 1px, transparent 0)', backgroundSize: '40px 40px' }} />
+      <div className="pointer-events-none absolute inset-0 opacity-[0.12]" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, #FFF200 1px, transparent 0)', backgroundSize: '40px 40px' }} />
       <section className="relative mx-auto max-w-[390px]" aria-label="Serviços OrientoHub">
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
           {serviceCatalog.map((service, index) => {

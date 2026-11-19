@@ -1,15 +1,15 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { 
-  CheckSquare, 
-  Calendar, 
-  PlusCircle, 
+import {
+  CheckSquare,
+  Calendar,
+  PlusCircle,
   Search,
   Target,
   Rocket,
   Brain,
   AlertCircle,
-  CheckCircle, 
+  CheckCircle,
   Circle,
   X,
   ArrowRight,
@@ -37,7 +37,7 @@ const TasksPage = () => {
         setIsLoading(true);
         // Utiliza o dashboardService pois as tarefas provêm dos projetos e experimentos
         const data = await dashboardService.getDashboardData();
-        
+
         // Mapeia o DashboardTask para o formato da TasksPage
         const mappedTasks = data.tasks.map(t => ({
           id: t.id,
@@ -49,10 +49,10 @@ const TasksPage = () => {
           projectId: t.project_id,
           projectName: t.project_name || 'Geral',
           projectStage: 'validation',
-          type: t.category.toLowerCase().includes('experimento') ? 'experiment' : 
-                t.category.toLowerCase().includes('entrevista') ? 'hypothesis' : 'research'
+          type: t.category.toLowerCase().includes('experimento') ? 'experiment' :
+            t.category.toLowerCase().includes('entrevista') ? 'hypothesis' : 'research'
         }));
-        
+
         setTasks(mappedTasks);
         setFilteredTasks(mappedTasks);
       } catch (error) {
@@ -61,7 +61,7 @@ const TasksPage = () => {
         setIsLoading(false);
       }
     };
-    
+
     loadTasks();
   }, []);
 
@@ -69,7 +69,7 @@ const TasksPage = () => {
     let filtered = tasks;
 
     if (searchTerm) {
-      filtered = filtered.filter(task => 
+      filtered = filtered.filter(task =>
         task.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         task.description.toLowerCase().includes(searchTerm.toLowerCase())
       );
@@ -97,7 +97,7 @@ const TasksPage = () => {
   const getPriorityColor = (priority: string) => {
     switch (priority) {
       case 'high': return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200';
-      case 'medium': return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200';
+      case 'medium': return 'bg-primary-100 text-primary-800 dark:bg-primary-900 dark:text-primary-200';
       default: return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200';
     }
   };

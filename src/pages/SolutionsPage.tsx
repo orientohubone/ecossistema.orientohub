@@ -45,10 +45,10 @@ const SolutionsPage = () => {
   const openedCallbackSolution = useRef('');
   const [solutions, setSolutions] = useState<Solution[]>(solutionsService.getCachedSolutions(user?.id) || []);
   const [selectedSolution, setSelectedSolution] = useState<Solution | null>(null);
-  const [solutionToDelete,setSolutionToDelete]=useState<Solution|null>(null);
-  const [isDeletingSolution,setIsDeletingSolution]=useState(false);
-  const [deleteError,setDeleteError]=useState<string|null>(null);
-  const deletingSolutionRef=useRef(false);
+  const [solutionToDelete, setSolutionToDelete] = useState<Solution | null>(null);
+  const [isDeletingSolution, setIsDeletingSolution] = useState(false);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
+  const deletingSolutionRef = useRef(false);
   const [showAddModal, setShowAddModal] = useState(false);
   const [isLoading, setIsLoading] = useState(!solutionsService.getCachedSolutions(user?.id));
   const [isSyncing, setIsSyncing] = useState(false);
@@ -91,7 +91,7 @@ const SolutionsPage = () => {
       if (solutions.length === 0 && !solutionsService.getCachedSolutions(user?.id)) {
         setIsLoading(true);
       }
-      
+
       setError(null);
       const data = await solutionsService.getAll(forceRefresh);
       setSolutions(data);
@@ -113,29 +113,29 @@ const SolutionsPage = () => {
   };
 
   const handleRemoveSolution = (id: string) => {
-    const solution=solutions.find(item=>item.id===id)||(selectedSolution?.id===id?selectedSolution:null);
-    if(!solution||deletingSolutionRef.current)return;
+    const solution = solutions.find(item => item.id === id) || (selectedSolution?.id === id ? selectedSolution : null);
+    if (!solution || deletingSolutionRef.current) return;
     setDeleteError(null);
     setSolutionToDelete(solution);
   };
 
   const confirmRemoveSolution = async () => {
-    if(!solutionToDelete||deletingSolutionRef.current)return;
-    const target=solutionToDelete;
-    deletingSolutionRef.current=true;
+    if (!solutionToDelete || deletingSolutionRef.current) return;
+    const target = solutionToDelete;
+    deletingSolutionRef.current = true;
     setIsDeletingSolution(true);
     setDeleteError(null);
     try {
       await solutionsService.delete(target.id);
-      setSolutions(current=>current.filter(item=>item.id!==target.id));
-      setSelectedSolution(current=>current?.id===target.id?null:current);
+      setSolutions(current => current.filter(item => item.id !== target.id));
+      setSelectedSolution(current => current?.id === target.id ? null : current);
       setSolutionToDelete(null);
       setError(null);
       setSuccess(`A solução “${target.name}” foi excluída.`);
     } catch (err: any) {
-      setDeleteError(err.message||'Não foi possível excluir a solução. Tente novamente.');
+      setDeleteError(err.message || 'Não foi possível excluir a solução. Tente novamente.');
     } finally {
-      deletingSolutionRef.current=false;
+      deletingSolutionRef.current = false;
       setIsDeletingSolution(false);
     }
   };
@@ -213,23 +213,23 @@ const SolutionsPage = () => {
   const updateSolutionGithubData = (id: string, data: any) => {
     setSolutions(prev => prev.map(s => s.id === id ? { ...s, github_data: data } : s));
   };
-  const handleGithubUpdated = (changed?: {id:string;git_url:string|null}) => {
+  const handleGithubUpdated = (changed?: { id: string; git_url: string | null }) => {
     solutionsService.clearGithubCache();
-    setSolutions(current => current.map(solution => !changed||changed.id===solution.id ? {...solution,...(changed||{}),github_data:undefined} : solution));
-    setSelectedSolution(current => current&&(!changed||changed.id===current.id) ? {...current,...(changed||{}),github_data:undefined} : current);
+    setSolutions(current => current.map(solution => !changed || changed.id === solution.id ? { ...solution, ...(changed || {}), github_data: undefined } : solution));
+    setSelectedSolution(current => current && (!changed || changed.id === current.id) ? { ...current, ...(changed || {}), github_data: undefined } : current);
     if (changed?.git_url) {
-      const updated={id:changed.id,git_url:changed.git_url};
-      void solutionsService.fetchGithubData(updated,true).then(data=>{
-        if(!data)return;
-        setSolutions(current=>current.map(solution=>solution.id===changed.id?{...solution,github_data:data}:solution));
-        setSelectedSolution(current=>current?.id===changed.id?{...current,github_data:data}:current);
-      }).catch(()=>{});
+      const updated = { id: changed.id, git_url: changed.git_url };
+      void solutionsService.fetchGithubData(updated, true).then(data => {
+        if (!data) return;
+        setSolutions(current => current.map(solution => solution.id === changed.id ? { ...solution, github_data: data } : solution));
+        setSelectedSolution(current => current?.id === changed.id ? { ...current, github_data: data } : current);
+      }).catch(() => { });
     }
   };
 
   const getHealthColor = (score: number) => {
     if (score >= 80) return 'text-green-500';
-    if (score >= 60) return 'text-yellow-500';
+    if (score >= 60) return 'text-primary-500';
     return 'text-red-500';
   };
 
@@ -241,7 +241,7 @@ const SolutionsPage = () => {
 
   const getStageColor = (stage: string) => {
     const colors: { [key: string]: string } = {
-      'Ideação': 'bg-purple-500', 'Validação': 'bg-blue-500', 'MVP': 'bg-yellow-500',
+      'Ideação': 'bg-purple-500', 'Validação': 'bg-blue-500', 'MVP': 'bg-primary-500',
       'Tração': 'bg-orange-500', 'Crescimento': 'bg-green-500', 'Escala': 'bg-primary-500'
     };
     return colors[stage] || 'bg-gray-500';
@@ -254,7 +254,7 @@ const SolutionsPage = () => {
       <Helmet><title>Minhas Soluções - Orientohub</title></Helmet>
 
       <div className="min-h-screen bg-[#0c121b]">
-        <div className="container-custom pt-6"><GithubConnectionPanel solution={selectedSolution||undefined} onUpdated={handleGithubUpdated} /></div>
+        <div className="container-custom pt-6"><GithubConnectionPanel solution={selectedSolution || undefined} onUpdated={handleGithubUpdated} /></div>
         {error && <div role="alert" className="container-custom pt-5 text-sm text-red-300">{error}</div>}
         {success && <div role="status" className="container-custom flex items-center gap-2 pt-5 text-sm text-emerald-300"><CheckCircle className="h-4 w-4" />{success}<button type="button" aria-label="Fechar confirmação" onClick={() => setSuccess(null)} className="ml-auto p-2"><X className="h-4 w-4" /></button></div>}
         {!selectedSolution ? (
@@ -328,7 +328,7 @@ const SolutionsPage = () => {
       </div>
 
       {showAddModal && <AddSolutionModal key={user?.id} userId={user?.id} onClose={() => setShowAddModal(false)} onSave={handleAddSolution} />}
-      {solutionToDelete&&<DeleteSolutionModal solution={solutionToDelete} deleting={isDeletingSolution} error={deleteError} onClose={()=>{if(!deletingSolutionRef.current){setSolutionToDelete(null);setDeleteError(null);}}} onConfirm={()=>void confirmRemoveSolution()} />}
+      {solutionToDelete && <DeleteSolutionModal solution={solutionToDelete} deleting={isDeletingSolution} error={deleteError} onClose={() => { if (!deletingSolutionRef.current) { setSolutionToDelete(null); setDeleteError(null); } }} onConfirm={() => void confirmRemoveSolution()} />}
       <EditSolutionModal
         show={isEditingSolution}
         solution={selectedSolution}
@@ -373,7 +373,7 @@ const SolutionCard = memo(({ solution, index, onViewDetails, onUpdateData, onRem
           const data = await solutionsService.fetchGithubData(solution);
           if (data) onUpdateData(data);
         } catch {
-          onUpdateData({stars:0,forks:0,commits:0,contributors:0,open_issues:0,last_commit:null,health_score:0,languages:[],error:'Não foi possível sincronizar. Atualize a conexão e tente novamente.'});
+          onUpdateData({ stars: 0, forks: 0, commits: 0, contributors: 0, open_issues: 0, last_commit: null, health_score: 0, languages: [], error: 'Não foi possível sincronizar. Atualize a conexão e tente novamente.' });
         } finally { setIsFetching(false); }
       };
       load();
@@ -385,19 +385,19 @@ const SolutionCard = memo(({ solution, index, onViewDetails, onUpdateData, onRem
       <div className="border-b border-[#273548] bg-[#151f2b] p-6">
         <div className="flex items-start justify-between gap-4">
           <div className="flex items-center gap-4 min-w-0">
-          <div className="h-14 w-14 shrink-0 rounded-2xl border border-[#34455a] bg-[#0c121b] p-2.5 transition-transform group-hover:scale-105">
-            <SolutionLogo solution={solution} />
-          </div>
-          <div className="min-w-0">
-            <p className="mb-1 text-[10px] font-black uppercase tracking-[0.18em] text-[#718096]">Solução</p>
-            <h3 className="line-clamp-1 text-lg font-bold text-white">{solution.name}</h3>
-            <div className="flex items-center gap-2 mt-1.5">
-              <span className={`inline-block px-2.5 py-1 rounded-full text-[10px] font-bold text-white ${getStageColor(solution.stage)}`}>{solution.stage}</span>
-              {solution.category && <span className="truncate text-[10px] font-bold text-[#9ba9bc]">{solution.category}</span>}
+            <div className="h-14 w-14 shrink-0 rounded-2xl border border-[#34455a] bg-[#0c121b] p-2.5 transition-transform group-hover:scale-105">
+              <SolutionLogo solution={solution} />
+            </div>
+            <div className="min-w-0">
+              <p className="mb-1 text-[10px] font-black uppercase tracking-[0.18em] text-[#718096]">Solução</p>
+              <h3 className="line-clamp-1 text-lg font-bold text-white">{solution.name}</h3>
+              <div className="flex items-center gap-2 mt-1.5">
+                <span className={`inline-block px-2.5 py-1 rounded-full text-[10px] font-bold text-white ${getStageColor(solution.stage)}`}>{solution.stage}</span>
+                {solution.category && <span className="truncate text-[10px] font-bold text-[#9ba9bc]">{solution.category}</span>}
+              </div>
             </div>
           </div>
-        </div>
-        <button onClick={onRemove} aria-label={`Remover ${solution.name}`} className="rounded-xl p-2 text-gray-400 transition-colors hover:bg-red-500/10 hover:text-red-300"><Trash2 className="w-4 h-4" /></button>
+          <button onClick={onRemove} aria-label={`Remover ${solution.name}`} className="rounded-xl p-2 text-gray-400 transition-colors hover:bg-red-500/10 hover:text-red-300"><Trash2 className="w-4 h-4" /></button>
         </div>
         <p className="mt-5 min-h-10 text-sm leading-relaxed text-[#9ba9bc] line-clamp-2">{solution.description || solution.github_data?.overview?.description || 'Solução em desenvolvimento no ecossistema Orientohub.'}</p>
       </div>
@@ -410,7 +410,7 @@ const SolutionCard = memo(({ solution, index, onViewDetails, onUpdateData, onRem
             <div>
               <p className="text-[10px] font-black uppercase tracking-wider text-[#718096]">Saúde técnica</p>
               <p className={`text-sm font-bold ${solution.github_data?.error ? 'text-red-500' : hasGithub ? getHealthColor(healthScore) : 'text-gray-400'}`}>
-                {solution.github_data ? (solution.github_data.error || `${healthScore}% · ${getHealthLabel(healthScore)}`) : solution.git_url ? (isFetching?'Sincronizando dados...':'Aguardando sincronização...') : 'Repositório não informado'}
+                {solution.github_data ? (solution.github_data.error || `${healthScore}% · ${getHealthLabel(healthScore)}`) : solution.git_url ? (isFetching ? 'Sincronizando dados...' : 'Aguardando sincronização...') : 'Repositório não informado'}
               </p>
             </div>
           </div>
@@ -418,7 +418,7 @@ const SolutionCard = memo(({ solution, index, onViewDetails, onUpdateData, onRem
         </div>
         <div className="grid grid-cols-3 gap-2">
           {[
-            { icon: Star, value: solution.github_data?.stars || 0, label: 'Stars', color: 'text-yellow-500' },
+            { icon: Star, value: solution.github_data?.stars || 0, label: 'Stars', color: 'text-primary-400' },
             { icon: GitCommit, value: solution.github_data?.commits || 0, label: 'Commits', color: 'text-primary-500' },
             { icon: Users, value: solution.github_data?.contributors || 0, label: 'Pessoas', color: 'text-blue-500' }
           ].map(({ icon: Icon, value, label, color }) => <div key={label} className="rounded-xl border border-[#273548] bg-[#0c121b] p-3 text-center"><Icon className={`mx-auto mb-1 h-4 w-4 ${color}`} /><p className="text-base font-black text-white">{value}</p><p className="text-[9px] font-bold uppercase text-[#718096]">{label}</p></div>)}
@@ -428,8 +428,8 @@ const SolutionCard = memo(({ solution, index, onViewDetails, onUpdateData, onRem
     </motion.div>
   );
 }, (prev, next) => {
-  return prev.solution.id === next.solution.id && 
-         prev.solution.github_data === next.solution.github_data;
+  return prev.solution.id === next.solution.id &&
+    prev.solution.github_data === next.solution.github_data;
 });
 
 // COMPONENTE DE TELA DEDICADA - PADRAO PROJECTSPAGE
@@ -468,7 +468,7 @@ const SolutionDetailsPage = memo(({ solution, onBack, onEdit, onDelete, getHealt
                 <span className={`inline-block px-3 py-1 rounded-full text-[10px] font-bold text-white ${getStageColor(solution.stage)}`}>{solution.stage}</span>
               </div>
               <p className="max-w-4xl text-sm leading-relaxed text-[#9ba9bc] line-clamp-2">{solution.description || github?.overview?.description || 'Repositório monitorado com integração de métricas em tempo real.'}</p>
-              
+
               {github?.error && (
                 <div className="mt-2 inline-flex items-center gap-2 px-3 py-1 bg-red-100 dark:bg-red-900/30 text-red-600 rounded-lg text-[10px] font-bold uppercase">
                   <AlertTriangle className="w-3 h-3" /> {github.error}
@@ -507,8 +507,8 @@ const SolutionDetailsPage = memo(({ solution, onBack, onEdit, onDelete, getHealt
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id as any)}
                   className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-sm transition-all whitespace-nowrap ${activeTab === tab.id
-                      ? 'bg-primary-500 text-black shadow-lg shadow-primary-500/20'
-                      : 'text-[#9ba9bc] hover:bg-[#151f2b] hover:text-white'
+                    ? 'bg-primary-500 text-black shadow-lg shadow-primary-500/20'
+                    : 'text-[#9ba9bc] hover:bg-[#151f2b] hover:text-white'
                     }`}
                 >
                   <Icon className="w-4 h-4" />
@@ -527,7 +527,7 @@ const SolutionDetailsPage = memo(({ solution, onBack, onEdit, onDelete, getHealt
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
                 <div className="lg:col-span-8 grid grid-cols-2 md:grid-cols-4 gap-4">
                   {[
-                    { label: 'Stars', value: github?.stars || 0, icon: Star, color: 'text-yellow-500', bg: 'bg-yellow-500/10' },
+                    { label: 'Stars', value: github?.stars || 0, icon: Star, color: 'text-primary-400', bg: 'bg-primary-500/10' },
                     { label: 'Commits', value: github?.commits || 0, icon: GitCommit, color: 'text-primary-500', bg: 'bg-primary-500/10' },
                     { label: 'Contributors', value: github?.contributors || 0, icon: Users, color: 'text-blue-500', bg: 'bg-blue-500/10' },
                     { label: 'Open Issues', value: github?.open_issues || 0, icon: Bug, color: 'text-red-500', bg: 'bg-red-500/10' },
@@ -692,8 +692,8 @@ const SolutionDetailsPage = memo(({ solution, onBack, onEdit, onDelete, getHealt
     </div>
   );
 }, (prev, next) => {
-  return prev.solution.id === next.solution.id && 
-         prev.solution.github_data === next.solution.github_data;
+  return prev.solution.id === next.solution.id &&
+    prev.solution.github_data === next.solution.github_data;
 });
 
 interface SolutionEditForm {

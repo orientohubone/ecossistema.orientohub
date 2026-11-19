@@ -3,12 +3,12 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
-import { 
+import {
   ArrowLeft,
   Home,
-  Mail, 
-  Lock, 
-  Eye, 
+  Mail,
+  Lock,
+  Eye,
   EyeOff,
   Sparkles,
   CheckCircle2,
@@ -23,16 +23,16 @@ const SignupPage = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { signup, resendConfirmationEmail, isLoading, error } = useAuthStore();
-  const [confirmationEmail,setConfirmationEmail]=useState('');
-  const [resendCooldown,setResendCooldown]=useState(0);
-  const [resendNotice,setResendNotice]=useState('');
-  const submitting=useRef(false);
-  useEffect(()=>{
-    if(!resendCooldown)return;
-    const timer=window.setTimeout(()=>setResendCooldown(value=>Math.max(0,value-1)),1000);
-    return()=>window.clearTimeout(timer);
-  },[resendCooldown]);
-  
+  const [confirmationEmail, setConfirmationEmail] = useState('');
+  const [resendCooldown, setResendCooldown] = useState(0);
+  const [resendNotice, setResendNotice] = useState('');
+  const submitting = useRef(false);
+  useEffect(() => {
+    if (!resendCooldown) return;
+    const timer = window.setTimeout(() => setResendCooldown(value => Math.max(0, value - 1)), 1000);
+    return () => window.clearTimeout(timer);
+  }, [resendCooldown]);
+
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -50,11 +50,11 @@ const SignupPage = () => {
     'Comunidade de founders',
     'Sem compromisso, cancele quando quiser',
   ];
-  
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if(submitting.current||isLoading)return;
-    
+    if (submitting.current || isLoading) return;
+
     if (password !== confirmPassword) {
       setPasswordError('As senhas não coincidem');
       return;
@@ -69,31 +69,31 @@ const SignupPage = () => {
       setPasswordError('Você precisa aceitar os termos de uso');
       return;
     }
-    
+
     setPasswordError('');
-    
+
     try {
-      submitting.current=true;
-      const normalizedEmail=email.trim();
-      const result=await signup(normalizedEmail, password, { name:name.trim() });
-      if(result.confirmationRequired){
+      submitting.current = true;
+      const normalizedEmail = email.trim();
+      const result = await signup(normalizedEmail, password, { name: name.trim() });
+      if (result.confirmationRequired) {
         setConfirmationEmail(normalizedEmail);
-        setPassword('');setConfirmPassword('');
+        setPassword(''); setConfirmPassword('');
         setResendCooldown(60);
-      }else{
+      } else {
         navigate('/dashboard');
       }
     } catch (error) {
       console.error('Signup failed:', error);
     } finally {
-      submitting.current=false;
+      submitting.current = false;
     }
   };
 
   const passwordStrength = (pass: string) => {
     if (pass.length === 0) return { strength: 0, label: '', color: '' };
     if (pass.length < 6) return { strength: 33, label: 'Fraca', color: 'bg-red-500' };
-    if (pass.length < 10) return { strength: 66, label: 'Média', color: 'bg-yellow-500' };
+    if (pass.length < 10) return { strength: 66, label: 'Média', color: 'bg-primary-500' };
     return { strength: 100, label: 'Forte', color: 'bg-green-500' };
   };
 
@@ -133,8 +133,8 @@ const SignupPage = () => {
       }
     };
   }, []);
-  
-  if(confirmationEmail)return <>
+
+  if (confirmationEmail) return <>
     <Helmet><title>Confirme seu e-mail - Orientohub</title></Helmet>
     <main className="flex min-h-screen items-center justify-center bg-[#0A0A0A] px-5 py-12 text-white">
       <section className="w-full max-w-md rounded-2xl border border-gray-800 bg-[#121212] p-6 sm:p-8" aria-labelledby="signup-confirmation-title">
@@ -143,15 +143,15 @@ const SignupPage = () => {
         <h1 id="signup-confirmation-title" className="text-2xl font-bold">Confirme seu e-mail para continuar</h1>
         <p role="status" className="mt-4 text-sm leading-relaxed text-gray-400">Enviamos um link de confirmação para <strong className="font-semibold text-white [overflow-wrap:anywhere]">{confirmationEmail}</strong>. Abra o e-mail e clique no link para ativar sua conta antes de fazer login.</p>
         <p className="mt-3 text-sm leading-relaxed text-gray-400">Confira também as pastas de spam e lixo eletrônico. O envio pode levar alguns minutos.</p>
-        {error&&<p role="alert" className="mt-4 rounded-xl border border-red-500/20 bg-red-500/10 p-3 text-sm text-red-300">{error}</p>}
-        {resendNotice&&<p role="status" className="mt-4 text-sm text-[#FFF200]">{resendNotice}</p>}
+        {error && <p role="alert" className="mt-4 rounded-xl border border-red-500/20 bg-red-500/10 p-3 text-sm text-red-300">{error}</p>}
+        {resendNotice && <p role="status" className="mt-4 text-sm text-[#FFF200]">{resendNotice}</p>}
         <Link to="/entrar" className="mt-7 flex items-center justify-center gap-2 rounded-xl bg-[#FFF200] px-4 py-3 text-sm font-bold text-black">Já confirmei, ir para o login<ArrowRight className="h-4 w-4" /></Link>
-        <button type="button" disabled={isLoading||resendCooldown>0} onClick={async()=>{
+        <button type="button" disabled={isLoading || resendCooldown > 0} onClick={async () => {
           setResendNotice('');
           await resendConfirmationEmail(confirmationEmail);
-          if(!useAuthStore.getState().error){setResendNotice('Novo e-mail de confirmação solicitado. Confira sua caixa de entrada.');setResendCooldown(60);}
-        }} className="mt-3 w-full rounded-xl border border-gray-700 px-4 py-3 text-sm font-semibold text-white disabled:opacity-50">{isLoading?'Reenviando...':resendCooldown>0?`Reenviar e-mail em ${resendCooldown}s`:'Reenviar e-mail de confirmação'}</button>
-        <button type="button" disabled={isLoading} onClick={()=>{setConfirmationEmail('');setResendNotice('');useAuthStore.setState({error:null});}} className="mt-5 w-full text-sm text-gray-400 hover:text-white">Corrigir o e-mail informado</button>
+          if (!useAuthStore.getState().error) { setResendNotice('Novo e-mail de confirmação solicitado. Confira sua caixa de entrada.'); setResendCooldown(60); }
+        }} className="mt-3 w-full rounded-xl border border-gray-700 px-4 py-3 text-sm font-semibold text-white disabled:opacity-50">{isLoading ? 'Reenviando...' : resendCooldown > 0 ? `Reenviar e-mail em ${resendCooldown}s` : 'Reenviar e-mail de confirmação'}</button>
+        <button type="button" disabled={isLoading} onClick={() => { setConfirmationEmail(''); setResendNotice(''); useAuthStore.setState({ error: null }); }} className="mt-5 w-full text-sm text-gray-400 hover:text-white">Corrigir o e-mail informado</button>
       </section>
     </main>
   </>;
@@ -162,20 +162,20 @@ const SignupPage = () => {
         <title>Criar Conta - Orientohub</title>
         <meta name="description" content="Crie sua conta gratuitamente e comece a acelerar sua startup hoje mesmo" />
       </Helmet>
-      
+
       <div className="h-screen w-full flex bg-[#0A0A0A] text-white font-sans overflow-hidden">
         {/* Left Side - Dashboard Collage */}
         <div className="hidden lg:block lg:w-1/2 h-full relative bg-[#FFF200] items-center justify-center overflow-hidden">
-          <img 
-            src="/Colagem de Dashboard em Preto e Amarelo.png" 
-            alt="Dashboard Collage" 
+          <img
+            src="/Colagem de Dashboard em Preto e Amarelo.png"
+            alt="Dashboard Collage"
             className="absolute inset-0 w-full h-full object-cover object-center"
           />
         </div>
 
         {/* Right Side - Form */}
         <div className="w-full lg:w-1/2 h-full flex items-center justify-center p-6 sm:p-8 lg:p-12 overflow-y-auto">
-          <motion.div 
+          <motion.div
             className="w-full max-w-md relative z-10 my-auto"
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -196,7 +196,7 @@ const SignupPage = () => {
                   className="h-8 w-auto"
                 />
               </Link>
-              
+
               <h1 className="text-3xl font-bold text-white mb-2 tracking-tight">
                 Crie sua conta.
               </h1>
@@ -324,7 +324,7 @@ const SignupPage = () => {
                   </>
                 ) : (
                   <>
-                    
+
                     Criar conta <ArrowRight className="w-5 h-5 ml-1" />
                   </>
                 )}
@@ -332,7 +332,7 @@ const SignupPage = () => {
             </form>
 
             <div className="mt-6 pt-6 border-t border-gray-800/50 flex justify-center items-center gap-2 text-sm text-gray-400">
-              Já tem uma conta? 
+              Já tem uma conta?
               <Link to="/entrar" className="text-[#FFF200] font-semibold hover:underline flex items-center gap-1">
                 Fazer login <ArrowRight className="w-4 h-4" />
               </Link>

@@ -86,7 +86,7 @@ const AboutPage = () => {
             >
               <div className="relative p-5 sm:p-8 rounded-2xl bg-gradient-to-br from-[#FFF200]/10 to-[#FFF200]/5 backdrop-blur-sm border-2 border-[#FFF200]/30 overflow-hidden">
                 {/* Animated background glow */}
-                
+
 
                 <div className="relative z-10 text-center space-y-3.5 sm:space-y-4">
                   <div className="inline-flex items-center gap-2 rounded-full border border-[#FFF200]/60 bg-gradient-to-b from-white/10 to-black/80 px-3 py-1.5 sm:px-3.5 sm:py-2 shadow-none backdrop-blur-md mb-1">
@@ -218,7 +218,7 @@ const AboutPage = () => {
 
       {/* Values Section */}
       <section className="py-12 sm:py-24 relative overflow-hidden">
-  
+
 
         <div className="container-custom relative z-10">
           <motion.div
@@ -332,7 +332,7 @@ const AboutPage = () => {
                       className="relative w-48 h-64 sm:w-56 sm:h-72 md:w-64 md:h-80 rounded-[2rem] object-cover object-top border-4 border-[#FFF200]/80 shadow-none"
                     />
                     {/* Badge */}
-                    <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 overflow-hidden rounded-full border border-[#FFF200]/70 bg-gradient-to-r from-[#FFF200] via-yellow-300 to-[#FFF200] px-4 py-1.5 sm:px-5 sm:py-2 text-black shadow-[0_10px_30px_rgba(255,215,0,0.35)] whitespace-nowrap">
+                    <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 overflow-hidden rounded-full border border-[#FFF200]/70 bg-gradient-to-r from-[#FFF200] via-primary-300 to-[#FFF200] px-4 py-1.5 sm:px-5 sm:py-2 text-black shadow-[0_10px_30px_rgba(255,242,0,0.35)] whitespace-nowrap">
                       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.35),transparent_60%)]" />
                       <span className="relative text-[10px] sm:text-xs font-extrabold uppercase tracking-[0.18em]">
                         Fundador

@@ -3,8 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { 
-  TrendingUp, 
+import {
+  TrendingUp,
   TrendingDown,
   Target,
   Clock,
@@ -78,7 +78,7 @@ const InsightsPage = () => {
         <div className="max-w-md rounded-2xl border border-[#273548] bg-[#101722] p-8 text-center shadow-2xl">
           <AlertTriangle className="mx-auto mb-4 h-10 w-10 text-orange-300" />
           <p className="mb-4 text-gray-200">{error || 'Dados não disponíveis'}</p>
-          <button 
+          <button
             onClick={() => window.location.reload()}
             className="rounded-xl bg-primary-500 px-4 py-2 font-bold text-black transition-colors hover:bg-primary-400"
           >
@@ -95,7 +95,7 @@ const InsightsPage = () => {
     switch (status) {
       case 'excellent': return 'text-emerald-300 bg-emerald-400/10';
       case 'good': return 'text-blue-300 bg-blue-400/10';
-      case 'on-track': return 'text-yellow-300 bg-yellow-400/10';
+      case 'on-track': return 'text-primary-300 bg-primary-400/10';
       case 'warning': return 'text-orange-300 bg-orange-400/10';
       case 'critical': return 'text-red-300 bg-red-400/10';
       default: return 'text-gray-300 bg-gray-400/10';
@@ -105,7 +105,7 @@ const InsightsPage = () => {
   const getPriorityColor = (priority: string) => {
     switch (priority) {
       case 'high': return 'border-red-400/35 hover:border-red-400/70';
-      case 'medium': return 'border-yellow-400/35 hover:border-yellow-400/70';
+      case 'medium': return 'border-primary-400/35 hover:border-primary-400/70';
       case 'low': return 'border-emerald-400/35 hover:border-emerald-400/70';
       default: return 'border-[#34455a] hover:border-[#4c6078]';
     }
@@ -153,8 +153,8 @@ const InsightsPage = () => {
             animate={{ opacity: 1, y: 0 }}
             className="mb-8"
           >
-              <p className="mb-2 text-[11px] font-bold uppercase tracking-[0.16em] text-primary-300">Visão de performance</p>
-              <h1 className="mb-2 text-3xl font-bold text-white">
+            <p className="mb-2 text-[11px] font-bold uppercase tracking-[0.16em] text-primary-300">Visão de performance</p>
+            <h1 className="mb-2 text-3xl font-bold text-white">
               Insights Avançados
             </h1>
             <p className="text-[#9ba9bc]">
@@ -178,15 +178,14 @@ const InsightsPage = () => {
                     <div className="flex items-start justify-between gap-3 p-5">
                       <div className="flex min-w-0 items-center gap-3">
                         <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl border border-[#34455a] bg-[#0c121b] shadow-inner shadow-black/20">
-                          <Icon className={`h-5 w-5 ${
-                        metric.bgColor.includes('blue') ? 'text-blue-300' :
-                        metric.bgColor.includes('purple') ? 'text-purple-300' :
-                        metric.bgColor.includes('green') ? 'text-emerald-300' :
-                        metric.bgColor.includes('orange') ? 'text-orange-300' :
-                        metric.bgColor.includes('pink') ? 'text-pink-300' :
-                        metric.bgColor.includes('indigo') ? 'text-indigo-300' :
-                        'text-primary-300'
-                          }`} />
+                          <Icon className={`h-5 w-5 ${metric.bgColor.includes('blue') ? 'text-blue-300' :
+                            metric.bgColor.includes('purple') ? 'text-purple-300' :
+                              metric.bgColor.includes('green') ? 'text-emerald-300' :
+                                metric.bgColor.includes('orange') ? 'text-orange-300' :
+                                  metric.bgColor.includes('pink') ? 'text-pink-300' :
+                                    metric.bgColor.includes('indigo') ? 'text-indigo-300' :
+                                      'text-primary-300'
+                            }`} />
                         </div>
                         <div className="min-w-0">
                           <p className="mb-1 text-[10px] font-black uppercase tracking-[0.18em] text-[#718096]">Indicador</p>
@@ -260,10 +259,10 @@ const InsightsPage = () => {
                   <div className="flex items-start gap-3">
                     <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl border border-[#34455a] bg-[#151f2b]">
                       {rec.priority === 'high' && <AlertTriangle className="h-5 w-5 text-red-500" />}
-                      {rec.priority === 'medium' && <Brain className="h-5 w-5 text-yellow-500" />}
+                      {rec.priority === 'medium' && <Brain className="h-5 w-5 text-primary-500" />}
                       {rec.priority === 'low' && <Lightbulb className="h-5 w-5 text-green-500" />}
                     </div>
-                    
+
                     <div className="flex-1">
                       <div className="mb-1 flex flex-wrap items-center justify-between gap-2">
                         <h3 className="font-bold text-white">{rec.title}</h3>
@@ -274,7 +273,7 @@ const InsightsPage = () => {
                       <p className="mb-4 text-sm leading-relaxed text-[#9ba9bc]">
                         {rec.description}
                       </p>
-                      
+
                       <button onClick={() => handleRecommendationAction(rec.id)} className="inline-flex items-center gap-2 rounded-xl bg-primary-500 px-4 py-2 text-sm font-bold text-black transition-all hover:bg-primary-400 group-hover:shadow-md group-hover:shadow-primary-500/20">
                         {rec.action}
                         <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />

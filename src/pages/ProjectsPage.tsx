@@ -323,7 +323,7 @@ const ProjectsPage = () => {
     const stages = {
       ideation: { label: 'Ideação', color: 'from-purple-500 to-purple-600', bgColor: 'bg-purple-500/10', icon: Lightbulb },
       validation: { label: 'Validação', color: 'from-blue-500 to-blue-600', bgColor: 'bg-blue-500/10', icon: Target },
-      mvp: { label: 'MVP', color: 'from-yellow-500 to-yellow-600', bgColor: 'bg-yellow-500/10', icon: Rocket },
+      mvp: { label: 'MVP', color: 'from-primary-500 to-primary-600', bgColor: 'bg-primary-500/10', icon: Rocket },
       traction: { label: 'Tração', color: 'from-orange-500 to-orange-600', bgColor: 'bg-orange-500/10', icon: TrendingUp },
       growth: { label: 'Crescimento', color: 'from-green-500 to-green-600', bgColor: 'bg-green-500/10', icon: LineChart }
     };
@@ -332,7 +332,7 @@ const ProjectsPage = () => {
 
   const getValidationHealthColor = (score: number) => {
     if (score >= 75) return 'text-green-500';
-    if (score >= 50) return 'text-yellow-500';
+    if (score >= 50) return 'text-primary-500';
     return 'text-red-500';
   };
 
@@ -1164,8 +1164,8 @@ const ProjectDetailsPage = ({
                       label: 'Tarefas Concluídas', 
                       value: `${localProject.tasks.filter(t => t.status === 'done').length}/${localProject.tasks.length}`, 
                       icon: CheckSquare,
-                      color: 'text-amber-300',
-                      bgColor: 'bg-amber-400/10 border-amber-400/20'
+                      color: 'text-primary-300',
+                      bgColor: 'bg-primary-400/10 border-primary-400/20'
                     }
                   ].map((stat, i) => {
                     const Icon = stat.icon;

@@ -67,7 +67,7 @@ export const InteractiveCard = ({
                         {/* Header */}
                         <div className="relative z-10 flex justify-between items-start">
                             <div className="flex items-center gap-2">
-                                <div className="w-12 h-10 bg-gradient-to-br from-yellow-200 to-yellow-400 rounded-md flex items-center justify-center">
+                                <div className="w-12 h-10 bg-gradient-to-br from-primary-200 to-primary-400 rounded-md flex items-center justify-center">
                                     <CreditCard className="w-6 h-6 text-black" />
                                 </div>
                                 <Wifi className="w-6 h-6 text-black rotate-90" />

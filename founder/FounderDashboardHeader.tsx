@@ -19,7 +19,7 @@ export const FounderDashboardHeader: React.FC<FounderDashboardHeaderProps> = ({
     <div className="flex items-center justify-between">
       <div>
         <h1 className="text-3xl font-bold flex items-center gap-2">
-          <Crown className="h-8 w-8 text-yellow-500" />
+          <Crown className="h-8 w-8 text-primary-500" />
           Dashboard Founder
         </h1>
         <p className="text-muted-foreground">

@@ -118,7 +118,7 @@ const JourneyPage = ({ initialJourneyPhases, showcaseSelectedPhase, showcaseExpa
       <section className="relative overflow-hidden border-b border-[#273548] bg-[#101722] py-12 md:py-16">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0" style={{
-            backgroundImage: 'radial-gradient(circle at 2px 2px, #FFD700 1px, transparent 0)',
+            backgroundImage: 'radial-gradient(circle at 2px 2px, #FFF200 1px, transparent 0)',
             backgroundSize: '40px 40px'
           }}></div>
         </div>
@@ -176,7 +176,7 @@ const JourneyPage = ({ initialJourneyPhases, showcaseSelectedPhase, showcaseExpa
             </div>
 
             <div style={showcaseReveal(24)} className="rounded-xl border border-[#34455a] bg-[#151f2b]/90 p-4 backdrop-blur-sm">
-              <div className="flex items-center gap-2 text-yellow-400 mb-2">
+              <div className="flex items-center gap-2 text-primary-400 mb-2">
                 <Trophy className="w-5 h-5" />
                 <span className="text-sm font-medium">Conquistas</span>
               </div>
@@ -355,7 +355,7 @@ const JourneyPage = ({ initialJourneyPhases, showcaseSelectedPhase, showcaseExpa
                         </div>
 
                         <div className="flex items-center gap-3">
-                          <div className="flex items-center gap-1 text-yellow-500 bg-yellow-500/10 px-2.5 py-1 rounded-full">
+                          <div className="flex items-center gap-1 text-primary-400 bg-primary-500/10 px-2.5 py-1 rounded-full">
                             <Star className="w-4 h-4 fill-current" />
                             <span className="font-bold text-sm">+{mission.xp}</span>
                           </div>

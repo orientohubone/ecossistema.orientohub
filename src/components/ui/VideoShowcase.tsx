@@ -134,18 +134,18 @@ const VideoShowcase = ({ image, videoUrl, alt, items, playerOffsetX = '0px', pla
             <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl sm:rounded-3xl" />
 
             {hasMultipleSlides && (
-                <div className="absolute bottom-4 left-1/2 z-20 flex -translate-x-1/2 items-center gap-2 rounded-full border border-white/10 bg-black/65 px-3 py-2 backdrop-blur-md sm:bottom-5">
-                  {slides.map((slide, index) => (
-                    <button
-                      key={slide.videoUrl}
-                      type="button"
-                      onClick={() => goTo(index)}
-                      className={`h-2 rounded-full transition-all duration-300 ${index === activeIndex ? 'w-7 bg-[#FFF200]' : 'w-2 bg-white/45 hover:bg-white/75'}`}
-                      aria-label={`Abrir showcase ${index + 1}: ${slide.title || slide.alt || 'vídeo'}`}
-                      aria-current={index === activeIndex ? 'true' : undefined}
-                    />
-                  ))}
-                </div>
+              <div className="absolute bottom-4 left-1/2 z-20 flex -translate-x-1/2 items-center gap-2 rounded-full border border-white/10 bg-black/65 px-3 py-2 backdrop-blur-md sm:bottom-5">
+                {slides.map((slide, index) => (
+                  <button
+                    key={slide.videoUrl}
+                    type="button"
+                    onClick={() => goTo(index)}
+                    className={`h-2 rounded-full transition-all duration-300 ${index === activeIndex ? 'w-7 bg-[#FFF200]' : 'w-2 bg-white/45 hover:bg-white/75'}`}
+                    aria-label={`Abrir showcase ${index + 1}: ${slide.title || slide.alt || 'vídeo'}`}
+                    aria-current={index === activeIndex ? 'true' : undefined}
+                  />
+                ))}
+              </div>
             )}
 
             {/*
@@ -155,7 +155,7 @@ const VideoShowcase = ({ image, videoUrl, alt, items, playerOffsetX = '0px', pla
                 initial={{ scale: 1 }}
                 whileHover={{ scale: 1.15 }}
                 whileTap={{ scale: 0.95 }}
-                className="relative flex items-center justify-center w-24 h-24 bg-gradient-to-br from-primary-500 to-yellow-500 rounded-full shadow-2xl border-4 border-white/90 transition-all duration-300 cursor-pointer z-10 group-hover:shadow-[0_0_40px_rgba(255,183,3,0.6)] pointer-events-auto"
+                className="relative flex items-center justify-center w-24 h-24 bg-gradient-to-br from-primary-500 to-primary-600 rounded-full shadow-2xl border-4 border-white/90 transition-all duration-300 cursor-pointer z-10 group-hover:shadow-[0_0_40px_rgba(255,242,0,0.6)] pointer-events-auto"
                 style={{
                   marginLeft: playerOffsetX,
                   marginTop: playerOffsetY
@@ -176,7 +176,7 @@ const VideoShowcase = ({ image, videoUrl, alt, items, playerOffsetX = '0px', pla
                 />
                 
                 <motion.div
-                  className="absolute inset-0 rounded-full bg-yellow-400/30"
+                  className="absolute inset-0 rounded-full bg-primary-400/30"
                   animate={{
                     scale: [1, 1.6, 1],
                     opacity: [0.3, 0, 0.3],

@@ -8,9 +8,9 @@ type Access = { state: FeatureState; message: string | null };
 
 const content: Record<Exclude<FeatureState, 'enabled'>, { eyebrow: string; title: string; description: string; icon: typeof Construction; accent: string }> = {
   disabled: { eyebrow: 'ACESSO RESTRITO', title: 'Este espaço ainda não está no seu plano.', description: 'Faça upgrade para desbloquear a experiência completa.', icon: LockKeyhole, accent: 'from-violet-500 to-fuchsia-500' },
-  maintenance: { eyebrow: 'MANUTENÇÃO PROGRAMADA', title: 'Estamos deixando tudo melhor por aqui.', description: 'A funcionalidade volta em breve. Obrigado pela paciência.', icon: Construction, accent: 'from-amber-400 to-orange-500' },
+  maintenance: { eyebrow: 'MANUTENÇÃO PROGRAMADA', title: 'Estamos deixando tudo melhor por aqui.', description: 'A funcionalidade volta em breve. Obrigado pela paciência.', icon: Construction, accent: 'from-primary-400 to-orange-500' },
   development: { eyebrow: 'EM DESENVOLVIMENTO', title: 'Algo novo está tomando forma.', description: 'Estamos construindo esta experiência com cuidado.', icon: Construction, accent: 'from-sky-400 to-blue-600' },
-  coming_soon: { eyebrow: 'EM BREVE', title: 'Uma nova possibilidade está chegando.', description: 'Fique de olho: esta funcionalidade será liberada em breve.', icon: Rocket, accent: 'from-primary-400 to-yellow-500' },
+  coming_soon: { eyebrow: 'EM BREVE', title: 'Uma nova possibilidade está chegando.', description: 'Fique de olho: esta funcionalidade será liberada em breve.', icon: Rocket, accent: 'from-primary-400 to-primary-500' },
 };
 
 const FeatureRoute = ({ feature, screen, children }: { feature: string; screen: string; children: ReactNode }) => {

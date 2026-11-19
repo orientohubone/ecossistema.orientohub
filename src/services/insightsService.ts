@@ -176,7 +176,7 @@ class InsightsService {
     const stages = [
       { key: 'ideation', name: 'Ideação', color: '#8B5CF6' },
       { key: 'validation', name: 'Validação', color: '#3B82F6' },
-      { key: 'mvp', name: 'MVP', color: '#EAB308' },
+      { key: 'mvp', name: 'MVP', color: '#FFF200' },
       { key: 'traction', name: 'Tração', color: '#F97316' },
       { key: 'growth', name: 'Crescimento', color: '#22C55E' },
     ];

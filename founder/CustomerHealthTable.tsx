@@ -15,7 +15,7 @@ export const CustomerHealthTable: React.FC<CustomerHealthTableProps> = ({ health
     if (score >= 70) {
       return <Badge className="bg-green-500"><CheckCircle className="h-3 w-3 mr-1" />Saudável</Badge>;
     } else if (score >= 40) {
-      return <Badge className="bg-yellow-500"><AlertTriangle className="h-3 w-3 mr-1" />Em Risco</Badge>;
+      return <Badge className="bg-primary-500 text-black"><AlertTriangle className="h-3 w-3 mr-1" />Em Risco</Badge>;
     } else {
       return <Badge className="bg-red-500"><XCircle className="h-3 w-3 mr-1" />Crítico</Badge>;
     }
@@ -24,7 +24,7 @@ export const CustomerHealthTable: React.FC<CustomerHealthTableProps> = ({ health
   const getChurnRiskBadge = (risk: string) => {
     const colors = {
       low: 'bg-green-500',
-      medium: 'bg-yellow-500',
+      medium: 'bg-primary-500 text-black',
       high: 'bg-red-500'
     };
     

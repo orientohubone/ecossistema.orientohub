@@ -451,7 +451,7 @@ const LocalSearchSimulator = () => {
                         <span>Perfis que contêm fotos recentes e dados precisos recebem até <strong className="text-white">7x mais solicitações de rota</strong> e <strong className="text-white">4x mais ligações</strong> pelo Google Maps.</span>
                       </li>
                       <li className="flex items-start gap-3 rounded-lg border border-[#273548] bg-[#0c121b] p-3 text-sm text-[#d7e0ea]">
-                        <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-amber-400" />
+                        <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-primary-400" />
                         <span>A cada 10 pessoas pesquisando na região, <strong className="text-white">{stats.taxaFuga}% tomam a decisão entre os concorrentes</strong> que aparecem no Top 3 do mapa.</span>
                       </li>
                     </ul>

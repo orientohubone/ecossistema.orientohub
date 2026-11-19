@@ -76,8 +76,8 @@ export const DashboardShowcase = () => {
       <AbsoluteFill style={{pointerEvents: 'none', background: 'radial-gradient(circle at 55% 48%, transparent 52%, rgba(3,6,10,.34) 100%)', boxShadow: 'inset 0 0 130px rgba(0,0,0,.3)'}} />
 
       <div style={{position: 'absolute', left: 116, bottom: 54, opacity: labelOpacity, transform: `translateY(${(1 - labelOpacity) * 14}px)`, zIndex: 70}}>
-        <div style={{display: 'flex', alignItems: 'center', gap: 10, color: '#facc15', fontSize: 13, fontWeight: 800, letterSpacing: '0.18em'}}>
-          <span style={{width: 32, height: 2, background: '#facc15'}} />{eyebrow}
+        <div style={{display: 'flex', alignItems: 'center', gap: 10, color: '#FFF200', fontSize: 13, fontWeight: 800, letterSpacing: '0.18em'}}>
+          <span style={{width: 32, height: 2, background: '#FFF200'}} />{eyebrow}
         </div>
         <div style={{marginTop: 8, color: 'white', fontSize: 25, fontWeight: 650, letterSpacing: '-.025em', textShadow: '0 4px 20px rgba(0,0,0,.7)'}}>{caption}</div>
       </div>
@@ -91,7 +91,7 @@ export const DashboardShowcase = () => {
       )}
 
       {frame >= 316 && frame < 350 && (
-        <div style={{position: 'absolute', left: 194, top: 218, width: 28, height: 28, borderRadius: '50%', border: '3px solid #facc15', opacity: clickPulse, transform: `translate(-50%, -50%) scale(${.4 + clickPulse * 3.8})`, boxShadow: '0 0 36px #facc15', zIndex: 80}} />
+        <div style={{position: 'absolute', left: 194, top: 218, width: 28, height: 28, borderRadius: '50%', border: '3px solid #FFF200', opacity: clickPulse, transform: `translate(-50%, -50%) scale(${.4 + clickPulse * 3.8})`, boxShadow: '0 0 36px #FFF200', zIndex: 80}} />
       )}
 
       {frame >= 327 && frame < 370 && (
@@ -101,17 +101,17 @@ export const DashboardShowcase = () => {
       )}
 
       {frame >= 328 && frame < 398 && (
-        <div style={{position: 'absolute', left: interpolate(xpFlight, [0, 1], [218, 724]), top: interpolate(xpFlight, [0, 1], [190, 145]), opacity: xpOpacity, transform: `translate(-50%, -50%) scale(${1 + Math.sin(xpFlight * Math.PI) * .22})`, display: 'flex', alignItems: 'center', gap: 7, padding: '9px 14px', borderRadius: 999, background: 'linear-gradient(135deg,#facc15,#eab308)', color: '#090d13', fontWeight: 900, fontSize: 17, boxShadow: '0 10px 32px rgba(250,204,21,.45)', zIndex: 85}}>
+        <div style={{position: 'absolute', left: interpolate(xpFlight, [0, 1], [218, 724]), top: interpolate(xpFlight, [0, 1], [190, 145]), opacity: xpOpacity, transform: `translate(-50%, -50%) scale(${1 + Math.sin(xpFlight * Math.PI) * .22})`, display: 'flex', alignItems: 'center', gap: 7, padding: '9px 14px', borderRadius: 999, background: 'linear-gradient(135deg,#FFF200,#E6DA00)', color: '#090d13', fontWeight: 900, fontSize: 17, boxShadow: '0 10px 32px rgba(255,242,0,.45)', zIndex: 85}}>
           <Zap size={18} fill="currentColor" /> +100 XP
         </div>
       )}
 
       {frame >= 500 && frame < 590 && (
-        <div style={{position: 'absolute', right: 44, top: 92, width: 360, padding: 18, borderRadius: 18, border: '1px solid rgba(250,204,21,.45)', background: 'linear-gradient(135deg,rgba(20,28,39,.98),rgba(11,17,25,.98))', boxShadow: '0 24px 70px rgba(0,0,0,.5), 0 0 42px rgba(250,204,21,.12)', transform: `translateX(${(1 - toast) * 430}px) scale(${.94 + toast * .06})`, opacity: toast, zIndex: 88}}>
+        <div style={{position: 'absolute', right: 44, top: 92, width: 360, padding: 18, borderRadius: 18, border: '1px solid rgba(255,242,0,.45)', background: 'linear-gradient(135deg,rgba(20,28,39,.98),rgba(11,17,25,.98))', boxShadow: '0 24px 70px rgba(0,0,0,.5), 0 0 42px rgba(255,242,0,.12)', transform: `translateX(${(1 - toast) * 430}px) scale(${.94 + toast * .06})`, opacity: toast, zIndex: 88}}>
           <div style={{display: 'flex', alignItems: 'center', gap: 14}}>
-            <div style={{width: 54, height: 54, borderRadius: 16, display: 'grid', placeItems: 'center', color: '#facc15', background: 'rgba(250,204,21,.12)', boxShadow: 'inset 0 0 0 1px rgba(250,204,21,.2)'}}><Trophy size={28} /></div>
+            <div style={{width: 54, height: 54, borderRadius: 16, display: 'grid', placeItems: 'center', color: '#FFF200', background: 'rgba(255,242,0,.12)', boxShadow: 'inset 0 0 0 1px rgba(255,242,0,.2)'}}><Trophy size={28} /></div>
             <div style={{flex: 1}}>
-              <div style={{display: 'flex', alignItems: 'center', gap: 7, color: '#facc15', fontSize: 11, fontWeight: 900, letterSpacing: '.12em'}}><Sparkles size={13} /> CONQUISTA DESBLOQUEADA</div>
+              <div style={{display: 'flex', alignItems: 'center', gap: 7, color: '#FFF200', fontSize: 11, fontWeight: 900, letterSpacing: '.12em'}}><Sparkles size={13} /> CONQUISTA DESBLOQUEADA</div>
               <div style={{marginTop: 5, color: 'white', fontSize: 20, fontWeight: 800}}>Validador</div>
               <div style={{marginTop: 3, color: '#9ba9bc', fontSize: 13}}>Primeira hipótese validada com sucesso</div>
             </div>

@@ -80,12 +80,12 @@ export const FounderReportsTab: React.FC<FounderReportsTabProps> = ({
               </p>
             </div>
             
-            <div className="p-4 bg-yellow-50 rounded-lg border-l-4 border-yellow-500">
+            <div className="p-4 bg-primary-50 rounded-lg border-l-4 border-primary-500">
               <div className="flex items-center mb-2">
-                <AlertTriangle className="h-4 w-4 text-yellow-500 mr-2" />
+                <AlertTriangle className="h-4 w-4 text-primary-500 mr-2" />
                 <span className="font-medium">Risco de Churn</span>
               </div>
-              <p className="text-sm text-yellow-700">
+              <p className="text-sm text-primary-700">
                 2 clientes com baixo engajamento nos últimos 7 dias. 
                 Intervenção recomendada.
               </p>

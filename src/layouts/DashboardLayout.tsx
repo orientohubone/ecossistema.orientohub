@@ -102,9 +102,9 @@ const DashboardLayout = ({ showcaseContent, showcaseUser, showcasePlan, showcase
                   <SearchBox />
                   <nav className="space-y-1">{navItems.map(item => <SidebarLink key={item.id} item={item} pathname={location.pathname} onNavigate={() => setSidebarOpen(false)} />)}</nav>
                   <div className="mt-auto space-y-3">
-                <PlanCTA compact />
-                <LogoutButton onLogout={handleLogout} />
-              </div>
+                    <PlanCTA compact />
+                    <LogoutButton onLogout={handleLogout} />
+                  </div>
                 </div>
               </motion.div>
             </motion.aside>
@@ -165,7 +165,7 @@ const DashboardLayout = ({ showcaseContent, showcaseUser, showcasePlan, showcase
                     <Search size={16} className="text-[#718096]" />
                     <input type="search" placeholder="Buscar projetos, soluções, insights..." className="bg-transparent text-sm text-white outline-none placeholder:text-[#718096]" />
                   </div>
-                  </div>
+                </div>
 
                 <div className="flex shrink-0 items-center gap-2 sm:gap-4">
                   <TopPlanBadge planOverride={showcasePlan} />
@@ -196,22 +196,22 @@ const SidebarHeader = ({ user, collapsed = false }: { user?: any; collapsed?: bo
   return (
     <div className={`flex items-center gap-3 ${collapsed ? 'justify-center' : ''}`}>
       <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full border-2 border-primary-400/35 text-black font-bold">
-      {user?.user_metadata?.avatar_url ? (
-        <img
-          src={user.user_metadata.avatar_url}
-          alt="Avatar"
-          className="w-full h-full object-cover"
-          onError={(e) => {
-            // Fallback para iniciais se a imagem falhar
-            e.currentTarget.style.display = 'none';
-            e.currentTarget.nextElementSibling?.classList.remove('hidden');
-          }}
-        />
-      ) : null}
-      <div className={`w-full h-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center ${user?.user_metadata?.avatar_url ? 'hidden' : ''}`}>
-        {user?.user_metadata?.name?.split(' ').map((n: string) => n[0]).join('').toUpperCase().slice(0, 2) || user?.email?.charAt(0)?.toUpperCase() || 'U'}
+        {user?.user_metadata?.avatar_url ? (
+          <img
+            src={user.user_metadata.avatar_url}
+            alt="Avatar"
+            className="w-full h-full object-cover"
+            onError={(e) => {
+              // Fallback para iniciais se a imagem falhar
+              e.currentTarget.style.display = 'none';
+              e.currentTarget.nextElementSibling?.classList.remove('hidden');
+            }}
+          />
+        ) : null}
+        <div className={`w-full h-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center ${user?.user_metadata?.avatar_url ? 'hidden' : ''}`}>
+          {user?.user_metadata?.name?.split(' ').map((n: string) => n[0]).join('').toUpperCase().slice(0, 2) || user?.email?.charAt(0)?.toUpperCase() || 'U'}
+        </div>
       </div>
-    </div>
       {!collapsed && (
         <div className="flex-1">
           <p className="text-sm font-medium text-white">{user?.user_metadata?.name || user?.email?.split('@')[0]}</p>
@@ -302,12 +302,12 @@ const SidebarLink = ({ item, pathname, collapsed = false, onNavigate }: { item: 
         >
           {/* Multi-layered conic-gradient border effect */}
           <div className="absolute inset-0 rounded-xl blur-[2.5px]" style={{
-            background: 'conic-gradient(from 120deg, #FFD600 0%, #cf30aa 30%, #18116a 60%, #FFD600 100%)',
+            background: 'conic-gradient(from 120deg, #FFF200 0%, #cf30aa 30%, #18116a 60%, #FFF200 100%)',
             filter: 'brightness(1.15)',
             opacity: 0.7
           }} />
           <div className="absolute inset-0 rounded-xl blur-[6px]" style={{
-            background: 'conic-gradient(from 60deg, #fffbe6 0%, #cf30aa33 40%, #18116a22 80%, #FFD600 100%)',
+            background: 'conic-gradient(from 60deg, #FFFDE6 0%, #cf30aa33 40%, #18116a22 80%, #FFF200 100%)',
             opacity: 0.5
           }} />
         </div>
@@ -315,58 +315,58 @@ const SidebarLink = ({ item, pathname, collapsed = false, onNavigate }: { item: 
           to={item.href}
           onClick={onNavigate}
           className={`relative z-10 group flex items-center gap-3 px-3 py-2 text-sm font-bold rounded-xl transition-all duration-300
-            border border-yellow-300/80 dark:border-yellow-700/60
-            focus:outline-none focus:ring-2 focus:ring-yellow-400/90
+            border border-primary-300/80 dark:border-primary-700/60
+            focus:outline-none focus:ring-2 focus:ring-primary-400/90
             ${active
-              ? 'shadow-lg ring-2 ring-yellow-400/80'
-              : 'shadow-md hover:shadow-lg hover:ring-2 hover:ring-yellow-400/60'}
-            ${isDark ? 'bg-[#FFD600] text-black' : ''}
+              ? 'shadow-lg ring-2 ring-primary-400/80'
+              : 'shadow-md hover:shadow-lg hover:ring-2 hover:ring-primary-400/60'}
+            ${isDark ? 'bg-[#FFF200] text-black' : ''}
           `}
           aria-current={active ? 'page' : undefined}
           style={
             isDark
               ? {
-                background: '#FFD600',
+                background: '#FFF200',
                 color: '#18181b',
                 boxShadow: active
-                  ? '0 0 0 3px #FFD60099, 0 2px 8px 0 #FFD60033'
-                  : '0 0 0 2px #FFD60022, 0 1.5px 4px 0 #FFD60022'
+                  ? '0 0 0 3px #FFF20099, 0 2px 8px 0 #FFF20033'
+                  : '0 0 0 2px #FFF20022, 0 1.5px 4px 0 #FFF20022'
               }
               : {
                 background: active
-                  ? 'linear-gradient(90deg, #fffbe6 0%, #ffe7fa 40%, #f9e7ff 70%, #fffbe6 100%)'
-                  : 'linear-gradient(90deg, #fffbe6 0%, #f9e7ff 40%, #e6e6fa 70%, #fffbe6 100%)',
+                  ? 'linear-gradient(90deg, #FFFDE6 0%, #ffe7fa 40%, #f9e7ff 70%, #FFFDE6 100%)'
+                  : 'linear-gradient(90deg, #FFFDE6 0%, #f9e7ff 40%, #e6e6fa 70%, #FFFDE6 100%)',
                 backgroundSize: '200% 200%',
                 animation: active ? 'academyGlow 2.5s ease-in-out infinite alternate' : 'academyGlow 4s ease-in-out infinite alternate',
                 color: '#7a5600',
                 boxShadow: active
-                  ? '0 0 0 3px #FFD60055, 0 2px 8px 0 #FFD60033'
-                  : '0 0 0 2px #FFD60022, 0 1.5px 4px 0 #FFD60022'
+                  ? '0 0 0 3px #FFF20055, 0 2px 8px 0 #FFF20033'
+                  : '0 0 0 2px #FFF20022, 0 1.5px 4px 0 #FFF20022'
               }
           }
         >
           {collapsed ? (
             <Tooltip.Root delayDuration={100}>
               <Tooltip.Trigger asChild>
-                <span className={`flex items-center justify-center w-6 h-6 rounded ${active ? (isDark ? 'text-black' : 'text-yellow-600') : (isDark ? 'text-black' : 'text-yellow-500 group-hover:text-yellow-700')}`}>{item.icon}</span>
+                <span className={`flex items-center justify-center w-6 h-6 rounded ${active ? (isDark ? 'text-black' : 'text-primary-600') : (isDark ? 'text-black' : 'text-primary-500 group-hover:text-primary-700')}`}>{item.icon}</span>
               </Tooltip.Trigger>
               <Tooltip.Portal>
                 <Tooltip.Content
                   side="right"
                   sideOffset={10}
-                  className="z-50 px-3 py-2 text-sm font-medium rounded-lg bg-gray-900 text-white border border-yellow-400 shadow-xl animate-fadein"
+                  className="z-50 px-3 py-2 text-sm font-medium rounded-lg bg-gray-900 text-white border border-primary-400 shadow-xl animate-fadein"
                   style={{
-                    boxShadow: '0 8px 32px 0 #FFD60033, 0 1.5px 4px 0 #FFD60022',
+                    boxShadow: '0 8px 32px 0 #FFF20033, 0 1.5px 4px 0 #FFF20022',
                     transition: 'opacity 0.18s cubic-bezier(0.4,0,0.2,1)'
                   }}
                 >
                   {item.name}
-                  <Tooltip.Arrow className="fill-yellow-400" />
+                  <Tooltip.Arrow className="fill-primary-400" />
                 </Tooltip.Content>
               </Tooltip.Portal>
             </Tooltip.Root>
           ) : (
-            <span className={`flex items-center justify-center w-6 h-6 rounded ${active ? (isDark ? 'text-black' : 'text-yellow-600') : (isDark ? 'text-black' : 'text-yellow-500 group-hover:text-yellow-700')}`}>{item.icon}</span>
+            <span className={`flex items-center justify-center w-6 h-6 rounded ${active ? (isDark ? 'text-black' : 'text-primary-600') : (isDark ? 'text-black' : 'text-primary-500 group-hover:text-primary-700')}`}>{item.icon}</span>
           )}
           {!collapsed && <span className="truncate">{item.name}</span>}
         </Link>
@@ -474,12 +474,12 @@ const PlanCTA = ({ compact = false, planOverride }: { compact?: boolean; planOve
   const plan = planOverride ?? currentPlan;
 
   return compact ? (
-    <div className="flex items-center justify-center p-2"><Crown className="w-5 h-5 text-yellow-400" /></div>
+    <div className="flex items-center justify-center p-2"><Crown className="w-5 h-5 text-primary-400" /></div>
   ) : (
     <div className="rounded-xl border border-primary-400/20 bg-primary-500/10 p-3">
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-3">
-          <Crown className="w-6 h-6 text-yellow-400" />
+          <Crown className="w-6 h-6 text-primary-400" />
           <div><p className="text-sm font-semibold text-white">Plano Atual</p><p className="text-xs text-primary-200/70">{plan === 'pro' ? 'Pro' : plan === 'enterprise' ? 'Enterprise' : 'Gratuito'}</p></div>
         </div>
         <Sparkles className="w-5 h-5 text-primary-500" />
@@ -506,22 +506,22 @@ const UserMenu = ({ user }: { user?: any }) => {
   return (
     <div className="flex items-center gap-3">
       <div className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-full border border-primary-400/35 text-black font-medium">
-      {user?.user_metadata?.avatar_url ? (
-        <img
-          src={user.user_metadata.avatar_url}
-          alt="Avatar"
-          className="w-full h-full object-cover"
-          onError={(e) => {
-            // Fallback para iniciais se a imagem falhar
-            e.currentTarget.style.display = 'none';
-            e.currentTarget.nextElementSibling?.classList.remove('hidden');
-          }}
-        />
-      ) : null}
-      <div className={`w-full h-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center text-xs ${user?.user_metadata?.avatar_url ? 'hidden' : ''}`}>
-        {user?.user_metadata?.name?.split(' ').map((n: string) => n[0]).join('').toUpperCase().slice(0, 2) || user?.email?.charAt(0)?.toUpperCase() || 'U'}
+        {user?.user_metadata?.avatar_url ? (
+          <img
+            src={user.user_metadata.avatar_url}
+            alt="Avatar"
+            className="w-full h-full object-cover"
+            onError={(e) => {
+              // Fallback para iniciais se a imagem falhar
+              e.currentTarget.style.display = 'none';
+              e.currentTarget.nextElementSibling?.classList.remove('hidden');
+            }}
+          />
+        ) : null}
+        <div className={`w-full h-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center text-xs ${user?.user_metadata?.avatar_url ? 'hidden' : ''}`}>
+          {user?.user_metadata?.name?.split(' ').map((n: string) => n[0]).join('').toUpperCase().slice(0, 2) || user?.email?.charAt(0)?.toUpperCase() || 'U'}
+        </div>
       </div>
-    </div>
       <div className="hidden sm:flex flex-col text-sm">
         <span className="text-[#d7e0ea]">{user?.user_metadata?.name || user?.email?.split('@')[0]}</span>
         <span className="text-xs text-[#718096]">{user?.email}</span>

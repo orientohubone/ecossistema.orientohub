@@ -295,7 +295,7 @@ export const FounderDocumentationTab: React.FC = () => {
                     <Star 
                       className={`h-4 w-4 ${
                         favorites.includes(document.id) 
-                          ? 'fill-yellow-400 text-yellow-400' 
+                          ? 'fill-primary-400 text-primary-400' 
                           : 'text-gray-400'
                       }`} 
                     />

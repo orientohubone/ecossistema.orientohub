@@ -2,14 +2,14 @@ import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  ArrowLeft, 
-  Trophy, 
-  Star, 
-  Target, 
-  CheckCircle, 
-  Play, 
-  ArrowRight, 
+import {
+  ArrowLeft,
+  Trophy,
+  Star,
+  Target,
+  CheckCircle,
+  Play,
+  ArrowRight,
   Info,
   Sparkles,
   Zap,
@@ -189,7 +189,7 @@ const FrameworkGamePage = () => {
     }
     setFramework(currentFramework);
     setGameSteps(getGameSteps(currentFramework));
-    
+
     setAchievements([
       {
         id: 'first_step',
@@ -236,29 +236,29 @@ const FrameworkGamePage = () => {
       const currentStep = gameSteps[currentStepIndex];
       const newPoints = points + currentStep.points;
       const newCompletedSteps = [...completedSteps, currentStep.id];
-      
+
       setPoints(newPoints);
       setCompletedSteps(newCompletedSteps);
       setCurrentStepIndex(currentStepIndex + 1);
       setStepCompleted(false);
       setUserNotes('');
       updateProgress(newCompletedSteps.length, gameSteps.length);
-      
+
       const newLevel = Math.floor(newPoints / 200) + 1;
       if (newLevel > level) {
         setLevel(newLevel);
       }
-      
+
       checkAchievements(newPoints, newCompletedSteps, gameSteps.length);
     } else {
       const currentStep = gameSteps[currentStepIndex];
       const newPoints = points + currentStep.points;
       const newCompletedSteps = [...completedSteps, currentStep.id];
-      
+
       setPoints(newPoints);
       setCompletedSteps(newCompletedSteps);
       setProgress(100);
-      
+
       checkAchievements(newPoints, newCompletedSteps, gameSteps.length);
     }
   };
@@ -363,15 +363,15 @@ const FrameworkGamePage = () => {
                 <p className="text-gray-600 dark:text-gray-400">{framework}</p>
               </div>
             </div>
-            
+
             <div className="flex items-center gap-3">
               <div className="flex items-center gap-2 bg-gradient-to-r from-primary-50 to-white dark:from-primary-900/20 dark:to-gray-800 border-2 border-primary-200 dark:border-primary-800 px-4 py-2 rounded-xl">
                 <Trophy className="w-5 h-5 text-primary-600 dark:text-primary-400" />
                 <span className="font-bold text-primary-800 dark:text-primary-200">{points} pts</span>
               </div>
-              <div className="flex items-center gap-2 bg-gradient-to-r from-yellow-50 to-white dark:from-yellow-900/20 dark:to-gray-800 border-2 border-yellow-200 dark:border-yellow-800 px-4 py-2 rounded-xl">
-                <Star className="w-5 h-5 text-yellow-600 dark:text-yellow-400 fill-current" />
-                <span className="font-bold text-yellow-800 dark:text-yellow-200">Nível {level}</span>
+              <div className="flex items-center gap-2 bg-gradient-to-r from-primary-50 to-white dark:from-primary-900/20 dark:to-gray-800 border-2 border-primary-200 dark:border-primary-800 px-4 py-2 rounded-xl">
+                <Star className="w-5 h-5 text-primary-600 dark:text-primary-400 fill-current" />
+                <span className="font-bold text-primary-800 dark:text-primary-200">Nível {level}</span>
               </div>
             </div>
           </motion.div>
@@ -434,7 +434,7 @@ const FrameworkGamePage = () => {
 
               <div className="p-6">
                 {currentStepIndex === -1 ? (
-                    <div className="space-y-6">
+                  <div className="space-y-6">
                     <div className="bg-gradient-to-br from-blue-50 to-white dark:from-blue-900/20 dark:to-gray-800 p-6 rounded-xl border-2 border-blue-200 dark:border-blue-800">
                       <div className="flex items-start gap-3">
                         <Info className="w-6 h-6 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0" />
@@ -448,7 +448,7 @@ const FrameworkGamePage = () => {
                         </div>
                       </div>
                     </div>
-                    
+
                     {gameSteps.length > 0 && <div className="space-y-3">
                       <h3 className="font-bold">O que você vai ganhar:</h3>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -466,8 +466,8 @@ const FrameworkGamePage = () => {
                       </div>
                     </div>}
 
-                    <button 
-                      onClick={startChallenge} 
+                    <button
+                      onClick={startChallenge}
                       disabled={!gameSteps.length}
                       className={`w-full px-6 py-4 font-bold rounded-xl transition-all flex items-center justify-center gap-2 ${gameSteps.length ? 'bg-primary-500 hover:bg-primary-600 text-black shadow-lg shadow-primary-500/30' : 'bg-gray-200 dark:bg-gray-700 text-gray-400 cursor-not-allowed'}`}
                     >
@@ -490,7 +490,7 @@ const FrameworkGamePage = () => {
                         </div>
                         <div>
                           <p className="text-sm text-gray-600 dark:text-gray-400">Nível Alcançado</p>
-                          <p className="text-3xl font-bold text-yellow-600 dark:text-yellow-400">{level}</p>
+                          <p className="text-3xl font-bold text-primary-600 dark:text-primary-400">{level}</p>
                         </div>
                       </div>
                     </div>
@@ -527,7 +527,7 @@ const FrameworkGamePage = () => {
                                 {currentStep.description}
                               </p>
                             </div>
-                            
+
                             <div className="bg-gray-50 dark:bg-gray-700/50 p-5 rounded-xl border border-gray-200 dark:border-gray-600">
                               <div className="flex items-start gap-3">
                                 <div className="w-8 h-8 bg-gray-900 dark:bg-white rounded-lg flex items-center justify-center flex-shrink-0">
@@ -595,14 +595,13 @@ const FrameworkGamePage = () => {
                               </label>
                             </div>
 
-                            <button 
-                              onClick={nextStep} 
+                            <button
+                              onClick={nextStep}
                               disabled={!stepCompleted}
-                              className={`w-full px-6 py-4 rounded-xl font-bold transition-all flex items-center justify-center gap-2 ${
-                                stepCompleted 
-                                  ? 'bg-primary-500 hover:bg-primary-600 text-black shadow-lg shadow-primary-500/30' 
-                                  : 'bg-gray-200 dark:bg-gray-700 text-gray-400 dark:text-gray-500 cursor-not-allowed'
-                              }`}
+                              className={`w-full px-6 py-4 rounded-xl font-bold transition-all flex items-center justify-center gap-2 ${stepCompleted
+                                ? 'bg-primary-500 hover:bg-primary-600 text-black shadow-lg shadow-primary-500/30'
+                                : 'bg-gray-200 dark:bg-gray-700 text-gray-400 dark:text-gray-500 cursor-not-allowed'
+                                }`}
                             >
                               {currentStepIndex === gameSteps.length - 1 ? (
                                 <>
@@ -632,10 +631,10 @@ const FrameworkGamePage = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
             >
-              <div className="bg-gradient-to-r from-yellow-100 to-white dark:from-yellow-900/20 dark:to-gray-800 p-6 border-b-2 border-gray-200 dark:border-gray-700">
+              <div className="bg-gradient-to-r from-primary-100 to-white dark:from-primary-900/20 dark:to-gray-800 p-6 border-b-2 border-gray-200 dark:border-gray-700">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 bg-white dark:bg-gray-900 rounded-xl flex items-center justify-center shadow">
-                    <Award className="w-5 h-5 text-yellow-600 dark:text-yellow-400" />
+                    <Award className="w-5 h-5 text-primary-600 dark:text-primary-400" />
                   </div>
                   <div>
                     <h2 className="text-xl font-bold">Conquistas</h2>
@@ -645,18 +644,17 @@ const FrameworkGamePage = () => {
                   </div>
                 </div>
               </div>
-              
+
               <div className="p-6 space-y-3">
                 {achievements.map((achievement) => (
                   <motion.div
                     key={achievement.id}
                     initial={{ scale: achievement.unlocked ? 1 : 0.95 }}
                     animate={{ scale: 1 }}
-                    className={`p-4 rounded-xl border-2 transition-all ${
-                      achievement.unlocked
-                        ? 'bg-gradient-to-br from-primary-50 to-white dark:from-primary-900/20 dark:to-gray-800 border-primary-200 dark:border-primary-800'
-                        : 'bg-gray-50 dark:bg-gray-700/50 border-gray-200 dark:border-gray-700 opacity-60'
-                    }`}
+                    className={`p-4 rounded-xl border-2 transition-all ${achievement.unlocked
+                      ? 'bg-gradient-to-br from-primary-50 to-white dark:from-primary-900/20 dark:to-gray-800 border-primary-200 dark:border-primary-800'
+                      : 'bg-gray-50 dark:bg-gray-700/50 border-gray-200 dark:border-gray-700 opacity-60'
+                      }`}
                   >
                     <div className="flex items-start gap-3">
                       <div className={`text-3xl ${!achievement.unlocked && 'grayscale opacity-50'}`}>
@@ -695,34 +693,31 @@ const FrameworkGamePage = () => {
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: 0.1 * index }}
-                  className={`p-4 rounded-xl border-2 transition-all ${
-                    completedSteps.includes(step.id)
-                      ? 'bg-gradient-to-br from-green-50 to-white dark:from-green-900/20 dark:to-gray-800 border-green-200 dark:border-green-800'
-                      : currentStepIndex === index
+                  className={`p-4 rounded-xl border-2 transition-all ${completedSteps.includes(step.id)
+                    ? 'bg-gradient-to-br from-green-50 to-white dark:from-green-900/20 dark:to-gray-800 border-green-200 dark:border-green-800'
+                    : currentStepIndex === index
                       ? 'bg-gradient-to-br from-primary-50 to-white dark:from-primary-900/20 dark:to-gray-800 border-primary-200 dark:border-primary-800'
                       : 'bg-gray-50 dark:bg-gray-700/50 border-gray-200 dark:border-gray-700'
-                  }`}
+                    }`}
                 >
                   <div className="flex items-start justify-between mb-3">
                     <div className="flex items-center gap-2">
-                      <div className={`w-8 h-8 rounded-lg flex items-center justify-center font-bold text-sm ${
-                        completedSteps.includes(step.id)
-                          ? 'bg-green-500 text-white'
-                          : currentStepIndex === index
+                      <div className={`w-8 h-8 rounded-lg flex items-center justify-center font-bold text-sm ${completedSteps.includes(step.id)
+                        ? 'bg-green-500 text-white'
+                        : currentStepIndex === index
                           ? 'bg-primary-500 text-black'
                           : 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400'
-                      }`}>
+                        }`}>
                         {completedSteps.includes(step.id) ? '✓' : index + 1}
                       </div>
                       <span className="text-xs font-medium text-gray-600 dark:text-gray-400">
                         Etapa {index + 1}
                       </span>
                     </div>
-                    <span className={`text-xs font-bold px-2 py-1 rounded ${
-                      completedSteps.includes(step.id)
-                        ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300'
-                        : 'bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300'
-                    }`}>
+                    <span className={`text-xs font-bold px-2 py-1 rounded ${completedSteps.includes(step.id)
+                      ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300'
+                      : 'bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300'
+                      }`}>
                       {step.points} pts
                     </span>
                   </div>

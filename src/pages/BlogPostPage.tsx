@@ -3,11 +3,11 @@ import { useParams, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet-async';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { 
-  Calendar, 
-  Clock, 
-  ArrowLeft, 
-  Share2, 
+import {
+  Calendar,
+  Clock,
+  ArrowLeft,
+  Share2,
   Bookmark,
   ThumbsUp,
   MessageCircle,
@@ -318,8 +318,8 @@ const BlogPostPage = () => {
       <section className="relative min-h-[90vh] w-full overflow-hidden">
         {/* Background Effects */}
         <div className="absolute inset-0 overflow-hidden">
-          
-          
+
+
         </div>
 
         {/* Grid Pattern */}
@@ -460,11 +460,10 @@ const BlogPostPage = () => {
               <div className="space-y-4">
                 <button
                   onClick={() => setHasLiked(!hasLiked)}
-                  className={`w-full flex flex-col items-center gap-2 p-4 rounded-xl border-2 transition-all duration-300 ${
-                    hasLiked
-                      ? 'bg-[#FFF200]/10 border-[#FFF200] text-[#FFF200]'
-                      : 'border-gray-200 dark:border-gray-700 hover:border-[#FFF200]'
-                  }`}
+                  className={`w-full flex flex-col items-center gap-2 p-4 rounded-xl border-2 transition-all duration-300 ${hasLiked
+                    ? 'bg-[#FFF200]/10 border-[#FFF200] text-[#FFF200]'
+                    : 'border-gray-200 dark:border-gray-700 hover:border-[#FFF200]'
+                    }`}
                 >
                   <ThumbsUp className={`w-6 h-6 ${hasLiked ? 'fill-current' : ''}`} />
                   <span className="text-sm font-medium">{hasLiked ? post.likes + 1 : post.likes}</span>
@@ -472,11 +471,10 @@ const BlogPostPage = () => {
 
                 <button
                   onClick={() => setIsBookmarked(!isBookmarked)}
-                  className={`w-full flex flex-col items-center gap-2 p-4 rounded-xl border-2 transition-all duration-300 ${
-                    isBookmarked
-                      ? 'bg-[#FFF200]/10 border-[#FFF200] text-[#FFF200]'
-                      : 'border-gray-200 dark:border-gray-700 hover:border-[#FFF200]'
-                  }`}
+                  className={`w-full flex flex-col items-center gap-2 p-4 rounded-xl border-2 transition-all duration-300 ${isBookmarked
+                    ? 'bg-[#FFF200]/10 border-[#FFF200] text-[#FFF200]'
+                    : 'border-gray-200 dark:border-gray-700 hover:border-[#FFF200]'
+                    }`}
                 >
                   <Bookmark className={`w-6 h-6 ${isBookmarked ? 'fill-current' : ''}`} />
                   <span className="text-xs font-medium">Salvar</span>
@@ -807,13 +805,13 @@ const customStyles = `
     gap: 1rem;
     margin: 2.5rem 0 1.5rem;
     padding: 1rem 1.25rem;
-    border: 1px solid rgba(202, 138, 4, 0.28);
+    border: 1px solid rgba(255, 242, 0, 0.28);
     border-radius: 1rem;
-    background: rgba(234, 179, 8, 0.07);
+    background: rgba(255, 242, 0, 0.07);
   }
 
   .article-marker span, .section-kicker, .validation-box span, .test-plan span {
-    color: #a16207;
+    color: #998A00;
     font-size: 0.7rem;
     font-weight: 800;
     letter-spacing: 0.12em;
@@ -836,7 +834,7 @@ const customStyles = `
     background: linear-gradient(145deg, #fff, #f8fafc);
   }
 
-  .decision-grid span { color: #ca8a04; font-size: 0.75rem; font-weight: 800; }
+  .decision-grid span { color: #CCB800; font-size: 0.75rem; font-weight: 800; }
   .decision-grid strong, .test-plan strong { display: block; margin-top: 0.35rem; color: #111827; }
   .decision-grid p, .test-plan p { margin: 0.35rem 0 0; font-size: 0.9rem; line-height: 1.5; }
 
@@ -866,10 +864,10 @@ const customStyles = `
     position: absolute;
     top: 0; left: 0; right: 0;
     height: 3px;
-    background: linear-gradient(90deg, #eab308, #facc15);
+    background: linear-gradient(90deg, #FFF200, #FFEB33);
   }
 
-  .idea-number { display: block; margin-bottom: 0.9rem; color: #ca8a04; font-size: 0.75rem; font-weight: 900; letter-spacing: 0.1em; }
+  .idea-number { display: block; margin-bottom: 0.9rem; color: #CCB800; font-size: 0.75rem; font-weight: 900; letter-spacing: 0.1em; }
   .idea-card h3 { margin: 0 0 1rem !important; font-size: 1.05rem !important; line-height: 1.35 !important; }
   .validation-box { padding-top: 0.85rem; border-top: 1px solid #f1f5f9; }
   .validation-box p { margin: 0.35rem 0 0 !important; color: #64748b !important; font-size: 0.84rem !important; line-height: 1.5 !important; }

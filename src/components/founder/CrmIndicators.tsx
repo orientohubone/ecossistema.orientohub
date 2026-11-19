@@ -71,7 +71,7 @@ export const CrmIndicators = ({ clients }: { clients: CrmClient[] }) => {
     </div>
     {invalidRange ? <p role="alert" className="text-sm text-red-300">A data inicial deve ser anterior ou igual à data final.</p> : !filtered.length ? <p className={`${panel} text-center text-[#9ba9bc]`}>Nenhum cliente encontrado para os filtros selecionados.</p> : <>
       <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">{metrics.map((item) => <article key={item.label} className={panel}><h5 className="text-sm text-[#9ba9bc]">{item.label}</h5><p className="mt-2 break-words text-2xl font-bold text-white">{item.value}</p><p className="mt-2 text-xs text-[#9ba9bc]">{item.detail}</p></article>)}</div>
-      {missing > 0 && <p className="rounded-xl border border-amber-400/25 bg-amber-400/5 p-3 text-sm text-amber-200">{missing} clientes sem valor estimado válido. Os totais financeiros incluem apenas os valores informados.</p>}
+      {missing > 0 && <p className="rounded-xl border border-primary-400/25 bg-primary-400/5 p-3 text-sm text-primary-200">{missing} clientes sem valor estimado válido. Os totais financeiros incluem apenas os valores informados.</p>}
       <div className={panel}>
         <div className="flex flex-wrap items-center justify-between gap-3"><h4 className="font-bold text-white">Distribuição por etapa</h4><div className="flex gap-2" aria-label="Medida do gráfico">{(['count', 'value'] as const).map((item) => <button key={item} type="button" aria-pressed={metric === item} onClick={() => setMetric(item)} className={`rounded-lg border px-3 py-2 text-xs font-semibold ${metric === item ? 'border-primary-400 bg-primary-500/15 text-primary-200' : 'border-[#34455a] text-[#9ba9bc]'}`}>{item === 'count' ? 'Quantidade de clientes' : 'Valor estimado'}</button>)}</div></div>
         <div className="mt-5 rounded-2xl border border-[#34455a] bg-[#0c121b]/60 p-4 sm:p-5">
@@ -80,7 +80,7 @@ export const CrmIndicators = ({ clients }: { clients: CrmClient[] }) => {
             <p className="text-sm text-[#9ba9bc]">{metric === 'count' ? 'Ponderado pela quantidade de clientes' : 'Ponderado pelo valor estimado'}</p>
           </div>
           <div role="progressbar" aria-label="Avanço médio até Ganhos" aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(progress * 100)} aria-valuetext={progressTotal > 0 ? percent.format(progress) : 'Sem dados para calcular o avanço'} className="relative mt-5 h-7 overflow-hidden rounded-full border border-[#34455a] bg-[#151f2b]">
-            <div className="absolute inset-0 origin-left rounded-full transition-transform duration-700 ease-out motion-reduce:transition-none" style={{ transform: `scaleX(${progress})`, background: 'linear-gradient(90deg, #38bdf8, #a78bfa 25%, #fbbf24 50%, #fb923c 75%, #34d399)' }} />
+            <div className="absolute inset-0 origin-left rounded-full transition-transform duration-700 ease-out motion-reduce:transition-none" style={{ transform: `scaleX(${progress})`, background: 'linear-gradient(90deg, #38bdf8, #a78bfa 25%, #FFF200 50%, #fb923c 75%, #34d399)' }} />
             <div aria-hidden="true" className="absolute inset-0 flex">{progressStages.slice(1).map((item) => <span key={item.id} className="flex-1 border-r border-[#0c121b]/50 last:border-r-0" />)}</div>
           </div>
           <div className="mt-2 flex justify-between text-xs font-semibold text-[#9ba9bc]"><span>Novos · 0%</span><span className="text-emerald-300">Ganhos · 100%</span></div>

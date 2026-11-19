@@ -38,7 +38,7 @@ export const DocumentationCard: React.FC<DocumentationCardProps> = ({
       'manual-sistema': 'bg-blue-100 text-blue-800',
       'vendas': 'bg-green-100 text-green-800',
       'marketing': 'bg-purple-100 text-purple-800',
-      'proposta-valor': 'bg-yellow-100 text-yellow-800',
+      'proposta-valor': 'bg-primary-100 text-primary-800',
       'dores-empresas': 'bg-red-100 text-red-800',
       'benchmarks': 'bg-indigo-100 text-indigo-800'
     };
@@ -60,7 +60,7 @@ export const DocumentationCard: React.FC<DocumentationCardProps> = ({
             size="sm"
             onClick={() => onToggleFavorite(document.id)}
           >
-            <Star className={`h-4 w-4 ${isFavorite ? 'fill-yellow-400 text-yellow-400' : ''}`} />
+            <Star className={`h-4 w-4 ${isFavorite ? 'fill-primary-400 text-primary-400' : ''}`} />
           </Button>
         </div>
         

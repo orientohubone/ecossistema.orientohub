@@ -79,7 +79,7 @@ export const EngagementMetrics: React.FC<EngagementMetricsProps> = ({ analytics 
             <div>
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center">
-                  <Zap className="h-4 w-4 text-yellow-500 mr-2" />
+                  <Zap className="h-4 w-4 text-primary-500 mr-2" />
                   <MetricTooltip metric="sticky_factor">
                     <span className="text-sm font-medium">Sticky Factor (DAU/MAU)</span>
                   </MetricTooltip>

@@ -500,11 +500,11 @@ const NamingGenerator = () => {
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.45 }}
-                className="mt-5 flex gap-3 rounded-xl border border-amber-500/25 bg-amber-500/5 p-4"
+                className="mt-5 flex gap-3 rounded-xl border border-primary-500/25 bg-primary-500/5 p-4"
               >
-                <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-amber-400" />
+                <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-primary-400" />
                 <p className="text-xs leading-relaxed text-[#d7e0ea]">
-                  <span className="font-bold text-amber-300">Diagnóstico de Viabilidade: </span>
+                  <span className="font-bold text-primary-300">Diagnóstico de Viabilidade: </span>
                   Nomes construídos morfologicamente reduzem atrito fonético, mas exigem checagem de
                   anterioridade na base do INPI — marcas idênticas e colidência fonética na Classe
                   Nice correspondente — para garantir exclusividade e registro legal.

@@ -21,11 +21,11 @@ export const GlowBorder = ({
 }: GlowBorderProps) => (
   <div className={`absolute inset-0 pointer-events-none ${borderRadiusClass} ${className}`}>
     <div
-      className={`absolute inset-0 border border-yellow-400/30 bg-gradient-to-br from-yellow-300/15 via-transparent to-amber-400/20 ${borderRadiusClass}`}
+      className={`absolute inset-0 border border-primary-400/30 bg-gradient-to-br from-primary-300/15 via-transparent to-primary-400/20 ${borderRadiusClass}`}
     />
     <MovingBorder duration={duration} rx={rx} ry={ry}>
       {glowElement ?? (
-        <div className="h-32 w-32 opacity-80 bg-[radial-gradient(circle,rgba(255,209,92,0.95)_0%,rgba(255,209,92,0)_65%)] blur-2xl" />
+        <div className="h-32 w-32 opacity-80 bg-[radial-gradient(circle,rgba(255,242,0,0.95)_0%,rgba(255,242,0,0)_65%)] blur-2xl" />
       )}
     </MovingBorder>
   </div>

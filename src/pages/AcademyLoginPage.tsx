@@ -80,7 +80,7 @@ const AcademyLoginPage = () => {
               <Link to="/">
                 <img src="/orientohub.png" alt="Orientohub" className="h-10 w-auto" />
               </Link>
-              <div className="inline-flex items-center gap-2 rounded-full border border-amber-400/30 bg-amber-400/10 px-4 py-2 text-xs font-semibold tracking-[0.3em] uppercase text-amber-200">
+              <div className="inline-flex items-center gap-2 rounded-full border border-primary-400/30 bg-primary-400/10 px-4 py-2 text-xs font-semibold tracking-[0.3em] uppercase text-primary-200">
                 <Sparkles size={14} /> Academy
               </div>
               <h1 className="text-4xl md:text-5xl font-bold leading-tight text-white">
@@ -96,7 +96,7 @@ const AcademyLoginPage = () => {
                   'Acesso imediato ao catálogo privado'
                 ].map(item => (
                   <li key={item} className="flex items-center gap-2">
-                    <CheckCircle2 size={16} className="text-amber-300" />
+                    <CheckCircle2 size={16} className="text-primary-300" />
                     {item}
                   </li>
                 ))}
@@ -116,7 +116,7 @@ const AcademyLoginPage = () => {
                     <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
                     <input
                       type="email"
-                      className="w-full rounded-2xl bg-slate-950/40 border border-white/10 pl-10 pr-4 py-3 text-white placeholder:text-slate-500 focus:border-amber-300 focus:ring-2 focus:ring-amber-300/20 focus:outline-none"
+                      className="w-full rounded-2xl bg-slate-950/40 border border-white/10 pl-10 pr-4 py-3 text-white placeholder:text-slate-500 focus:border-primary-400 focus:ring-2 focus:ring-primary-400/20 focus:outline-none"
                       placeholder="founder@orientohub.com"
                       value={email}
                       onChange={(event) => setEmail(event.target.value)}
@@ -132,7 +132,7 @@ const AcademyLoginPage = () => {
                     <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
                     <input
                       type="password"
-                      className="w-full rounded-2xl bg-slate-950/40 border border-white/10 pl-10 pr-4 py-3 text-white placeholder:text-slate-500 focus:border-amber-300 focus:ring-2 focus:ring-amber-300/20 focus:outline-none"
+                      className="w-full rounded-2xl bg-slate-950/40 border border-white/10 pl-10 pr-4 py-3 text-white placeholder:text-slate-500 focus:border-primary-400 focus:ring-2 focus:ring-primary-400/20 focus:outline-none"
                       placeholder="••••••••"
                       value={password}
                       onChange={(event) => setPassword(event.target.value)}
@@ -166,7 +166,7 @@ const AcademyLoginPage = () => {
                 )}
 
                 {isConnectionError && (
-                  <div className="rounded-2xl border border-amber-500/40 bg-amber-500/10 p-4 text-sm text-amber-100">
+                  <div className="rounded-2xl border border-primary-500/40 bg-primary-500/10 p-4 text-sm text-primary-100">
                     <p>Não foi possível conectar ao servidor. Tente novamente em alguns instantes.</p>
                     <button
                       type="button"
@@ -181,18 +181,18 @@ const AcademyLoginPage = () => {
                 <button
                   type="submit"
                   disabled={isLoading || isConnectionError}
-                  className="w-full inline-flex items-center justify-center gap-3 rounded-2xl bg-amber-300 text-slate-900 font-semibold py-3 shadow-lg shadow-amber-300/30 disabled:opacity-60"
+                  className="w-full inline-flex items-center justify-center gap-3 rounded-2xl bg-[#FFF200] text-black font-semibold py-3 shadow-lg shadow-primary-400/20 hover:opacity-90 transition-opacity disabled:opacity-60"
                 >
                   {isLoading ? 'Validando…' : 'Entrar na Academy'}
                   {!isLoading && <ArrowRight size={18} />}
                 </button>
 
                 <p className="text-center text-xs text-slate-400">
-                  Precisa de ajuda? <a href="mailto:academy@orientohub.com" className="text-amber-300">Fale com o suporte da Academy</a>.
+                  Precisa de ajuda? <a href="mailto:academy@orientohub.com" className="text-primary-300">Fale com o suporte da Academy</a>.
                 </p>
 
                 <div className="text-center text-sm text-slate-500">
-                  Ainda não faz parte da Academy? <Link to="/planos" className="text-amber-200 underline">Conheça os planos</Link>
+                  Ainda não faz parte da Academy? <Link to="/planos" className="text-primary-200 underline">Conheça os planos</Link>
                 </div>
               </form>
             </motion.div>

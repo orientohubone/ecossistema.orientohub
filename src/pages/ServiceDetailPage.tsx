@@ -27,13 +27,13 @@ const icons: Record<string, ComponentType<{ className?: string }>> = {
 };
 
 const accentClasses = {
-  primary: 'border-[#FFF200]/30 bg-[#FFF200]/100/10 text-[#FFF200]',
+  primary: 'border-[#FFF200]/30 bg-[#FFF200]/10 text-[#FFF200]',
   orange: 'border-orange-400/30 bg-orange-400/10 text-orange-300',
   emerald: 'border-emerald-400/30 bg-emerald-400/10 text-emerald-300',
   pink: 'border-pink-400/30 bg-pink-400/10 text-pink-300',
   violet: 'border-violet-400/30 bg-violet-400/10 text-violet-300',
   sky: 'border-sky-400/30 bg-sky-400/10 text-sky-300',
-  amber: 'border-amber-400/30 bg-amber-400/10 text-amber-300',
+  amber: 'border-primary-400/30 bg-primary-400/10 text-primary-300',
   cyan: 'border-cyan-400/30 bg-cyan-400/10 text-cyan-300',
   green: 'border-green-400/30 bg-green-400/10 text-green-300',
 };
@@ -73,7 +73,7 @@ const ServiceDetailPage = () => {
 
       <main className="min-h-screen overflow-hidden bg-[#0c121b] text-white">
         <section className="relative border-b border-[#273548] bg-[#101722]">
-          <div className="pointer-events-none absolute inset-0 opacity-[0.09]" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, #facc15 1px, transparent 0)', backgroundSize: '40px 40px' }} />
+          <div className="pointer-events-none absolute inset-0 opacity-[0.09]" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, #FFF200 1px, transparent 0)', backgroundSize: '40px 40px' }} />
           <div className="container-custom relative py-14 sm:py-20 lg:py-24">
             <Link to="/servicos" className="mb-8 inline-flex items-center gap-2 text-sm font-medium text-[#9ba9bc] transition-colors hover:text-[#FFF200]"><ArrowLeft className="h-4 w-4" /> Todos os serviços</Link>
             <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="grid gap-10 lg:grid-cols-[1.2fr_0.8fr] lg:items-end">
@@ -82,7 +82,7 @@ const ServiceDetailPage = () => {
                 <h1 className="max-w-4xl text-4xl font-bold leading-[0.98] tracking-tight sm:text-6xl lg:text-7xl">{service.hero}</h1>
                 <p className="mt-6 max-w-2xl text-lg leading-relaxed text-[#9ba9bc] sm:text-xl">{service.outcome}</p>
                 {service.pricing && (
-                  <div className="mt-7 flex flex-wrap items-end gap-x-3 gap-y-2 rounded-2xl border border-[#FFF200]/25 bg-[#FFF200]/100/10 p-4 sm:w-fit sm:px-5">
+                  <div className="mt-7 flex flex-wrap items-end gap-x-3 gap-y-2 rounded-2xl border border-[#FFF200]/25 bg-[#FFF200]/10 p-4 sm:w-fit sm:px-5">
                     {service.pricing.customText ? (
                       <div>
                         <p className="text-xs font-bold uppercase tracking-[0.15em] text-[#FFF200]">Investimento</p>
