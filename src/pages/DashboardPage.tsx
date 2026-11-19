@@ -472,7 +472,7 @@ const DashboardPage = ({ initialDashboardData, showcaseFrame }: DashboardPagePro
                           ? 'bg-green-500 border-green-300'
                           : 'bg-[#151f2b] border-[#34455a]'
                         }`}>
-                        <Icon className={`w-6 h-6 ${phase.active || phase.completed ? 'text-white' : 'text-[#718096]'
+                        <Icon className={`w-6 h-6 ${phase.active ? 'text-black' : phase.completed ? 'text-white' : 'text-[#718096]'
                           }`} />
                       </div>
 

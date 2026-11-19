@@ -430,12 +430,12 @@ const SettingsPage = () => {
                         />
                         <button
                           type="button"
-                          className="absolute bottom-0 right-0 p-2 bg-primary-500 text-white rounded-full shadow-lg hover:bg-primary-600 transition-colors"
+                          className="absolute bottom-0 right-0 p-2 bg-primary-500 text-black rounded-full shadow-lg hover:bg-primary-400 transition-colors"
                           onClick={() => avatarInputRef.current?.click()}
                           disabled={isUploadingAvatar}
                         >
                           {isUploadingAvatar ? (
-                            <span className="w-4 h-4 animate-spin border-2 border-white border-t-transparent rounded-full inline-block" />
+                            <span className="w-4 h-4 animate-spin border-2 border-black border-t-transparent rounded-full inline-block" />
                           ) : (
                             <Upload className="w-4 h-4" />
                           )}

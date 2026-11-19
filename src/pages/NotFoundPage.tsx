@@ -85,7 +85,7 @@ const NotFoundPage = () => {
             >
               <Link
                 to="/"
-                className="group relative inline-flex items-center px-8 py-4 overflow-hidden rounded-xl bg-primary-500 hover:bg-primary-600 text-white font-semibold shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-105"
+                className="group relative inline-flex items-center px-8 py-4 overflow-hidden rounded-xl bg-primary-500 hover:bg-primary-400 text-black font-bold shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-105"
               >
                 <Home size={20} className="mr-2" />
                 Voltar para Home

@@ -338,7 +338,7 @@ const JourneyPage = ({ initialJourneyPhases, showcaseSelectedPhase, showcaseExpa
                             ) : currentPhase.status === 'locked' ? (
                               <Lock className="w-4 h-4 text-gray-500" />
                             ) : (
-                              <Circle className={`w-5 h-5 ${isExpanded ? 'text-white' : 'text-gray-400'}`} />
+                              <Circle className={`w-5 h-5 ${isExpanded ? 'text-black' : 'text-gray-400'}`} />
                             )}
                           </div>
                           <div>

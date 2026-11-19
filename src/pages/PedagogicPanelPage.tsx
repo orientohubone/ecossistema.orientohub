@@ -365,7 +365,7 @@ const PedagogicPanelPage = () => {
                     <span className="text-sm font-medium text-slate-700 dark:text-slate-200">Conteúdo Premium (Exclusivo Assinantes)</span>
                   </label>
 
-                  <button type="submit" className="ml-auto rounded-xl bg-primary-600 px-6 py-2.5 text-white font-semibold shadow-sm hover:bg-primary-500 transition">
+                  <button type="submit" className="ml-auto rounded-xl bg-primary-500 px-6 py-2.5 text-black font-bold shadow-sm hover:bg-primary-400 transition">
                     {editingCourseId === 'new' ? 'Criar Curso' : 'Salvar Alterações'}
                   </button>
                 </div>

@@ -241,10 +241,10 @@ const SolutionsPage = () => {
 
   const getStageColor = (stage: string) => {
     const colors: { [key: string]: string } = {
-      'Ideação': 'bg-purple-500', 'Validação': 'bg-blue-500', 'MVP': 'bg-primary-500',
-      'Tração': 'bg-orange-500', 'Crescimento': 'bg-green-500', 'Escala': 'bg-primary-500'
+      'Ideação': 'bg-purple-500 text-white', 'Validação': 'bg-blue-500 text-white', 'MVP': 'bg-primary-500 text-black',
+      'Tração': 'bg-orange-500 text-white', 'Crescimento': 'bg-green-500 text-white', 'Escala': 'bg-primary-500 text-black'
     };
-    return colors[stage] || 'bg-gray-500';
+    return colors[stage] || 'bg-gray-500 text-white';
   };
 
   if (isLoading && solutions.length === 0) return <DashboardPageSkeleton cards={4} columns={2} />;
@@ -392,7 +392,7 @@ const SolutionCard = memo(({ solution, index, onViewDetails, onUpdateData, onRem
               <p className="mb-1 text-[10px] font-black uppercase tracking-[0.18em] text-[#718096]">Solução</p>
               <h3 className="line-clamp-1 text-lg font-bold text-white">{solution.name}</h3>
               <div className="flex items-center gap-2 mt-1.5">
-                <span className={`inline-block px-2.5 py-1 rounded-full text-[10px] font-bold text-white ${getStageColor(solution.stage)}`}>{solution.stage}</span>
+                <span className={`inline-block px-2.5 py-1 rounded-full text-[10px] font-bold ${getStageColor(solution.stage)}`}>{solution.stage}</span>
                 {solution.category && <span className="truncate text-[10px] font-bold text-[#9ba9bc]">{solution.category}</span>}
               </div>
             </div>
@@ -465,7 +465,7 @@ const SolutionDetailsPage = memo(({ solution, onBack, onEdit, onDelete, getHealt
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-3 mb-1">
                 <h2 className="line-clamp-1 text-3xl font-black text-white">{solution.name}</h2>
-                <span className={`inline-block px-3 py-1 rounded-full text-[10px] font-bold text-white ${getStageColor(solution.stage)}`}>{solution.stage}</span>
+                <span className={`inline-block px-3 py-1 rounded-full text-[10px] font-bold ${getStageColor(solution.stage)}`}>{solution.stage}</span>
               </div>
               <p className="max-w-4xl text-sm leading-relaxed text-[#9ba9bc] line-clamp-2">{solution.description || github?.overview?.description || 'Repositório monitorado com integração de métricas em tempo real.'}</p>
 
