@@ -4,7 +4,7 @@ import { privateIdeaImagePath } from '../lib/privateIdeaImages';
 
 export type IdeaStage = 'capture' | 'discovery' | 'validation' | 'incubation' | 'ready' | 'archived';
 export type HypothesisStatus = 'open' | 'testing' | 'validated' | 'invalidated';
-export interface Idea { id: string; user_id: string; title: string; description: string | null; audience: string | null; problem: string | null; proposed_solution: string | null; evidence: string | null; curation_notes: string | null; image_urls: string[]; image_sources?: string[]; image_error?: string | null; stage: IdeaStage; curation_score: number; promoted_project_id: string | null; created_at: string; updated_at: string; }
+export interface Idea { id: string; user_id: string; title: string; description: string | null; audience: string | null; problem: string | null; proposed_solution: string | null; evidence: string | null; curation_notes: string | null; image_urls: string[]; image_sources?: string[]; image_error?: string | null; stage: IdeaStage; curation_score: number; promoted_project_id: string | null; created_at: string; updated_at: string; market_analysis: string | null; customer_persona: string | null; business_model_notes: string | null; competitive_analysis: string | null; insight_tags: string[]; }
 export interface IdeaHypothesis { id: string; idea_id: string; user_id: string; statement: string; evidence: string | null; status: HypothesisStatus; created_at: string; }
 const userId = async () => { const { data } = await supabase.auth.getUser(); if (!data.user) throw new Error('Faça login para gerenciar suas ideias.'); return data.user.id; };
 const privateImages = async (idea: Idea): Promise<Idea> => {
@@ -38,7 +38,7 @@ export const ideasService = {
     return ideasService.update(id, { image_urls: files.map(file => `${folder}/${file.name}`) });
   },
   async getAll() { const owner = await userId(); const { data, error } = await supabase.from('ideas').select('*').eq('user_id', owner).order('updated_at', { ascending: false }); if (error) throw error; return Promise.all(((data || []) as Idea[]).map(privateImages)); },
-  async create(data: Pick<Idea, 'title' | 'description' | 'audience' | 'problem' | 'proposed_solution'>) { const { data: idea, error } = await supabase.from('ideas').insert({ ...data, user_id: await userId() }).select().single(); if (error) throw error; const created = idea as Idea; await activityService.log('Registrou a ideia', created.title, 'idea', created.id, 10, 'Lightbulb'); return created; },
+  async create(data: Pick<Idea, 'title' | 'description' | 'audience' | 'problem' | 'proposed_solution' | 'market_analysis' | 'customer_persona' | 'business_model_notes' | 'competitive_analysis'>) { const { data: idea, error } = await supabase.from('ideas').insert({ ...data, user_id: await userId() }).select().single(); if (error) throw error; const created = idea as Idea; await activityService.log('Registrou a ideia', created.title, 'idea', created.id, 10, 'Lightbulb'); return created; },
   async update(id: string, data: Partial<Idea>) {
     const owner = await userId();
     const payload = { ...data };

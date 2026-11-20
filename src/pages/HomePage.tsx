@@ -212,7 +212,7 @@ const HomePage = () => {
             >
               <Badge variant="liquid-glass" className="gap-2 px-3 py-1.5 sm:px-3.5 sm:py-2">
                 <Rocket className="h-3.5 w-3.5 text-[#FFF200] shrink-0" aria-hidden="true" />
-                <span className="text-[10px] sm:text-xs font-semibold uppercase tracking-[0.12em] text-white/90">
+                <span className="text-[11px] xs:text-xs font-semibold uppercase tracking-[0.12em] text-white/90">
                   Ideias travadas custam oportunidades
                 </span>
               </Badge>
@@ -224,7 +224,7 @@ const HomePage = () => {
             >
               <span className="block whitespace-nowrap text-white">Boas ideias morrem</span>
               <span
-                className="relative mx-auto flex h-[1.2em] w-[14ch] items-center justify-center overflow-hidden whitespace-nowrap leading-[1.15]"
+                className="relative mx-auto flex h-[1.2em] w-[12ch] xs:w-[14ch] items-center justify-center overflow-hidden whitespace-nowrap leading-[1.15]"
                 aria-live="polite"
               >
                 <AnimatePresence mode="wait" initial={false}>

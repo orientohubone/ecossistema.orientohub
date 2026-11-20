@@ -26,6 +26,7 @@ import SignupPage from './pages/SignupPage';
 import AcademyLoginPage from './pages/AcademyLoginPage';
 import BlogPage from './pages/BlogPage';
 import BlogPostPage from './pages/BlogPostPage';
+import NovidadesPage from './pages/NovidadesPage';
 import TermsPage from './pages/TermsPage';
 import PrivacyPage from './pages/PrivacyPage';
 import CookiesPage from './pages/CookiesPage';
@@ -93,6 +94,7 @@ function App() {
           <Route path="checkout/success" element={<CheckoutSuccessPage />} />
           <Route path="blog" element={<BlogPage />} />
           <Route path="blog/:slug" element={<BlogPostPage />} />
+          <Route path="novidades" element={<NovidadesPage />} />
           <Route path="termos" element={<TermsPage />} />
           <Route path="privacidade" element={<PrivacyPage />} />
           <Route path="cookies" element={<CookiesPage />} />

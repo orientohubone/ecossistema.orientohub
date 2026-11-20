@@ -30,7 +30,7 @@ const IdeasPage = ({ initialIdeas, initialHypotheses = [], showcaseFrame }: Idea
   const [hypotheses, setHypotheses] = useState<IdeaHypothesis[]>(initialHypotheses);
   const [query, setQuery] = useState('');
   const [createOpen, setCreateOpen] = useState(false);
-  const [form, setForm] = useState({ title: '', description: '', audience: '', problem: '', proposed_solution: '' });
+  const [form, setForm] = useState({ title: '', description: '', audience: '', problem: '', proposed_solution: '', market_analysis: '', customer_persona: '', business_model_notes: '', competitive_analysis: '' });
   const [newImages, setNewImages] = useState<File[]>([]);
   const [savingIdea, setSavingIdea] = useState(false);
   const [pageError, setPageError] = useState('');
@@ -57,7 +57,7 @@ const IdeasPage = ({ initialIdeas, initialHypotheses = [], showcaseFrame }: Idea
   const showcaseHypotheses = useMemo(() => showcaseFrame === undefined ? hypotheses : hypotheses.map((item, index) => index === 0 && showcaseFrame >= 410 ? {...item, status: 'testing' as const} : item), [hypotheses, showcaseFrame]);
   const showcaseSelected = showcaseFrame !== undefined && showcaseFrame >= 300 ? showcaseIdeas[0] ?? null : selected;
   const filtered = useMemo(() => showcaseIdeas.filter((idea) => `${idea.title} ${idea.description || ''} ${idea.audience || ''}`.toLowerCase().includes(query.toLowerCase())), [showcaseIdeas, query]);
-  const saveNew = async () => { if (!form.title.trim() || savingIdea) return; setSavingIdea(true); try { let idea = await ideasService.create(form); if (newImages.length) { const image_urls = await ideasService.uploadImages(idea.id, newImages); idea = await ideasService.update(idea.id, { image_urls }); } setIdeas((all) => [idea, ...all]); setForm({ title: '', description: '', audience: '', problem: '', proposed_solution: '' }); setNewImages([]); setCreateOpen(false); setSelected(idea); } finally { setSavingIdea(false); } };
+  const saveNew = async () => { if (!form.title.trim() || savingIdea) return; setSavingIdea(true); try { let idea = await ideasService.create(form); if (newImages.length) { const image_urls = await ideasService.uploadImages(idea.id, newImages); idea = await ideasService.update(idea.id, { image_urls }); } setIdeas((all) => [idea, ...all]); setForm({ title: '', description: '', audience: '', problem: '', proposed_solution: '', market_analysis: '', customer_persona: '', business_model_notes: '', competitive_analysis: '' }); setNewImages([]); setCreateOpen(false); setSelected(idea); } finally { setSavingIdea(false); } };
   const updateSelected = async (data: Partial<Idea>) => { if (!selected) return; const updated = await ideasService.update(selected.id, data); setIdeas((all) => all.map((idea) => idea.id === updated.id ? updated : idea)); setSelected(updated); };
   const moveIdea = async (idea: Idea, stage: IdeaStage) => { if (idea.stage === stage) return; const updated = await ideasService.update(idea.id, { stage }); setIdeas((all) => all.map((current) => current.id === updated.id ? updated : current)); if (selected?.id === updated.id) setSelected(updated); };
   const promote = async () => { if (!selected) return; const project = await projectsService.create({ name: selected.title, description: selected.description || selected.problem || undefined, stage: 'ideation' }); await updateSelected({ promoted_project_id: String(project.id), stage: 'ready' }); navigate(`/dashboard/projects/${project.id}`); };

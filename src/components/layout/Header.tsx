@@ -112,6 +112,7 @@ const Header = () => {
         { name: t('nav.about'), href: '/sobre', icon: Building2, description: 'Nossa história, visão e forma de construir.' },
         { name: t('nav.blog'), href: '/blog', icon: Newspaper, description: 'Ideias e aprendizados para colocar em prática.' },
         { name: 'Glossário', href: '/glossario', icon: BookOpen, description: 'Conceitos para navegar com mais clareza.' },
+        { name: 'Novidades', href: '/novidades', icon: Sparkles, description: 'Evolução e atualizações da plataforma.' },
       ]
     },
     { name: t('nav.pricing'), href: '/planos' },
@@ -122,27 +123,27 @@ const Header = () => {
     <>
       <HeaderBlackFridayMarquee />
       
-      <header className={`sticky top-0 z-50 transition-all duration-200 ${scrolled ? 'bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm shadow-sm' : 'bg-transparent dark:bg-[#14181f]/35'}`}>
+      <header className={`sticky top-3 z-50 transition-all duration-300 ${scrolled ? 'shadow-2xl' : ''}`}>
         <div className="container-custom">
-          <div className="flex items-center justify-between h-14 sm:h-16">
+          <div className="flex items-center justify-between rounded-full border border-white/15 bg-white/[0.85] dark:bg-[#0d131d]/85 backdrop-blur-xl shadow-[0_8px_40px_rgba(0,0,0,0.12)] dark:shadow-[0_8px_40px_rgba(0,0,0,0.55)] h-12 sm:h-14 px-2 sm:px-3">
             {/* Logo */}
-            <div className="flex-shrink-0">
+            <div className="flex-shrink-0 pl-2 sm:pl-3">
               <Link to="/" className="flex items-center">
-                <img 
-                  src="/orientohub.png" 
-                  alt="Orientohub" 
-                  className="h-6 sm:h-7 w-auto dark:hidden"
+                <img
+                  src="/orientohub.png"
+                  alt="Orientohub"
+                  className="h-5 sm:h-6 w-auto dark:hidden"
                 />
-                <img 
-                  src="/orientohub-dark.png" 
-                  alt="Orientohub" 
-                  className="h-5 sm:h-6 w-auto hidden dark:block"
+                <img
+                  src="/orientohub-dark.png"
+                  alt="Orientohub"
+                  className="h-4 sm:h-5 w-auto hidden dark:block"
                 />
               </Link>
             </div>
-            
+
             {/* Desktop navigation */}
-            <nav className="hidden md:flex space-x-6 items-center">
+            <nav className="hidden md:flex items-center gap-1">
               {navItems.map((item) => (
                 <div
                   key={item.name}
@@ -152,10 +153,10 @@ const Header = () => {
                   }}
                 >
                   {item.subItems ? (
-                    <div className="flex items-center gap-1 cursor-pointer py-2 text-sm font-medium text-gray-700 hover:text-[#FFF200] dark:text-gray-300 dark:hover:text-[#FFF200] transition-colors">
+                    <div className="flex items-center gap-1 cursor-pointer rounded-full px-3 py-2 text-sm font-semibold text-gray-700 hover:text-[#FFF200] dark:text-gray-300 dark:hover:text-[#FFF200] transition-colors">
                       {item.name}
-                      <ChevronDown className="w-4 h-4 transition-transform group-hover:rotate-180" />
-                      
+                      <ChevronDown className="w-3.5 h-3.5 transition-transform group-hover:rotate-180" />
+
                       {/* Dropdown Desktop */}
                       <div className={`invisible absolute left-1/2 top-full z-50 -translate-x-1/2 pt-3 opacity-0 transition-all duration-200 group-hover:visible group-hover:opacity-100 ${item.name === 'Ecossistema' ? 'w-[430px]' : 'w-[370px]'}`}>
                         <div className="relative origin-top scale-[0.97] overflow-hidden rounded-2xl border border-white/10 bg-[#0d131d]/95 p-2.5 shadow-[0_24px_70px_rgba(0,0,0,0.48)] backdrop-blur-xl transition-transform group-hover:scale-100">
@@ -182,7 +183,7 @@ const Header = () => {
                     <Link
                       to={item.href || '#'}
                       onClick={handleNavClick}
-                      className={`text-sm font-medium transition-colors ${
+                      className={`rounded-full px-3 py-2 text-sm font-semibold transition-colors ${
                         location.pathname === item.href
                           ? 'text-[#FFF200]'
                           : 'text-gray-700 hover:text-[#FFF200] dark:text-gray-300 dark:hover:text-[#FFF200]'
@@ -196,53 +197,52 @@ const Header = () => {
               <Link
                 to="/academy"
                 onClick={handleNavClick}
-                className={`group relative ml-2 inline-flex items-center gap-2 overflow-hidden rounded-full border px-5 py-2.5 font-bold transition-all duration-300 ${
+                className={`group relative ml-1 inline-flex items-center gap-2 overflow-hidden rounded-full border px-4 py-2 font-bold transition-all duration-300 ${
                   location.pathname === '/academy'
-                    ? 'border-[#FFF200] bg-gradient-to-r from-[#FFF200] via-[#FFF200] to-[#FFF200] text-black shadow-none'
-                    : 'border-[#FFF200]/40 bg-gradient-to-r from-[#FFF200]/16 via-[#FFF200]/10 to-[#FFF200]/16 text-[#FFF200] dark:text-[#FFF200] shadow-none hover:border-[#FFF200]/70 hover:shadow-none'
+                    ? 'border-[#FFF200] bg-[#FFF200] text-black'
+                    : 'border-[#FFF200]/40 bg-[#FFF200]/10 text-[#FFF200] hover:border-[#FFF200]/70'
                 }`}
               >
-                <span className={`absolute inset-[1px] rounded-full transition-colors duration-300 group-hover:bg-white/82 dark:group-hover:bg-gray-950/82 ${location.pathname === '/academy' ? 'bg-transparent dark:bg-transparent group-hover:bg-transparent dark:group-hover:bg-transparent' : 'bg-white/78 dark:bg-gray-950/78'}`} />
                 <GraduationCap className={`relative w-4 h-4 ${location.pathname === '/academy' ? 'text-black' : 'text-[#FFF200]'} transition-transform duration-300 group-hover:scale-105`} />
                 <span className="relative text-sm">Academy</span>
               </Link>
             </nav>
-            
+
             {/* Right side buttons */}
-            <div className="hidden md:flex items-center space-x-4">
+            <div className="hidden md:flex items-center gap-2">
               {isAuthenticated ? (
-                <Link to="/dashboard" onClick={handleNavClick} className="btn-primary">{t('common.dashboard')}</Link>
+                <Link to="/dashboard" onClick={handleNavClick} className="rounded-full px-4 py-2 text-sm font-bold text-gray-700 hover:bg-black/5 dark:text-gray-200 dark:hover:bg-white/10 transition-colors">{t('common.dashboard')}</Link>
               ) : (
-                <div className="flex items-center space-x-2">
-                  <Link to="/entrar" onClick={handleNavClick} className="btn-outline">{t('common.signIn')}</Link>
-                  <Link to="/cadastro" onClick={handleNavClick} className="btn-primary">{t('common.signUp')}</Link>
-                </div>
+                <>
+                  <Link to="/entrar" onClick={handleNavClick} className="rounded-full px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-black/5 dark:text-gray-200 dark:hover:bg-white/10 transition-colors">{t('common.signIn')}</Link>
+                  <Link to="/cadastro" onClick={handleNavClick} className="rounded-full px-5 py-2 text-sm font-bold bg-[#FFF200] text-black hover:bg-[#FFF200]/90 transition-colors">{t('common.signUp')}</Link>
+                </>
               )}
             </div>
-            
+
             {/* Mobile menu button */}
-            <div className="md:hidden flex items-center gap-2">
+            <div className="md:hidden flex items-center gap-1.5">
               <button
                 onClick={toggleMenu}
-                className="p-2 text-gray-700 dark:text-gray-300 hover:text-[#FFF200] dark:hover:text-[#FFF200] rounded-lg hover:bg-white/10 transition-colors"
+                className="p-2 rounded-full text-gray-700 dark:text-gray-300 hover:text-[#FFF200] dark:hover:text-[#FFF200] hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
                 aria-label="Abrir menu"
               >
-                {isOpen ? <X size={24} /> : <Menu size={24} />}
+                {isOpen ? <X size={22} /> : <Menu size={22} />}
               </button>
             </div>
           </div>
         </div>
-        
+
         {/* Mobile menu */}
         <AnimatePresence>
           {isOpen && (
             <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              className="md:hidden bg-white dark:bg-gray-900 border-t border-gray-100 dark:border-gray-800 shadow-2xl overflow-hidden"
+              initial={{ opacity: 0, height: 0, marginTop: 0 }}
+              animate={{ opacity: 1, height: 'auto', marginTop: '0.75rem' }}
+              exit={{ opacity: 0, height: 0, marginTop: 0 }}
+              className="md:hidden rounded-[1.5rem] border border-white/15 bg-white/[0.95] dark:bg-[#0d131d]/95 backdrop-blur-xl shadow-[0_20px_60px_rgba(0,0,0,0.18)] dark:shadow-[0_20px_60px_rgba(0,0,0,0.55)] overflow-hidden mx-2"
             >
-              <div className="px-4 pt-3 pb-6 space-y-2.5 max-h-[calc(100vh-80px)] overflow-y-auto styled-scrollbar">
+              <div className="px-4 pt-4 pb-5 space-y-2 max-h-[calc(100vh-140px)] overflow-y-auto styled-scrollbar">
                 {navItems.map((item) => (
                   <div key={item.name}>
                     {item.subItems ? (
@@ -259,7 +259,7 @@ const Header = () => {
                         </button>
                         <AnimatePresence>
                           {activeSubmenu === item.name && (
-                            <motion.div 
+                            <motion.div
                               initial={{ opacity: 0, height: 0 }}
                               animate={{ opacity: 1, height: 'auto' }}
                               exit={{ opacity: 0, height: 0 }}
@@ -300,7 +300,7 @@ const Header = () => {
                     )}
                   </div>
                 ))}
-                
+
                 <Link
                   to="/academy"
                   className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl font-bold bg-gradient-to-r from-[#FFF200]/15 via-[#FFF200]/10 to-[#FFF200]/15 border border-[#FFF200]/30 text-[#FFF200] dark:text-[#FFF200] shadow-sm"
@@ -310,14 +310,14 @@ const Header = () => {
                   Academy
                 </Link>
 
-                <div className="pt-4 mt-2 border-t border-gray-100 dark:border-gray-800 flex flex-col gap-3 px-1">
+                <div className="pt-4 mt-3 border-t border-gray-100 dark:border-gray-800 flex flex-col gap-2.5 px-1">
                   {isAuthenticated ? (
-                    <Link to="/dashboard" className="btn-primary w-full justify-center text-center py-2.5" onClick={handleNavClick}>{t('common.dashboard')}</Link>
+                    <Link to="/dashboard" className="w-full justify-center text-center py-3 rounded-full bg-[#FFF200] text-black font-bold transition hover:bg-[#FFF200]/90" onClick={handleNavClick}>{t('common.dashboard')}</Link>
                   ) : (
-                    <div className="flex flex-col gap-2 w-full">
-                      <Link to="/entrar" className="btn-outline w-full justify-center text-center py-2.5" onClick={handleNavClick}>{t('common.signIn')}</Link>
-                      <Link to="/cadastro" className="btn-primary w-full justify-center text-center py-2.5" onClick={handleNavClick}>{t('common.signUp')}</Link>
-                    </div>
+                    <>
+                      <Link to="/entrar" className="w-full justify-center text-center py-3 rounded-full border border-gray-200 dark:border-gray-700 font-semibold text-gray-800 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors" onClick={handleNavClick}>{t('common.signIn')}</Link>
+                      <Link to="/cadastro" className="w-full justify-center text-center py-3 rounded-full bg-[#FFF200] text-black font-bold transition hover:bg-[#FFF200]/90" onClick={handleNavClick}>{t('common.signUp')}</Link>
+                    </>
                   )}
                 </div>
               </div>
