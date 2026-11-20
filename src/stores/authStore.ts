@@ -212,6 +212,7 @@ export const useAuthStore = create<AuthState>((set) => ({
         password,
         options: {
           data: metadata,
+          emailRedirectTo: `${window.location.origin}/`,
         },
       });
       
@@ -291,6 +292,7 @@ export const useAuthStore = create<AuthState>((set) => ({
       const { error } = await supabase.auth.resend({
         type: 'signup',
         email,
+        options: { emailRedirectTo: `${window.location.origin}/` },
       });
       
       if (error) throw error;
@@ -302,6 +304,7 @@ export const useAuthStore = create<AuthState>((set) => ({
         error: error.message || 'Falha ao reenviar e-mail de confirmação',
         isLoading: false,
       });
+      throw new Error(error.message || 'Falha ao reenviar e-mail de confirmação');
     }
   },
 }));
