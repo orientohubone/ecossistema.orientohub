@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, BarChart3, Check, ClipboardList, FlaskConical, Lightbulb, Microscope, Rocket, Search, Target } from 'lucide-react';
+import { ArrowLeft, ArrowRight, BarChart3, Check, ClipboardList, FlaskConical, Lightbulb, Microscope, MoveUpRight, Rocket, Search, Target } from 'lucide-react';
 import type { ServiceCatalogItem } from '../data/serviceCatalog';
 import StrategyInnovationComparison from '../components/StrategyInnovationComparison';
 
@@ -22,6 +22,36 @@ const InnovationServicePage = ({ service }: { service: ServiceCatalogItem }) => 
       <section className="relative z-10 container-custom py-16 sm:py-24"><div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16"><div><p className="text-xs font-black uppercase tracking-[0.22em] text-[#FFF200]">Inovação sem teatro</p><h2 className="mt-4 text-4xl font-black leading-tight tracking-[-0.04em] sm:text-5xl">Menos aposta. Mais evidência.</h2><p className="mt-5 text-lg leading-relaxed text-white/50">Inovar não é colecionar ideias. É aprender rápido o suficiente para investir apenas nas oportunidades que demonstram valor real.</p></div><div className="grid gap-4 sm:grid-cols-2">{service.deliverables.map((item, index) => <motion.div key={item} initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.06 }} className="rounded-2xl border border-[#FFF200]/30 bg-gray-900/70 p-6 backdrop-blur"><span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#FFF200]/10 text-xs font-black text-[#FFF200]">0{index + 1}</span><p className="mt-8 text-lg font-bold leading-snug">{item}</p></motion.div>)}</div></div></section>
 
       <StrategyInnovationComparison />
+
+      <section className="relative z-10 container-custom py-14 sm:py-20">
+        <div className="mb-7 flex flex-wrap items-end justify-between gap-4">
+          <div><p className="text-xs font-black uppercase tracking-[0.22em] text-[#FFF200]">Inovação em prática</p><h2 className="mt-3 text-3xl font-black tracking-[-0.04em] sm:text-4xl">Um case do nosso processo.</h2></div>
+          <span className="font-mono text-xs text-white/35">CASE / 01</span>
+        </div>
+        <article className="group grid overflow-hidden rounded-2xl border border-white/15 bg-[#111] transition-colors hover:border-[#FFF200]/50 lg:grid-cols-2">
+          <div className="border-b border-white/10 bg-[#0b0b0b] p-3 lg:border-b-0 lg:border-r">
+            <iframe
+              src="https://www.behance.net/embed/project/258750091?ilo0=1"
+              title="Projeto OrientoMob no Behance"
+              height="420"
+              width="404"
+              allowFullScreen
+              loading="lazy"
+              scrolling="no"
+              allow="clipboard-write"
+              referrerPolicy="strict-origin-when-cross-origin"
+              className="block h-[340px] w-full rounded-xl bg-[#171717] sm:h-[420px]"
+            />
+          </div>
+          <div className="flex flex-col p-6 sm:p-8 lg:p-10">
+            <div className="flex items-center justify-between gap-4"><span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#FFF200]">Case de inovação</span><MoveUpRight className="h-4 w-4 text-white/35 transition group-hover:text-[#FFF200]" /></div>
+            <h3 className="mt-8 text-2xl font-black leading-tight tracking-[-0.03em] sm:text-3xl">OrientoMob</h3>
+            <p className="mt-3 text-sm leading-relaxed text-white/55 sm:text-base">Da hipótese sobre mobilidade de curta distância a uma proposta de serviço com identidade, interface, estação e experiência conectadas.</p>
+            <div className="mt-6 grid grid-cols-2 gap-x-4 gap-y-3 border-t border-white/10 py-5 text-xs text-white/65"><span><strong className="text-white">01</strong> Problema e hipótese</span><span><strong className="text-white">02</strong> Serviço e operação</span><span><strong className="text-white">03</strong> Produto digital</span><span><strong className="text-white">04</strong> Sistema de marca</span></div>
+            <a href="/orientomob.html" target="_blank" rel="noopener noreferrer" className="mt-auto inline-flex items-center justify-between gap-3 rounded-xl bg-[#FFF200] px-5 py-4 text-sm font-bold text-black transition hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#FFF200]">Explorar o case completo <ArrowRight className="h-4 w-4" /></a>
+          </div>
+        </article>
+      </section>
 
       <section id="metodo-inovacao" className="relative z-10 border-y border-white/10 bg-black/35"><div className="container-custom py-16 sm:py-24"><div className="max-w-3xl"><p className="text-xs font-black uppercase tracking-[0.22em] text-[#FFF200]">Como trabalhamos</p><h2 className="mt-4 text-4xl font-black tracking-[-0.04em] sm:text-5xl">Da oportunidade ao aprendizado.</h2></div><div className="mt-10 grid gap-5 md:grid-cols-3">{service.process.map((step, index) => { const Icon = [Microscope, FlaskConical, Rocket][index] || Check; return <article key={step.title} className="group rounded-2xl border border-[#FFF200]/30 bg-gray-900/75 p-7 transition hover:-translate-y-1 hover:border-[#FFF200]/65"><div className="flex items-center justify-between"><span className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#FFF200]/10 text-[#FFF200]"><Icon className="h-6 w-6" /></span><span className="text-sm font-black text-white/20">0{index + 1}</span></div><h3 className="mt-10 text-2xl font-black">{step.title}</h3><p className="mt-3 leading-relaxed text-white/50">{step.description}</p></article>; })}</div></div></section>
 

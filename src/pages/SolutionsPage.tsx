@@ -33,6 +33,7 @@ import {
   Pencil
 } from 'lucide-react';
 import { useAuthStore } from '../stores/authStore';
+import { supabase } from '../config/supabase';
 import DashboardPageSkeleton from '../components/ui/DashboardPageSkeleton';
 import { solutionsService, Solution, type GithubData } from '../services/solutionsService';
 import AddSolutionModal from '../components/modals/AddSolutionModal';
@@ -435,7 +436,51 @@ const SolutionCard = memo(({ solution, index, onViewDetails, onUpdateData, onRem
 // COMPONENTE DE TELA DEDICADA - PADRAO PROJECTSPAGE
 const SolutionDetailsPage = memo(({ solution, onBack, onEdit, onDelete, getHealthColor, getHealthLabel, getStageColor }: any) => {
   const [activeTab, setActiveTab] = useState<'overview' | 'tech' | 'growth'>('overview');
+  const { user } = useAuthStore();
+  const [marketGrowth, setMarketGrowth] = useState<any>(null);
+  const [webhookToken, setWebhookToken] = useState('');
+  const [webhookUrl, setWebhookUrl] = useState('');
+  const [marketGrowthBusy, setMarketGrowthBusy] = useState(false);
+  const [marketGrowthError, setMarketGrowthError] = useState('');
   const github = solution.github_data;
+
+  useEffect(() => {
+    let cancelled = false;
+    void (async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) return;
+      try {
+        const response = await fetch(`/api/solution-market-growth?solutionId=${encodeURIComponent(solution.id)}`, { headers: { Authorization: `Bearer ${session.access_token}` }, cache: 'no-store' });
+        if (!response.ok) throw new Error('Não foi possível carregar os indicadores.');
+        const data = await response.json();
+        if (!cancelled) setMarketGrowth(data);
+      } catch (error) {
+        if (!cancelled) setMarketGrowthError(error instanceof Error ? error.message : 'Falha ao carregar indicadores.');
+      }
+    })();
+    return () => { cancelled = true; };
+  }, [solution.id]);
+
+  const configureMarketGrowthWebhook = async () => {
+    setMarketGrowthBusy(true);
+    setMarketGrowthError('');
+    setWebhookToken('');
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session || session.user.id !== user?.id) throw new Error('Faça login novamente para configurar o webhook.');
+      const response = await fetch('/api/solution-market-growth', { method: 'POST', headers: { Authorization: `Bearer ${session.access_token}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ solution_id: solution.id }) });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message || 'Não foi possível configurar o webhook.');
+      setWebhookToken(data.token);
+      setWebhookUrl(data.webhook_url);
+    } catch (error) {
+      setMarketGrowthError(error instanceof Error ? error.message : 'Falha ao configurar webhook.');
+    } finally {
+      setMarketGrowthBusy(false);
+    }
+  };
+
+  const formatMoney = (value: number, currency = 'BRL') => new Intl.NumberFormat('pt-BR', { style: 'currency', currency }).format(value || 0);
 
   return (
     <div className="space-y-6">
@@ -666,24 +711,33 @@ const SolutionDetailsPage = memo(({ solution, onBack, onEdit, onDelete, getHealt
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="p-8 bg-white dark:bg-gray-900 border-2 border-gray-100 dark:border-gray-700 rounded-3xl text-center">
                   <Users className="w-8 h-8 text-blue-500 mx-auto mb-4" />
-                  <p className="text-3xl font-bold">---</p>
+                  <p className="text-3xl font-bold">{marketGrowth ? Number(marketGrowth.active_audience).toLocaleString('pt-BR') : '—'}</p>
                   <p className="text-xs font-bold text-gray-500 uppercase mt-2">Audiência Ativa</p>
                 </div>
                 <div className="p-8 bg-white dark:bg-gray-900 border-2 border-gray-100 dark:border-gray-700 rounded-3xl text-center">
                   <TrendingUp className="w-8 h-8 text-green-500 mx-auto mb-4" />
-                  <p className="text-3xl font-bold">---</p>
+                  <p className="text-3xl font-bold">{marketGrowth ? formatMoney(Number(marketGrowth.mrr), marketGrowth.currency) : '—'}</p>
                   <p className="text-xs font-bold text-gray-500 uppercase mt-2">Receita (MRR)</p>
                 </div>
                 <div className="p-8 bg-white dark:bg-gray-900 border-2 border-gray-100 dark:border-gray-700 rounded-3xl text-center">
                   <Award className="w-8 h-8 text-purple-500 mx-auto mb-4" />
-                  <p className="text-3xl font-bold">N/A</p>
+                  <p className="text-3xl font-bold">{marketGrowth?.valuation !== null && marketGrowth?.valuation !== undefined ? formatMoney(Number(marketGrowth.valuation), marketGrowth.currency) : '—'}</p>
                   <p className="text-xs font-bold text-gray-500 uppercase mt-2">Valuation</p>
                 </div>
               </div>
-              <div className="p-10 bg-gray-50 dark:bg-gray-900 rounded-[2rem] border-2 border-dashed border-gray-200 dark:border-gray-700 text-center">
+              <div className="rounded-[2rem] border border-[#273548] bg-[#101722] p-6 sm:p-8">
                 <BarChart2 className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-                <h4 className="text-xl font-bold mb-2">Growth Dashboard Integrado</h4>
-                <p className="text-gray-500 text-sm max-w-md mx-auto leading-relaxed">Prepare sua solução para escala. Sincronização com pagamentos e Google Analytics chegando em breve para automatizar seus resultados.</p>
+                <h4 className="text-center text-xl font-bold mb-2">Integração Market & Growth</h4>
+                <p className="text-center text-sm text-[#9ba9bc]">Configure um webhook na solução para enviar audiência ativa, MRR e valuation para este painel.</p>
+                {marketGrowth?.received_at && <p className="mt-3 text-center text-xs text-[#718096]">Última atualização: {new Date(marketGrowth.received_at).toLocaleString('pt-BR')}{marketGrowth.source ? ` · ${marketGrowth.source}` : ''}</p>}
+                {marketGrowthError && <p role="alert" className="mt-3 text-center text-sm text-red-300">{marketGrowthError}</p>}
+                <div className="mt-5 flex justify-center"><button type="button" onClick={() => void configureMarketGrowthWebhook()} disabled={marketGrowthBusy} className="rounded-xl bg-primary-500 px-5 py-3 text-sm font-bold text-black disabled:opacity-50">{marketGrowthBusy ? 'Configurando…' : webhookToken ? 'Gerar novo token do webhook' : 'Configurar webhook'}</button></div>
+                {webhookToken && <div className="mx-auto mt-5 max-w-3xl space-y-3 rounded-xl border border-[#34455a] bg-[#0c121b] p-4">
+                  <p className="text-sm font-bold text-primary-300">Copie o token agora. Ele não será exibido novamente.</p>
+                  <label className="block text-xs text-[#9ba9bc]">Token<input readOnly value={webhookToken} className="mt-1 w-full rounded-lg border border-[#34455a] bg-[#101722] p-2 font-mono text-xs text-white" onFocus={(event) => event.currentTarget.select()} /></label>
+                  <p className="text-xs text-[#9ba9bc]">URL: <code className="break-all text-white">{webhookUrl}</code></p>
+                  <pre className="overflow-x-auto rounded-lg bg-black/30 p-3 text-xs text-[#d7e0ea]">{`POST ${webhookUrl}\nX-Solution-Webhook-Token: ${webhookToken}\nContent-Type: application/json\n\n{"solution_id":"${solution.id}","active_audience":120,"mrr":12500,"valuation":750000,"currency":"BRL","source":"billing"}`}</pre>
+                </div>}
               </div>
             </div>
           </div>

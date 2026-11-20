@@ -9,6 +9,14 @@ export default defineConfig(({mode})=>({
   envDir:fileURLToPath(new URL('.',import.meta.url)),
   define:supabasePublicDefines(mode,fileURLToPath(new URL('.',import.meta.url))),
   plugins: [react(),localApi()],
+  build: {
+    rollupOptions: {
+      input: {
+        app: fileURLToPath(new URL('./index.html', import.meta.url)),
+        orientomob: fileURLToPath(new URL('./orientomob.html', import.meta.url)),
+      },
+    },
+  },
   server: { host:'localhost',port:5173,strictPort:true },
   optimizeDeps: {
     force: true,

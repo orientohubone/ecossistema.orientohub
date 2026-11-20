@@ -1,5 +1,12 @@
 export const sitePortfolio = [
   {
+    name: 'Start Resgate',
+    domain: 'startresgate.com',
+    url: 'https://startresgate.com',
+    screenshot: '/sites/site-startresgate.jpg',
+    description: 'Missão cristã transcultural que conecta pessoas, comunidades e nações para resgatar vidas com acolhimento, fé e direção.',
+  },
+  {
     name: 'Penttia',
     domain: 'penttiacybersecurity.vercel.app',
     url: 'https://penttiacybersecurity.vercel.app',

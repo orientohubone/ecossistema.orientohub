@@ -42,7 +42,8 @@ import {
   X,
   Check,
   Lightbulb,
-  Rocket
+  Rocket,
+  BookOpen
 } from 'lucide-react';
 import { useAuthStore } from '../stores/authStore';
 import { Link, useSearchParams } from 'react-router-dom';
@@ -135,7 +136,8 @@ const SettingsPage = () => {
   const { t } = useTranslation();
   const { user, logout } = useAuthStore();
   const [searchParams] = useSearchParams();
-  const initialTab = searchParams.get('tab') === 'plan' ? 'plan' : 'profile';
+  const requestedTab = searchParams.get('tab');
+  const initialTab = requestedTab === 'plan' || requestedTab === 'documentation' ? requestedTab : 'profile';
   const [activeTab, setActiveTab] = useState(initialTab);
   const [showPassword, setShowPassword] = useState(false);
   const fieldClassName = "w-full rounded-xl border border-[#34455a] bg-[#0c121b] px-4 py-3 text-white placeholder:text-[#718096] outline-none transition-colors focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20";
@@ -261,7 +263,8 @@ const SettingsPage = () => {
     { id: 'security', name: 'Segurança', icon: Lock, badge: null },
     { id: 'preferences', name: 'Preferências', icon: Globe, badge: null },
     { id: 'integrations', name: 'Integrações', icon: LinkIcon, badge: null },
-    { id: 'billing', name: 'Cobrança', icon: CreditCard, badge: null }
+    { id: 'billing', name: 'Cobrança', icon: CreditCard, badge: null },
+    { id: 'documentation', name: 'Documentação', icon: BookOpen, badge: null }
   ];
 
   const handleSave = async (message: string) => {
@@ -1013,6 +1016,61 @@ const SettingsPage = () => {
                         );
                       })}
                     </div>
+                  </motion.div>
+                )}
+
+                {activeTab === 'documentation' && (
+                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
+                    <div>
+                      <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary-300">Integração de soluções</p>
+                      <h2 className="mt-1 text-2xl font-bold">Documentação do webhook Market &amp; Growth</h2>
+                      <p className="mt-2 text-sm text-[#9ba9bc]">Envie indicadores do backend da sua solução para a OrientoHub. A aba Market &amp; Growth mostra audiência ativa, MRR e valuation.</p>
+                    </div>
+
+                    <section className="space-y-3 rounded-2xl border border-[#273548] bg-[#101722] p-5">
+                      <h3 className="font-bold text-white">1. Gere as credenciais</h3>
+                      <ol className="list-decimal space-y-2 pl-5 text-sm leading-relaxed text-[#c2cedd]">
+                        <li>Abra <strong>Soluções</strong> e entre nos detalhes da solução que enviará os dados.</li>
+                        <li>Na aba <strong>Market &amp; Growth</strong>, clique em <strong>Configurar webhook</strong>.</li>
+                        <li>Copie o token exibido. Ele aparece apenas uma vez; guarde-o como segredo no ambiente do servidor da outra solução.</li>
+                      </ol>
+                      <p className="text-xs text-amber-200">Gerar um novo token invalida o token anterior. Nunca coloque esse token no frontend, em código público ou em logs.</p>
+                    </section>
+
+                    <section className="space-y-3 rounded-2xl border border-[#273548] bg-[#101722] p-5">
+                      <h3 className="font-bold text-white">2. Configure variáveis no backend da outra solução</h3>
+                      <p className="text-sm text-[#c2cedd]">Cadastre os valores no serviço de hospedagem ou no gerenciador de segredos usado pela aplicação:</p>
+                      <pre className="overflow-x-auto rounded-xl bg-[#0c121b] p-4 text-xs text-primary-200">{`ORIENTOHUB_MARKET_GROWTH_WEBHOOK_URL=https://orientohub.com.br/api/solution-market-growth\nORIENTOHUB_MARKET_GROWTH_WEBHOOK_TOKEN=<token copiado na OrientoHub>\nORIENTOHUB_SOLUTION_ID=<UUID da solução na OrientoHub>`}</pre>
+                      <p className="text-xs text-[#9ba9bc]">Use a URL pública mostrada junto ao token se seu ambiente de produção tiver outro domínio.</p>
+                    </section>
+
+                    <section className="space-y-3 rounded-2xl border border-[#273548] bg-[#101722] p-5">
+                      <h3 className="font-bold text-white">3. Envie os indicadores do servidor</h3>
+                      <p className="text-sm text-[#c2cedd]">Faça o POST a partir do backend, por exemplo depois de atualizar cobranças ou em um job periódico:</p>
+                      <pre className="overflow-x-auto rounded-xl bg-[#0c121b] p-4 text-xs text-[#d7e0ea]">{`await fetch(process.env.ORIENTOHUB_MARKET_GROWTH_WEBHOOK_URL!, {\n  method: 'POST',\n  headers: {\n    'Content-Type': 'application/json',\n    'X-Solution-Webhook-Token': process.env.ORIENTOHUB_MARKET_GROWTH_WEBHOOK_TOKEN!,\n  },\n  body: JSON.stringify({\n    solution_id: process.env.ORIENTOHUB_SOLUTION_ID,\n    active_audience: 120,\n    mrr: 12500,\n    valuation: 750000,\n    currency: 'BRL',\n    source: 'billing',\n  }),\n});`}</pre>
+                      <div className="overflow-x-auto rounded-xl bg-[#0c121b] p-4">
+                        <p className="mb-2 text-xs font-semibold text-[#9ba9bc]">Campos aceitos</p>
+                        <table className="w-full text-left text-xs"><tbody className="divide-y divide-[#273548]">
+                          <tr><td className="py-2 pr-4 font-mono text-primary-200">solution_id</td><td className="py-2 text-[#c2cedd]">UUID da solução cadastrada na OrientoHub.</td></tr>
+                          <tr><td className="py-2 pr-4 font-mono text-primary-200">active_audience</td><td className="py-2 text-[#c2cedd]">Inteiro não negativo de usuários ativos.</td></tr>
+                          <tr><td className="py-2 pr-4 font-mono text-primary-200">mrr</td><td className="py-2 text-[#c2cedd]">Receita recorrente mensal, número não negativo.</td></tr>
+                          <tr><td className="py-2 pr-4 font-mono text-primary-200">valuation</td><td className="py-2 text-[#c2cedd]">Valuation numérico não negativo ou null.</td></tr>
+                          <tr><td className="py-2 pr-4 font-mono text-primary-200">currency</td><td className="py-2 text-[#c2cedd]">BRL, USD ou EUR. Padrão: BRL.</td></tr>
+                          <tr><td className="py-2 pr-4 font-mono text-primary-200">source</td><td className="py-2 text-[#c2cedd]">Origem opcional, até 100 caracteres.</td></tr>
+                        </tbody></table>
+                      </div>
+                      <p className="text-xs text-[#9ba9bc]">Cada envio substitui o snapshot anterior. A resposta HTTP 200 confirma que os indicadores foram recebidos. HTTP 400 indica payload inválido; HTTP 401 indica token inválido.</p>
+                    </section>
+
+                    <section className="space-y-2 rounded-2xl border border-[#273548] bg-[#101722] p-5">
+                      <h3 className="font-bold text-white">4. Prepare a integração na outra solução</h3>
+                      <p className="text-sm leading-relaxed text-[#c2cedd]">No backend da solução, conecte os campos reais de usuários e faturamento aos valores do payload. Não envie valores fixos do exemplo. Se usar Supabase, execute a chamada em uma Edge Function ou em um job protegido com as variáveis secretas; não exponha o token em React ou em chamadas feitas diretamente pelo navegador.</p>
+                      <p className="text-sm text-[#c2cedd]">Para uma Edge Function Supabase, configure os segredos no projeto da outra solução:</p>
+                      <pre className="overflow-x-auto rounded-xl bg-[#0c121b] p-4 text-xs text-primary-200">{`supabase secrets set ORIENTOHUB_MARKET_GROWTH_WEBHOOK_URL='https://orientohub.com.br/api/solution-market-growth' ORIENTOHUB_MARKET_GROWTH_WEBHOOK_TOKEN='cole-o-token' ORIENTOHUB_SOLUTION_ID='uuid-da-solucao'`}</pre>
+                      <p className="text-sm text-[#c2cedd]">No código Deno da Edge Function, encaminhe os indicadores calculados pelo seu sistema:</p>
+                      <pre className="overflow-x-auto rounded-xl bg-[#0c121b] p-4 text-xs text-[#d7e0ea]">{`const endpoint = Deno.env.get('ORIENTOHUB_MARKET_GROWTH_WEBHOOK_URL')!;\nconst token = Deno.env.get('ORIENTOHUB_MARKET_GROWTH_WEBHOOK_TOKEN')!;\nconst solutionId = Deno.env.get('ORIENTOHUB_SOLUTION_ID')!;\n\nconst response = await fetch(endpoint, {\n  method: 'POST',\n  headers: { 'Content-Type': 'application/json', 'X-Solution-Webhook-Token': token },\n  body: JSON.stringify({\n    solution_id: solutionId,\n    active_audience: activeUsers, // calcule no backend\n    mrr: monthlyRecurringRevenue, // calcule no backend\n    valuation: valuation ?? null,\n    currency: 'BRL',\n    source: 'supabase-edge-function',\n  }),\n});\nif (!response.ok) throw new Error(await response.text());`}</pre>
+                      <p className="text-sm leading-relaxed text-[#c2cedd]">A migration <code>20261119000000_solution_market_growth_webhooks.sql</code> precisa estar aplicada no Supabase da OrientoHub e a versão com o endpoint precisa estar publicada para receber os dados.</p>
+                    </section>
                   </motion.div>
                 )}
 

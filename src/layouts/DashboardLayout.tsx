@@ -64,18 +64,26 @@ const DashboardLayout = ({ showcaseContent, showcaseUser, showcasePlan, showcase
     navigate('/');
   };
 
-  const navItems = useMemo(() => [
+  const { navItems, bottomNavItems } = useMemo(() => {
+    const items = [
     { id: 'dashboard', name: t('common.dashboard'), icon: <LayoutDashboard size={18} />, href: '/dashboard' },
-    { id: 'insights', name: t('dashboard.insights'), icon: <BarChart2 size={18} />, href: '/dashboard/insights' },
-    { id: 'frameworks', name: t('dashboard.frameworks'), icon: <FileText size={18} />, href: '/dashboard/frameworks' },
     { id: 'ideas', name: 'Ideias', icon: <Sparkles size={18} />, href: '/dashboard/ideas' },
     { id: 'projects', name: t('projects.title'), icon: <Lightbulb size={18} />, href: '/dashboard/projects' },
-    { id: 'academy', name: 'Oriento Academy', icon: <GraduationCap size={18} />, href: '/dashboard/academy', protected: true },
-    { id: 'founder', name: 'Dashboard Founder', icon: <Crown size={18} />, href: '/dashboard/founder', protected: true, isFounder: true },
     { id: 'solutions', name: 'Soluções', icon: <Link2 size={18} />, href: '/dashboard/solutions' },
+    { id: 'frameworks', name: t('dashboard.frameworks'), icon: <FileText size={18} />, href: '/dashboard/frameworks' },
+    { id: 'insights', name: t('dashboard.insights'), icon: <BarChart2 size={18} />, href: '/dashboard/insights' },
     { id: 'community', name: 'Comunidade', icon: <Users size={18} />, href: '/dashboard/community' },
     { id: 'settings', name: t('common.settings'), icon: <Settings size={18} />, href: '/dashboard/settings' }
-  ], [t]);
+    ];
+
+    return {
+      navItems: items,
+      bottomNavItems: [
+        { id: 'academy', name: 'Oriento Academy', icon: <GraduationCap size={18} />, href: '/dashboard/academy', protected: true },
+        { id: 'founder', name: 'Dashboard Founder', icon: <Crown size={18} />, href: '/dashboard/founder', protected: true, isFounder: true }
+      ]
+    };
+  }, [t]);
 
   return (
     <Tooltip.Provider delayDuration={100}>
@@ -101,6 +109,10 @@ const DashboardLayout = ({ showcaseContent, showcaseUser, showcasePlan, showcase
                   <SidebarHeader user={user} />
                   <SearchBox />
                   <nav className="space-y-1">{navItems.map(item => <SidebarLink key={item.id} item={item} pathname={location.pathname} onNavigate={() => setSidebarOpen(false)} />)}</nav>
+                  <div className="mt-auto border-t border-[#273548] pt-3">
+                    <p className="mb-2 px-3 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#718096]">Acessos especiais</p>
+                    <nav className="space-y-1">{bottomNavItems.map(item => <SidebarLink key={item.id} item={item} pathname={location.pathname} onNavigate={() => setSidebarOpen(false)} />)}</nav>
+                  </div>
                   <div className="mt-auto space-y-3">
                     <PlanCTA compact />
                     <LogoutButton onLogout={handleLogout} />
@@ -146,6 +158,10 @@ const DashboardLayout = ({ showcaseContent, showcaseUser, showcasePlan, showcase
             <SidebarHeader user={user} collapsed={collapsed} />
             <SearchBox collapsed={collapsed} />
             <nav className="flex-1 space-y-1 mt-2">{navItems.map(item => <SidebarLink key={item.id} item={item} pathname={location.pathname} collapsed={collapsed} />)}</nav>
+            <div className="mt-auto border-t border-[#273548] pt-3">
+              {!collapsed && <p className="mb-2 px-3 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#718096]">Acessos especiais</p>}
+              <nav className="space-y-1">{bottomNavItems.map(item => <SidebarLink key={item.id} item={item} pathname={location.pathname} collapsed={collapsed} />)}</nav>
+            </div>
             <div className="mt-4"><PlanCTA compact={collapsed} planOverride={showcasePlan} /></div>
             <div className="mt-auto">
               <LogoutButton onLogout={handleLogout} compact={collapsed} />
@@ -414,7 +430,7 @@ const SidebarLink = ({ item, pathname, collapsed = false, onNavigate }: { item: 
           </Tooltip.Portal>
         </Tooltip.Root>
       ) : (
-        <span className={`flex h-6 w-6 items-center justify-center rounded ${active ? 'text-[#0c121b]' : 'text-[#718096] group-hover:text-primary-300'}`}>{item.icon}</span>
+        <span className={`flex h-6 w-6 items-center justify-center rounded ${active ? 'text-primary-500' : 'text-[#718096] group-hover:text-primary-300'}`}>{item.icon}</span>
       )}
       {!collapsed && <span className="truncate">{item.name}</span>}
     </Link>
