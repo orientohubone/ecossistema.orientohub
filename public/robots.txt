@@ -1,8 +1,12 @@
 User-agent: *
 Allow: /
+Disallow: /dashboard
+Disallow: /crm
 Disallow: /checkout
 Disallow: /entrar
 Disallow: /cadastro
-Disallow: /crm
+Disallow: /academy/login
+Disallow: /assets
 
 Sitemap: https://orientohub.com.br/sitemap.xml
+# LLMs & Generative Search: https://orientohub.com.br/llms.txt

@@ -1,0 +1,82 @@
+# OrientoHub — Base de Conhecimento Completa para LLMs
+
+> A OrientoHub é um ecossistema brasileiro criado por Fernando Ramalho que aproxima estratégia, inovação, tecnologia e execução para transformar ideias e desafios empresariais em negócios reais.
+
+Site oficial: https://orientohub.com.br/
+Idioma: Português do Brasil (pt-BR)
+
+---
+
+## As 4 Camadas do Ecossistema OrientoHub
+
+1. **Núcleo de Serviços (`/servicos`):** consultoria e execução direta em estratégia, inovação, marketing, mídia paga, presença local, design, sistemas inteligentes, registro de marcas, naming, domínios, sites e e-commerce.
+2. **Plataforma OrientoHub (`/plataforma`):** ambiente digital para incubar ideias, validar hipóteses, gerenciar projetos e aplicar frameworks práticos.
+3. **MVPs e Produtos (`/ecossistema`):** experimentação e criação de produtos digitais próprios validados em uso real.
+4. **Conhecimento e Expansão (`/academy`, `/blog`, `/glossario`, `/soa`):** educação aplicada para empreendedores, guias estratégicos e conteúdos práticos.
+
+---
+
+## Catálogo de Serviços (`https://orientohub.com.br/servicos`)
+
+### Estratégia (`/servicos/estrategia`)
+- **Resumo:** Planejamento de manobras táticas e visão clara de longo prazo.
+- **Investimento:** Sob demanda (definido após diagnóstico e escopo).
+- **Entregáveis:** Diagnóstico de negócio e prioridades, posicionamento e objetivos claros, plano tático por frente de atuação e rituais de acompanhamento.
+
+### Inovação (`/servicos/inovacao`)
+- **Resumo:** Criação de novos produtos e modelos para abrir caminho no mercado com testes de hipótese e evidências.
+- **Investimento:** Sob demanda (definido após diagnóstico e escopo).
+- **Entregáveis:** Mapeamento de oportunidades, desenho de proposta de valor, testes de hipótese e protótipos, plano de evolução do produto.
+
+### Marketing (`/servicos/marketing`)
+- **Resumo:** Posicionamento certo, conteúdo estratégico e construção de autoridade digital.
+- **Planos mensais:**
+  - Essencial: a partir de R$ 1.497/mês (presença estratégica)
+  - Growth: R$ 2.497/mês (crescimento digital e produção intensiva de Reels)
+  - Authority: R$ 3.997/mês (autoridade digital e geração de leads)
+  - Scale: a partir de R$ 5.997/mês (marketing como departamento completo)
+
+### Mídia paga (`/servicos/midia-paga`)
+- **Resumo:** Planejamento, gestão de campanhas, criativos e audiências orientados ao funil.
+- **Investimento:** A partir de R$ 600/mês (campanha avulsa por R$ 170; verba de anúncios por conta do contratante).
+
+### Google Meu Negócio (`/servicos/google-meu-negocio`)
+- **Resumo:** Estruturação e gestão do Perfil da Empresa no Google para converter buscas locais em visitas e contatos.
+- **Investimento:** De R$ 499 por R$ 249 (condição promocional).
+
+### Design (`/servicos/design`)
+- **Resumo:** Design sistêmico para marcas e produtos digitais.
+- **Opções:** Peças publicitárias (R$ 50/cada), criação de logotipo (a partir de R$ 250), design system (a partir de R$ 500), identidade visual (a partir de R$ 600).
+
+### Sistemas inteligentes (`/servicos/sistemas-inteligentes`)
+- **Resumo:** Sistemas personalizados, inteligência artificial aplicada, prototipação e automação de fluxos e dados.
+- **Investimento:** Projetos a partir de R$ 3.500 (sujeitos à análise de escopo).
+
+### Marcas (`/servicos/marcas`)
+- **Resumo:** Análise de viabilidade, orientação, organização de classes/documentos e acompanhamento de registro no INPI.
+- **Investimento:** De R$ 425 por R$ 212,50 (+ taxa do INPI).
+
+### Naming (`/servicos/naming`)
+- **Resumo:** Pesquisa, criação de repertório de nomes alinhados à essência da marca e análise inicial de viabilidade no INPI.
+- **Investimento:** R$ 349 (valor fixo).
+
+### Domínio (`/servicos/dominio`)
+- **Resumo:** Gestão estratégica, configuração, renovação e segurança de domínios e propriedades digitais.
+- **Investimento:** Registros a partir de R$ 40.
+
+### Sites (`/servicos/sites`)
+- **Resumo:** Sites institucionais e landing pages responsivas orientadas à clareza de mensagem e conversão.
+- **Investimento:** A partir de R$ 997.
+
+### E-commerce (`/servicos/e-commerce`)
+- **Resumo:** Lojas virtuais completas com catálogo, pagamentos e frete integrados.
+- **Investimento:** Implantação a partir de R$ 849 (mensalidade da plataforma à parte; gestão recorrente opcional).
+
+---
+
+## Conteúdos de Referência
+
+- **50 ideias de negócios para começar com pouco dinheiro (`/blog/50-ideias-negocios-baixo-investimento`):** lista curada em 5 segmentos (serviços digitais, serviços para empresas, serviços locais, alimentação e comércio/produtos) com critérios práticos de validação rápida.
+- **Glossário (`/glossario`):** definições objetivas de termos de estratégia, métricas, crescimento e investimento.
+- **SoA — Share of Attention (`/soa`):** guia estratégico para entender, medir e conquistar atenção relevante no Instagram além da contagem de seguidores.
+- **Contato (`/contato`):** https://orientohub.com.br/contato

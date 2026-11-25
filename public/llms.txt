@@ -1,23 +1,56 @@
-# Orientohub
+# OrientoHub
 
-> Ecossistema brasileiro de estratégia, inovação, tecnologia e execução para empreendedores e empresas.
+> Ecossistema brasileiro de estratégia, inovação, tecnologia e execução para empreendedores e empresas — conectando serviços, plataforma de gestão e validação, produtos digitais e educação aplicada.
 
-## Conteúdo principal
+Para uma visão detalhada de serviços, escopos, preços e conteúdo de referência, consulte também [llms-full.txt](https://orientohub.com.br/llms-full.txt).
 
-- [Início](https://orientohub.com.br/): visão geral da Orientohub.
-- [Soluções](https://orientohub.com.br/servicos): catálogo de serviços.
-- [Ecossistema](https://orientohub.com.br/ecossistema): núcleo, plataforma, MVPs e verticais.
-- [Sobre](https://orientohub.com.br/sobre): história e forma de atuação.
-- [Blog](https://orientohub.com.br/blog): artigos e guias.
-- [Contato](https://orientohub.com.br/contato): canal para novos projetos.
+## Institucional e Ecossistema
 
-## Soluções
+- [Início](https://orientohub.com.br/): visão geral da OrientoHub e das quatro camadas do ecossistema.
+- [Ecossistema](https://orientohub.com.br/ecossistema): núcleo de serviços, plataforma, MVPs e verticais.
+- [Plataforma OrientoHub](https://orientohub.com.br/plataforma): ferramentas para organizar ideias, projetos, soluções e frameworks.
+- [Oriento Academy](https://orientohub.com.br/academy): trilhas de aprendizagem e conteúdos práticos para founders.
+- [Planos](https://orientohub.com.br/planos): opções de acesso à plataforma OrientoHub.
+- [Sobre](https://orientohub.com.br/sobre): história, visão e forma de atuação da OrientoHub.
+- [Manifesto](https://orientohub.com.br/manifesto): princípios que orientam nossas decisões.
+- [Nossos parceiros](https://orientohub.com.br/parceiros): soluções parceiras selecionadas.
+- [Novidades](https://orientohub.com.br/novidades): evolução e lançamentos da plataforma.
+- [Contato](https://orientohub.com.br/contato): canal para novos projetos e diagnósticos.
 
-- Estratégia e inovação
-- Marketing e mídia paga
-- Design e construção de marcas
-- Sistemas inteligentes e automações
-- Sites e comércio eletrônico
-- Naming, domínios e presença local
+## Serviços
 
-Conteúdo público em português do Brasil. Áreas de dashboard, CRM, checkout e autenticação não fazem parte do conteúdo indexável.
+- [Catálogo de Serviços](https://orientohub.com.br/servicos): visão geral de todas as frentes de atuação.
+- [Estratégia](https://orientohub.com.br/servicos/estrategia): diagnóstico, posicionamento e plano tático.
+- [Inovação](https://orientohub.com.br/servicos/inovacao): validação de hipóteses, protótipos e novos modelos.
+- [Marketing](https://orientohub.com.br/servicos/marketing): posicionamento, conteúdo e construção de autoridade.
+- [Mídia paga](https://orientohub.com.br/servicos/midia-paga): planejamento e gestão de campanhas orientadas ao funil.
+- [Google Meu Negócio](https://orientohub.com.br/servicos/google-meu-negocio): estruturação e gestão de presença local no Google.
+- [Design](https://orientohub.com.br/servicos/design): identidade visual, interfaces, peças e design systems.
+- [Sistemas inteligentes](https://orientohub.com.br/servicos/sistemas-inteligentes): sistemas personalizados, IA aplicada e automações.
+- [Marcas](https://orientohub.com.br/servicos/marcas): análise de viabilidade e registro de marca no INPI.
+- [Naming](https://orientohub.com.br/servicos/naming): criação estratégica de nomes com análise inicial no INPI.
+- [Domínio](https://orientohub.com.br/servicos/dominio): gestão estratégica e segurança de propriedades digitais.
+- [Sites](https://orientohub.com.br/servicos/sites): sites institucionais e landing pages orientadas à conversão.
+- [E-commerce](https://orientohub.com.br/servicos/e-commerce): lojas virtuais com pagamento e frete integrados.
+
+## Conteúdo e Guias (Blog, Glossário e SoA)
+
+- [Blog OrientoHub](https://orientohub.com.br/blog): artigos práticos sobre validação, produto e crescimento.
+- [50 ideias de negócios para começar com pouco dinheiro](https://orientohub.com.br/blog/50-ideias-negocios-baixo-investimento): ideias organizadas por segmento com critérios de validação rápida.
+- [Como validar o problema da sua startup em 5 passos](https://orientohub.com.br/blog/validacao-problema-startup): guia de validação de problema.
+- [Estrutura do pitch deck perfeito](https://orientohub.com.br/blog/pitch-deck-perfeito): elementos essenciais para investidores.
+- [MVP: o guia completo da metodologia Lean Startup](https://orientohub.com.br/blog/mvp-lean-startup): como construir um MVP eficiente.
+- [Como alcançar Product-Market Fit](https://orientohub.com.br/blog/product-market-fit): sinais e estratégias de PMF.
+- [10 métricas essenciais para startups](https://orientohub.com.br/blog/metricas-startup): indicadores de crescimento e eficiência.
+- [Growth Hacking para startups](https://orientohub.com.br/blog/growth-hacking): experimentos rápidos de aquisição e retenção.
+- [Glossário OrientoHub](https://orientohub.com.br/glossario): definições de estratégia, métricas, produto e investimento.
+- [SoA — Share of Attention](https://orientohub.com.br/soa): guia estratégico sobre atenção relevante no Instagram.
+
+## Políticas e Regulamentos
+
+- [Regulamento Black Friday 2026](https://orientohub.com.br/regulamento-black-friday)
+- [Termos de Serviço](https://orientohub.com.br/termos)
+- [Política de Privacidade](https://orientohub.com.br/privacidade)
+- [Política de Cookies](https://orientohub.com.br/cookies)
+
+Conteúdo público em português do Brasil (pt-BR). Áreas de dashboard, CRM, checkout e autenticação não fazem parte do conteúdo indexável.
