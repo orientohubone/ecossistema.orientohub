@@ -2,10 +2,10 @@ import { useState } from 'react';
 import Seo, { buildBreadcrumbSchema } from '../components/Seo';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { 
-  Calendar, 
-  Clock, 
-  ArrowRight, 
+import {
+  Calendar,
+  Clock,
+  ArrowRight,
   Sparkles,
   Lightbulb,
   TrendingUp,
@@ -160,7 +160,7 @@ const BlogPage = () => {
   const filteredPosts = blogPosts.filter(post => {
     const matchesCategory = selectedCategory === 'all' || post.category === selectedCategory;
     const matchesSearch = post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         post.excerpt.toLowerCase().includes(searchQuery.toLowerCase());
+      post.excerpt.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
   });
 
@@ -175,33 +175,33 @@ const BlogPage = () => {
       <div className="fixed inset-0 opacity-20 pointer-events-none -z-40"
         style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, #FFF200 1px, transparent 0)', backgroundSize: '40px 40px' }}
       />
-        <Seo
-          title="Blog | Ideias em movimento — OrientoHub"
-          description="Estratégia, validação, inovação e aprendizados práticos para transformar ideias em projetos e soluções."
-          path="/blog"
-          jsonLd={[
-            {
-              '@context': 'https://schema.org',
-              '@type': 'Blog',
-              name: 'Blog OrientoHub',
-              description:
-                'Estratégia, validação, inovação e aprendizados práticos para transformar ideias em projetos e soluções.',
-              url: 'https://orientohub.com.br/blog',
-              publisher: { '@type': 'Organization', name: 'OrientoHub', url: 'https://orientohub.com.br' },
-            },
-            buildBreadcrumbSchema([
-              { name: 'Início', path: '/' },
-              { name: 'Blog', path: '/blog' },
-            ]),
-          ]}
-        />
+      <Seo
+        title="Blog | Ideias em movimento — OrientoHub"
+        description="Estratégia, validação, inovação e aprendizados práticos para transformar ideias em projetos e soluções."
+        path="/blog"
+        jsonLd={[
+          {
+            '@context': 'https://schema.org',
+            '@type': 'Blog',
+            name: 'Blog OrientoHub',
+            description:
+              'Estratégia, validação, inovação e aprendizados práticos para transformar ideias em projetos e soluções.',
+            url: 'https://orientohub.com.br/blog',
+            publisher: { '@type': 'Organization', name: 'OrientoHub', url: 'https://orientohub.com.br' },
+          },
+          buildBreadcrumbSchema([
+            { name: 'Início', path: '/' },
+            { name: 'Blog', path: '/blog' },
+          ]),
+        ]}
+      />
 
       {/* Hero Section */}
       <section className="relative flex min-h-[620px] w-full items-center overflow-hidden border-b border-white/10">
         {/* Animated background */}
         <div className="absolute inset-0 overflow-hidden">
-          
-          
+
+
         </div>
 
         {/* Grid pattern */}
@@ -220,10 +220,10 @@ const BlogPage = () => {
               transition={{ delay: 0.2 }}
             >
               <Badge variant="liquid-glass" className="gap-2 px-3 py-1.5 sm:px-3.5 sm:py-2">
-              <Rocket className="h-3.5 w-3.5 text-[#FFF200]" aria-hidden="true" />
-              <span className="text-[10px] font-semibold uppercase tracking-[0.12em] text-white/90 sm:text-xs">
-                Blog Orientohub
-              </span>
+                <Rocket className="h-3.5 w-3.5 text-[#FFF200]" aria-hidden="true" />
+                <span className="text-[10px] font-semibold uppercase tracking-[0.12em] text-white/90 sm:text-xs">
+                  Blog Orientohub
+                </span>
               </Badge>
             </motion.div>
 
@@ -267,11 +267,10 @@ const BlogPage = () => {
                 <button
                   key={category.id}
                   onClick={() => setSelectedCategory(category.id)}
-                  className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold whitespace-nowrap transition-all duration-300 ${
-                    selectedCategory === category.id
-                      ? 'bg-[#FFF200] text-black'
-                      : 'border border-transparent text-white/50 hover:border-white/10 hover:bg-white/[0.04] hover:text-white'
-                  }`}
+                  className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold whitespace-nowrap transition-all duration-300 ${selectedCategory === category.id
+                    ? 'bg-[#FFF200] text-black'
+                    : 'border border-transparent text-white/50 hover:border-white/10 hover:bg-white/[0.04] hover:text-white'
+                    }`}
                 >
                   <Icon className="w-5 h-5" />
                   {category.label}

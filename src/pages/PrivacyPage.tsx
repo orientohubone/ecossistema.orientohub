@@ -1,9 +1,9 @@
 import { useTranslation } from 'react-i18next';
 import Seo, { buildBreadcrumbSchema } from '../components/Seo';
 import { motion } from 'framer-motion';
-import { 
-  Shield, 
-  Lock, 
+import {
+  Shield,
+  Lock,
   Eye,
   Database,
   UserCheck,
@@ -243,227 +243,227 @@ const PrivacyPage = () => {
 
   return (
     <div className="dark min-h-screen text-slate-100">
-        {/* Shared fixed background */}
-        <div className="fixed inset-0 bg-gradient-to-br from-black via-gray-900 to-black -z-50" />
-        {/* Global dot grid */}
-        <div className="fixed inset-0 opacity-[0.06] pointer-events-none -z-40"
-          style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, #FFF200 1px, transparent 0)', backgroundSize: '40px 40px' }}
-        />
-        <div className="relative z-10 pt-24 pb-12">
-      <Seo
-        title="Política de Privacidade | OrientoHub"
-        description="Saiba como a OrientoHub protege seus dados pessoais. Nossa política de privacidade em conformidade com a LGPD."
-        path="/privacidade"
-        jsonLd={buildBreadcrumbSchema([
-          { name: 'Início', path: '/' },
-          { name: 'Política de Privacidade', path: '/privacidade' },
-        ])}
+      {/* Shared fixed background */}
+      <div className="fixed inset-0 bg-gradient-to-br from-black via-gray-900 to-black -z-50" />
+      {/* Global dot grid */}
+      <div className="fixed inset-0 opacity-[0.06] pointer-events-none -z-40"
+        style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, #FFF200 1px, transparent 0)', backgroundSize: '40px 40px' }}
       />
+      <div className="relative z-10 pt-24 pb-12">
+        <Seo
+          title="Política de Privacidade | OrientoHub"
+          description="Saiba como a OrientoHub protege seus dados pessoais. Nossa política de privacidade em conformidade com a LGPD."
+          path="/privacidade"
+          jsonLd={buildBreadcrumbSchema([
+            { name: 'Início', path: '/' },
+            { name: 'Política de Privacidade', path: '/privacidade' },
+          ])}
+        />
 
-      {/* Hero Section */}
-      <section className="relative min-h-[50vh] w-full flex items-center">
-        {/* Animated background */}
+        {/* Hero Section */}
+        <section className="relative min-h-[50vh] w-full flex items-center">
+          {/* Animated background */}
 
-        {/* Grid pattern */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute inset-0" style={{
-            backgroundImage: 'radial-gradient(circle at 2px 2px, #FFF200 1px, transparent 0)',
-            backgroundSize: '40px 40px'
-          }} />
-        </div>
-
-        <div className="container-custom relative z-10 py-20">
-          <motion.div
-            className="max-w-4xl mx-auto text-center"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            <motion.div
-              className="inline-flex items-center gap-2 border border-[#FFF200]/60 bg-gradient-to-b from-white/10 to-black/80 px-5 py-2 rounded-full mb-8 backdrop-blur-sm shadow-none"
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.2 }}
-            >
-              <Lock className="w-4 h-4 text-[#FFF200]" />
-              <span className="text-[#FFF200] font-bold text-sm uppercase tracking-wide">
-                Política de Privacidade
-              </span>
-            </motion.div>
-
-            <h1 className="text-5xl md:text-6xl font-bold mb-6 text-white leading-tight">
-              Seus dados{' '}
-              <span className="bg-gradient-to-r from-[#FFF200] via-[#FFF200] to-[#FFF200] bg-clip-text text-transparent">
-                protegidos
-              </span>
-            </h1>
-
-            <p className="text-xl text-gray-300 mb-8">
-              Transparência total sobre como coletamos, usamos e protegemos suas informações pessoais de acordo com a LGPD
-            </p>
-
-            <div className="flex flex-wrap items-center justify-center gap-4 text-sm text-gray-400">
-              <div className="flex items-center gap-2">
-                <Clock className="w-4 h-4 text-[#FFF200]" />
-                <span>Última atualização: {lastUpdated}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Shield className="w-4 h-4 text-green-500" />
-                <span>Conforme LGPD</span>
-              </div>
-              <button className="flex items-center gap-2 text-[#FFF200] hover:text-[#FFF200] transition-colors">
-                <Download className="w-4 h-4" />
-                <span>Baixar PDF</span>
-              </button>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Quick Links */}
-      <section className="border-b border-white/10 sticky top-0 z-40 backdrop-blur-lg bg-black/50">
-        <div className="container-custom py-4">
-          <div className="flex items-center gap-4 overflow-x-auto scrollbar-hide">
-            <span className="text-sm font-semibold text-gray-600 dark:text-gray-400 whitespace-nowrap flex items-center gap-2">
-              <Eye className="w-4 h-4" />
-              Ir para:
-            </span>
-            {sections.slice(0, 6).map((section) => (
-              <a
-                key={section.id}
-                href={`#${section.id}`}
-                className="text-sm text-gray-600 dark:text-gray-400 hover:text-[#FFF200] transition-colors whitespace-nowrap"
-              >
-                {section.title.split('.')[0]}. {section.title.split('. ')[1]}
-              </a>
-            ))}
+          {/* Grid pattern */}
+          <div className="absolute inset-0 opacity-10">
+            <div className="absolute inset-0" style={{
+              backgroundImage: 'radial-gradient(circle at 2px 2px, #FFF200 1px, transparent 0)',
+              backgroundSize: '40px 40px'
+            }} />
           </div>
-        </div>
-      </section>
 
-      {/* Main Content */}
-      <section className="py-16">
-        <div className="container-custom">
-          <div className="max-w-4xl mx-auto">
-            {/* LGPD Compliance Badge */}
+          <div className="container-custom relative z-10 py-20">
             <motion.div
-              className="bg-gradient-to-br from-green-500/10 to-green-600/10 border-2 border-green-500/30 rounded-2xl p-6 mb-12"
-              initial={{ opacity: 0, y: 20 }}
+              className="max-w-4xl mx-auto text-center"
+              initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
             >
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-green-500/20 rounded-xl flex items-center justify-center flex-shrink-0">
-                  <Shield className="w-6 h-6 text-green-500" />
+              <motion.div
+                className="inline-flex items-center gap-2 border border-[#FFF200]/60 bg-gradient-to-b from-white/10 to-black/80 px-5 py-2 rounded-full mb-8 backdrop-blur-sm shadow-none"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.2 }}
+              >
+                <Lock className="w-4 h-4 text-[#FFF200]" />
+                <span className="text-[#FFF200] font-bold text-sm uppercase tracking-wide">
+                  Política de Privacidade
+                </span>
+              </motion.div>
+
+              <h1 className="text-5xl md:text-6xl font-bold mb-6 text-white leading-tight">
+                Seus dados{' '}
+                <span className="bg-gradient-to-r from-[#FFF200] via-[#FFF200] to-[#FFF200] bg-clip-text text-transparent">
+                  protegidos
+                </span>
+              </h1>
+
+              <p className="text-xl text-gray-300 mb-8">
+                Transparência total sobre como coletamos, usamos e protegemos suas informações pessoais de acordo com a LGPD
+              </p>
+
+              <div className="flex flex-wrap items-center justify-center gap-4 text-sm text-gray-400">
+                <div className="flex items-center gap-2">
+                  <Clock className="w-4 h-4 text-[#FFF200]" />
+                  <span>Última atualização: {lastUpdated}</span>
                 </div>
-                <div>
-                  <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2 flex items-center gap-2">
-                    Conformidade com a LGPD
-                    <CheckCircle2 className="w-5 h-5 text-green-500" />
-                  </h3>
-                  <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                    Esta política está em total conformidade com a Lei Geral de Proteção de Dados (Lei nº 13.709/2018). Respeitamos seus direitos como titular de dados e mantemos a transparência sobre todas as nossas práticas de tratamento de informações pessoais.
-                  </p>
+                <div className="flex items-center gap-2">
+                  <Shield className="w-4 h-4 text-green-500" />
+                  <span>Conforme LGPD</span>
                 </div>
+                <button className="flex items-center gap-2 text-[#FFF200] hover:text-[#FFF200] transition-colors">
+                  <Download className="w-4 h-4" />
+                  <span>Baixar PDF</span>
+                </button>
               </div>
             </motion.div>
+          </div>
+        </section>
 
-            {/* Privacy Sections */}
-            <div className="space-y-8">
-              {sections.map((section, index) => (
-                <PrivacySection
+        {/* Quick Links */}
+        <section className="border-b border-white/10 sticky top-0 z-40 backdrop-blur-lg bg-black/50">
+          <div className="container-custom py-4">
+            <div className="flex items-center gap-4 overflow-x-auto scrollbar-hide">
+              <span className="text-sm font-semibold text-gray-600 dark:text-gray-400 whitespace-nowrap flex items-center gap-2">
+                <Eye className="w-4 h-4" />
+                Ir para:
+              </span>
+              {sections.slice(0, 6).map((section) => (
+                <a
                   key={section.id}
-                  section={section}
-                  delay={index * 0.05}
-                />
+                  href={`#${section.id}`}
+                  className="text-sm text-gray-600 dark:text-gray-400 hover:text-[#FFF200] transition-colors whitespace-nowrap"
+                >
+                  {section.title.split('.')[0]}. {section.title.split('. ')[1]}
+                </a>
               ))}
             </div>
-
-            {/* Contact DPO */}
-            <motion.div
-              className="mt-16 bg-white/5 backdrop-blur-sm p-8 rounded-2xl border border-white/10"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-            >
-              <div className="text-center">
-                <div className="w-16 h-16 bg-[#FFF200]/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Mail className="w-8 h-8 text-[#FFF200]" />
-                </div>
-                <h3 className="text-2xl font-bold text-white mb-4">
-                  Dúvidas sobre Privacidade?
-                </h3>
-                <p className="text-gray-300 mb-6">
-                  Entre em contato com nosso Encarregado de Proteção de Dados
-                </p>
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <a
-                    href="mailto:privacy@orientohub.com"
-                    className="inline-flex items-center gap-2 px-8 py-4 bg-[#FFF200] hover:opacity-90 shadow-none text-black font-bold rounded-xl transition-all duration-300 hover:scale-105 shadow-lg shadow-none"
-                  >
-                    <Mail className="w-5 h-5" />
-                    privacy@orientohub.com
-                  </a>
-                  <Link
-                    to="/contato"
-                    className="inline-flex items-center gap-2 px-8 py-4 border-2 border-[#FFF200]/30 hover:border-[#FFF200] text-[#FFF200] font-bold rounded-xl backdrop-blur-sm hover:bg-[#FFF200]/10 transition-all duration-300"
-                  >
-                    Formulário de Contato
-                    <ArrowRight className="w-5 h-5" />
-                  </Link>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Related Links */}
-            <motion.div
-              className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-6"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-            >
-              <Link
-                to="/termos"
-                className="group p-6 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 hover:border-[#FFF200] transition-all duration-300"
-              >
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-[#FFF200]/10 rounded-xl flex items-center justify-center group-hover:bg-[#FFF200]/10 transition-colors">
-                    <FileText className="w-6 h-6 text-[#FFF200]" />
-                  </div>
-                  <div className="flex-1">
-                    <h4 className="font-bold text-gray-900 dark:text-white mb-1 group-hover:text-[#FFF200] transition-colors">
-                      Termos de Serviço
-                    </h4>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">
-                      Condições de uso da plataforma
-                    </p>
-                  </div>
-                  <ArrowRight className="w-5 h-5 text-gray-400 group-hover:text-[#FFF200] group-hover:translate-x-1 transition-all" />
-                </div>
-              </Link>
-
-              <Link
-                to="/cookies"
-                className="group p-6 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 hover:border-[#FFF200] transition-all duration-300"
-              >
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-[#FFF200]/10 rounded-xl flex items-center justify-center group-hover:bg-[#FFF200]/10 transition-colors">
-                    <Cookie className="w-6 h-6 text-[#FFF200]" />
-                  </div>
-                  <div className="flex-1">
-                    <h4 className="font-bold text-gray-900 dark:text-white mb-1 group-hover:text-[#FFF200] transition-colors">
-                      Política de Cookies
-                    </h4>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">
-                      Como usamos cookies
-                    </p>
-                  </div>
-                  <ArrowRight className="w-5 h-5 text-gray-400 group-hover:text-[#FFF200] group-hover:translate-x-1 transition-all" />
-                </div>
-              </Link>
-            </motion.div>
           </div>
-        </div>
-      </section>
+        </section>
+
+        {/* Main Content */}
+        <section className="py-16">
+          <div className="container-custom">
+            <div className="max-w-4xl mx-auto">
+              {/* LGPD Compliance Badge */}
+              <motion.div
+                className="bg-gradient-to-br from-green-500/10 to-green-600/10 border-2 border-green-500/30 rounded-2xl p-6 mb-12"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+              >
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 bg-green-500/20 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <Shield className="w-6 h-6 text-green-500" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2 flex items-center gap-2">
+                      Conformidade com a LGPD
+                      <CheckCircle2 className="w-5 h-5 text-green-500" />
+                    </h3>
+                    <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                      Esta política está em total conformidade com a Lei Geral de Proteção de Dados (Lei nº 13.709/2018). Respeitamos seus direitos como titular de dados e mantemos a transparência sobre todas as nossas práticas de tratamento de informações pessoais.
+                    </p>
+                  </div>
+                </div>
+              </motion.div>
+
+              {/* Privacy Sections */}
+              <div className="space-y-8">
+                {sections.map((section, index) => (
+                  <PrivacySection
+                    key={section.id}
+                    section={section}
+                    delay={index * 0.05}
+                  />
+                ))}
+              </div>
+
+              {/* Contact DPO */}
+              <motion.div
+                className="mt-16 bg-white/5 backdrop-blur-sm p-8 rounded-2xl border border-white/10"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+              >
+                <div className="text-center">
+                  <div className="w-16 h-16 bg-[#FFF200]/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Mail className="w-8 h-8 text-[#FFF200]" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-white mb-4">
+                    Dúvidas sobre Privacidade?
+                  </h3>
+                  <p className="text-gray-300 mb-6">
+                    Entre em contato com nosso Encarregado de Proteção de Dados
+                  </p>
+                  <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a
+                      href="mailto:privacy@orientohub.com"
+                      className="inline-flex items-center gap-2 px-8 py-4 bg-[#FFF200] hover:opacity-90 shadow-none text-black font-bold rounded-xl transition-all duration-300 hover:scale-105 shadow-lg shadow-none"
+                    >
+                      <Mail className="w-5 h-5" />
+                      privacy@orientohub.com
+                    </a>
+                    <Link
+                      to="/contato"
+                      className="inline-flex items-center gap-2 px-8 py-4 border-2 border-[#FFF200]/30 hover:border-[#FFF200] text-[#FFF200] font-bold rounded-xl backdrop-blur-sm hover:bg-[#FFF200]/10 transition-all duration-300"
+                    >
+                      Formulário de Contato
+                      <ArrowRight className="w-5 h-5" />
+                    </Link>
+                  </div>
+                </div>
+              </motion.div>
+
+              {/* Related Links */}
+              <motion.div
+                className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-6"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+              >
+                <Link
+                  to="/termos"
+                  className="group p-6 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 hover:border-[#FFF200] transition-all duration-300"
+                >
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 bg-[#FFF200]/10 rounded-xl flex items-center justify-center group-hover:bg-[#FFF200]/10 transition-colors">
+                      <FileText className="w-6 h-6 text-[#FFF200]" />
+                    </div>
+                    <div className="flex-1">
+                      <h4 className="font-bold text-gray-900 dark:text-white mb-1 group-hover:text-[#FFF200] transition-colors">
+                        Termos de Serviço
+                      </h4>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">
+                        Condições de uso da plataforma
+                      </p>
+                    </div>
+                    <ArrowRight className="w-5 h-5 text-gray-400 group-hover:text-[#FFF200] group-hover:translate-x-1 transition-all" />
+                  </div>
+                </Link>
+
+                <Link
+                  to="/cookies"
+                  className="group p-6 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 hover:border-[#FFF200] transition-all duration-300"
+                >
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 bg-[#FFF200]/10 rounded-xl flex items-center justify-center group-hover:bg-[#FFF200]/10 transition-colors">
+                      <Cookie className="w-6 h-6 text-[#FFF200]" />
+                    </div>
+                    <div className="flex-1">
+                      <h4 className="font-bold text-gray-900 dark:text-white mb-1 group-hover:text-[#FFF200] transition-colors">
+                        Política de Cookies
+                      </h4>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">
+                        Como usamos cookies
+                      </p>
+                    </div>
+                    <ArrowRight className="w-5 h-5 text-gray-400 group-hover:text-[#FFF200] group-hover:translate-x-1 transition-all" />
+                  </div>
+                </Link>
+              </motion.div>
+            </div>
+          </div>
+        </section>
       </div>
     </div>
   );
@@ -498,11 +498,10 @@ const PrivacySection = ({ section, delay }: PrivacySectionProps) => {
   return (
     <motion.div
       id={section.id}
-      className={`bg-white dark:bg-gray-800 rounded-2xl border-2 p-8 scroll-mt-24 ${
-        section.important 
-          ? 'border-[#FFF200]/30 bg-[#FFF200]/5' 
-          : 'border-gray-200 dark:border-gray-700'
-      }`}
+      className={`bg-white dark:bg-gray-800 rounded-2xl border-2 p-8 scroll-mt-24 ${section.important
+        ? 'border-[#FFF200]/30 bg-[#FFF200]/5'
+        : 'border-gray-200 dark:border-gray-700'
+        }`}
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
@@ -510,9 +509,8 @@ const PrivacySection = ({ section, delay }: PrivacySectionProps) => {
     >
       {/* Header */}
       <div className="flex items-start gap-4 mb-6">
-        <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 ${
-          section.important ? 'bg-[#FFF200]/10' : 'bg-[#FFF200]/10'
-        }`}>
+        <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 ${section.important ? 'bg-[#FFF200]/10' : 'bg-[#FFF200]/10'
+          }`}>
           <Icon className="w-6 h-6 text-[#FFF200]" />
         </div>
         <div className="flex-1">
