@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Helmet } from 'react-helmet-async';
+import Seo, { buildBreadcrumbSchema } from '../components/Seo';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import {
@@ -221,13 +221,15 @@ const NovidadesPage = () => {
         }}
       />
 
-      <Helmet>
-        <title>Novidades — orientohub</title>
-        <meta
-          name="description"
-          content="Acompanhe a evolução da orientohub: novas funcionalidades, melhorias e marcos da plataforma."
-        />
-      </Helmet>
+      <Seo
+        title="Novidades | OrientoHub"
+        description="Acompanhe a evolução da OrientoHub: novas funcionalidades, melhorias e marcos da plataforma."
+        path="/novidades"
+        jsonLd={buildBreadcrumbSchema([
+          { name: 'Início', path: '/' },
+          { name: 'Novidades', path: '/novidades' },
+        ])}
+      />
 
       {/* Hero Section */}
       <section className="relative flex min-h-[500px] w-full items-center overflow-hidden border-b border-white/10">

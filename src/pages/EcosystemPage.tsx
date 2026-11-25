@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Helmet } from 'react-helmet-async';
+import Seo, { buildBreadcrumbSchema } from '../components/Seo';
 import { Link } from 'react-router-dom';
 import {
   ArrowDown,
@@ -69,10 +69,15 @@ const reveal = { initial: { opacity: 0, y: 18 }, whileInView: { opacity: 1, y: 0
 
 const EcosystemPage = () => (
   <div className="relative isolate min-h-screen overflow-x-hidden bg-gradient-to-br from-black via-gray-900 to-black text-white">
-    <Helmet>
-      <title>Ecossistema Orientohub | Quatro camadas conectadas</title>
-      <meta name="description" content="Conheça as quatro camadas do ecossistema Orientohub: Núcleo, Plataforma, MVPs e Verticais." />
-    </Helmet>
+    <Seo
+      title="Ecossistema OrientoHub | Quatro camadas conectadas"
+      description="Conheça as quatro camadas do ecossistema OrientoHub: Núcleo, Plataforma, MVPs e Verticais."
+      path="/ecossistema"
+      jsonLd={buildBreadcrumbSchema([
+        { name: 'Início', path: '/' },
+        { name: 'Ecossistema', path: '/ecossistema' },
+      ])}
+    />
     <div className="pointer-events-none fixed inset-0 z-0 opacity-20" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, #FFF200 1px, transparent 0)', backgroundSize: '40px 40px' }} />
 
     <main className="relative z-10">

@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Helmet } from 'react-helmet-async';
+import Seo, { buildBreadcrumbSchema } from '../components/Seo';
 import { ArrowDown, ArrowRight, BarChart3, ClipboardList, Search, Target } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import ServiceDeck from '../components/ServiceDeck';
@@ -7,7 +7,15 @@ import BlackFridaySeal from '../bf-2026/BlackFridaySeal';
 
 const ServicesCatalogPage = () => {
   return <>
-    <Helmet><title>Serviços | OrientoHub</title><meta name="description" content="Estratégia e execução conectadas para destravar o próximo movimento do seu negócio." /></Helmet>
+    <Seo
+      title="Serviços | OrientoHub"
+      description="Estratégia e execução conectadas para destravar o próximo movimento do seu negócio."
+      path="/servicos"
+      jsonLd={buildBreadcrumbSchema([
+        { name: 'Início', path: '/' },
+        { name: 'Serviços', path: '/servicos' },
+      ])}
+    />
     <main className="relative isolate overflow-hidden bg-gradient-to-br from-black via-gray-900 to-black text-white">
       <div className="pointer-events-none absolute inset-0 z-0 opacity-20" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, #FFF200 1px, transparent 0)', backgroundSize: '40px 40px' }} />
       <section className="relative z-10 overflow-hidden border-b border-white/10">

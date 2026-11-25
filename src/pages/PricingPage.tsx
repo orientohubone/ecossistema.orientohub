@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Helmet } from 'react-helmet-async';
+import Seo, { buildBreadcrumbSchema } from '../components/Seo';
 import { motion } from 'framer-motion';
 import { 
   Check, 
@@ -129,10 +129,15 @@ const PricingPage = () => {
       <div className="fixed inset-0 opacity-[0.06] pointer-events-none -z-40"
         style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, #FFF200 1px, transparent 0)', backgroundSize: '40px 40px' }}
       />
-      <Helmet>
-        <title>Planos e Preços - Orientohub</title>
-        <meta name="description" content="Escolha o plano perfeito para acelerar sua startup. Comece grátis ou desbloqueie recursos premium." />
-      </Helmet>
+      <Seo
+        title="Planos e Preços | OrientoHub"
+        description="Escolha o plano perfeito para acelerar sua startup. Comece grátis ou desbloqueie recursos premium."
+        path="/planos"
+        jsonLd={buildBreadcrumbSchema([
+          { name: 'Início', path: '/' },
+          { name: 'Planos', path: '/planos' },
+        ])}
+      />
 
       {/* Hero Section */}
       <section className="relative min-h-[50vh] w-full overflow-hidden flex items-center pt-24 pb-12">

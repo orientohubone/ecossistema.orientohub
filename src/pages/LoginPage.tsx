@@ -117,7 +117,8 @@ const LoginPage = () => {
     <>
       <Helmet>
         <title>Login - Orientohub</title>
-        <meta name="description" content="Faça login na plataforma Orientohub e acelere sua startup" />
+        <meta name="description" content="Faça login na plataforma OrientoHub e acelere sua startup" />
+        <meta name="robots" content="noindex, nofollow" />
       </Helmet>
 
       <div className="h-screen w-full flex bg-[#0A0A0A] text-white font-sans overflow-hidden">

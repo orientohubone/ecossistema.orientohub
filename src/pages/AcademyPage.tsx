@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Helmet } from 'react-helmet-async';
+import Seo, { buildBreadcrumbSchema } from '../components/Seo';
 import { Link } from 'react-router-dom';
 import {
   ArrowRight,
@@ -36,13 +36,15 @@ const AcademyPage = () => {
         }}
       />
 
-      <Helmet>
-        <title>Oriento Academy — orientohub</title>
-        <meta
-          name="description"
-          content="Trilhas de aprendizagem, certificações e gamificação para founders aplicarem o que aprendem."
-        />
-      </Helmet>
+      <Seo
+        title="Oriento Academy | OrientoHub"
+        description="Trilhas de aprendizagem, certificações e gamificação para founders aplicarem o que aprendem."
+        path="/academy"
+        jsonLd={buildBreadcrumbSchema([
+          { name: 'Início', path: '/' },
+          { name: 'Academy', path: '/academy' },
+        ])}
+      />
 
       {/* Hero Section */}
       <section className="relative flex min-h-[520px] w-full items-center overflow-hidden border-b border-white/10">

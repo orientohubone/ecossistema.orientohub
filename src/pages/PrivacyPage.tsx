@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { Helmet } from 'react-helmet-async';
+import Seo, { buildBreadcrumbSchema } from '../components/Seo';
 import { motion } from 'framer-motion';
 import { 
   Shield, 
@@ -250,10 +250,15 @@ const PrivacyPage = () => {
           style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, #FFF200 1px, transparent 0)', backgroundSize: '40px 40px' }}
         />
         <div className="relative z-10 pt-24 pb-12">
-      <Helmet>
-        <title>Política de Privacidade - Orientohub</title>
-        <meta name="description" content="Saiba como o Orientohub protege seus dados pessoais. Nossa política de privacidade em conformidade com a LGPD." />
-      </Helmet>
+      <Seo
+        title="Política de Privacidade | OrientoHub"
+        description="Saiba como a OrientoHub protege seus dados pessoais. Nossa política de privacidade em conformidade com a LGPD."
+        path="/privacidade"
+        jsonLd={buildBreadcrumbSchema([
+          { name: 'Início', path: '/' },
+          { name: 'Política de Privacidade', path: '/privacidade' },
+        ])}
+      />
 
       {/* Hero Section */}
       <section className="relative min-h-[50vh] w-full flex items-center">

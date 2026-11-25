@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import { Helmet } from 'react-helmet-async';
+import Seo, { organizationSchema } from '../components/Seo';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Sparkles, Layers, Users, Target, Lightbulb, ExternalLink, Component, MonitorPlay, Maximize2, X, TrendingUp, Rocket, Brain, GraduationCap, Mic, Briefcase, BookOpen, Instagram } from 'lucide-react';
@@ -188,10 +188,21 @@ const HomePage = () => {
 
   return (
     <>
-      <Helmet>
-        <title>OrientoHub - Tire sua ideia do papel</title>
-        <meta name="description" content="Não deixe uma boa ideia travar por falta de direção, validação ou execução. A OrientoHub ajuda você a transformar intenção em um negócio real." />
-      </Helmet>
+      <Seo
+        title="OrientoHub - Tire sua ideia do papel"
+        description="Não deixe uma boa ideia travar por falta de direção, validação ou execução. A OrientoHub ajuda você a transformar intenção em um negócio real."
+        path="/"
+        jsonLd={[
+          organizationSchema,
+          {
+            '@context': 'https://schema.org',
+            '@type': 'WebSite',
+            name: 'OrientoHub',
+            url: 'https://orientohub.com.br/',
+            inLanguage: 'pt-BR',
+          },
+        ]}
+      />
 
       {/* Shared background that spans the whole page */}
       <div className="fixed inset-0 bg-gradient-to-br from-black via-gray-900 to-black -z-50" />

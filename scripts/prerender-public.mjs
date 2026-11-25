@@ -60,6 +60,7 @@ const render = (page) => {
     .replace(/<meta property="og:title" content="[^"]*"\s*\/>/, `<meta property="og:title" content="${escape(page.title)}" />`)
     .replace(/<meta property="og:description" content="[^"]*"\s*\/>/, `<meta property="og:description" content="${escape(page.description)}" />`)
     .replace(/<meta name="twitter:title" content="[^"]*"\s*\/>/, `<meta name="twitter:title" content="${escape(page.title)}" />`)
+    .replace(/<link rel="canonical" href="[^"]*"\s*\/?>/, '')
     .replace(/<meta name="twitter:description" content="[^"]*"\s*\/>/, `<meta name="twitter:description" content="${escape(page.description)}" />`)
     .replace('</head>', `<link rel="canonical" href="${canonical}" /><script type="application/ld+json">${structured}</script></head>`);
 };

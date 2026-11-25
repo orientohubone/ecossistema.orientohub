@@ -135,7 +135,7 @@ const SignupPage = () => {
   }, []);
 
   if (confirmationEmail) return <>
-    <Helmet><title>Confirme seu e-mail - Orientohub</title></Helmet>
+    <Helmet><title>Confirme seu e-mail - OrientoHub</title><meta name="robots" content="noindex, nofollow" /></Helmet>
     <main className="flex min-h-screen items-center justify-center bg-[#0A0A0A] px-5 py-12 text-white">
       <section className="w-full max-w-md rounded-2xl border border-gray-800 bg-[#121212] p-6 sm:p-8" aria-labelledby="signup-confirmation-title">
         <Link to="/" className="mb-8 inline-block"><img src="/orientohub.png" alt="Orientohub" className="h-8 w-auto" /></Link>

@@ -1,4 +1,4 @@
-import { Helmet } from 'react-helmet-async';
+import Seo, { buildBreadcrumbSchema, organizationSchema } from '../components/Seo';
 import { motion } from 'framer-motion';
 import {
   Users,
@@ -25,10 +25,18 @@ const AboutPage = () => {
       <div className="fixed inset-0 opacity-[0.06] pointer-events-none -z-40"
         style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, #FFF200 1px, transparent 0)', backgroundSize: '40px 40px' }}
       />
-      <Helmet>
-        <title>Sobre Nós - Orientohub</title>
-        <meta name="description" content="Conheça a história, missão e valores do Orientohub. Estamos transformando a forma como startups são construídas no Brasil." />
-      </Helmet>
+      <Seo
+        title="Sobre Nós | OrientoHub"
+        description="Conheça a história, missão e valores da OrientoHub. Estamos transformando a forma como negócios e startups são construídos no Brasil."
+        path="/sobre"
+        jsonLd={[
+          organizationSchema,
+          buildBreadcrumbSchema([
+            { name: 'Início', path: '/' },
+            { name: 'Sobre', path: '/sobre' },
+          ]),
+        ]}
+      />
 
       {/* Hero Section */}
       <section className="relative min-h-[80vh] w-full overflow-hidden flex items-center">

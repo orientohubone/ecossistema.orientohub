@@ -59,6 +59,7 @@ const AcademyLoginPage = () => {
     <div className="min-h-screen bg-slate-950 text-slate-100">
       <Helmet>
         <title>Entrar – Oriento Academy</title>
+        <meta name="robots" content="noindex, nofollow" />
       </Helmet>
 
       <div className="relative overflow-hidden">

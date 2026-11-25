@@ -1,4 +1,4 @@
-import { Helmet } from 'react-helmet-async';
+import Seo, { buildBreadcrumbSchema } from '../components/Seo';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Sparkles, Rocket, Zap, ArrowRight, Lightbulb, FolderKanban, Blocks, BarChart2, Award, CheckCircle, MessageCircle } from 'lucide-react';
@@ -9,10 +9,28 @@ import gamificacaoShowcase from '../assets/gamificação-showcase.png';
 const PlatformaPage = () => {
   return (
     <div className="relative isolate min-h-screen overflow-x-hidden bg-gradient-to-br from-black via-gray-900 to-black text-white">
-      <Helmet>
-        <title>Plataforma OrientoHub - Da ideia à execução</title>
-        <meta name="description" content="Incube ideias, organize projetos, desenvolva soluções e aplique frameworks em um só lugar." />
-      </Helmet>
+      <Seo
+        title="Plataforma OrientoHub - Da ideia à execução"
+        description="Incube ideias, organize projetos, desenvolva soluções e aplique frameworks em um só lugar."
+        path="/plataforma"
+        jsonLd={[
+          {
+            '@context': 'https://schema.org',
+            '@type': 'SoftwareApplication',
+            name: 'Plataforma OrientoHub',
+            applicationCategory: 'BusinessApplication',
+            operatingSystem: 'Web',
+            url: 'https://orientohub.com.br/plataforma',
+            description:
+              'Incube ideias, organize projetos, desenvolva soluções e aplique frameworks em um só lugar.',
+            provider: { '@type': 'Organization', name: 'OrientoHub', url: 'https://orientohub.com.br' },
+          },
+          buildBreadcrumbSchema([
+            { name: 'Início', path: '/' },
+            { name: 'Plataforma', path: '/plataforma' },
+          ]),
+        ]}
+      />
 
       <div
         className="pointer-events-none fixed inset-0 z-0 opacity-10"

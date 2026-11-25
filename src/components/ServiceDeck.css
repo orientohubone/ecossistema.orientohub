@@ -67,4 +67,32 @@
   .is-dragging .service-metal-card.is-active { transition: none; }
 }
 @media (prefers-reduced-motion: reduce) { .service-metal-card, .service-deck-arrow { transition: none; } }
+/* Desktop/tablet: wider, more compact cards so the content fits without much scrolling. */
+@media (min-width: 768px) {
+  .service-deck-track { padding: 32px 0 44px; }
+  .service-metal-card { width: min(640px, 48cqw); padding: 26px 28px; }
+  .service-metal-card > div > div:first-child { padding-bottom: 14px; }
+  .service-metal-card > div > p:first-of-type { margin-top: 16px; }
+  .service-metal-card h3 { margin-top: 6px; font-size: clamp(1.75rem, 2.6vw, 2.5rem); line-height: 1.1; }
+  .service-metal-card > div > p:nth-of-type(2) { margin-top: 10px; font-size: 15px; line-height: 1.55; }
+  .service-metal-card ul { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 20px; margin-top: 18px; margin-bottom: 18px; }
+  .service-metal-card ul > li { margin-top: 0 !important; font-size: 13px; line-height: 1.45; }
+  .service-metal-card > div > div:last-child { padding-top: 14px; }
+  .service-metal-card a { margin-top: 14px; padding: 12px 18px; }
+}
+@media (min-width: 768px) and (max-width: 1023px) {
+  .service-metal-card { width: 64cqw; }
+  .service-metal-card.is-before { transform: translateX(-38%) scale(.9) rotate(-2deg); }
+  .service-metal-card.is-after { transform: translateX(38%) scale(.9) rotate(2deg); }
+}
+/* Short desktop screens (e.g. 1366x768 laptops). */
+@media (min-width: 768px) and (max-height: 860px) {
+  .service-deck-track { padding: 20px 0 32px; }
+  .service-metal-card { padding: 20px 24px; }
+  .service-metal-card > div > p:first-of-type { margin-top: 12px; }
+  .service-metal-card h3 { font-size: clamp(1.6rem, 2.2vw, 2.1rem); }
+  .service-metal-card > div > p:nth-of-type(2) { font-size: 14px; }
+  .service-metal-card ul { margin-top: 14px; margin-bottom: 14px; gap: 6px 18px; }
+  .service-metal-card a { padding: 10px 16px; }
+}
 @media (prefers-reduced-motion: reduce) { .service-deck-stage.is-gathering .service-metal-card, .service-metal-card.is-opening::before, .service-metal-card.is-opening::after { animation-duration: .01ms; } }

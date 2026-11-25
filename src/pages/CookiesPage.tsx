@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { Helmet } from 'react-helmet-async';
+import Seo, { buildBreadcrumbSchema } from '../components/Seo';
 import { motion } from 'framer-motion';
 import {
   Cookie,
@@ -131,10 +131,15 @@ const CookiesPage = () => {
         style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, #FFF200 1px, transparent 0)', backgroundSize: '40px 40px' }}
       />
       <div className="relative z-10 pt-24 pb-12">
-        <Helmet>
-          <title>Política de Cookies - Orientohub | Sem Glúten, Só Dados! 🍪</title>
-          <meta name="description" content="Descubra como os cookies do Orientohub tornam sua experiência mais saborosa (e segura). Spoiler: não são comestíveis!" />
-        </Helmet>
+        <Seo
+          title="Política de Cookies | OrientoHub"
+          description="Descubra como os cookies da OrientoHub funcionam e como gerenciar suas preferências de privacidade e dados."
+          path="/cookies"
+          jsonLd={buildBreadcrumbSchema([
+            { name: 'Início', path: '/' },
+            { name: 'Política de Cookies', path: '/cookies' },
+          ])}
+        />
 
         {/* Hero Section */}
         <section className="relative min-h-[60vh] w-full overflow-hidden bg-gradient-to-br from-black via-gray-900 to-black flex items-center">

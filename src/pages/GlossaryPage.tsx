@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Helmet } from 'react-helmet-async';
+import Seo, { buildBreadcrumbSchema } from '../components/Seo';
 import { Link } from 'react-router-dom';
 import { 
   ArrowRight,
@@ -207,7 +207,29 @@ const GlossaryPage = () => {
 
   return (
     <div className="relative min-h-screen overflow-x-hidden text-white">
-      <Helmet><title>Glossário | OrientoHub</title><meta name="description" content="Conceitos de estratégia, métricas, crescimento e investimento explicados com clareza." /></Helmet>
+      <Seo
+        title="Glossário | OrientoHub"
+        description="Conceitos de estratégia, métricas, crescimento e investimento explicados com clareza."
+        path="/glossario"
+        jsonLd={[
+          {
+            '@context': 'https://schema.org',
+            '@type': 'DefinedTermSet',
+            name: 'Glossário de Negócios e Inovação | OrientoHub',
+            url: 'https://orientohub.com.br/glossario',
+            inLanguage: 'pt-BR',
+            hasDefinedTerm: glossaryTerms.map((item) => ({
+              '@type': 'DefinedTerm',
+              name: item.fullName ? `${item.term} (${item.fullName})` : item.term,
+              description: item.definition,
+            })),
+          },
+          buildBreadcrumbSchema([
+            { name: 'Início', path: '/' },
+            { name: 'Glossário', path: '/glossario' },
+          ]),
+        ]}
+      />
       <div className="fixed inset-0 -z-50 bg-gradient-to-br from-black via-gray-900 to-black" />
       <div className="pointer-events-none fixed inset-0 -z-50 opacity-20" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, #FFF200 1px, transparent 0)', backgroundSize: '40px 40px' }} />
 

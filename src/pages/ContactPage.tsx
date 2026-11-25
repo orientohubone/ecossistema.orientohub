@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Helmet } from 'react-helmet-async';
+import Seo, { buildBreadcrumbSchema } from '../components/Seo';
 import { motion } from 'framer-motion';
 import { useSearchParams } from 'react-router-dom';
 import {
@@ -97,10 +97,23 @@ const ContactPage = () => {
       <div className="fixed inset-0 -z-50 bg-gradient-to-br from-black via-gray-900 to-black" />
       <div className="pointer-events-none fixed inset-0 -z-40 opacity-20" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, #FFF200 1px, transparent 0)', backgroundSize: '40px 40px' }} />
 
-      <Helmet>
-        <title>Contato | Orientohub</title>
-        <meta name="description" content="Conte o que você quer construir, melhorar ou destravar. A Orientohub ajuda a transformar contexto em direção e próximos passos." />
-      </Helmet>
+      <Seo
+        title="Contato | OrientoHub"
+        description="Conte o que você quer construir, melhorar ou destravar. A OrientoHub ajuda a transformar contexto em direção e próximos passos."
+        path="/contato"
+        jsonLd={[
+          {
+            '@context': 'https://schema.org',
+            '@type': 'ContactPage',
+            name: 'Contato | OrientoHub',
+            url: 'https://orientohub.com.br/contato',
+          },
+          buildBreadcrumbSchema([
+            { name: 'Início', path: '/' },
+            { name: 'Contato', path: '/contato' },
+          ]),
+        ]}
+      />
 
       <section className="relative pb-20 pt-24 sm:pb-24 sm:pt-28">
         <div className="container-custom">

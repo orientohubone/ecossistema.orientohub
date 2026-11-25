@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { Helmet } from 'react-helmet-async';
+import Seo, { buildBreadcrumbSchema } from '../components/Seo';
 import { motion } from 'framer-motion';
 import { 
   Shield, 
@@ -118,10 +118,15 @@ const TermsPage = () => {
         style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, #FFF200 1px, transparent 0)', backgroundSize: '40px 40px' }}
       />
       <div className="relative z-10 pt-24 pb-12">
-      <Helmet>
-        <title>Termos de Serviço - Orientohub</title>
-        <meta name="description" content="Leia os termos de serviço do Orientohub. Conheça seus direitos e responsabilidades ao usar nossa plataforma." />
-      </Helmet>
+      <Seo
+        title="Termos de Serviço | OrientoHub"
+        description="Leia os termos de serviço da OrientoHub. Conheça seus direitos e responsabilidades ao usar nossa plataforma."
+        path="/termos"
+        jsonLd={buildBreadcrumbSchema([
+          { name: 'Início', path: '/' },
+          { name: 'Termos de Serviço', path: '/termos' },
+        ])}
+      />
 
       {/* Hero Section */}
       <section className="relative min-h-[50vh] w-full flex items-center">

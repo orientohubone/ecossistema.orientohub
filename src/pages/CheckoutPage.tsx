@@ -81,7 +81,7 @@ const CheckoutPage = () => {
 
   return (
     <>
-      <Helmet><title>Assine o Pro | OrientoHub</title></Helmet>
+      <Helmet><title>Assine o Pro | OrientoHub</title><meta name="robots" content="noindex, nofollow" /></Helmet>
       <section className="relative min-h-screen overflow-hidden bg-[#070809] py-8 text-white sm:py-12">
         <div className="pointer-events-none absolute left-1/2 top-0 h-[420px] w-[720px] -translate-x-1/2 rounded-full bg-primary-500/10 blur-[130px]" />
         <div className="container-custom relative max-w-6xl">

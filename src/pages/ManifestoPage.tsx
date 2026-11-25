@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Helmet } from 'react-helmet-async';
+import Seo, { buildBreadcrumbSchema } from '../components/Seo';
 import { Link } from 'react-router-dom';
 import {
   ArrowRight,
@@ -60,10 +60,15 @@ const principles = [
 
 const ManifestoPage = () => (
   <div className="relative min-h-screen overflow-x-hidden text-white">
-    <Helmet>
-      <title>Manifesto | Orientohub</title>
-      <meta name="description" content="Conheça os princípios que orientam a OrientoHub: clareza, método, colaboração e execução para transformar ideias em avanço real." />
-    </Helmet>
+    <Seo
+      title="Manifesto | OrientoHub"
+      description="Conheça os princípios que orientam a OrientoHub: clareza, método, colaboração e execução para transformar ideias em avanço real."
+      path="/manifesto"
+      jsonLd={buildBreadcrumbSchema([
+        { name: 'Início', path: '/' },
+        { name: 'Manifesto', path: '/manifesto' },
+      ])}
+    />
 
     <div className="fixed inset-0 -z-50 bg-gradient-to-br from-black via-gray-900 to-black" />
     <div className="pointer-events-none fixed inset-0 -z-50 opacity-20" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, #FFF200 1px, transparent 0)', backgroundSize: '40px 40px' }} />

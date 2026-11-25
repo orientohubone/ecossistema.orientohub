@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Helmet } from 'react-helmet-async';
+import Seo, { buildBreadcrumbSchema } from '../components/Seo';
 import { ArrowRight, BarChart3, Beaker, BookOpen, Bot, Check, Eye, Heart, Megaphone, RefreshCw, Search, Send, Target, Users } from 'lucide-react';
 import SectionDivider from '../components/SectionDivider';
 import { Badge } from '../components/ui/Badge';
@@ -65,20 +65,29 @@ const SoAPage = () => {
 
   return (
     <div className="relative min-h-screen overflow-x-hidden text-white">
-      <Helmet>
-        <title>SoA — Share of Attention | OrientoHub</title>
-        <meta name="description" content="Um guia estratégico e prático para entender, medir e conquistar atenção relevante no Instagram." />
-        <meta property="og:type" content="website" />
-        <meta property="og:title" content="SoA — Share of Attention" />
-        <meta property="og:description" content="Seguidores não garantem atenção. Aprenda a construir relevância no Instagram." />
-        <meta property="og:url" content="https://orientohub.com.br/soa" />
-        <meta property="og:image" content="https://orientohub.com.br/SoA.png" />
-        <meta property="og:image:alt" content="SoA — Share of Attention" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="SoA — Share of Attention" />
-        <meta name="twitter:description" content="Seguidores não garantem atenção." />
-        <meta name="twitter:image" content="https://orientohub.com.br/SoA.png" />
-      </Helmet>
+      <Seo
+        title="SoA — Share of Attention | OrientoHub"
+        description="Um guia estratégico e prático para entender, medir e conquistar atenção relevante no Instagram."
+        path="/soa"
+        image="/SoA.png"
+        imageAlt="SoA — Share of Attention"
+        jsonLd={[
+          {
+            '@context': 'https://schema.org',
+            '@type': 'CreativeWork',
+            name: 'SoA — Share of Attention',
+            description:
+              'Um guia estratégico e prático para entender, medir e conquistar atenção relevante no Instagram.',
+            url: 'https://orientohub.com.br/soa',
+            image: 'https://orientohub.com.br/SoA.png',
+            publisher: { '@type': 'Organization', name: 'OrientoHub', url: 'https://orientohub.com.br' },
+          },
+          buildBreadcrumbSchema([
+            { name: 'Início', path: '/' },
+            { name: 'SoA — Share of Attention', path: '/soa' },
+          ]),
+        ]}
+      />
 
       <div className="fixed inset-0 -z-50 bg-gradient-to-br from-black via-gray-900 to-black" />
       <div className="pointer-events-none fixed inset-0 -z-50 opacity-20" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, #FFF200 1px, transparent 0)', backgroundSize: '40px 40px' }} />

@@ -123,9 +123,9 @@ const Header = () => {
     <>
       <HeaderBlackFridayMarquee />
       
-      <header className={`sticky top-3 z-50 transition-all duration-300 ${scrolled ? 'shadow-2xl' : ''}`}>
+      <header className="sticky top-3 z-50 bg-transparent">
         <div className="container-custom">
-          <div className="flex items-center justify-between rounded-full border border-white/15 bg-white/[0.85] dark:bg-[#0d131d]/85 backdrop-blur-xl shadow-[0_8px_40px_rgba(0,0,0,0.12)] dark:shadow-[0_8px_40px_rgba(0,0,0,0.55)] h-12 sm:h-14 px-2 sm:px-3">
+          <div className={`flex items-center justify-between rounded-full border border-white/15 bg-white/[0.85] dark:bg-[#0d131d]/85 backdrop-blur-xl transition-shadow duration-300 h-12 sm:h-14 px-2 sm:px-3 ${scrolled ? 'shadow-[0_12px_48px_rgba(0,0,0,0.2)] dark:shadow-[0_12px_48px_rgba(0,0,0,0.7)]' : 'shadow-[0_8px_40px_rgba(0,0,0,0.12)] dark:shadow-[0_8px_40px_rgba(0,0,0,0.55)]'}`}>
             {/* Logo */}
             <div className="flex-shrink-0 pl-2 sm:pl-3">
               <Link to="/" className="flex items-center">

@@ -1,4 +1,4 @@
-import { Helmet } from 'react-helmet-async';
+import Seo, { buildBreadcrumbSchema } from '../components/Seo';
 import { Link, Navigate, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowLeft, ArrowRight, BarChart3, Briefcase, CheckCircle2, Code2, Globe2, Megaphone, Palette, Rocket, ShoppingCart, Sparkles, Target, Award, Tags } from 'lucide-react';
@@ -48,28 +48,65 @@ const ServiceDetailPage = () => {
   if (serviceSlug === 'vibe-coding') return <Navigate to="/servicos/sistemas-inteligentes" replace />;
   const service = getServiceBySlug(serviceSlug);
   if (!service) return <Navigate to="/servicos" replace />;
-  if (service.slug === 'estrategia') return <StrategyServicePage service={service} />;
-  if (service.slug === 'inovacao') return <InnovationServicePage service={service} />;
-  if (service.slug === 'marketing') return <MarketingServicePage service={service} />;
-  if (service.slug === 'midia-paga') return <PaidMediaServicePage service={service} />;
-  if (service.slug === 'google-meu-negocio') return <GoogleBusinessServicePage service={service} />;
-  if (service.slug === 'design') return <DesignServicePage service={service} />;
-  if (service.slug === 'sistemas-inteligentes') return <IntelligentSystemsServicePage service={service} />;
-  if (service.slug === 'marcas') return <BrandsServicePage service={service} />;
-  if (service.slug === 'naming') return <NamingServicePage service={service} />;
-  if (service.slug === 'dominio') return <DomainServicePage service={service} />;
-  if (service.slug === 'sites') return <SitesServicePage service={service} />;
-  if (service.slug === 'e-commerce') return <EcommerceServicePage service={service} />;
+  const servicePath = `/servicos/${service.slug}`;
+  const priceValue = service.pricing?.fixed ?? service.pricing?.promotional ?? service.pricing?.startingAt;
+  const serviceSeo = (
+    <Seo
+      title={`${service.title} | Serviços OrientoHub`}
+      description={service.description}
+      path={servicePath}
+      jsonLd={[
+        {
+          '@context': 'https://schema.org',
+          '@type': 'Service',
+          name: service.title,
+          description: service.description,
+          url: `https://orientohub.com.br${servicePath}`,
+          provider: {
+            '@type': 'Organization',
+            name: 'OrientoHub',
+            url: 'https://orientohub.com.br',
+          },
+          areaServed: 'BR',
+          ...(priceValue !== undefined
+            ? {
+                offers: {
+                  '@type': 'Offer',
+                  price: priceValue,
+                  priceCurrency: 'BRL',
+                  url: `https://orientohub.com.br${servicePath}`,
+                },
+              }
+            : {}),
+        },
+        buildBreadcrumbSchema([
+          { name: 'Início', path: '/' },
+          { name: 'Serviços', path: '/servicos' },
+          { name: service.title, path: servicePath },
+        ]),
+      ]}
+    />
+  );
+
+  if (service.slug === 'estrategia') return <>{serviceSeo}<StrategyServicePage service={service} /></>;
+  if (service.slug === 'inovacao') return <>{serviceSeo}<InnovationServicePage service={service} /></>;
+  if (service.slug === 'marketing') return <>{serviceSeo}<MarketingServicePage service={service} /></>;
+  if (service.slug === 'midia-paga') return <>{serviceSeo}<PaidMediaServicePage service={service} /></>;
+  if (service.slug === 'google-meu-negocio') return <>{serviceSeo}<GoogleBusinessServicePage service={service} /></>;
+  if (service.slug === 'design') return <>{serviceSeo}<DesignServicePage service={service} /></>;
+  if (service.slug === 'sistemas-inteligentes') return <>{serviceSeo}<IntelligentSystemsServicePage service={service} /></>;
+  if (service.slug === 'marcas') return <>{serviceSeo}<BrandsServicePage service={service} /></>;
+  if (service.slug === 'naming') return <>{serviceSeo}<NamingServicePage service={service} /></>;
+  if (service.slug === 'dominio') return <>{serviceSeo}<DomainServicePage service={service} /></>;
+  if (service.slug === 'sites') return <>{serviceSeo}<SitesServicePage service={service} /></>;
+  if (service.slug === 'e-commerce') return <>{serviceSeo}<EcommerceServicePage service={service} /></>;
 
   const Icon = icons[service.slug] || Sparkles;
   const accent = accentClasses[service.accent];
 
   return (
     <>
-      <Helmet>
-        <title>{service.title} | Serviços OrientoHub</title>
-        <meta name="description" content={service.description} />
-      </Helmet>
+      {serviceSeo}
 
       <main className="min-h-screen overflow-hidden bg-[#0c121b] text-white">
         <section className="relative border-b border-[#273548] bg-[#101722]">

@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { Helmet } from 'react-helmet-async';
+import Seo, { buildBreadcrumbSchema } from '../components/Seo';
 import { motion } from 'framer-motion';
 import { ArrowUpRight, BadgeCheck, Check, Gift, Handshake, Search } from 'lucide-react';
 import { partnerCatalog } from '../data/partnerCatalog';
@@ -19,10 +19,15 @@ const PartnersPage = () => {
 
   return (
     <>
-      <Helmet>
-        <title>Nossos parceiros | Orientohub</title>
-        <meta name="description" content="Soluções parceiras selecionadas pela Orientohub para apoiar a operação e o crescimento do seu negócio." />
-      </Helmet>
+      <Seo
+        title="Nossos parceiros | OrientoHub"
+        description="Soluções parceiras selecionadas pela OrientoHub para apoiar a operação e o crescimento do seu negócio."
+        path="/parceiros"
+        jsonLd={buildBreadcrumbSchema([
+          { name: 'Início', path: '/' },
+          { name: 'Parceiros', path: '/parceiros' },
+        ])}
+      />
 
       <main className="min-h-screen bg-[#080d14] text-white">
         <section className="relative overflow-hidden border-b border-white/[0.07]">

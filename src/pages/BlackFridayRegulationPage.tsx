@@ -1,4 +1,4 @@
-import { Helmet } from 'react-helmet-async';
+import Seo, { buildBreadcrumbSchema } from '../components/Seo';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, CalendarDays, CheckCircle2, FileText } from 'lucide-react';
 import BlackFridaySeal from '../bf-2026/BlackFridaySeal';
@@ -7,10 +7,16 @@ const participatingServices = ['Mídia Paga', 'Google Meu Negócio', 'Sistemas I
 
 const BlackFridayRegulationPage = () => (
   <>
-    <Helmet>
-      <title>Regulamento Black Friday 2026 | OrientoHub</title>
-      <meta name="description" content="Confira as condições da campanha Black Friday 2026 da OrientoHub e o prazo para contratar com 50% OFF." />
-    </Helmet>
+    <Seo
+      title="Regulamento Black Friday 2026 | OrientoHub"
+      description="Confira as condições da campanha Black Friday 2026 da OrientoHub e o prazo para contratar com 50% OFF."
+      path="/regulamento-black-friday"
+      jsonLd={buildBreadcrumbSchema([
+        { name: 'Início', path: '/' },
+        { name: 'Serviços', path: '/servicos' },
+        { name: 'Regulamento Black Friday 2026', path: '/regulamento-black-friday' },
+      ])}
+    />
 
     <main className="relative isolate min-h-screen overflow-hidden bg-gradient-to-br from-black via-gray-900 to-black text-white">
       <div className="pointer-events-none absolute inset-0 -z-10 opacity-20" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, #FFF200 1px, transparent 0)', backgroundSize: '40px 40px' }} />

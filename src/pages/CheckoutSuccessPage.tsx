@@ -76,7 +76,8 @@ const CheckoutSuccessPage = () => {
     return (
         <>
             <Helmet>
-                <title>Pagamento Confirmado - Orientohub</title>
+                <title>Pagamento Confirmado - OrientoHub</title>
+                <meta name="robots" content="noindex, nofollow" />
             </Helmet>
 
             <section className="min-h-screen w-full bg-gradient-to-br from-black via-gray-900 to-black flex items-center justify-center p-6">

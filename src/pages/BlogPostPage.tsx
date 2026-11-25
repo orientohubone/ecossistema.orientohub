@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Helmet } from 'react-helmet-async';
+import Seo, { buildBreadcrumbSchema } from '../components/Seo';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import {
   Calendar,
@@ -300,13 +300,47 @@ const BlogPostPage = () => {
   return (
     <>
       <style>{customStyles}</style>
-      <Helmet>
-        <title>{`${post.title} | Orientohub Blog`}</title>
-        <meta name="description" content={post.subtitle} />
-        <meta property="og:title" content={post.title} />
-        <meta property="og:description" content={post.subtitle} />
-        <meta property="og:image" content={post.coverImage} />
-      </Helmet>
+      <Seo
+        title={`${post.title} | OrientoHub Blog`}
+        description={post.subtitle}
+        path={`/blog/${post.slug}`}
+        image={post.coverImage}
+        imageAlt={post.title}
+        type="article"
+        publishedTime={`${post.publishedAt}T00:00:00-03:00`}
+        author={post.author.name}
+        jsonLd={[
+          {
+            '@context': 'https://schema.org',
+            '@type': 'Article',
+            headline: post.title,
+            description: post.subtitle,
+            image: post.coverImage.startsWith('http')
+              ? post.coverImage
+              : `https://orientohub.com.br${encodeURI(post.coverImage)}`,
+            datePublished: `${post.publishedAt}T00:00:00-03:00`,
+            author: {
+              '@type': 'Person',
+              name: post.author.name,
+            },
+            publisher: {
+              '@type': 'Organization',
+              name: 'OrientoHub',
+              url: 'https://orientohub.com.br',
+              logo: {
+                '@type': 'ImageObject',
+                url: 'https://orientohub.com.br/favicon_512x512.png',
+              },
+            },
+            mainEntityOfPage: `https://orientohub.com.br/blog/${post.slug}`,
+          },
+          buildBreadcrumbSchema([
+            { name: 'Início', path: '/' },
+            { name: 'Blog', path: '/blog' },
+            { name: post.title, path: `/blog/${post.slug}` },
+          ]),
+        ]}
+      />
 
       {/* Reading Progress Bar */}
       <motion.div

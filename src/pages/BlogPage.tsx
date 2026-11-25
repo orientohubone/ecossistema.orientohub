@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Helmet } from 'react-helmet-async';
+import Seo, { buildBreadcrumbSchema } from '../components/Seo';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { 
@@ -175,10 +175,26 @@ const BlogPage = () => {
       <div className="fixed inset-0 opacity-20 pointer-events-none -z-40"
         style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, #FFF200 1px, transparent 0)', backgroundSize: '40px 40px' }}
       />
-      <Helmet>
-        <title>Blog | Ideias em movimento — OrientoHub</title>
-        <meta name="description" content="Estratégia, validação, inovação e aprendizados práticos para transformar ideias em projetos e soluções." />
-      </Helmet>
+        <Seo
+          title="Blog | Ideias em movimento — OrientoHub"
+          description="Estratégia, validação, inovação e aprendizados práticos para transformar ideias em projetos e soluções."
+          path="/blog"
+          jsonLd={[
+            {
+              '@context': 'https://schema.org',
+              '@type': 'Blog',
+              name: 'Blog OrientoHub',
+              description:
+                'Estratégia, validação, inovação e aprendizados práticos para transformar ideias em projetos e soluções.',
+              url: 'https://orientohub.com.br/blog',
+              publisher: { '@type': 'Organization', name: 'OrientoHub', url: 'https://orientohub.com.br' },
+            },
+            buildBreadcrumbSchema([
+              { name: 'Início', path: '/' },
+              { name: 'Blog', path: '/blog' },
+            ]),
+          ]}
+        />
 
       {/* Hero Section */}
       <section className="relative flex min-h-[620px] w-full items-center overflow-hidden border-b border-white/10">

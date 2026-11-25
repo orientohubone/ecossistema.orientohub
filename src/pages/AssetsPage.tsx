@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Helmet } from 'react-helmet-async';
+import Seo from '../components/Seo';
 import {
   Award,
   BarChart3,
@@ -60,10 +60,12 @@ const ecosystemLayers = [
 
 const AssetsPage = () => (
   <>
-    <Helmet>
-      <title>Assets de serviços | OrientoHub</title>
-      <meta name="description" content="Capa de serviços do ecossistema OrientoHub." />
-    </Helmet>
+    <Seo
+      title="Assets de serviços | OrientoHub"
+      description="Capa de serviços do ecossistema OrientoHub."
+      path="/assets"
+      noindex
+    />
 
     <main className="relative min-h-screen overflow-hidden bg-gradient-to-br from-black via-gray-900 to-black px-4 py-16 text-white">
       <div className="pointer-events-none absolute inset-0 opacity-[0.12]" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, #FFF200 1px, transparent 0)', backgroundSize: '40px 40px' }} />
