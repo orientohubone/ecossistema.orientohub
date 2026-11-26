@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { clientShowcase } from '../data/clientShowcase';
+import MicroSlats from './ui/MicroSlats';
 
 type Client = (typeof clientShowcase)[number];
 
@@ -36,8 +37,22 @@ const MarqueeCard = ({ client }: { client: Client }) => (
 
 const ClientsShowcase = () => (
   <section className="relative overflow-hidden bg-[#FFF200] py-16 text-black sm:py-20" aria-labelledby="clients-showcase-title">
-    <div className="pointer-events-none absolute -left-8 top-8 h-44 w-44 opacity-20 [background-image:radial-gradient(#000_1.5px,transparent_1.5px)] [background-size:18px_18px]" />
-    <div className="pointer-events-none absolute -bottom-10 right-0 h-44 w-56 opacity-20 [background-image:radial-gradient(#000_1.5px,transparent_1.5px)] [background-size:18px_18px]" />
+    <div className="pointer-events-none absolute inset-0" aria-hidden="true">
+      <MicroSlats
+        preset="swell"
+        color="#000000"
+        glintColor="#2a2600"
+        backgroundColor="#FFF200"
+        speed={0.85}
+        chop={0.65}
+        contrast={1.05}
+        glint={0.65}
+        fog={0.2}
+        cursorStrength={1.8}
+        lean={0.5}
+        className="opacity-35"
+      />
+    </div>
 
     <div className="container-custom relative z-10">
       <motion.header className="mx-auto max-w-3xl text-center" initial={{ opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.3 }}>
@@ -51,10 +66,8 @@ const ClientsShowcase = () => (
 
     </div>
 
-    <div className="mt-10 sm:mt-12">
+    <div className="relative z-10 mt-10 sm:mt-12">
       <div className="clients-marquee-viewport relative overflow-hidden py-2 sm:py-3">
-        <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-8 bg-gradient-to-r from-[#FFF200] to-transparent sm:w-20" />
-        <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-8 bg-gradient-to-l from-[#FFF200] to-transparent sm:w-20" />
         <div className="clients-marquee-track flex w-max py-2">
           {[...clientShowcase, ...clientShowcase].map((client, i) => (
             <MarqueeCard key={`${client.name}-${i}`} client={client} />

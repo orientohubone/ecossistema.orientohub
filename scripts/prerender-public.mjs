@@ -85,7 +85,7 @@ const renderBodyFallback = (page) => {
     .map(([href, label]) => `<li><a href="${escape(href)}">${escape(label)}</a></li>`)
     .join('');
 
-  return `<main data-prerender="true" style="max-width:760px;margin:0 auto;padding:48px 20px;font-family:Inter,system-ui,sans-serif;color:#f3f4f6;background:#0c121b"><h1>${escape(page.heading)}</h1><p>${escape(page.body)}</p>${linkItems ? `<nav aria-label="Links relacionados"><ul>${linkItems}</ul></nav>` : ''}</main>`;
+  return `<main data-prerender="true" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0"><h1>${escape(page.heading)}</h1><p>${escape(page.body)}</p>${linkItems ? `<nav aria-label="Links relacionados"><ul>${linkItems}</ul></nav>` : ''}</main>`;
 };
 
 const buildSchemas = (page, canonical) => {

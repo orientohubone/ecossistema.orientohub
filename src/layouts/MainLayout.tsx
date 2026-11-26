@@ -89,6 +89,7 @@ const MainLayout = () => {
 
   return (
     <div className="flex flex-col min-h-screen">
+      <div className="fixed inset-0 bg-gradient-to-br from-black via-gray-900 to-black -z-50" />
       <BlackFridayBanner />
       <Header />
       {usesSlimScrollIndicator && (
